@@ -5,6 +5,7 @@ import {
   mapLanguageToCsesOption,
   CSES_BASE_URL,
 } from '@/core/cses-network';
+import { registerUserMapping } from '@/core/cses-user-cache';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -129,6 +130,12 @@ export async function POST(request: NextRequest) {
     const taskPageRes = await csesRequest(taskPageUrl, {
       cookie: sessionCookie,
     });
+
+    // Register user ID if visible in header
+    const userMatch = taskPageRes.body.match(/<a class="account" href="\/user\/(\d+)">/i);
+    if (userMatch && nick) {
+      registerUserMapping(nick.trim(), userMatch[1]);
+    }
 
     let taskCsrf = extractCsrfToken(taskPageRes.body);
 

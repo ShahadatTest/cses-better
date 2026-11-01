@@ -24,7 +24,7 @@ export interface LeaderboardTabProps {
   userCharCount?: number;
   isSolved?: boolean;
   className?: string;
-  onSelectUser?: (nick: string) => void;
+  onSelectUser?: (nick: string, userId?: string) => void;
   onRefresh?: () => void;
   isRefreshing?: boolean;
   lastRefreshedAt?: number;
@@ -170,20 +170,27 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                       {onSelectUser ? (
                         <button
                           type="button"
-                          onClick={() => onSelectUser(entry.user)}
+                          onClick={() => onSelectUser(entry.user, entry.userId)}
                           className="inline-flex items-center gap-1 text-slate-200 hover:text-amber-400 transition-colors group cursor-pointer text-left"
-                          title={`Inspect ${entry.user}'s CSES Profile`}
+                          title={`Inspect ${entry.user}'s CSES Profile${entry.userId ? ` (#${entry.userId})` : ''}`}
                         >
                           <span className="truncate max-w-[120px] sm:max-w-[180px] underline decoration-zinc-600 underline-offset-2 group-hover:decoration-amber-400">
                             {entry.user}
                           </span>
+                          {entry.userId && (
+                            <span className="text-[10px] text-zinc-500 font-mono">
+                              #{entry.userId}
+                            </span>
+                          )}
                           <Award className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity text-amber-400" />
                         </button>
                       ) : (
                         <a
-                          href={`https://cses.fi/problemset/user/${encodeURIComponent(
-                            entry.user
-                          )}/`}
+                          href={
+                            entry.userId
+                              ? `https://cses.fi/problemset/user/${entry.userId}/`
+                              : `https://cses.fi/user/`
+                          }
                           target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-1 text-slate-200 hover:text-sky-400 transition-colors group"
@@ -191,6 +198,11 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                           <span className="truncate max-w-[120px] sm:max-w-[180px]">
                             {entry.user}
                           </span>
+                          {entry.userId && (
+                            <span className="text-[10px] text-zinc-500 font-mono">
+                              #{entry.userId}
+                            </span>
+                          )}
                           <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400" />
                         </a>
                       )}

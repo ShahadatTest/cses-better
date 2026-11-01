@@ -289,4 +289,20 @@ describe('ProblemPane Component', () => {
     expect(html).toContain('Write');
     expect(html).toContain('Preview Math');
   });
+
+  it('renders Leaderboard with userId badge and inspect triggers', () => {
+    const problemWithUserId = {
+      ...mockProblem,
+      stats: {
+        ...mockProblem.stats!,
+        fastest: [{ rank: 1, user: 'mitcute', userId: '134297', language: 'Pascal', score: '0.00 s' }],
+      },
+    };
+    const html = renderToStaticMarkup(
+      <ProblemPane problem={problemWithUserId} activeTab="leaderboard" onSelectUser={() => {}} />
+    );
+    expect(html).toContain('mitcute');
+    expect(html).toContain('#134297');
+    expect(html).toContain('Official CSES Live Standings');
+  });
 });

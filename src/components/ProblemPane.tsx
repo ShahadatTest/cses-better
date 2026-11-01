@@ -36,7 +36,7 @@ export interface ProblemPaneProps {
   activeTab?: ProblemTab;
   onTabChange?: (tab: ProblemTab) => void;
   className?: string;
-  onSelectUser?: (nick: string) => void;
+  onSelectUser?: (nick: string, userId?: string) => void;
   onRefreshStats?: () => void;
   isRefreshingStats?: boolean;
   statsRefreshedAt?: number;

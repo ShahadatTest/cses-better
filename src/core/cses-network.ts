@@ -125,6 +125,50 @@ export function extractCsrfToken(html: string): string | null {
   return match ? match[1] : null;
 }
 
+// Shared server-side CSES session for stats and profile scraping
+let cachedSharedCookie = '';
+let sharedCookieExpiresAt = 0;
+
+export async function getSharedCsesSession(forceRefresh = false): Promise<string> {
+  const now = Date.now();
+  if (!forceRefresh && cachedSharedCookie && now < sharedCookieExpiresAt) {
+    return cachedSharedCookie;
+  }
+
+  try {
+    const loginPage = await csesRequest(`${CSES_BASE_URL}/login`);
+    const csrfToken = extractCsrfToken(loginPage.body);
+    const initialCookie = loginPage.cookies;
+
+    if (csrfToken) {
+      const postBody = new URLSearchParams({
+        csrf_token: csrfToken,
+        nick: 'csesbetter99',
+        pass: 'SecretPass12345!',
+      }).toString();
+
+      const authRes = await csesRequest(`${CSES_BASE_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': Buffer.byteLength(postBody).toString(),
+        },
+        body: postBody,
+        cookie: initialCookie,
+      });
+
+      const sessionCookie = authRes.cookies || initialCookie;
+      cachedSharedCookie = sessionCookie;
+      sharedCookieExpiresAt = now + 45 * 60 * 1000; // 45 min TTL
+      return cachedSharedCookie;
+    }
+  } catch (err) {
+    console.warn('[CSES Shared Session] Auth handshake notice:', err);
+  }
+
+  return '';
+}
+
 /**
  * Maps standard language IDs to CSES language form values
  */

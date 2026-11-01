@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { csesRequest, extractCsrfToken, CSES_BASE_URL } from '@/core/cses-network';
+import { csesRequest, extractCsrfToken, CSES_BASE_URL, getSharedCsesSession } from '@/core/cses-network';
 import { ProblemStats, LeaderboardEntry } from '@/core/types';
+import { registerUserMapping } from '@/core/cses-user-cache';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -13,50 +14,6 @@ interface CacheEntry {
 // In-memory cache for stats (TTL: 60 seconds)
 const statsCache = new Map<string, CacheEntry>();
 const CACHE_TTL_MS = 60 * 1000;
-
-// Shared server-side CSES session for stats scraping
-let cachedCsesCookie = '';
-let cookieExpiresAt = 0;
-
-async function getCsesSession(): Promise<string> {
-  const now = Date.now();
-  if (cachedCsesCookie && now < cookieExpiresAt) {
-    return cachedCsesCookie;
-  }
-
-  try {
-    const loginPage = await csesRequest(`${CSES_BASE_URL}/login`);
-    const csrfToken = extractCsrfToken(loginPage.body);
-    const initialCookie = loginPage.cookies;
-
-    if (csrfToken) {
-      const postBody = new URLSearchParams({
-        csrf_token: csrfToken,
-        nick: 'csesbetter99',
-        pass: 'SecretPass12345!',
-      }).toString();
-
-      const authRes = await csesRequest(`${CSES_BASE_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Content-Length': Buffer.byteLength(postBody).toString(),
-        },
-        body: postBody,
-        cookie: initialCookie,
-      });
-
-      const sessionCookie = authRes.cookies || initialCookie;
-      cachedCsesCookie = sessionCookie;
-      cookieExpiresAt = now + 45 * 60 * 1000; // 45 min TTL
-      return cachedCsesCookie;
-    }
-  } catch (err) {
-    console.warn('[CSES Stats Session] Auth handshake notice:', err);
-  }
-
-  return '';
-}
 
 function parseStatsHtml(html: string): ProblemStats {
   let solvedBy = 0;
@@ -83,16 +40,29 @@ function parseStatsHtml(html: string): ProblemStats {
 
     const rows = [
       ...tableHtml.matchAll(
-        /<tr>\s*<td\s*>#?(\d+)<\/td>\s*<td\s*>(?:<a[^>]*>)?([^<]+)(?:<\/a>)?<\/td>\s*<td\s*>([^<]+)<\/td>\s*<td\s*>([^<]+)<\/td>\s*<\/tr>/gi
+        /<tr>\s*<td\s*>#?(\d+)<\/td>\s*<td\s*>(?:<a\s+[^>]*href="\/problemset\/user\/(\d+)\/?"[^>]*>)?([^<]+)(?:<\/a>)?<\/td>\s*<td\s*>([^<]+)<\/td>\s*<td\s*>([^<]+)<\/td>\s*<\/tr>/gi
       ),
     ];
 
-    return rows.map((r) => ({
-      rank: parseInt(r[1], 10),
-      user: r[2].trim(),
-      language: r[3].trim(),
-      score: r[4].trim(),
-    }));
+    return rows.map((r) => {
+      const rank = parseInt(r[1], 10);
+      const userId = r[2] ? r[2].trim() : undefined;
+      const user = r[3].trim();
+      const language = r[4].trim();
+      const score = r[5].trim();
+
+      if (userId && user) {
+        registerUserMapping(user, userId);
+      }
+
+      return {
+        rank,
+        user,
+        userId,
+        language,
+        score,
+      };
+    });
   }
 
   const fastest = parseTable(/<h3>Fastest code/i);
@@ -134,7 +104,7 @@ export async function GET(
   }
 
   try {
-    const sessionCookie = await getCsesSession();
+    const sessionCookie = await getSharedCsesSession();
     const url = `${CSES_BASE_URL}/problemset/stats/${problemId}/`;
     const res = await csesRequest(url, {
       cookie: sessionCookie,
@@ -155,8 +125,7 @@ export async function GET(
 
     // If session expired, invalidate cookie and try once more
     if (res.body.includes('Please login')) {
-      cachedCsesCookie = '';
-      const retryCookie = await getCsesSession();
+      const retryCookie = await getSharedCsesSession(true);
       const retryRes = await csesRequest(url, { cookie: retryCookie });
       if (retryRes.statusCode === 200 && !retryRes.body.includes('Please login')) {
         const stats = parseStatsHtml(retryRes.body);

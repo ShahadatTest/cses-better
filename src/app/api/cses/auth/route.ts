@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { csesRequest, extractCsrfToken, CSES_BASE_URL } from '@/core/cses-network';
+import { registerUserMapping } from '@/core/cses-user-cache';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -58,11 +59,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Login successful
+    // Login successful - extract numeric user ID from session
+    const sessionCookie = authRes.cookies || loginPageRes.cookies;
+    let userId: string | undefined;
+
+    const directMatch = authRes.body.match(/<a class="account" href="\/user\/(\d+)">/i);
+    if (directMatch) {
+      userId = directMatch[1];
+    } else {
+      try {
+        const homeRes = await csesRequest(`${CSES_BASE_URL}/`, { cookie: sessionCookie });
+        const homeMatch = homeRes.body.match(/<a class="account" href="\/user\/(\d+)">/i);
+        if (homeMatch) {
+          userId = homeMatch[1];
+        }
+      } catch (e) {
+        console.warn('[CSES Auth] Could not extract numeric user ID:', e);
+      }
+    }
+
+    const cleanNick = nick.trim();
+    if (userId) {
+      registerUserMapping(cleanNick, userId);
+    }
+
     return NextResponse.json({
       success: true,
-      nick: nick.trim(),
-      sessionCookie: authRes.cookies || loginPageRes.cookies,
+      nick: cleanNick,
+      userId,
+      sessionCookie,
     });
   } catch (error: any) {
     console.error('[CSES Auth] Error:', error);

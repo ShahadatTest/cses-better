@@ -28,6 +28,7 @@ export interface TestCase {
 export interface LeaderboardEntry {
   rank: number;
   user: string;
+  userId?: string;
   language: string;
   score: string;
 }
@@ -171,6 +172,7 @@ export interface UserProfile {
 // --- CSES Remote Submission & Verdicts ---
 export interface CsesCredentials {
   nick: string;
+  userId?: string;
   pass: string;
   remember?: boolean;
 }
@@ -212,8 +214,13 @@ export interface CsesVerdictResult {
 // --- Official CSES User Profile ---
 export interface CsesUserProfile {
   nick: string;
+  userId?: string;
   name?: string;
   rank?: string;
+  submissionCount?: number;
+  firstSubmission?: string;
+  lastSubmission?: string;
+  languages?: { language: string; submissions: number; share: string }[];
   solvedCount: number;
   solvedProblems: { id: string; name: string }[];
   country?: string;

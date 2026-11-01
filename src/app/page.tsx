@@ -222,8 +222,8 @@ export default function CSESBetterApp() {
     [currentUser, solvedIds, activeLanguage, code, submissions, handleFetchStats]
   );
 
-  const handleOpenCsesProfile = useCallback((nick?: string) => {
-    setInspectedCsesNick(nick || '');
+  const handleOpenCsesProfile = useCallback((nickOrId?: string, userId?: string) => {
+    setInspectedCsesNick(userId || nickOrId || '');
     setIsCsesUserModalOpen(true);
   }, []);
 
@@ -848,7 +848,7 @@ export default function CSESBetterApp() {
         onUpdateSettings={handleUpdateSettings}
       />
 
-      {/* Public Auth Modal (Google & GitHub 1-click login) */}
+      {/* Public Auth Modal (GitHub 1-click login) */}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}

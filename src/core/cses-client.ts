@@ -21,8 +21,11 @@ export function saveStoredCsesCredentials(creds: CsesCredentials): void {
   if (typeof window === 'undefined') return;
   try {
     if (creds.remember) {
-      // Security: Only persist nickname and remember preference; never store plaintext passwords in persistent localStorage
-      localStorage.setItem(CSES_CRED_KEY, JSON.stringify({ nick: creds.nick, pass: '', remember: true }));
+      // Security: Only persist nickname, userId, and remember preference; never store plaintext passwords in persistent localStorage
+      localStorage.setItem(
+        CSES_CRED_KEY,
+        JSON.stringify({ nick: creds.nick, userId: creds.userId, pass: '', remember: true })
+      );
     } else {
       localStorage.removeItem(CSES_CRED_KEY);
     }
@@ -46,7 +49,7 @@ export function clearStoredCsesCredentials(): void {
 export async function testCsesAuth(
   nick: string,
   pass: string
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; nick?: string; userId?: string; error?: string }> {
   try {
     const res = await fetch('/api/cses/auth', {
       method: 'POST',

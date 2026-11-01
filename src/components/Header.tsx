@@ -57,11 +57,13 @@ export function Header({
   const [isProblemOpen, setIsProblemOpen] = useState(false);
   const [isMac, setIsMac] = useState(false);
   const [savedCsesNick, setSavedCsesNick] = useState<string | null>(null);
+  const [savedCsesUserId, setSavedCsesUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const creds = getStoredCsesCredentials();
     if (creds?.nick) {
       setSavedCsesNick(creds.nick);
+      if (creds.userId) setSavedCsesUserId(creds.userId);
     }
   }, []);
 
@@ -330,9 +332,9 @@ export function Header({
         {onOpenCsesProfile && (
           <button
             type="button"
-            onClick={() => onOpenCsesProfile(savedCsesNick || undefined)}
+            onClick={() => onOpenCsesProfile(savedCsesUserId || savedCsesNick || undefined)}
             className="hidden sm:flex items-center space-x-1.5 text-xs text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/25 rounded-lg px-2.5 py-1.5 transition-colors"
-            title={savedCsesNick ? `CSES Account: ${savedCsesNick}` : 'Inspect CSES Profile'}
+            title={savedCsesNick ? `CSES Account: ${savedCsesNick}${savedCsesUserId ? ` (#${savedCsesUserId})` : ''}` : 'Inspect CSES Profile'}
           >
             <Award className="w-3.5 h-3.5" />
             <span className="font-mono">{savedCsesNick || 'CSES User'}</span>
@@ -345,7 +347,7 @@ export function Header({
             type="button"
             onClick={onOpenAuth}
             className="flex items-center space-x-1.5 text-xs rounded-lg px-2.5 py-1 transition-all border border-zinc-700/80 bg-zinc-800 hover:bg-zinc-700 text-zinc-200"
-            title={currentUser ? `Signed in as ${currentUser.displayName}` : 'Sign in with Google / GitHub'}
+            title={currentUser ? `Signed in as ${currentUser.displayName}` : 'Sign in with GitHub'}
           >
             {currentUser?.avatarUrl ? (
               <img
