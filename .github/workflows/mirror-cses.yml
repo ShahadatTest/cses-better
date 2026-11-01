@@ -1,0 +1,51 @@
+name: Continuous CSES Mirror Archive
+
+on:
+  schedule:
+    # Runs every Sunday at 03:00 UTC
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Maximum problems to update (leave blank for all)'
+        required: false
+        default: ''
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run CSES Archiver
+        run: |
+          if [ -n "${{ github.event.inputs.limit }}" ]; then
+            node scripts/archive-cses.js --limit=${{ github.event.inputs.limit }}
+          else
+            node scripts/archive-cses.js
+          fi
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "CSES Better Archive Bot"
+          git config --global user.email "bot@cses-better.org"
+          git add src/data/archive/
+          if git diff --staged --quiet; then
+            echo "No archive changes detected."
+          else
+            git commit -m "chore(archive): auto-refresh CSES leaderboards and problem metadata [skip ci]"
+            git push
+          fi

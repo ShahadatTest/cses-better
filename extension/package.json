@@ -1,0 +1,94 @@
+{
+  "name": "cses-better-vscode",
+  "displayName": "CSES Better",
+  "description": "Solve CSES competitive programming problems with inline testcase execution, output diffs, and live leaderboards in VS Code",
+  "version": "1.0.0",
+  "publisher": "cses-better",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cses-better/cses-better"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onCommand:cses.openProblem",
+    "onCommand:cses.runCode",
+    "onCommand:cses.submitCode"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cses.openProblem",
+        "title": "CSES: Open Problem Statement & Tests",
+        "category": "CSES Better"
+      },
+      {
+        "command": "cses.runCode",
+        "title": "CSES: Run Solution Against Active Testcase",
+        "category": "CSES Better",
+        "icon": "$(play)"
+      },
+      {
+        "command": "cses.submitCode",
+        "title": "CSES: Submit Solution to Judge",
+        "category": "CSES Better",
+        "icon": "$(check-all)"
+      },
+      {
+        "command": "cses.viewLeaderboard",
+        "title": "CSES: View Official Fastest & Shortest Leaderboard",
+        "category": "CSES Better"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "cses.runCode",
+        "key": "ctrl+alt+enter",
+        "mac": "cmd+alt+enter",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "cses.submitCode",
+        "key": "ctrl+alt+s",
+        "mac": "cmd+alt+s",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "CSES Better",
+      "properties": {
+        "cses.compilerEndpoint": {
+          "type": "string",
+          "default": "http://localhost:3000/api/compile",
+          "description": "Compiler endpoint (CSES Better server route or OnlineCompiler.io Piston URL)"
+        },
+        "cses.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "OnlineCompiler.io API Key"
+        },
+        "cses.defaultLanguage": {
+          "type": "string",
+          "enum": ["cpp", "python", "java", "rust", "go"],
+          "default": "cpp",
+          "description": "Default programming language for solving problems"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsc -p ./",
+    "watch": "tsc -w -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.6.3"
+  }
+}
