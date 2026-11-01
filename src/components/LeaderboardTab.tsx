@@ -13,6 +13,7 @@ import {
   CircleDot,
   Clock,
   Sparkles,
+  RefreshCw,
 } from 'lucide-react';
 import { ProblemStats, LeaderboardEntry } from '@/core/types';
 import { cn } from '@/lib/utils';
@@ -24,6 +25,9 @@ export interface LeaderboardTabProps {
   isSolved?: boolean;
   className?: string;
   onSelectUser?: (nick: string) => void;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
+  lastRefreshedAt?: number;
 }
 
 export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
@@ -33,6 +37,9 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
   isSolved,
   className,
   onSelectUser,
+  onRefresh,
+  isRefreshing = false,
+  lastRefreshedAt,
 }) => {
   const hasStats =
     stats &&
@@ -216,6 +223,36 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
 
   return (
     <div className={cn('space-y-6', className)}>
+      {/* Live Cache & Refresh Toolbar */}
+      <div className="flex items-center justify-between p-3 rounded-lg border border-border-subtle bg-surface-1/90 shadow-sm">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-xs font-semibold text-slate-200">
+            Official CSES Live Standings
+          </span>
+          <span className="text-[11px] text-slate-400 hidden sm:inline">
+            {lastRefreshedAt
+              ? `• Updated ${Math.round((Date.now() - lastRefreshedAt) / 1000)}s ago`
+              : '• Live Synced'}
+          </span>
+        </div>
+
+        {onRefresh && (
+          <button
+            type="button"
+            onClick={onRefresh}
+            disabled={isRefreshing}
+            className="flex items-center gap-1.5 px-3 py-1 bg-surface-2 hover:bg-surface-3 disabled:opacity-50 text-slate-200 hover:text-white rounded-md text-xs font-medium border border-border-subtle transition-all active:scale-95"
+            title="Bypass cache and pull latest submissions from CSES.fi"
+          >
+            <RefreshCw
+              className={cn('w-3.5 h-3.5 text-sky-400', isRefreshing && 'animate-spin')}
+            />
+            <span>{isRefreshing ? 'Refreshing...' : 'Refresh Standings'}</span>
+          </button>
+        )}
+      </div>
+
       {/* 1. Official Task Summary Metrics */}
       {hasStats && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

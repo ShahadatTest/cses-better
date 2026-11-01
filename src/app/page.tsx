@@ -15,6 +15,7 @@ import {
   DEFAULT_APP_SETTINGS,
   isLargeInput,
   UserProfile,
+  ProblemStats,
 } from '../core/types';
 import {
   getDraft,
@@ -81,10 +82,44 @@ export default function CSESBetterApp() {
   const [overallVerdict, setOverallVerdict] = useState<VerdictStatus | undefined>(undefined);
   const [submissionResults, setSubmissionResults] = useState<TestResult[] | null>(null);
 
-  // Resolved Current Problem Object
+  // Live CSES Problem Stats & Leaderboard Cache
+  const [liveStats, setLiveStats] = useState<Record<string, ProblemStats>>({});
+  const [isRefreshingStats, setIsRefreshingStats] = useState<boolean>(false);
+  const [statsRefreshedAt, setStatsRefreshedAt] = useState<Record<string, number>>({});
+
+  const handleFetchStats = useCallback(async (problemId: string, force: boolean = false) => {
+    setIsRefreshingStats(true);
+    try {
+      const res = await fetch(`/api/cses/stats/${problemId}${force ? '?refresh=true' : ''}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.stats) {
+          setLiveStats((prev) => ({ ...prev, [problemId]: data.stats }));
+          setStatsRefreshedAt((prev) => ({ ...prev, [problemId]: data.cachedAt || Date.now() }));
+        }
+      }
+    } catch (err) {
+      console.warn('[Live Stats] Failed to fetch live stats:', err);
+    } finally {
+      setIsRefreshingStats(false);
+    }
+  }, []);
+
+  // Fetch live stats when problem changes
+  useEffect(() => {
+    if (currentProblemId) {
+      handleFetchStats(currentProblemId, false);
+    }
+  }, [currentProblemId, handleFetchStats]);
+
+  // Resolved Current Problem Object (with live stats overlay)
   const currentProblem = useMemo(() => {
-    return allProblems.find((p) => p.id === currentProblemId) || allProblems[0];
-  }, [currentProblemId]);
+    const base = allProblems.find((p) => p.id === currentProblemId) || allProblems[0];
+    if (liveStats[currentProblemId]) {
+      return { ...base, stats: liveStats[currentProblemId] };
+    }
+    return base;
+  }, [currentProblemId, liveStats]);
 
   // Combined test cases (Sample + Custom for current problem)
   const combinedTestCases = useMemo(() => {
@@ -180,8 +215,11 @@ export default function CSESBetterApp() {
           submissions,
         });
       }
+
+      // Immediately bypass cache and pull live CSES leaderboard containing the new submission
+      handleFetchStats(pId, true);
     },
-    [currentUser, solvedIds, activeLanguage, code, submissions]
+    [currentUser, solvedIds, activeLanguage, code, submissions, handleFetchStats]
   );
 
   const handleOpenCsesProfile = useCallback((nick?: string) => {
@@ -715,6 +753,9 @@ export default function CSESBetterApp() {
               userExecutionTimeMs={userBestTimeMs}
               userCharCount={code.length}
               onSelectUser={handleOpenCsesProfile}
+              onRefreshStats={() => handleFetchStats(currentProblemId, true)}
+              isRefreshingStats={isRefreshingStats}
+              statsRefreshedAt={statsRefreshedAt[currentProblemId]}
               className="h-full w-full"
             />
           </div>

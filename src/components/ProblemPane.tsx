@@ -37,6 +37,9 @@ export interface ProblemPaneProps {
   onTabChange?: (tab: ProblemTab) => void;
   className?: string;
   onSelectUser?: (nick: string) => void;
+  onRefreshStats?: () => void;
+  isRefreshingStats?: boolean;
+  statsRefreshedAt?: number;
 }
 
 /**
@@ -79,6 +82,9 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
   onTabChange,
   className,
   onSelectUser,
+  onRefreshStats,
+  isRefreshingStats,
+  statsRefreshedAt,
 }) => {
   const [internalTab, setInternalTab] = useState<ProblemTab>('statement');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -469,6 +475,9 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
             userCharCount={userCharCount}
             isSolved={isSolved}
             onSelectUser={onSelectUser}
+            onRefresh={onRefreshStats}
+            isRefreshing={isRefreshingStats}
+            lastRefreshedAt={statsRefreshedAt}
           />
         )}
 
