@@ -3,6 +3,7 @@
 import React, { useMemo } from 'react';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
+import DOMPurify from 'isomorphic-dompurify';
 import { cn } from '@/lib/utils';
 
 export interface KaTeXRendererProps {
@@ -111,6 +112,12 @@ export function renderKatexInHtml(
   return result;
 }
 
+export function sanitizeMathHtml(html: string): string {
+  return DOMPurify.sanitize(html, {
+    USE_PROFILES: { html: true, mathMl: true, svg: true },
+  });
+}
+
 export const KaTeXRenderer: React.FC<KaTeXRendererProps> = ({
   content,
   className,
@@ -119,10 +126,10 @@ export const KaTeXRenderer: React.FC<KaTeXRendererProps> = ({
 }) => {
   const renderedHtml = useMemo(() => {
     if (!content) return '';
-    if (displayMode) {
-      return renderMathFormula(content, true);
-    }
-    return renderKatexInHtml(content, inline);
+    const raw = displayMode
+      ? renderMathFormula(content, true)
+      : renderKatexInHtml(content, inline);
+    return sanitizeMathHtml(raw);
   }, [content, inline, displayMode]);
 
   if (!content) return null;

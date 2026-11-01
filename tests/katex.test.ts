@@ -2,9 +2,19 @@ import { describe, it, expect } from 'vitest';
 import {
   renderKatexInHtml,
   renderMathFormula,
+  sanitizeMathHtml,
 } from '../src/components/KaTeXRenderer';
 
 describe('KaTeXRenderer logic', () => {
+  it('sanitizes malicious script tags and inline event handlers to prevent XSS (SEC-02)', () => {
+    const maliciousHtml = '<p>Normal text</p><script>alert("xss")</script><img src="x" onerror="stealCookies()" />';
+    const sanitized = sanitizeMathHtml(maliciousHtml);
+    expect(sanitized).not.toContain('<script>');
+    expect(sanitized).not.toContain('alert("xss")');
+    expect(sanitized).not.toContain('onerror');
+    expect(sanitized).toContain('<p>Normal text</p>');
+  });
+
   it('renders a simple inline LaTeX formula to HTML with MathML', () => {
     const result = renderMathFormula('1 \\le n \\le 10^6', false);
     expect(result).toContain('katex');
