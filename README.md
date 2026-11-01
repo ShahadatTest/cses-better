@@ -4,14 +4,18 @@
 
 **A modern, high-performance competitive programming platform & online judge for the CSES Problem Set.**
 
-[![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=flat&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
-[![Monaco Editor](https://img.shields.io/badge/Monaco_Editor-VS_Code_Engine-blue?style=flat&logo=visual-studio-code)](https://microsoft.github.io/monaco-editor/)
-[![Tests](https://img.shields.io/badge/Vitest-87%20passed-success?style=flat&logo=vitest)](https://vitest.dev/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Live Demo](https://img.shields.io/badge/Demo-cses--better.vercel.app-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://cses-better.vercel.app)
+[![GitHub Stars](https://img.shields.io/github/stars/codewithpom/cses-better?style=for-the-badge&logo=github&color=38bdf8)](https://github.com/codewithpom/cses-better/stargazers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-[Features](#-features) • [Quick Start](#-quick-start) • [Architecture](#-architecture) • [Leaderboards](#-leaderboard--comparison) • [VS Code Extension](#-vs-code-extension) • [License](#-license)
+[![Next.js 14](https://img.shields.io/badge/Next.js-14.2-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![TypeScript 5](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-Auth_%26_Database-3ECF8E?style=flat&logo=supabase)](https://supabase.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
+[![Monaco Editor](https://img.shields.io/badge/Monaco_Editor-VS_Code_Engine-007ACC?style=flat&logo=visual-studio-code)](https://microsoft.github.io/monaco-editor/)
+[![Tests Passing](https://img.shields.io/badge/Vitest-109%20passed-success?style=flat&logo=vitest)](https://vitest.dev/)
+
+[🚀 Live Demo](https://cses-better.vercel.app) • [✨ Features](#-features) • [⚡ Quick Start](#-quick-start) • [🏗️ Architecture](#-architecture) • [🏆 CSES Mirror & Stats](#-live-cses-parity) • [🤝 Contributing](#-contributing) • [📜 License](#-license)
 
 </div>
 
@@ -19,107 +23,111 @@
 
 ## 🌟 Overview
 
-[CSES Problem Set](https://cses.fi/problemset/) by Antti Laaksonen is one of the premier competitive programming curricula in the world. **CSES Better** elevates the practice experience by giving developers a modern, distraction-free environment with:
+[CSES Problem Set](https://cses.fi/problemset/) by Antti Laaksonen is celebrated worldwide as the gold standard curriculum for competitive programming, algorithmic puzzles, and technical interview preparation. 
 
-- **Integrated Monaco Code Editor**: The exact engine powering VS Code, running in your browser with multi-cursor editing, bracket pair colorization, and keyboard shortcuts.
-- **Substitutable Dual-Editor Engine**: Switch between **Monaco Pro** and the **OnlineCompiler.io Embedded Sandbox** with a single click.
-- **Instant Cloud Compilation**: Powered by `onlinecompiler.io`'s Piston v2 API supporting C++15, Python 3.14, Java 25, Rust 1.93, Go 1.26, and more.
-- **KaTeX Mathematical Formatting**: Crisp rendering of all LaTeX expressions (`$n$`, `$\le$`, `$\rightarrow$`).
-- **Official CSES Leaderboard Scraping**: Compare your execution runtime and code size directly against the world's fastest and shortest solutions.
-- **Real-Time Diff Inspector**: Side-by-side visual diff viewer between your output and expected outputs.
-- **Companion VS Code Extension**: Ready-to-use extension scaffold sharing `@cses/core` logic.
+**CSES Better** modernizes and reimagines the entire practice journey. It preserves official CSES parity while delivering an ultra-fast, feature-packed workbench:
+
+- 💻 **Integrated Monaco Code Editor**: The exact engine powering VS Code running in your browser with multi-cursor editing, bracket pair colorization, customizable font sizing, and keyboard shortcuts.
+- 🚀 **Direct Remote CSES Submission Engine**: Submit your final solutions directly to `cses.fi` under your official account, complete with CSRF extraction and live verdict polling (`ACCEPTED`, `WRONG ANSWER`, `TIME LIMIT EXCEEDED`).
+- 🔀 **Dual-Submit Architecture**:
+  - **Test Cases Button**: Rapid local/cloud sandbox execution against sample and custom test cases with zero impact on your CSES submission history.
+  - **Submit to CSES Button**: Transmits your code straight to the official CSES judge.
+- ⚡ **Live Official CSES Standings**: Real-time stats scraped from `cses.fi` with 60s in-memory caching and a manual **"Refresh Standings"** cache-busting button.
+- 📦 **Continuous CSES Mirror Archive**: Scheduled GitHub Action continuously syncs all 400 problems, test bounds, time limits, memory limits, and Hall of Fame records into a searchable in-app explorer.
+- 🔐 **Multi-Tenant Cloud Sync**: Google & GitHub 1-click OAuth powered by Supabase with Row Level Security (RLS) and automatic offline `localStorage` fallback for guests.
+- 📐 **KaTeX Mathematical Formatting**: LaTeX rendering for algorithmic formulas, constraints, and recurrence relations.
+- 🔍 **Interactive Diff Viewer**: Line-by-line visual diff inspector pinpointing exact divergence points between actual and expected outputs.
+- ⌨️ **Command Palette (`Ctrl+K` / `⌘K`)**: Fuzzy navigation across all 400 CSES problems with instant category filtering.
 
 ---
 
-## 🚀 Features
+## ✨ Features
 
 ### 1. 🔀 Substitutable Dual-Editor Engine
-- **Monaco Pro (Default)**: Full VS Code editor inside the browser. Keybindings (`Ctrl+Enter` to Run, `Ctrl+Shift+Enter` to Submit), customizable font sizing, line numbers, and standard or Vim mode.
-- **OnlineCompiler.io Inbuilt Runner**: Official embedded widget with gVisor container sandbox and custom input controls.
+- **Monaco Pro**: Full VS Code editor inside the browser. Keybindings (`Ctrl+Enter` to Run, `Ctrl+Shift+Enter` to Submit), customizable font sizing, and tab size adjustments.
+- **OnlineCompiler.io Embedded Sandbox**: Official embedded widget with gVisor container sandbox and custom input controls.
 - **State Synchronization**: Code drafts and language choices remain in sync when switching between editors.
 
-### 2. 🏆 Official CSES Leaderboard & Personal Comparison
+### 2. 🏆 Live CSES Parity & Official Leaderboard
+- **Live Scraper**: Queries `cses.fi/problemset/stats/[id]` with authenticated session pooling.
 - **Fastest Code (Top 5)**: Official CSES Hall of Fame records by runtime, language, and user.
 - **Shortest Code (Top 5)**: Code-golf leaderboard by character count.
-- **Community Stats**: Total Solved, Attempted, and Global Success Rate.
-- **Personal Scorecard**: Live comparison metrics calculating where your runtime (ms) and code size (characters) rank against the world record holders.
+- **Personal Scorecard**: Live comparison metrics calculating where your runtime (ms) and code size rank against world records.
+- **Profile Inspector Modal**: Click any username to inspect their official CSES profile and solved tasks.
+- **Refresh Standings**: 1-click cache-busting button to immediately pull the latest standings after solving a problem.
 
 ### 3. 🧪 Comprehensive Test Workbench & Judging
 - **Sample & Custom Testcases**: Multi-tab testcase runner with editable custom inputs.
-- **Line-by-Line Diff Viewer**: Pinpoints the exact line where your output diverged from the testcase.
-- **Performance Telemetry**: Precise execution time (ms), memory consumption (MB), and exit codes.
-- **Standard Competitive Programming Verdicts**:
-  - `AC` (Accepted) — with confetti celebration 🎉
-  - `WA` (Wrong Answer) — with interactive diff viewer
-  - `TLE` (Time Limit Exceeded)
-  - `CE` (Compilation Error) — with formatted error diagnostics
-  - `RE` (Runtime Error) — with stderr output
+- **Official Test Archive Loader**: 1-click download and unzip of full official test suites (`.in` / `.out`).
+- **Line-by-Line Diff Viewer**: Visual side-by-side diff between actual and expected outputs.
+- **Telemetry**: Precise execution time (ms), memory consumption (MB), and exit codes.
+- **Verdicts**: `AC` (with confetti 🎉), `WA` (with diff), `TLE`, `CE` (with compiler diagnostics), `RE` (with stderr).
 
-### 4. ⚡ Next.js App Router & Server Security
-- Server-side execution route (`/api/compile`) executing against `onlinecompiler.io`.
-- Completely eliminates browser CORS restrictions.
-- Protects API keys in `.env.local` without exposing them in client bundles.
-- In-app **Settings Modal** allowing visitors to supply their own API keys or custom Piston/Judge0 endpoints.
+### 4. 🗄️ Continuous CSES Mirror Archive
+- **Automated Mirror**: Scheduled GitHub Action (`.github/workflows/mirror-cses.yml`) crawls problem statements, constraints, and leaderboards.
+- **Compliant Archive**: Respectful crawling adhering to GitHub Acceptable Use Policies.
+- **In-App Explorer**: Filter the archive by category, keyword, time/memory limits, or user record.
 
-### 5. ⌨️ Developer Ergonomics
-- **Command Palette (`Ctrl+K` / `⌘K`)**: Instant fuzzy search across all 400 CSES problems.
-- **Keyboard Shortcuts**: `Ctrl+Enter` to Run, `Ctrl+Shift+Enter` to Submit, `Esc` to close modals.
-- **Zen Mode**: 1-click collapse of problem statements to focus 100% on code.
-- **Offline Drafts**: Automatic local saving per problem and language.
-- **Data Portability**: Full JSON export/import of all solutions and submission history.
+### 5. 🛡️ Enterprise Security & Hardening
+- **Credential Safety**: User passwords are never saved in plaintext `localStorage`.
+- **XSS Sanitization**: All mathematical formulas and markdown notes pass through `DOMPurify` before rendering.
+- **Rate-Limited API Proxy**: Server-side `/api/compile` protected by sliding-window IP rate limiting (30 reqs/min) and payload size caps.
+- **Input Validation**: Strict regex validation (`/^\d+$/`) on all dynamic route IDs.
 
 ---
 
-## 🛠️ Architecture
+## 🏗️ Architecture
 
 ```
 cses-better/
 ├── src/
 │   ├── app/
 │   │   ├── api/
-│   │   │   └── compile/route.ts      # Server-side execution proxy (CORS & Key security)
-│   │   ├── layout.tsx                # Dark root shell + KaTeX styling
-│   │   ├── page.tsx                  # Master workspace orchestrator
-│   │   └── globals.css               # Tailwind CSS & design tokens
-│   ├── core/                         # Decoupled core (Shared with VS Code extension!)
-│   │   ├── types.ts                  # Problem, TestCase, Verdict, Leaderboard contracts
-│   │   ├── templates.ts              # Fast I/O starters for C++, Python, Java, Rust, Go
-│   │   ├── compiler.ts               # Piston v2 execution client
-│   │   ├── judge.ts                  # Normalizer, diff calculator, verdict engine
-│   │   └── storage.ts                # LocalStorage persistence & JSON export/import
-│   ├── components/
-│   │   ├── Header.tsx                # Brand logo, breadcrumb, solved counter, settings
-│   │   ├── ProblemPane.tsx           # Multi-tab view: Statement, Leaderboard, Submissions, Notes
-│   │   ├── KaTeXRenderer.tsx         # LaTeX mathematical formula renderer
-│   │   ├── LeaderboardTab.tsx        # CSES Fastest/Shortest tables & personal comparison
-│   │   ├── SubmissionsTab.tsx        # Past submissions history & code restorer
-│   │   ├── NotesTab.tsx              # Markdown algorithmic scratchpad
-│   │   ├── SplitPane.tsx             # Resizable draggable workspace divider
-│   │   ├── CommandPalette.tsx        # Ctrl+K problem navigator (400 problems)
-│   │   ├── SettingsModal.tsx         # API key, custom endpoints, editor preferences
-│   │   ├── TestBench.tsx             # Test runner, custom testcases, verdict badges
-│   │   ├── DiffViewer.tsx            # Side-by-side output comparison
+│   │   │   ├── archive/route.ts        # Instant in-memory CSES archive query
+│   │   │   ├── compile/route.ts        # Rate-limited execution proxy (Piston v2)
+│   │   │   ├── cses/auth/route.ts      # CSES credential validation
+│   │   │   ├── cses/result/[id]/       # Live CSES verdict & testcase poller
+│   │   │   ├── cses/stats/[id]/        # Authenticated live leaderboard scraper
+│   │   │   ├── cses/submit/route.ts    # Direct CSES remote multipart submission
+│   │   │   ├── cses/user/[nick]/       # Official CSES user profile inspector
+│   │   │   └── tests/[id]/route.ts     # Official testcase zip archive extractor
+│   │   ├── auth/callback/route.ts      # Supabase OAuth PKCE cookie exchange
+│   │   ├── layout.tsx                  # Dark root shell + KaTeX styling
+│   │   ├── page.tsx                    # Master workspace orchestrator
+│   │   └── globals.css                 # Tailwind CSS & design tokens
+│   ├── core/                           # Decoupled core engine
+│   │   ├── types.ts                    # Problem, TestCase, Verdict, Leaderboard contracts
+│   │   ├── cses-network.ts             # IPv4 forced networking & CSRF extraction
+│   │   ├── cses-client.ts              # Client-side CSES polling & submit helpers
+│   │   ├── supabase.ts                 # Multi-tenant auth & cloud persistence
+│   │   ├── compiler.ts                 # Piston v2 execution client
+│   │   ├── judge.ts                    # Normalizer, diff calculator, verdict engine
+│   │   └── storage.ts                  # LocalStorage persistence & JSON backup
+│   ├── components/                     # High-performance React components
+│   │   ├── Header.tsx                  # Navigation, problem breadcrumb, solved counter
+│   │   ├── ProblemPane.tsx             # Statement, Leaderboard, Submissions, Notes
+│   │   ├── KaTeXRenderer.tsx           # XSS-sanitized LaTeX mathematical renderer
+│   │   ├── LeaderboardTab.tsx          # Live standings with manual cache refresh
+│   │   ├── SubmissionsTab.tsx          # Past submissions history & code restore
+│   │   ├── CsesSubmitModal.tsx         # Animated live pipeline remote submit modal
+│   │   ├── CsesUserProfileModal.tsx    # Official CSES user profile inspector
+│   │   ├── ArchiveExplorerModal.tsx    # CSES mirror archive search & navigation
+│   │   ├── AuthModal.tsx               # Google & GitHub OAuth dialog
+│   │   ├── TestBench.tsx               # Testbench runner & custom test cases
+│   │   ├── DiffViewer.tsx              # Side-by-side output comparison
 │   │   └── editor/
-│   │       ├── EditorWorkbench.tsx   # Dual-editor switcher & sticky action bar
-│   │       ├── MonacoEditorView.tsx  # Monaco Pro (VS Code engine in browser)
+│   │       ├── EditorWorkbench.tsx     # Dual-editor switcher & dual-submit actions
+│   │       ├── MonacoEditorView.tsx    # Monaco Pro (VS Code engine in browser)
 │   │       └── InbuiltCompilerView.tsx # OnlineCompiler.io iframe embed
 │   └── data/
-│       ├── categories.ts             # 19 CSES categories
-│       └── problems.json             # 400 problems + statements + leaderboards
-├── scripts/
-│   └── scrape-cses.js                # Authenticated scraper CLI for CSES catalog & stats
-├── extension/                        # Companion VS Code Extension
-│   ├── package.json
-│   ├── README.md
-│   └── src/extension.ts              # VS Code command integration using @cses/core
-└── tests/                            # Comprehensive Vitest test suite (87 tests)
-    ├── judge.test.ts
-    ├── compiler.test.ts
-    ├── editor.test.ts
-    ├── katex.test.ts
-    ├── components.test.tsx
-    ├── problem-components.test.tsx
-    └── app-shell.test.tsx
+│       ├── categories.ts               # 19 CSES categories
+│       ├── problems.json               # 400 problems + statements + tests
+│       └── archive/archive.json        # 400 problems archive with live stats
+├── supabase/
+│   └── schema.sql                      # PostgreSQL schema with Row Level Security (RLS)
+├── .github/workflows/
+│   └── mirror-cses.yml                 # Automated weekly CSES archive synchronization
+└── tests/                              # Comprehensive Vitest test suite (109 tests)
 ```
 
 ---
@@ -134,7 +142,7 @@ cses-better/
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/cses-better.git
+   git clone https://github.com/codewithpom/cses-better.git
    cd cses-better
    ```
 
@@ -143,12 +151,18 @@ cses-better/
    npm install
    ```
 
-3. **Configure Environment:**
-   A `.env.example` file is provided as a template:
+3. **Configure Environment Variables:**
+   Copy `.env.example` to `.env.local`:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Add your compiler API key and Supabase credentials (optional for guest mode):
    ```env
    COMPILER_API_KEY=your_compiler_api_key_here
    COMPILER_BASE_URL=https://api.onlinecompiler.io/api/v2/piston
    NEXT_PUBLIC_APP_URL=http://localhost:3000
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOi...
    ```
 
 4. **Run the Development Server:**
@@ -170,28 +184,15 @@ cses-better/
 
 ---
 
-## 📊 Leaderboard & Comparison
+## 🤝 Contributing
 
-When you solve any problem, switch to the **Leaderboard & Stats** tab:
-1. **Hall of Fame**:
-   - Inspect the top 5 fastest solutions (e.g. `0.00 s` in Pascal/C++).
-   - Inspect the top 5 shortest codes (e.g. `16 ch.` in Ruby).
-2. **Personal Comparison**:
-   - Compares your best execution time against the record holder.
-   - Calculates your code-golf efficiency against the shortest solution.
+Contributions are welcome! Whether it's adding new language starters, optimizing judge latency, or improving UI animations:
 
----
-
-## 🔌 VS Code Extension
-
-A companion VS Code extension scaffold is located in `extension/`:
-1. Navigate to the extension folder:
-   ```bash
-   cd extension
-   npm install
-   ```
-2. Press `F5` in VS Code to launch the extension development host.
-3. Use `Ctrl+Alt+Enter` to run code and `Ctrl+Alt+S` to submit solutions to the judge.
+1. Fork the Project (`https://github.com/codewithpom/cses-better/fork`)
+2. Create your Feature Branch (`git checkout -b feat/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'feat: Add AmazingFeature'`)
+4. Push to the Branch (`git push origin feat/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
@@ -199,4 +200,4 @@ A companion VS Code extension scaffold is located in `extension/`:
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
-Problem statements and tests are copyright © [CSES / Antti Laaksonen](https://cses.fi/problemset/) and are used for free educational practice.
+*Problem statements, test data, and CSES trademarks are copyright © [CSES / Antti Laaksonen](https://cses.fi/problemset/) and are used under fair educational practice.*
