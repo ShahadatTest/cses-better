@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import archiveDataRaw from '@/data/archive/archive.json';
 import { CsesArchiveEntry } from '@/core/types';
 
 export const dynamic = 'force-dynamic';
+
+const archiveData = archiveDataRaw as unknown as CsesArchiveEntry[];
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,15 +14,6 @@ export async function GET(request: NextRequest) {
     const user = searchParams.get('user')?.toLowerCase().trim() || '';
     const sortBy = searchParams.get('sort') || 'id';
     const limit = parseInt(searchParams.get('limit') || '50', 10);
-
-    const archivePath = path.join(process.cwd(), 'src/data/archive/archive.json');
-    if (!fs.existsSync(archivePath)) {
-      return NextResponse.json({ total: 0, items: [] });
-    }
-
-    const archiveData: CsesArchiveEntry[] = JSON.parse(
-      fs.readFileSync(archivePath, 'utf-8')
-    );
 
     let filtered = archiveData.filter((entry) => {
       if (query) {

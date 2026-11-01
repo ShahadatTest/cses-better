@@ -25,6 +25,7 @@ export function csesRequest(
     timeout?: number;
     followRedirects?: boolean;
     cookie?: string;
+    redirectCount?: number;
   } = {}
 ): Promise<CsesHttpResponse> {
   return new Promise((resolve, reject) => {
@@ -66,10 +67,19 @@ export function csesRequest(
         [301, 302, 303, 307, 308].includes(res.statusCode || 0) &&
         location
       ) {
+        const currentRedirects = options.redirectCount || 0;
+        if (currentRedirects >= 5) {
+          return reject(new Error(`Too many redirects fetching ${urlStr}`));
+        }
         const nextUrl = new URL(location, urlStr).toString();
+        // Prevent forwarding sensitive cookies if redirected off-site
+        const nextHost = new URL(nextUrl).hostname;
+        const forwardCookie = nextHost.endsWith('cses.fi') ? combinedCookie : undefined;
+
         return csesRequest(nextUrl, {
           ...options,
-          cookie: combinedCookie,
+          redirectCount: currentRedirects + 1,
+          cookie: forwardCookie,
         })
           .then(resolve)
           .catch(reject);

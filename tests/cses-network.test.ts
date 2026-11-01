@@ -68,7 +68,7 @@ describe('CSES Client Credentials Storage', () => {
     clearStoredCsesCredentials();
   });
 
-  it('saves credentials when remember is true', () => {
+  it('saves nickname without persisting plaintext password when remember is true', () => {
     saveStoredCsesCredentials({
       nick: 'tourist',
       pass: 'secret',
@@ -77,7 +77,8 @@ describe('CSES Client Credentials Storage', () => {
     const stored = getStoredCsesCredentials();
     expect(stored).not.toBeNull();
     expect(stored?.nick).toBe('tourist');
-    expect(stored?.pass).toBe('secret');
+    // Security: Raw password must never be stored in persistent localStorage
+    expect(stored?.pass).toBe('');
   });
 
   it('does not save credentials when remember is false', () => {

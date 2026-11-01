@@ -24,7 +24,8 @@ CREATE POLICY "Users can insert own profile"
 
 CREATE POLICY "Users can update own profile"
   ON public.profiles FOR UPDATE
-  USING (auth.uid() = id);
+  USING (auth.uid() = id)
+  WITH CHECK (auth.uid() = id);
 
 -- 2. User Solved Problems
 CREATE TABLE IF NOT EXISTS public.user_solved (
@@ -45,6 +46,11 @@ CREATE POLICY "Users can read own solved problems"
 
 CREATE POLICY "Users can insert own solved problems"
   ON public.user_solved FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own solved problems"
+  ON public.user_solved FOR UPDATE
+  USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
 CREATE POLICY "Users can delete own solved problems"

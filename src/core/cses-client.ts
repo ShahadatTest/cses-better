@@ -21,7 +21,8 @@ export function saveStoredCsesCredentials(creds: CsesCredentials): void {
   if (typeof window === 'undefined') return;
   try {
     if (creds.remember) {
-      localStorage.setItem(CSES_CRED_KEY, JSON.stringify(creds));
+      // Security: Only persist nickname and remember preference; never store plaintext passwords in persistent localStorage
+      localStorage.setItem(CSES_CRED_KEY, JSON.stringify({ nick: creds.nick, pass: '', remember: true }));
     } else {
       localStorage.removeItem(CSES_CRED_KEY);
     }

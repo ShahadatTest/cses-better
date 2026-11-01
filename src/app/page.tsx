@@ -657,7 +657,17 @@ export default function CSESBetterApp() {
     if (finalVerdict === 'AC') {
       const updatedSolved = getSolvedProblems();
       updatedSolved.add(currentProblem.id);
+      saveSolvedProblem(currentProblem.id);
       setSolvedIds(updatedSolved);
+
+      // Cloud persistence symmetry for authenticated users
+      if (currentUser) {
+        syncUserDataToCloud(currentUser.id, {
+          solvedIds: Array.from(updatedSolved),
+          drafts: { [`cses_draft_${currentProblem.id}_${activeLanguage}`]: code },
+          submissions: [record, ...submissions],
+        });
+      }
 
       try {
         confetti({
@@ -680,6 +690,8 @@ export default function CSESBetterApp() {
     activeLanguage,
     code,
     settings,
+    currentUser,
+    submissions,
   ]);
 
   // Global Keyboard Shortcuts

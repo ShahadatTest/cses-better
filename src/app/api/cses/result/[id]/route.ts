@@ -10,8 +10,8 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const submissionId = params.id;
-  if (!submissionId) {
-    return NextResponse.json({ error: 'Submission ID is required' }, { status: 400 });
+  if (!submissionId || !/^\d+$/.test(submissionId)) {
+    return NextResponse.json({ error: 'Valid numeric submission ID is required' }, { status: 400 });
   }
 
   try {

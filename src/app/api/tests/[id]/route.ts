@@ -9,8 +9,8 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const problemId = params.id;
-  if (!problemId) {
-    return NextResponse.json({ error: 'Problem ID is required' }, { status: 400 });
+  if (!problemId || !/^\d+$/.test(problemId)) {
+    return NextResponse.json({ error: 'Valid numeric Problem ID is required' }, { status: 400 });
   }
 
   const searchParams = request.nextUrl.searchParams;
