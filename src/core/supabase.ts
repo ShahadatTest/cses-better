@@ -1,5 +1,14 @@
 import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 import { UserProfile, SubmissionRecord } from './types';
+import {
+  getSolvedProblems,
+  getAllNotes,
+  saveNote,
+  saveDraft,
+  saveSubmission,
+  getSubmissions,
+} from './storage';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -12,46 +21,31 @@ export const isSupabaseConfigured = Boolean(
 
 let supabaseInstance: SupabaseClient | null = null;
 
+/**
+ * Returns a singleton SupabaseClient.
+ * Uses createBrowserClient in browser context to automatically sync session with cookies set by Next.js SSR.
+ */
 export function getSupabase(): SupabaseClient | null {
   if (!isSupabaseConfigured) return null;
   if (!supabaseInstance) {
-    supabaseInstance = createClient(supabaseUrl, supabaseAnonKey, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true,
-      },
-    });
+    if (typeof window !== 'undefined') {
+      supabaseInstance = createBrowserClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+        },
+      });
+    } else {
+      supabaseInstance = createClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+        },
+      });
+    }
   }
   return supabaseInstance;
-}
-
-/**
- * Trigger Google OAuth sign-in flow
- */
-export async function signInWithGoogle(redirectTo?: string): Promise<{ error: Error | null }> {
-  const client = getSupabase();
-  if (!client) {
-    return {
-      error: new Error('Supabase is not configured yet. Please configure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.'),
-    };
-  }
-
-  const origin = typeof window !== 'undefined' ? window.location.origin : '';
-  const redirect = redirectTo || `${origin}/auth/callback`;
-
-  const { error } = await client.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: redirect,
-      queryParams: {
-        access_type: 'offline',
-        prompt: 'consent',
-      },
-    },
-  });
-
-  return { error: error as Error | null };
 }
 
 /**
@@ -61,7 +55,9 @@ export async function signInWithGitHub(redirectTo?: string): Promise<{ error: Er
   const client = getSupabase();
   if (!client) {
     return {
-      error: new Error('Supabase is not configured yet. Please configure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.'),
+      error: new Error(
+        'Supabase is not configured yet. Please configure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.'
+      ),
     };
   }
 
@@ -72,6 +68,7 @@ export async function signInWithGitHub(redirectTo?: string): Promise<{ error: Er
     provider: 'github',
     options: {
       redirectTo: redirect,
+      scopes: 'read:user user:email',
     },
   });
 
@@ -79,7 +76,7 @@ export async function signInWithGitHub(redirectTo?: string): Promise<{ error: Er
 }
 
 /**
- * Sign out user
+ * Sign out user and clear session cookies
  */
 export async function signOutUser(): Promise<{ error: Error | null }> {
   const client = getSupabase();
@@ -89,22 +86,71 @@ export async function signOutUser(): Promise<{ error: Error | null }> {
 }
 
 /**
- * Convert Supabase user to UserProfile
+ * Convert Supabase user to UserProfile with accurate GitHub username & avatar extraction
  */
 export function mapSupabaseUser(user: User): UserProfile {
   const metadata = user.user_metadata || {};
+  // GitHub returns user_name or preferred_username for the handle (e.g. codewithpom)
+  const githubUser =
+    metadata.user_name ||
+    metadata.preferred_username ||
+    metadata.nickname ||
+    metadata.login;
+
+  const fullName = metadata.full_name || metadata.name;
+  const displayName = githubUser || fullName || user.email?.split('@')[0] || 'Developer';
+  const avatarUrl = metadata.avatar_url || metadata.picture;
+  const provider = (user.app_metadata?.provider as any) || 'github';
+
   return {
     id: user.id,
     email: user.email,
-    displayName: metadata.full_name || metadata.name || user.email?.split('@')[0] || 'Anonymous',
-    avatarUrl: metadata.avatar_url || metadata.picture,
-    provider: (user.app_metadata?.provider as any) || 'google',
+    username: githubUser || undefined,
+    displayName,
+    avatarUrl,
+    provider,
     createdAt: user.created_at,
   };
 }
 
 /**
- * Sync user solved problems, drafts, and submissions to Supabase (Row Level Security protected)
+ * Persists an individual problem note to Supabase cloud
+ */
+export async function saveUserNoteToCloud(
+  userId: string,
+  problemId: string,
+  content: string
+): Promise<boolean> {
+  const client = getSupabase();
+  if (!client || !userId || !problemId) return false;
+
+  try {
+    if (!content || content.trim() === '') {
+      await client
+        .from('user_notes')
+        .delete()
+        .eq('user_id', userId)
+        .eq('problem_id', problemId);
+    } else {
+      await client.from('user_notes').upsert(
+        {
+          user_id: userId,
+          problem_id: problemId,
+          content,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'user_id,problem_id' }
+      );
+    }
+    return true;
+  } catch (err) {
+    console.warn('[Supabase Cloud Notes] Upsert error:', err);
+    return false;
+  }
+}
+
+/**
+ * Sync user solved problems, drafts, submissions, and notes to Supabase (Row Level Security protected)
  */
 export async function syncUserDataToCloud(
   userId: string,
@@ -112,6 +158,7 @@ export async function syncUserDataToCloud(
     solvedIds: string[];
     drafts: Record<string, string>;
     submissions: SubmissionRecord[];
+    notes?: Record<string, string>;
   }
 ): Promise<boolean> {
   const client = getSupabase();
@@ -143,10 +190,11 @@ export async function syncUserDataToCloud(
     const draftEntries = Object.entries(data.drafts);
     if (draftEntries.length > 0) {
       const draftsPayload = draftEntries.map(([key, code]) => {
-        // key format: cses_draft_${problemId}_${language} or similar
-        const parts = key.split('_');
-        const lang = parts.length >= 4 ? parts[parts.length - 1] : 'cpp';
-        const pId = parts.length >= 4 ? parts[parts.length - 2] : '1068';
+        // key format: cses_draft_${problemId}_${language} or ${problemId}_${language}
+        const cleaned = key.startsWith('cses_draft_') ? key.slice('cses_draft_'.length) : key;
+        const parts = cleaned.split('_');
+        const lang = parts.length >= 2 ? parts[parts.length - 1] : 'cpp';
+        const pId = parts.length >= 2 ? parts.slice(0, -1).join('_') : parts[0] || '1068';
         return {
           user_id: userId,
           problem_id: pId,
@@ -161,6 +209,45 @@ export async function syncUserDataToCloud(
       });
     }
 
+    // 4. Batch upsert notes
+    if (data.notes) {
+      const noteEntries = Object.entries(data.notes);
+      if (noteEntries.length > 0) {
+        const notesPayload = noteEntries
+          .filter(([, content]) => Boolean(content && content.trim() !== ''))
+          .map(([problemId, content]) => ({
+            user_id: userId,
+            problem_id: problemId,
+            content,
+            updated_at: new Date().toISOString(),
+          }));
+
+        if (notesPayload.length > 0) {
+          await client.from('user_notes').upsert(notesPayload, {
+            onConflict: 'user_id,problem_id',
+          });
+        }
+      }
+    }
+
+    // 5. Batch upsert submissions
+    if (data.submissions && data.submissions.length > 0) {
+      const submissionsPayload = data.submissions.slice(0, 50).map((sub) => ({
+        id: sub.id,
+        user_id: userId,
+        problem_id: sub.problemId,
+        language: sub.language,
+        verdict: sub.status,
+        runtime_ms: sub.maxTimeMs || 0,
+        char_count: sub.charCount || sub.code?.length || 0,
+        created_at: new Date(sub.timestamp || Date.now()).toISOString(),
+      }));
+
+      await client.from('user_submissions').upsert(submissionsPayload, {
+        onConflict: 'id',
+      });
+    }
+
     return true;
   } catch (err) {
     console.warn('[Supabase Sync] Cloud sync notice:', err);
@@ -169,23 +256,26 @@ export async function syncUserDataToCloud(
 }
 
 /**
- * Fetch user solved problems, drafts from Supabase
+ * Fetch user solved problems, drafts, and notes from Supabase
  */
 export async function fetchUserDataFromCloud(userId: string): Promise<{
   solvedIds: string[];
   drafts: Record<string, string>;
+  notes: Record<string, string>;
 } | null> {
   const client = getSupabase();
   if (!client || !userId) return null;
 
   try {
-    const [solvedRes, draftsRes] = await Promise.all([
+    const [solvedRes, draftsRes, notesRes] = await Promise.all([
       client.from('user_solved').select('problem_id').eq('user_id', userId),
       client.from('user_drafts').select('problem_id, language, code').eq('user_id', userId),
+      client.from('user_notes').select('problem_id, content').eq('user_id', userId),
     ]);
 
     const solvedIds: string[] = (solvedRes.data || []).map((row: any) => row.problem_id);
     const drafts: Record<string, string> = {};
+    const notes: Record<string, string> = {};
 
     if (draftsRes.data) {
       for (const d of draftsRes.data) {
@@ -193,9 +283,88 @@ export async function fetchUserDataFromCloud(userId: string): Promise<{
       }
     }
 
-    return { solvedIds, drafts };
+    if (notesRes.data) {
+      for (const n of notesRes.data) {
+        if (n.content) {
+          notes[n.problem_id] = n.content;
+        }
+      }
+    }
+
+    return { solvedIds, drafts, notes };
   } catch (err) {
     console.warn('[Supabase Fetch] Cloud fetch notice:', err);
     return null;
   }
+}
+
+/**
+ * One-click bidirectional synchronization:
+ * 1. Pushes all local progress (solves, drafts, submissions, notes) to cloud
+ * 2. Pulls all cloud progress down to local storage
+ */
+export async function syncAllLocalProgressToCloud(
+  userId: string
+): Promise<{ success: boolean; syncedNotes: number; syncedSolves: number }> {
+  if (!userId) return { success: false, syncedNotes: 0, syncedSolves: 0 };
+
+  const localSolved = Array.from(getSolvedProblems());
+  const localNotes = getAllNotes();
+  const localSubmissions = getSubmissions();
+
+  // Push local data up
+  const pushOk = await syncUserDataToCloud(userId, {
+    solvedIds: localSolved,
+    drafts: {},
+    submissions: localSubmissions,
+    notes: localNotes,
+  });
+
+  // Pull cloud data down
+  const cloudData = await fetchUserDataFromCloud(userId);
+  let syncedSolves = localSolved.length;
+  let syncedNotes = Object.keys(localNotes).length;
+
+  if (cloudData) {
+    // Merge cloud solved problems
+    for (const pId of cloudData.solvedIds) {
+      if (!localSolved.includes(pId)) {
+        saveSubmission({
+          id: `cloud-sync-${pId}-${Date.now()}`,
+          problemId: pId,
+          language: 'cpp',
+          code: '',
+          charCount: 0,
+          timestamp: Date.now(),
+          status: 'AC',
+          passedCount: 1,
+          totalCount: 1,
+          maxTimeMs: 0,
+          maxMemoryBytes: 0,
+        });
+      }
+    }
+    syncedSolves = Math.max(syncedSolves, cloudData.solvedIds.length);
+
+    // Merge cloud drafts into local storage
+    for (const [key, code] of Object.entries(cloudData.drafts)) {
+      if (typeof window !== 'undefined' && code) {
+        try {
+          if (!window.localStorage.getItem(key)) {
+            window.localStorage.setItem(key, code);
+          }
+        } catch {}
+      }
+    }
+
+    // Merge cloud notes into local storage
+    for (const [pId, content] of Object.entries(cloudData.notes)) {
+      if (content && !localNotes[pId]) {
+        saveNote(pId, content);
+      }
+    }
+    syncedNotes = Math.max(syncedNotes, Object.keys(cloudData.notes).length);
+  }
+
+  return { success: pushOk, syncedNotes, syncedSolves };
 }

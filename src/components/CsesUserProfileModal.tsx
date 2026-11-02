@@ -16,8 +16,10 @@ import {
   Send,
   Sparkles,
   Info,
+  Clock,
+  Zap,
 } from 'lucide-react';
-import { CsesUserProfile } from '@/core/types';
+import { CsesUserProfile, ProblemStats } from '@/core/types';
 
 interface CsesUserProfileModalProps {
   isOpen: boolean;
@@ -46,11 +48,17 @@ export function CsesUserProfileModal({
   const [error, setError] = useState<string | null>(null);
   const [isNumericNotice, setIsNumericNotice] = useState(false);
 
+  // Inspector for specific solved problem stats
+  const [inspectedProblem, setInspectedProblem] = useState<{ id: string; name: string } | null>(null);
+  const [problemStats, setProblemStats] = useState<ProblemStats | null>(null);
+  const [isLoadingProblemStats, setIsLoadingProblemStats] = useState(false);
+
   const fetchProfile = async (targetNick: string) => {
     if (!targetNick.trim()) return;
     setIsLoading(true);
     setError(null);
     setIsNumericNotice(false);
+    setInspectedProblem(null);
     try {
       const res = await fetch(`/api/cses/user/${encodeURIComponent(targetNick.trim())}`);
       const data = await res.json();
@@ -69,6 +77,22 @@ export function CsesUserProfileModal({
     }
   };
 
+  const handleInspectProblem = async (prob: { id: string; name: string }) => {
+    setInspectedProblem(prob);
+    setIsLoadingProblemStats(true);
+    try {
+      const res = await fetch(`/api/cses/stats/${prob.id}`);
+      if (res.ok) {
+        const data = await res.json();
+        setProblemStats(data.stats || null);
+      }
+    } catch (err) {
+      console.warn('Failed to load problem stats:', err);
+    } finally {
+      setIsLoadingProblemStats(false);
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
       if (initialNick) {
@@ -78,6 +102,7 @@ export function CsesUserProfileModal({
         setProfile(null);
         setError(null);
         setIsNumericNotice(false);
+        setInspectedProblem(null);
       }
     }
   }, [isOpen, initialNick]);
@@ -97,11 +122,11 @@ export function CsesUserProfileModal({
               <h3 className="font-semibold text-base text-zinc-100 flex items-center gap-2">
                 CSES User Profile Explorer
                 <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30">
-                  Live Sync
+                  Live CSES Standings
                 </span>
               </h3>
               <p className="text-xs text-zinc-400">
-                Inspect official solve records, language statistics, and solved problem archive
+                Inspect official solver achievements, verified solve grids, and benchmark times
               </p>
             </div>
           </div>
@@ -114,111 +139,99 @@ export function CsesUserProfileModal({
         </div>
 
         {/* Search Bar & Quick Picks */}
-        <div className="p-4 border-b border-zinc-800 bg-zinc-900/50 space-y-3">
+        <div className="p-6 border-b border-zinc-800 bg-zinc-950/40 space-y-3 shrink-0">
           <form
             onSubmit={(e) => {
               e.preventDefault();
               fetchProfile(nickInput);
             }}
-            className="flex items-center gap-2"
+            className="flex gap-2"
           >
             <div className="relative flex-1">
-              <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" />
               <input
                 type="text"
                 value={nickInput}
                 onChange={(e) => setNickInput(e.target.value)}
-                placeholder="Enter CSES User ID (e.g. 134297) or Nickname (e.g. rainboy)..."
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-xl pl-10 pr-4 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-amber-500 transition-colors"
+                placeholder="Search by CSES numeric User ID (e.g. 134297) or handle (e.g. mitcute)..."
+                className="w-full pl-10 pr-4 py-2 bg-zinc-800/80 border border-zinc-700 rounded-xl text-sm font-mono text-zinc-100 placeholder-zinc-500 focus:outline-hidden focus:border-amber-500/50"
               />
             </div>
             <button
               type="submit"
               disabled={isLoading || !nickInput.trim()}
-              className="px-4 py-2 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white rounded-xl text-sm font-medium transition-colors flex items-center gap-1.5 shrink-0"
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-zinc-950 font-semibold rounded-xl text-sm shadow transition-all flex items-center gap-2 cursor-pointer"
             >
               {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Inspect'}
             </button>
           </form>
 
-          {/* Featured Hall of Fame Quick Links */}
-          <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
-            <span className="text-[11px] text-zinc-500 flex items-center gap-1 font-medium">
-              <Sparkles className="w-3 h-3 text-amber-400" />
+          {/* Quick Picks */}
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="text-[11px] font-medium text-zinc-500 uppercase tracking-wider mr-1">
               Popular:
             </span>
-            {FEATURED_PROFILES.map((f) => (
+            {FEATURED_PROFILES.map((item) => (
               <button
-                key={f.id}
+                key={item.id}
                 type="button"
                 onClick={() => {
-                  setNickInput(f.id);
-                  fetchProfile(f.id);
+                  setNickInput(item.id);
+                  fetchProfile(item.id);
                 }}
-                className="text-[11px] px-2 py-0.5 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-amber-300 border border-zinc-700/60 transition-all font-mono"
-                title={`${f.label} - ${f.desc} (ID: ${f.id})`}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-amber-300 border border-zinc-700/60 transition-colors"
+                title={`${item.label} (#${item.id}) - ${item.desc}`}
               >
-                {f.label} <span className="text-zinc-500 text-[10px]">#{f.id}</span>
+                <span>{item.label}</span>
+                <span className="text-[10px] text-zinc-500">#{item.id}</span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-6 overflow-y-auto space-y-5">
+        {/* Main Content Area */}
+        <div className="p-6 overflow-y-auto space-y-6 flex-1">
           {error && (
-            <div className="p-3.5 bg-red-500/10 border border-red-500/20 rounded-xl flex flex-col gap-2 text-red-400 text-xs">
-              <div className="flex items-start gap-2.5">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                <span className="font-medium">{error}</span>
-              </div>
-              {isNumericNotice && (
-                <div className="mt-1 p-2.5 bg-zinc-800/80 rounded-lg text-zinc-300 border border-zinc-700/60 flex items-start gap-2">
-                  <Info className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                  <p className="text-[11px] leading-relaxed">
-                    CSES profile URLs always use a numeric ID (e.g.{' '}
-                    <code className="text-amber-300">https://cses.fi/user/134297</code>). You can
-                    find a user&apos;s ID directly in the browser address bar when viewing their
-                    profile on CSES, or click any user directly in our Leaderboard tab!
+            <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3 text-red-400 text-xs leading-relaxed">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-sm text-red-300">Inspection Notice</p>
+                <p className="mt-0.5">{error}</p>
+                {isNumericNotice && (
+                  <p className="mt-2 text-[11px] text-zinc-400 border-t border-red-500/20 pt-2">
+                    💡 Tip: When viewing the leaderboard or problem stats, clicking on any solver automatically resolves their exact numeric ID!
                   </p>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           )}
 
-          {isLoading && (
-            <div className="flex flex-col items-center justify-center py-16 text-zinc-400 gap-3">
-              <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-              <p className="text-xs">Fetching profile &amp; solved archive from cses.fi...</p>
-            </div>
-          )}
-
-          {!isLoading && profile && (
-            <div className="space-y-5">
+          {profile && (
+            <div className="space-y-6 animate-in fade-in duration-300">
               {/* Profile Card */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-zinc-800/60 border border-zinc-700/60 rounded-xl">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 flex items-center justify-center font-bold text-2xl shrink-0">
-                    <User className="w-7 h-7" />
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 bg-zinc-800/40 border border-zinc-700/60 rounded-xl">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-xl shadow-inner">
+                    {profile.nick ? profile.nick[0].toUpperCase() : 'U'}
                   </div>
                   <div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h4 className="font-bold text-lg text-zinc-100">{profile.nick}</h4>
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-bold text-lg text-zinc-100 font-mono">
+                        {profile.nick}
+                      </h4>
                       {profile.userId && (
-                        <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-zinc-800 text-zinc-300 border border-zinc-700">
-                          ID: #{profile.userId}
-                        </span>
-                      )}
-                      {profile.name && (
-                        <span className="text-xs font-normal text-zinc-400">
-                          ({profile.name})
+                        <span className="text-xs font-mono text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded border border-zinc-700">
+                          #{profile.userId}
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-4 mt-1.5 text-xs text-zinc-400 flex-wrap">
+                    {profile.name && (
+                      <p className="text-xs text-zinc-400 font-medium">{profile.name}</p>
+                    )}
+                    <div className="flex items-center gap-3 mt-1.5 text-xs text-zinc-400 flex-wrap">
                       {profile.country && (
                         <span className="flex items-center gap-1">
-                          <Globe className="w-3.5 h-3.5 text-blue-400" />
+                          <Globe className="w-3.5 h-3.5 text-zinc-500" />
                           {profile.country}
                         </span>
                       )}
@@ -228,50 +241,31 @@ export function CsesUserProfileModal({
                           Joined {profile.registeredDate}
                         </span>
                       )}
-                      {profile.firstSubmission && (
-                        <span className="text-[11px] text-zinc-500 font-mono">
-                          First: {profile.firstSubmission.split(' ')[0]}
-                        </span>
-                      )}
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 self-end sm:self-auto">
-                  {profile.userId && (
-                    <a
-                      href={`https://cses.fi/problemset/user/${profile.userId}/`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-2.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-lg border border-zinc-700 text-xs font-medium transition-colors flex items-center gap-1.5"
-                      title="Open Official CSES Problemset Solved List"
-                    >
-                      <span>Problemset</span>
-                      <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
-                    </a>
-                  )}
-                  <a
-                    href={profile.officialUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white rounded-lg border border-zinc-700 transition-colors"
-                    title="Open CSES Account Profile"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                </div>
+                <a
+                  href={profile.officialUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-medium text-zinc-200 border border-zinc-700 transition-colors"
+                >
+                  <span>Official Page</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
               </div>
 
-              {/* Stats overview cards */}
+              {/* Stats Overview Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <div className="p-3.5 bg-zinc-800/40 border border-zinc-800 rounded-xl">
                   <div className="text-xs text-zinc-400 mb-1 flex items-center gap-1.5">
                     <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Solved Problems</span>
                   </div>
-                  <div className="text-2xl font-bold text-amber-400 font-mono">
+                  <div className="text-2xl font-bold text-emerald-400 font-mono">
                     {profile.solvedCount}
-                    <span className="text-xs font-normal text-zinc-500 ml-1">/ 400</span>
+                    <span className="text-xs text-zinc-500 font-normal ml-1">/ 400</span>
                   </div>
                 </div>
 
@@ -327,16 +321,83 @@ export function CsesUserProfileModal({
                 </div>
               )}
 
-              {/* Solved Problems Grid */}
-              <div className="space-y-2">
+              {/* Solved Problems Grid with Official CSES Inspector */}
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h5 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                     Solved Tasks ({profile.solvedProblems.length})
                   </h5>
                   <span className="text-[11px] text-zinc-500">
-                    Click any task to load into editor
+                    Click task to inspect official CSES stats or load in editor
                   </span>
                 </div>
+
+                {/* Inspected Problem Card (if selected) */}
+                {inspectedProblem && (
+                  <div className="p-4 rounded-xl border border-amber-500/40 bg-amber-500/5 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-amber-400" />
+                        <span className="text-xs font-bold text-amber-200">
+                          {inspectedProblem.name} (#{inspectedProblem.id})
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {onSelectProblem && (
+                          <button
+                            onClick={() => {
+                              onSelectProblem(inspectedProblem.id);
+                              onClose();
+                            }}
+                            className="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-semibold rounded-lg text-xs transition-colors"
+                          >
+                            Open in Editor
+                          </button>
+                        )}
+                        <button
+                          onClick={() => setInspectedProblem(null)}
+                          className="p-1 text-zinc-400 hover:text-white"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {isLoadingProblemStats ? (
+                      <div className="flex items-center gap-2 text-xs text-zinc-400 py-2">
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-400" />
+                        <span>Fetching official CSES problem benchmarks...</span>
+                      </div>
+                    ) : problemStats ? (
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                        <div className="p-2 bg-zinc-900/60 rounded-lg border border-zinc-800">
+                          <span className="text-zinc-500 block text-[10px]">Solved By</span>
+                          <span className="font-mono font-bold text-zinc-200">
+                            {problemStats.solvedBy.toLocaleString()}
+                          </span>
+                        </div>
+                        <div className="p-2 bg-zinc-900/60 rounded-lg border border-zinc-800">
+                          <span className="text-zinc-500 block text-[10px]">Success Rate</span>
+                          <span className="font-mono font-bold text-amber-400">
+                            {problemStats.successRate}
+                          </span>
+                        </div>
+                        <div className="p-2 bg-zinc-900/60 rounded-lg border border-zinc-800">
+                          <span className="text-zinc-500 block text-[10px]">Fastest Record</span>
+                          <span className="font-mono font-bold text-emerald-400">
+                            {problemStats.fastest?.[0]?.score || '0.00 s'}
+                          </span>
+                        </div>
+                        <div className="p-2 bg-zinc-900/60 rounded-lg border border-zinc-800">
+                          <span className="text-zinc-500 block text-[10px]">Golf Record</span>
+                          <span className="font-mono font-bold text-sky-400">
+                            {problemStats.shortest?.[0]?.score || '—'}
+                          </span>
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                )}
 
                 {profile.solvedProblems.length === 0 ? (
                   <div className="p-6 text-center text-xs text-zinc-500 bg-zinc-800/30 rounded-xl border border-zinc-800">
@@ -345,23 +406,23 @@ export function CsesUserProfileModal({
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
                     {profile.solvedProblems.map((prob) => (
-                      <button
+                      <div
                         key={prob.id}
-                        onClick={() => {
-                          if (onSelectProblem) {
-                            onSelectProblem(prob.id);
-                            onClose();
-                          }
-                        }}
-                        className="p-2.5 bg-zinc-800/60 hover:bg-zinc-700/80 border border-zinc-700/50 rounded-lg text-left transition-colors flex items-center justify-between group cursor-pointer"
+                        onClick={() => handleInspectProblem(prob)}
+                        className={`p-2.5 bg-zinc-800/60 hover:bg-zinc-700/80 border rounded-lg text-left transition-colors flex items-center justify-between group cursor-pointer ${
+                          inspectedProblem?.id === prob.id ? 'border-amber-500/50 bg-zinc-800' : 'border-zinc-700/50'
+                        }`}
                       >
                         <span className="text-xs text-zinc-200 group-hover:text-amber-400 transition-colors truncate">
                           {prob.name}
                         </span>
-                        <span className="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 shrink-0 ml-2">
-                          #{prob.id}
-                        </span>
-                      </button>
+                        <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                          <span className="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400">
+                            #{prob.id}
+                          </span>
+                          <Zap className="w-3 h-3 text-zinc-600 group-hover:text-amber-400 transition-colors" />
+                        </div>
+                      </div>
                     ))}
                   </div>
                 )}

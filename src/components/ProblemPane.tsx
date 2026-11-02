@@ -40,6 +40,7 @@ export interface ProblemPaneProps {
   onRefreshStats?: () => void;
   isRefreshingStats?: boolean;
   statsRefreshedAt?: number;
+  currentUser?: import('@/core/types').UserProfile | null;
 }
 
 /**
@@ -85,6 +86,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
   onRefreshStats,
   isRefreshingStats,
   statsRefreshedAt,
+  currentUser,
 }) => {
   const [internalTab, setInternalTab] = useState<ProblemTab>('statement');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -471,6 +473,9 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
         {currentTab === 'leaderboard' && (
           <LeaderboardTab
             stats={problem.stats}
+            problemId={problem.id}
+            problemTitle={problem.title}
+            onSelectCode={onSelectCode}
             userExecutionTimeMs={userExecutionTimeMs}
             userCharCount={userCharCount}
             isSolved={isSolved}
@@ -490,7 +495,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
         )}
 
         {/* TAB 4: NOTES */}
-        {currentTab === 'notes' && <NotesTab problemId={problem.id} />}
+        {currentTab === 'notes' && <NotesTab problemId={problem.id} currentUser={currentUser} />}
       </div>
     </div>
   );

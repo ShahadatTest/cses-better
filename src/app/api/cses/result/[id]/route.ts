@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { csesRequest, CSES_BASE_URL } from '@/core/cses-network';
+import { csesRequest, CSES_BASE_URL, getSharedCsesSession } from '@/core/cses-network';
 import { CsesVerdictResult, CsesTestDetail } from '@/core/types';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+
+function unescapeHtml(text: string): string {
+  return text
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ');
+}
 
 export async function GET(
   request: NextRequest,
@@ -15,11 +25,12 @@ export async function GET(
   }
 
   try {
+    const sessionCookie = await getSharedCsesSession();
     const url = `${CSES_BASE_URL}/problemset/result/${submissionId}/`;
-    const res = await csesRequest(url);
+    const res = await csesRequest(url, { cookie: sessionCookie });
 
     if (res.statusCode === 404) {
-      return NextResponse.json({ error: 'CSES submission not found' }, { status: 404 });
+      return NextResponse.json({ error: 'CSES submission not found or private' }, { status: 404 });
     }
 
     const html = res.body;
@@ -59,6 +70,11 @@ export async function GET(
       status = upperRaw as any;
     }
 
+    // Parse Language
+    let language: string | undefined;
+    const langMatch = html.match(/Language:<\/td>\s*<td[^>]*>([^<]+)<\/td>/i);
+    if (langMatch) language = langMatch[1].trim();
+
     // Parse Total Time & Memory
     let totalTime: string | undefined;
     let totalMemory: string | undefined;
@@ -68,6 +84,17 @@ export async function GET(
 
     const memMatch = html.match(/Total memory:<\/td>\s*<td[^>]*>([^<]+)<\/td>/i);
     if (memMatch) totalMemory = memMatch[1].trim();
+
+    // Parse Source Code
+    let code: string | undefined;
+    const codeMatch =
+      html.match(/<pre[^>]*class="[^"]*prettyprint[^"]*"[^>]*>([\s\S]*?)<\/pre>/i) ||
+      html.match(/<pre[^>]*class="[^"]*linenums[^"]*"[^>]*>([\s\S]*?)<\/pre>/i) ||
+      html.match(/<h3>Code<\/h3>\s*<pre[^>]*>([\s\S]*?)<\/pre>/i);
+
+    if (codeMatch) {
+      code = unescapeHtml(codeMatch[1]).trim();
+    }
 
     // Parse compiler diagnostics
     let compilerOutput: string | undefined;
@@ -80,7 +107,6 @@ export async function GET(
 
     // Parse test breakdown
     const tests: CsesTestDetail[] = [];
-    // CSES test tables usually have rows: <tr><td>#1</td><td>ACCEPTED</td><td>0.04 s</td></tr>
     const tableRowRegex = /<tr>\s*<td>#?(\d+)<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>\s*<\/tr>/gi;
     let rowMatch;
 
@@ -89,7 +115,6 @@ export async function GET(
       const verdict = rowMatch[2].replace(/<[^>]+>/g, '').trim();
       const time = rowMatch[3].replace(/<[^>]+>/g, '').trim();
 
-      // Only add valid test cases (skip headers)
       if (!isNaN(idx) && verdict) {
         tests.push({
           index: idx,
@@ -106,6 +131,8 @@ export async function GET(
       totalTime,
       totalMemory,
       compilerOutput,
+      code,
+      language,
       tests,
       resultUrl: url,
     };

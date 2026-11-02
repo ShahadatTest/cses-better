@@ -32,7 +32,9 @@ import {
   mapSupabaseUser,
   fetchUserDataFromCloud,
   syncUserDataToCloud,
+  syncAllLocalProgressToCloud,
 } from '../core/supabase';
+import { getStoredTheme, applyTheme, toggleTheme } from '../core/theme';
 import { getLanguageTemplate } from '../core/templates';
 import { executeCode } from '../core/compiler';
 import { evaluateTestCase, computeDiff, summarizeTestResults } from '../core/judge';
@@ -86,6 +88,14 @@ export default function CSESBetterApp() {
   const [liveStats, setLiveStats] = useState<Record<string, ProblemStats>>({});
   const [isRefreshingStats, setIsRefreshingStats] = useState<boolean>(false);
   const [statsRefreshedAt, setStatsRefreshedAt] = useState<Record<string, number>>({});
+
+  // Theme State
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+  const handleToggleTheme = useCallback(() => {
+    const next = toggleTheme();
+    setTheme(next === 'light' ? 'light' : 'dark');
+  }, []);
 
   const handleFetchStats = useCallback(async (problemId: string, force: boolean = false) => {
     setIsRefreshingStats(true);
@@ -160,6 +170,17 @@ export default function CSESBetterApp() {
     setCode(savedDraft ?? getLanguageTemplate('cpp'));
     setSubmissions(getSubmissions(initialProbId));
 
+    // Initialize Theme
+    const initialTheme = getStoredTheme();
+    setTheme(initialTheme === 'light' ? 'light' : 'dark');
+    applyTheme(initialTheme);
+
+    // Clean query parameters if redirected after OAuth callback
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('auth_success') === 'true' || urlParams.get('auth_error')) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+    }
+
     // Check for existing Supabase Auth Session
     const supabase = getSupabase();
     if (supabase) {
@@ -167,18 +188,20 @@ export default function CSESBetterApp() {
         if (data.session?.user) {
           const user = mapSupabaseUser(data.session.user);
           setCurrentUser(user);
-          // Sync & merge cloud solves
-          fetchUserDataFromCloud(user.id).then((cloud) => {
-            if (cloud && cloud.solvedIds.length > 0) {
-              setSolvedIds((prev) => new Set([...prev, ...cloud.solvedIds]));
-            }
+          // Continuous bidirectional cloud sync (solves, drafts, notes)
+          syncAllLocalProgressToCloud(user.id).then(() => {
+            setSolvedIds(getSolvedProblems());
           });
         }
       });
 
       const { data: authSub } = supabase.auth.onAuthStateChange((_event, session) => {
         if (session?.user) {
-          setCurrentUser(mapSupabaseUser(session.user));
+          const user = mapSupabaseUser(session.user);
+          setCurrentUser(user);
+          syncAllLocalProgressToCloud(user.id).then(() => {
+            setSolvedIds(getSolvedProblems());
+          });
         } else {
           setCurrentUser(null);
         }
@@ -743,6 +766,8 @@ export default function CSESBetterApp() {
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onOpenArchive={() => setIsArchiveModalOpen(true)}
         onOpenCsesProfile={handleOpenCsesProfile}
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
       />
 
       {/* Main Workspace Body */}
@@ -768,6 +793,7 @@ export default function CSESBetterApp() {
               onRefreshStats={() => handleFetchStats(currentProblemId, true)}
               isRefreshingStats={isRefreshingStats}
               statsRefreshedAt={statsRefreshedAt[currentProblemId]}
+              currentUser={currentUser}
               className="h-full w-full"
             />
           </div>

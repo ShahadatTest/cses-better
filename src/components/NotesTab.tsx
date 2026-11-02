@@ -10,13 +10,18 @@ import {
   Sparkles,
   Copy,
   BookOpen,
+  Cloud,
 } from 'lucide-react';
 import { KaTeXRenderer } from './KaTeXRenderer';
 import { cn } from '@/lib/utils';
+import { getNote, saveNote } from '@/core/storage';
+import { saveUserNoteToCloud } from '@/core/supabase';
+import { UserProfile } from '@/core/types';
 
 export interface NotesTabProps {
   problemId: string;
   className?: string;
+  currentUser?: UserProfile | null;
 }
 
 const TEMPLATE = `### Approach & Algorithm
@@ -33,46 +38,50 @@ const TEMPLATE = `### Approach & Algorithm
 - [ ] Empty or boundary input
 `;
 
-export const NotesTab: React.FC<NotesTabProps> = ({ problemId, className }) => {
+export const NotesTab: React.FC<NotesTabProps> = ({ problemId, className, currentUser }) => {
   const [content, setContent] = useState<string>('');
   const [mode, setMode] = useState<'edit' | 'preview'>('edit');
-  const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'idle'>('idle');
+  const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'cloud-saved' | 'idle'>('idle');
   const [copied, setCopied] = useState<boolean>(false);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const storageKey = `cses_notes_${problemId}`;
-
-  // Load note from localStorage when problemId changes
+  // Load note from storage when problemId changes
   useEffect(() => {
-    if (typeof window === 'undefined') return;
     try {
-      const saved = window.localStorage.getItem(storageKey);
+      const saved = getNote(problemId);
       setContent(saved ?? '');
       setSaveStatus('idle');
     } catch {
       setContent('');
     }
-  }, [problemId, storageKey]);
+  }, [problemId]);
 
-  // Persist content to localStorage
+  // Persist content to localStorage and Cloud (if logged in)
   const persistNote = useCallback(
-    (text: string) => {
-      if (typeof window === 'undefined') return;
+    async (text: string) => {
       try {
         setSaveStatus('saving');
-        if (text.trim() === '') {
-          window.localStorage.removeItem(storageKey);
+        saveNote(problemId, text);
+
+        if (currentUser?.id) {
+          const cloudOk = await saveUserNoteToCloud(currentUser.id, problemId, text);
+          if (cloudOk) {
+            setSaveStatus('cloud-saved');
+          } else {
+            setSaveStatus('saved');
+          }
         } else {
-          window.localStorage.setItem(storageKey, text);
-        }
-        setTimeout(() => {
           setSaveStatus('saved');
-        }, 300);
+        }
+
+        setTimeout(() => {
+          setSaveStatus('idle');
+        }, 1500);
       } catch {
         setSaveStatus('idle');
       }
     },
-    [storageKey]
+    [problemId, currentUser]
   );
 
   // Handle changes with debounce
@@ -87,7 +96,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({ problemId, className }) => {
 
     saveTimeoutRef.current = setTimeout(() => {
       persistNote(nextVal);
-    }, 500);
+    }, 600);
   };
 
   // Immediate save on blur
@@ -132,7 +141,6 @@ export const NotesTab: React.FC<NotesTabProps> = ({ problemId, className }) => {
     }
   };
 
-  // Convert basic markdown checkboxes and headers for preview if needed
   const previewHtml = content
     .replace(/^### (.*$)/gim, '<h3 class="text-sm font-semibold text-slate-200 mt-4 mb-2 pb-1 border-b border-border-subtle">$1</h3>')
     .replace(/^## (.*$)/gim, '<h2 class="text-sm font-bold text-slate-100 mt-5 mb-2">$1</h2>')
@@ -180,19 +188,29 @@ export const NotesTab: React.FC<NotesTabProps> = ({ problemId, className }) => {
         {/* Right: Actions & Status */}
         <div className="flex items-center gap-2 text-xs">
           {/* Auto-save status */}
-          <div className="flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded bg-surface-2/40 text-slate-400 border border-border-subtle">
+          <div className="flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded bg-surface-2/40 text-slate-400 border border-border-subtle">
             {saveStatus === 'saving' ? (
               <>
                 <Loader2 className="w-3 h-3 text-sky-400 animate-spin" />
                 <span>Saving...</span>
               </>
+            ) : saveStatus === 'cloud-saved' ? (
+              <>
+                <Cloud className="w-3 h-3 text-emerald-400" />
+                <span className="text-emerald-400 font-medium">Synced to Cloud</span>
+              </>
             ) : saveStatus === 'saved' ? (
               <>
                 <Check className="w-3 h-3 text-emerald-400" />
-                <span className="text-emerald-400">Auto-saved</span>
+                <span className="text-emerald-400">Saved locally</span>
               </>
+            ) : currentUser ? (
+              <span className="flex items-center gap-1 text-slate-400">
+                <Cloud className="w-3 h-3 text-blue-400" />
+                <span>Cloud Sync ON</span>
+              </span>
             ) : (
-              <span>Local sync</span>
+              <span>Local storage</span>
             )}
           </div>
 
@@ -243,7 +261,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({ problemId, className }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               onKeyDown={handleKeyDown}
-              placeholder="Jot down algorithm ideas, mathematical observations, recurrence relations like $dp[i] = dp[i-1] + ...$, or tricky corner cases here. Notes persist automatically in browser localStorage."
+              placeholder="Jot down algorithm ideas, mathematical observations, recurrence relations like $dp[i] = dp[i-1] + ...$, or tricky corner cases here. Notes persist automatically across all your devices when signed in."
               className="w-full h-full min-h-[320px] p-3.5 rounded-lg bg-surface-0 border border-border-subtle text-slate-200 placeholder-slate-500 text-sm font-mono leading-relaxed focus:outline-hidden focus:border-sky-500/50 resize-y"
             />
           </div>

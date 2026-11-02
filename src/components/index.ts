@@ -13,4 +13,9 @@ export * from './SettingsModal';
 export * from './editor/EditorWorkbench';
 export * from './editor/MonacoEditorView';
 export * from './editor/InbuiltCompilerView';
+export * from './CsesCodeViewerModal';
+export * from './CsesUserProfileModal';
+export * from './AuthModal';
+export * from './CsesSubmitModal';
+export * from './ArchiveExplorerModal';
 

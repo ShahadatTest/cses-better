@@ -159,13 +159,24 @@ export async function POST(request: NextRequest) {
     const ext = getFileExtension(language);
     const filename = `solution.${ext}`;
 
+    const formFields: Record<string, string> = {
+      csrf_token: taskCsrf,
+      task: problemId,
+      lang: csesLang,
+      type: 'course',
+      target: 'problemset',
+    };
+
+    if (csesLang === 'C++') {
+      formFields['option'] = 'C++20';
+    } else if (csesLang === 'Python3') {
+      formFields['option'] = 'PyPy3';
+    } else if (csesLang === 'Rust') {
+      formFields['option'] = '2021';
+    }
+
     const { boundary, body } = buildMultipartFormData(
-      {
-        csrf_token: taskCsrf,
-        task: problemId,
-        lang: csesLang,
-        target: 'problemset',
-      },
+      formFields,
       {
         fieldName: 'file',
         filename,
@@ -174,8 +185,8 @@ export async function POST(request: NextRequest) {
       }
     );
 
-    // 4. Submit to CSES
-    const submitUrl = `${CSES_BASE_URL}/problemset/submit/${problemId}/`;
+    // 4. Submit to CSES official submission processor (/course/send.php)
+    const submitUrl = `${CSES_BASE_URL}/course/send.php`;
     const submitRes = await csesRequest(submitUrl, {
       method: 'POST',
       headers: {

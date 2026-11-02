@@ -137,6 +137,7 @@ export interface UserDataExport {
   version: number;
   drafts: Record<string, string>;
   submissions: SubmissionRecord[];
+  notes?: Record<string, string>;
   exportedAt: number;
 }
 
@@ -163,6 +164,7 @@ export interface UserProfile {
   id: string;
   email?: string;
   displayName?: string;
+  username?: string;
   avatarUrl?: string;
   provider?: 'google' | 'github' | 'guest';
   csesNick?: string;
@@ -175,6 +177,16 @@ export interface CsesCredentials {
   userId?: string;
   pass: string;
   remember?: boolean;
+}
+
+export interface CsesSubmissionSummary {
+  id: string;
+  time: string;
+  language: string;
+  runtime?: string;
+  size?: string;
+  status: string;
+  resultUrl: string;
 }
 
 export interface CsesSubmitPayload {
@@ -205,6 +217,8 @@ export interface CsesVerdictResult {
   totalTime?: string;
   totalMemory?: string;
   compilerOutput?: string;
+  code?: string;
+  language?: string;
   tests: CsesTestDetail[];
   resultUrl: string;
   problemId?: string;

@@ -7,6 +7,7 @@ import {
 } from './types';
 
 const DRAFT_PREFIX = 'cses_draft_';
+const NOTE_PREFIX = 'cses_notes_';
 const SUBMISSIONS_KEY = 'cses_submissions';
 const SETTINGS_KEY = 'cses_settings';
 
@@ -97,6 +98,43 @@ export function saveDraft(
   } else {
     setItem(key, code);
   }
+}
+
+/**
+ * Returns saved markdown notes for a specific problem.
+ */
+export function getNote(problemId: string): string | null {
+  return getItem(`${NOTE_PREFIX}${problemId}`);
+}
+
+/**
+ * Saves or clears markdown notes for a specific problem.
+ */
+export function saveNote(problemId: string, content: string): void {
+  const key = `${NOTE_PREFIX}${problemId}`;
+  if (!content || content.trim() === '') {
+    removeItem(key);
+  } else {
+    setItem(key, content);
+  }
+}
+
+/**
+ * Retrieves all notes across all problems as a map: { [problemId]: content }
+ */
+export function getAllNotes(): Record<string, string> {
+  const keys = getAllKeys();
+  const notes: Record<string, string> = {};
+  for (const k of keys) {
+    if (k.startsWith(NOTE_PREFIX)) {
+      const pId = k.slice(NOTE_PREFIX.length);
+      const val = getItem(k);
+      if (val !== null && val.trim() !== '') {
+        notes[pId] = val;
+      }
+    }
+  }
+  return notes;
 }
 
 /**
@@ -210,6 +248,7 @@ export function exportUserData(): string {
     version: 1,
     drafts,
     submissions: getSubmissions(),
+    notes: getAllNotes(),
     exportedAt: Date.now(),
   };
 
@@ -232,6 +271,15 @@ export function importUserData(jsonStr: string): boolean {
       for (const [key, code] of Object.entries(data.drafts)) {
         if (typeof code === 'string') {
           setItem(`${DRAFT_PREFIX}${key}`, code);
+        }
+      }
+    }
+
+    // Restore notes
+    if (data.notes && typeof data.notes === 'object') {
+      for (const [pId, content] of Object.entries(data.notes)) {
+        if (typeof content === 'string') {
+          saveNote(pId, content);
         }
       }
     }
@@ -264,7 +312,7 @@ export function importUserData(jsonStr: string): boolean {
 export function clearAllStorage(): void {
   const keys = getAllKeys();
   for (const k of keys) {
-    if (k.startsWith(DRAFT_PREFIX) || k === SUBMISSIONS_KEY || k === SETTINGS_KEY) {
+    if (k.startsWith(DRAFT_PREFIX) || k.startsWith(NOTE_PREFIX) || k === SUBMISSIONS_KEY || k === SETTINGS_KEY) {
       removeItem(k);
     }
   }

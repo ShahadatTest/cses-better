@@ -16,6 +16,8 @@ import {
   Database,
   User as UserIcon,
   Award,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { Problem, Category, UserProfile } from '../core/types';
 import { getStoredCsesCredentials } from '../core/cses-client';
@@ -35,6 +37,8 @@ export interface HeaderProps {
   onOpenAuth?: () => void;
   onOpenArchive?: () => void;
   onOpenCsesProfile?: (nick?: string) => void;
+  theme?: 'dark' | 'light';
+  onToggleTheme?: () => void;
 }
 
 export function Header({
@@ -52,6 +56,8 @@ export function Header({
   onOpenAuth,
   onOpenArchive,
   onOpenCsesProfile,
+  theme = 'dark',
+  onToggleTheme,
 }: HeaderProps) {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isProblemOpen, setIsProblemOpen] = useState(false);
@@ -347,19 +353,27 @@ export function Header({
             type="button"
             onClick={onOpenAuth}
             className="flex items-center space-x-1.5 text-xs rounded-lg px-2.5 py-1 transition-all border border-zinc-700/80 bg-zinc-800 hover:bg-zinc-700 text-zinc-200"
-            title={currentUser ? `Signed in as ${currentUser.displayName}` : 'Sign in with GitHub'}
+            title={
+              currentUser
+                ? `Signed in as ${currentUser.username ? `@${currentUser.username}` : currentUser.displayName}`
+                : 'Sign in with GitHub'
+            }
           >
             {currentUser?.avatarUrl ? (
               <img
                 src={currentUser.avatarUrl}
-                alt={currentUser.displayName}
+                alt={currentUser.displayName || 'User'}
                 className="w-5 h-5 rounded-full object-cover border border-blue-500/50"
               />
             ) : (
               <UserIcon className="w-3.5 h-3.5 text-blue-400" />
             )}
-            <span className="max-w-[80px] truncate font-medium">
-              {currentUser ? currentUser.displayName : 'Sign In'}
+            <span className="max-w-[130px] truncate font-medium">
+              {currentUser
+                ? currentUser.username
+                  ? `@${currentUser.username}`
+                  : currentUser.displayName
+                : 'Sign In'}
             </span>
           </button>
         )}
@@ -367,8 +381,24 @@ export function Header({
         {/* Vertical divider */}
         <div className="w-px h-5 bg-border-subtle" />
 
-        {/* Right Action Icons: Zen Mode, Settings, GitHub */}
+        {/* Right Action Icons: Theme, Zen Mode, Settings, GitHub */}
         <div className="flex items-center space-x-1">
+          {/* Theme Toggle Button */}
+          {onToggleTheme && (
+            <button
+              type="button"
+              onClick={onToggleTheme}
+              className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-surface-2 transition-colors"
+              title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+            >
+              {theme === 'light' ? (
+                <Sun className="w-4 h-4 text-amber-500" />
+              ) : (
+                <Moon className="w-4 h-4 text-sky-400" />
+              )}
+            </button>
+          )}
+
           {/* Zen Mode */}
           <button
             type="button"
@@ -399,7 +429,7 @@ export function Header({
 
           {/* GitHub Link */}
           <a
-            href="https://github.com/alon-golan/cses-better"
+            href="https://github.com/codewithpom/cses-better"
             target="_blank"
             rel="noopener noreferrer"
             className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-2 transition-colors"

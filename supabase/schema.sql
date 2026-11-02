@@ -102,3 +102,21 @@ CREATE POLICY "Users can read own submissions"
 CREATE POLICY "Users can insert own submissions"
   ON public.user_submissions FOR INSERT
   WITH CHECK (auth.uid() = user_id);
+
+-- 5. User Notes (Cross-device note synchronization)
+CREATE TABLE IF NOT EXISTS public.user_notes (
+  id BIGSERIAL PRIMARY KEY,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  problem_id TEXT NOT NULL,
+  content TEXT NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  CONSTRAINT user_note_unique UNIQUE (user_id, problem_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_notes_user ON public.user_notes(user_id);
+ALTER TABLE public.user_notes ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage own notes"
+  ON public.user_notes FOR ALL
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
