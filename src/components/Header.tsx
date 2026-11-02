@@ -16,8 +16,6 @@ import {
   Database,
   User as UserIcon,
   Award,
-  Sun,
-  Moon,
 } from 'lucide-react';
 import { Problem, Category, UserProfile } from '../core/types';
 import { getStoredCsesCredentials } from '../core/cses-client';
@@ -37,8 +35,6 @@ export interface HeaderProps {
   onOpenAuth?: () => void;
   onOpenArchive?: () => void;
   onOpenCsesProfile?: (nick?: string) => void;
-  theme?: 'dark' | 'light';
-  onToggleTheme?: () => void;
 }
 
 export function Header({
@@ -56,8 +52,6 @@ export function Header({
   onOpenAuth,
   onOpenArchive,
   onOpenCsesProfile,
-  theme = 'dark',
-  onToggleTheme,
 }: HeaderProps) {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isProblemOpen, setIsProblemOpen] = useState(false);
@@ -381,24 +375,8 @@ export function Header({
         {/* Vertical divider */}
         <div className="w-px h-5 bg-border-subtle" />
 
-        {/* Right Action Icons: Theme, Zen Mode, Settings, GitHub */}
+        {/* Right Action Icons: Zen Mode, Settings, GitHub */}
         <div className="flex items-center space-x-1">
-          {/* Theme Toggle Button */}
-          {onToggleTheme && (
-            <button
-              type="button"
-              onClick={onToggleTheme}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-surface-2 transition-colors"
-              title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-            >
-              {theme === 'light' ? (
-                <Sun className="w-4 h-4 text-amber-500" />
-              ) : (
-                <Moon className="w-4 h-4 text-sky-400" />
-              )}
-            </button>
-          )}
-
           {/* Zen Mode */}
           <button
             type="button"

@@ -11,25 +11,13 @@
   --surface-3: #334155;
   --border-subtle: #1e293b;
   --border-muted: #334155;
-}
-
-html.light,
-body.light {
-  --bg-primary: #f8fafc;
-  --text-primary: #0f172a;
-  --surface-0: #ffffff;
-  --surface-1: #f1f5f9;
-  --surface-2: #e2e8f0;
-  --surface-3: #cbd5e1;
-  --border-subtle: #e2e8f0;
-  --border-muted: #cbd5e1;
+  color-scheme: dark;
 }
 
 @layer base {
   body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    transition: background-color 0.15s ease, color 0.15s ease;
   }
 }
 

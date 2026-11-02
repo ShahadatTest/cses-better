@@ -34,7 +34,6 @@ import {
   syncUserDataToCloud,
   syncAllLocalProgressToCloud,
 } from '../core/supabase';
-import { getStoredTheme, applyTheme, toggleTheme } from '../core/theme';
 import { getLanguageTemplate } from '../core/templates';
 import { executeCode } from '../core/compiler';
 import { evaluateTestCase, computeDiff, summarizeTestResults } from '../core/judge';
@@ -89,13 +88,6 @@ export default function CSESBetterApp() {
   const [isRefreshingStats, setIsRefreshingStats] = useState<boolean>(false);
   const [statsRefreshedAt, setStatsRefreshedAt] = useState<Record<string, number>>({});
 
-  // Theme State
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-
-  const handleToggleTheme = useCallback(() => {
-    const next = toggleTheme();
-    setTheme(next === 'light' ? 'light' : 'dark');
-  }, []);
 
   const handleFetchStats = useCallback(async (problemId: string, force: boolean = false) => {
     setIsRefreshingStats(true);
@@ -169,11 +161,6 @@ export default function CSESBetterApp() {
     const savedDraft = getDraft(initialProbId, 'cpp');
     setCode(savedDraft ?? getLanguageTemplate('cpp'));
     setSubmissions(getSubmissions(initialProbId));
-
-    // Initialize Theme
-    const initialTheme = getStoredTheme();
-    setTheme(initialTheme === 'light' ? 'light' : 'dark');
-    applyTheme(initialTheme);
 
     // Clean query parameters if redirected after OAuth callback
     const urlParams = new URLSearchParams(window.location.search);
@@ -766,8 +753,6 @@ export default function CSESBetterApp() {
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onOpenArchive={() => setIsArchiveModalOpen(true)}
         onOpenCsesProfile={handleOpenCsesProfile}
-        theme={theme}
-        onToggleTheme={handleToggleTheme}
       />
 
       {/* Main Workspace Body */}

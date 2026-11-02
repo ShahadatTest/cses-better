@@ -8,7 +8,6 @@ import {
   importUserData,
 } from '../src/core/storage';
 import { mapSupabaseUser } from '../src/core/supabase';
-import { getStoredTheme, applyTheme, toggleTheme } from '../src/core/theme';
 
 describe('Cloud Sync & Notes Storage Unit Tests', () => {
   beforeEach(() => {
@@ -76,17 +75,5 @@ describe('Cloud Sync & Notes Storage Unit Tests', () => {
     expect(profile.displayName).toBe('codewithpom');
     expect(profile.avatarUrl).toBe('https://avatars.githubusercontent.com/u/12345');
     expect(profile.provider).toBe('github');
-  });
-
-  it('handles theme switching and persistence', () => {
-    applyTheme('dark');
-    expect(getStoredTheme()).toBe('dark');
-
-    const toggled = toggleTheme();
-    expect(toggled).toBe('light');
-    expect(getStoredTheme()).toBe('light');
-
-    const toggledBack = toggleTheme();
-    expect(toggledBack).toBe('dark');
   });
 });
