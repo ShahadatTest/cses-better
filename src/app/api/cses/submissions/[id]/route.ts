@@ -24,60 +24,22 @@ export async function GET(
     const submissions: CsesSubmissionSummary[] = [];
     const seenIds = new Set<string>();
 
-    // 1. Fetch official CSES Queue (all users' live submissions)
-    const queueUrl = `${CSES_BASE_URL}/problemset/queue/${problemId}/1/`;
-    const queueRes = await csesRequest(queueUrl, { cookie: sessionCookie });
+    // 1. Fetch personal results from view page first to identify personal submissions & account details
+    const personalSubmissionsByTime = new Map<string, { id: string; user: string; userId: string; status: string }>();
+    let personalUser = 'You';
+    let personalUserId: string | undefined = undefined;
 
-    if (queueRes.statusCode === 200) {
-      const queueRowRegex =
-        /<tr>\s*<td[^>]*>([\d\s:-]+)<\/td>\s*<td[^>]*>(?:<a[^>]*href="\/user\/(\d+)\/?"[^>]*>([^<]+)<\/a>|([^<]+))<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*class="[^"]*task-score[^"]*icon\s+([^"]+)"[^>]*><\/td>\s*<td[^>]*>(?:<a[^>]*href="[^"]*(?:entry|result)\/(\d+)\/?"[^>]*>.*?<\/a>)?<\/td>\s*<\/tr>/gi;
-
-      let match: RegExpExecArray | null;
-      while ((match = queueRowRegex.exec(queueRes.body)) !== null) {
-        const time = match[1].trim();
-        const userId = match[2]?.trim();
-        const user = (match[3] || match[4] || 'Anonymous').trim();
-        const language = match[5].trim();
-        const runtime = match[6].replace(/&nbsp;/g, ' ').trim();
-        const size = match[7].replace(/&nbsp;/g, ' ').trim();
-        const rawStatus = match[8].trim();
-        const submissionId = match[9]?.trim();
-
-        if (userId && user) {
-          registerUserMapping(user, userId);
-        }
-
-        const status = rawStatus.includes('full')
-          ? 'ACCEPTED'
-          : rawStatus.includes('zero')
-          ? 'WRONG ANSWER'
-          : rawStatus.toUpperCase();
-
-        if (submissionId) {
-          seenIds.add(submissionId);
-        }
-
-        submissions.push({
-          id: submissionId || `queue-${submissions.length + 1}`,
-          user,
-          userId,
-          time,
-          language,
-          runtime,
-          size,
-          status,
-          resultUrl: submissionId
-            ? `${CSES_BASE_URL}/problemset/hack/${problemId}/entry/${submissionId}/`
-            : `${CSES_BASE_URL}/problemset/queue/${problemId}/1/`,
-        });
-      }
-    }
-
-    // 2. Also fetch personal results from view page if available
     const viewUrl = `${CSES_BASE_URL}/problemset/view/${problemId}/`;
     const viewRes = await csesRequest(viewUrl, { cookie: sessionCookie });
 
     if (viewRes.statusCode === 200) {
+      const accountMatch = viewRes.body.match(/<a class="account" href="\/user\/(\d+)">([^<]+)<\/a>/i);
+      if (accountMatch) {
+        personalUserId = accountMatch[1].trim();
+        personalUser = accountMatch[2].trim();
+        registerUserMapping(personalUser, personalUserId);
+      }
+
       const viewRowRegex =
         /<tr>\s*<td[^>]*>([\d\s:-]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*class="[^"]*task-score[^"]*icon\s+([^"]+)"[^>]*><\/td>\s*<td[^>]*><a[^>]*href="\/problemset\/result\/(\d+)\/?"[^>]*>.*?<\/a><\/td>\s*<\/tr>/gi;
 
@@ -96,13 +58,19 @@ export async function GET(
           ? 'WRONG ANSWER'
           : rawStatus.toUpperCase();
 
+        personalSubmissionsByTime.set(time, {
+          id: submissionId,
+          user: personalUser,
+          userId: personalUserId || '520654',
+          status,
+        });
+
         if (!seenIds.has(submissionId)) {
           seenIds.add(submissionId);
-          // Insert at the front so user's own submissions are prominent
-          submissions.unshift({
+          submissions.push({
             id: submissionId,
-            user: 'csesbetter99',
-            userId: '520654',
+            user: personalUser,
+            userId: personalUserId,
             time,
             language,
             runtime,
@@ -111,6 +79,64 @@ export async function GET(
             resultUrl: `${CSES_BASE_URL}/problemset/result/${submissionId}/`,
           });
         }
+      }
+    }
+
+    // 2. Fetch official CSES Queue (all users' live submissions)
+    const queueUrl = `${CSES_BASE_URL}/problemset/queue/${problemId}/1/`;
+    const queueRes = await csesRequest(queueUrl, { cookie: sessionCookie });
+
+    if (queueRes.statusCode === 200) {
+      const queueRowRegex =
+        /<tr>\s*<td[^>]*>([\d\s:-]+)<\/td>\s*<td[^>]*>(?:<a[^>]*href="\/user\/(\d+)\/?"[^>]*>([^<]+)<\/a>|([^<]+))<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*class="[^"]*task-score[^"]*icon\s+([^"]+)"[^>]*><\/td>\s*<td[^>]*>(?:<a[^>]*href="[^"]*(?:entry|result)\/(\d+)\/?"[^>]*>.*?<\/a>)?<\/td>\s*<\/tr>/gi;
+
+      let match: RegExpExecArray | null;
+      while ((match = queueRowRegex.exec(queueRes.body)) !== null) {
+        const time = match[1].trim();
+        const userId = match[2]?.trim();
+        const user = (match[3] || match[4] || 'Anonymous').trim();
+        const language = match[5].trim();
+        const runtime = match[6].replace(/&nbsp;/g, ' ').trim();
+        const size = match[7].replace(/&nbsp;/g, ' ').trim();
+        const rawStatus = match[8].trim();
+        let submissionId = match[9]?.trim();
+
+        if (userId && user) {
+          registerUserMapping(user, userId);
+        }
+
+        const status = rawStatus.includes('full')
+          ? 'ACCEPTED'
+          : rawStatus.includes('zero')
+          ? 'WRONG ANSWER'
+          : rawStatus.toUpperCase();
+
+        // Correlate with personal submissions if this queue item is from the current user
+        if (!submissionId && personalSubmissionsByTime.has(time)) {
+          submissionId = personalSubmissionsByTime.get(time)!.id;
+        }
+
+        if (submissionId) {
+          if (seenIds.has(submissionId)) {
+            // Already added from view page, skip duplicate
+            continue;
+          }
+          seenIds.add(submissionId);
+        }
+
+        submissions.push({
+          id: submissionId || `wa-${userId || 'anon'}-${time.replace(/[^\d]/g, '')}`,
+          user: user === personalUser && personalUser !== 'You' ? personalUser : user,
+          userId: userId || (user === personalUser ? personalUserId : undefined),
+          time,
+          language,
+          runtime,
+          size,
+          status,
+          resultUrl: submissionId
+            ? `${CSES_BASE_URL}/problemset/hack/${problemId}/entry/${submissionId}/`
+            : `${CSES_BASE_URL}/problemset/queue/${problemId}/1/`,
+        });
       }
     }
 

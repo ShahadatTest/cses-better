@@ -24,6 +24,8 @@ import {
   saveSubmission,
   getSolvedProblems,
   saveSolvedProblem,
+  removeSolvedProblem,
+  cleanEmptySubmissions,
   getSettings,
   saveSettings,
   getStoredUser,
@@ -157,6 +159,7 @@ export default function CSESBetterApp() {
     }
 
     // Load settings & storage data
+    cleanEmptySubmissions();
     const loadedSettings = getSettings();
     setSettings(loadedSettings);
     setSolvedIds(getSolvedProblems());
@@ -216,13 +219,35 @@ export default function CSESBetterApp() {
 
   // Handler for when official CSES verdict is ACCEPTED
   const handleOfficialCsesAccepted = useCallback(
-    (pId: string) => {
+    (pId: string, acceptedCode?: string, lang?: LanguageId) => {
+      const finalCode = acceptedCode || code;
+      const finalLang = lang || activeLanguage;
+
       setSolvedIds((prev) => {
         const updated = new Set(prev);
         updated.add(pId);
-        saveSolvedProblem(pId);
+        saveSolvedProblem(pId, finalLang, finalCode);
         return updated;
       });
+
+      // Save submission record so it appears with code in My Workbench Runs
+      if (finalCode && finalCode.trim()) {
+        const officialRecord: SubmissionRecord = {
+          id: `cses-sub-${Date.now()}`,
+          problemId: pId,
+          language: finalLang,
+          code: finalCode,
+          charCount: finalCode.length,
+          timestamp: Date.now(),
+          status: 'AC',
+          passedCount: 1,
+          totalCount: 1,
+          maxTimeMs: 0,
+          maxMemoryBytes: 1024 * 1024,
+        };
+        saveSubmission(officialRecord);
+        setSubmissions(getSubmissions(pId));
+      }
 
       try {
         confetti({
@@ -235,7 +260,7 @@ export default function CSESBetterApp() {
       if (currentUser) {
         syncUserDataToCloud(currentUser.id, {
           solvedIds: Array.from(new Set([...solvedIds, pId])),
-          drafts: { [`cses_draft_${pId}_${activeLanguage}`]: code },
+          drafts: { [`cses_draft_${pId}_${finalLang}`]: finalCode },
           submissions,
         });
       }
@@ -244,6 +269,38 @@ export default function CSESBetterApp() {
       handleFetchStats(pId, true);
     },
     [currentUser, solvedIds, activeLanguage, code, submissions, handleFetchStats]
+  );
+
+  // Manual toggle for problem solved status from tick boxes
+  const handleToggleSolved = useCallback(
+    (pId: string) => {
+      setSolvedIds((prev) => {
+        const updated = new Set(prev);
+        if (updated.has(pId)) {
+          updated.delete(pId);
+          removeSolvedProblem(pId);
+        } else {
+          updated.add(pId);
+          saveSolvedProblem(pId, activeLanguage, code);
+          try {
+            confetti({
+              particleCount: 75,
+              spread: 60,
+              origin: { y: 0.6 },
+            });
+          } catch {}
+        }
+
+        if (currentUser) {
+          syncUserDataToCloud(currentUser.id, {
+            solvedIds: Array.from(updated),
+          }).catch((e) => console.warn('[Cloud sync notice]:', e));
+        }
+
+        return updated;
+      });
+    },
+    [currentUser, activeLanguage, code]
   );
 
   const handleOpenCsesProfile = useCallback((nickOrId?: string, userId?: string) => {
@@ -778,6 +835,8 @@ export default function CSESBetterApp() {
         categories={categories}
         solvedCount={solvedIds.size}
         totalProblems={allProblems.length}
+        solvedProblemIds={solvedIds}
+        onToggleSolved={handleToggleSolved}
         onSelectProblem={handleSelectProblem}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         zenMode={zenMode}
@@ -915,7 +974,7 @@ export default function CSESBetterApp() {
         problemTitle={currentProblem.title}
         language={activeLanguage}
         code={code}
-        onAccepted={handleOfficialCsesAccepted}
+        onAccepted={(pId) => handleOfficialCsesAccepted(pId, code, activeLanguage)}
       />
 
       {/* CSES User Profile Inspector Modal */}
@@ -931,6 +990,8 @@ export default function CSESBetterApp() {
         isOpen={isArchiveModalOpen}
         onClose={() => setIsArchiveModalOpen(false)}
         onSelectProblem={handleSelectProblem}
+        solvedIds={solvedIds}
+        onToggleSolved={handleToggleSolved}
       />
 
       {/* Official CSES Account Connect & Solves Sync Modal */}

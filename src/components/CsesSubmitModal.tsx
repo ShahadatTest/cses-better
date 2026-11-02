@@ -19,7 +19,9 @@ import {
   CsesCredentials,
   CsesVerdictResult,
   LanguageId,
+  VerdictStatus,
 } from '@/core/types';
+import { saveSubmission } from '@/core/storage';
 import {
   getStoredCsesCredentials,
   saveStoredCsesCredentials,
@@ -141,6 +143,45 @@ export function CsesSubmitModal({
 
       setVerdictResult(finalResult);
       setStage('COMPLETED');
+
+      // Persist real submission record with source code into local history
+      try {
+        const statusMap: Record<string, VerdictStatus> = {
+          'ACCEPTED': 'AC',
+          'WRONG ANSWER': 'WA',
+          'TIME LIMIT EXCEEDED': 'TLE',
+          'OUTPUT LIMIT EXCEEDED': 'TLE',
+          'COMPILE ERROR': 'CE',
+          'RUNTIME ERROR': 'RE',
+        };
+        const mappedVerdict: VerdictStatus =
+          statusMap[finalResult.status] || (finalResult.status === 'ACCEPTED' ? 'AC' : 'WA');
+        const passedCount = finalResult.tests
+          ? finalResult.tests.filter((t) => t.verdict === 'ACCEPTED').length
+          : finalResult.status === 'ACCEPTED'
+          ? 1
+          : 0;
+        const totalCount = finalResult.tests?.length || 1;
+        const maxTimeMs = finalResult.totalTime
+          ? Math.round(parseFloat(finalResult.totalTime) * 1000)
+          : 10;
+
+        saveSubmission({
+          id: `cses-${submitRes.submissionId || Date.now()}`,
+          problemId,
+          language,
+          code,
+          charCount: code.length,
+          timestamp: Date.now(),
+          status: mappedVerdict,
+          passedCount,
+          totalCount,
+          maxTimeMs,
+          maxMemoryBytes: 1024 * 1024,
+        });
+      } catch (saveErr) {
+        console.warn('Could not save CSES submission locally:', saveErr);
+      }
 
       if (finalResult.status === 'ACCEPTED' && onAccepted) {
         onAccepted(problemId);

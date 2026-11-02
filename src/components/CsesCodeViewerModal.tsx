@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { LanguageId } from '@/core/types';
 import { getStoredCsesSessionCookie } from '@/core/cses-client';
+import { cn } from '@/lib/utils';
 
 export interface CsesCodeViewerModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export interface CsesCodeViewerModalProps {
   problemTitle?: string;
   language?: string;
   score?: string;
+  statusText?: string;
   scoreType?: 'time' | 'size' | 'queue';
   initialCode?: string;
   onLoadIntoEditor?: (code: string, lang: LanguageId) => void;
@@ -143,15 +145,18 @@ export function CsesCodeViewerModal({
   problemTitle,
   language = 'C++',
   score,
+  statusText: initialStatus,
   scoreType = 'time',
   initialCode,
   onLoadIntoEditor,
 }: CsesCodeViewerModalProps) {
   const [code, setCode] = useState<string>(initialCode || '');
   const [resolvedLanguage, setResolvedLanguage] = useState<string>(language);
-  const [statusText, setStatusText] = useState<string>('ACCEPTED');
+  const [statusText, setStatusText] = useState<string>(initialStatus || 'ACCEPTED');
   const [totalTime, setTotalTime] = useState<string | undefined>(score);
   const [totalMemory, setTotalMemory] = useState<string | undefined>();
+  const [compilerOutput, setCompilerOutput] = useState<string | undefined>();
+  const [failedTestSummary, setFailedTestSummary] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
@@ -159,12 +164,42 @@ export function CsesCodeViewerModal({
   useEffect(() => {
     if (!isOpen) return;
 
+    if (initialStatus) {
+      setStatusText(initialStatus);
+    }
+
     if (initialCode) {
       setCode(initialCode);
       return;
     }
 
     if (submissionId) {
+      // Check if submission ID is a valid numeric CSES ID
+      if (!/^\d+$/.test(submissionId)) {
+        // Non-numeric ID (e.g. public queue submission where CSES keeps non-accepted code private to submitter)
+        const verdictLabel = initialStatus || 'WRONG ANSWER';
+        setStatusText(verdictLabel);
+        setCode(
+          `// Official CSES Submission Record\n` +
+          `// Problem: #${problemId || 'Unknown'}\n` +
+          `// Solver: ${solverName}\n` +
+          `// Verdict: ${verdictLabel}\n` +
+          `// Language: ${language}\n\n` +
+          `/*\n` +
+          ` * CSES Contest Privacy Policy Notice:\n` +
+          ` * Official CSES rules only expose source code for ACCEPTED solutions via the hack entry system\n` +
+          ` * (/problemset/hack/...).\n` +
+          ` *\n` +
+          ` * Source code for WRONG ANSWER or non-accepted submissions by other contestants is strictly kept\n` +
+          ` * private on CSES servers to prevent leaking ongoing contest attempts.\n` +
+          ` *\n` +
+          ` * If this is your own submission, connect your CSES account using the 'Connect CSES' button in the\n` +
+          ` * header to authenticate and unlock your personal submissions.\n` +
+          ` */`
+        );
+        return;
+      }
+
       setIsLoading(true);
       setError(null);
       const queryParam = problemId ? `?problemId=${encodeURIComponent(problemId)}` : '';
@@ -189,6 +224,13 @@ export function CsesCodeViewerModal({
           if (data.rawStatusText) setStatusText(data.rawStatusText);
           if (data.totalTime) setTotalTime(data.totalTime);
           if (data.totalMemory) setTotalMemory(data.totalMemory);
+          if (data.compilerOutput) setCompilerOutput(data.compilerOutput);
+          if (Array.isArray(data.tests)) {
+            const fail = data.tests.find((t: any) => t.verdict !== 'ACCEPTED');
+            if (fail) {
+              setFailedTestSummary(`Failed at Test #${fail.index}: ${fail.verdict} (${fail.time})`);
+            }
+          }
         })
         .catch((err) => {
           setError(err?.message || 'Failed to fetch submission source code');
@@ -202,7 +244,7 @@ export function CsesCodeViewerModal({
       setCode(starter);
       setResolvedLanguage(language);
     }
-  }, [isOpen, submissionId, initialCode, language, solverName, problemId, score]);
+  }, [isOpen, submissionId, initialCode, initialStatus, language, solverName, problemId, score]);
 
   if (!isOpen) return null;
 
@@ -241,7 +283,18 @@ export function CsesCodeViewerModal({
                     #{submissionId}
                   </span>
                 )}
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                <span
+                  className={cn(
+                    'px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase border',
+                    statusText.toUpperCase().includes('ACCEPTED')
+                      ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                      : statusText.toUpperCase().includes('WRONG')
+                      ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+                      : statusText.toUpperCase().includes('TIME')
+                      ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                      : 'bg-orange-500/15 text-orange-300 border-orange-500/30'
+                  )}
+                >
                   {statusText}
                 </span>
               </div>
@@ -329,6 +382,25 @@ export function CsesCodeViewerModal({
                   To inspect verified source codes, explore the <span className="font-semibold text-sky-400">Official CSES Queue</span> on the Submissions tab or load this {resolvedLanguage} template into your editor.
                 </p>
               </div>
+            </div>
+          )}
+
+          {failedTestSummary && (
+            <div className="p-3 mb-3 bg-rose-500/10 border border-rose-500/25 rounded-xl flex items-center gap-2.5 text-xs text-rose-300">
+              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+              <span className="font-medium">{failedTestSummary}</span>
+            </div>
+          )}
+
+          {compilerOutput && (
+            <div className="mb-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 space-y-1.5">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-300">
+                <Terminal className="w-3.5 h-3.5" />
+                <span>Compiler Diagnostics</span>
+              </div>
+              <pre className="p-2.5 rounded-lg bg-zinc-950/80 border border-amber-500/20 text-[11px] text-amber-200 overflow-x-auto whitespace-pre">
+                {compilerOutput}
+              </pre>
             </div>
           )}
 

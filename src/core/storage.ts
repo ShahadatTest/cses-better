@@ -10,6 +10,7 @@ import {
 const DRAFT_PREFIX = 'cses_draft_';
 const NOTE_PREFIX = 'cses_notes_';
 const SUBMISSIONS_KEY = 'cses_submissions';
+const SOLVED_PROBLEMS_KEY = 'cses_solved_problem_ids';
 const SETTINGS_KEY = 'cses_settings';
 const USER_PROFILE_KEY = 'cses_user_profile';
 
@@ -191,12 +192,26 @@ export function saveSubmission(record: SubmissionRecord): void {
 }
 
 /**
- * Returns a Set of problem IDs that have at least one Accepted ('AC') submission.
+ * Returns a Set of problem IDs that have been marked as solved or have an Accepted ('AC') submission.
  */
 export function getSolvedProblems(): Set<string> {
-  const submissions = getSubmissions();
   const solved = new Set<string>();
 
+  // 1. Read explicitly stored solved IDs
+  const rawSolved = getItem(SOLVED_PROBLEMS_KEY);
+  if (rawSolved) {
+    try {
+      const arr = JSON.parse(rawSolved);
+      if (Array.isArray(arr)) {
+        for (const id of arr) {
+          if (typeof id === 'string' && id) solved.add(id);
+        }
+      }
+    } catch {}
+  }
+
+  // 2. Read from submissions history
+  const submissions = getSubmissions();
   for (const sub of submissions) {
     if (sub.status === 'AC') {
       solved.add(sub.problemId);
@@ -207,26 +222,71 @@ export function getSolvedProblems(): Set<string> {
 }
 
 /**
- * Records an official AC solve into submissions storage.
+ * Persists an array or set of solved problem IDs directly.
+ */
+export function persistSolvedProblems(solvedIds: Set<string> | string[]): void {
+  const arr = Array.from(solvedIds);
+  setItem(SOLVED_PROBLEMS_KEY, JSON.stringify(arr));
+}
+
+/**
+ * Records an official AC solve into solved problems and optional submissions storage.
  */
 export function saveSolvedProblem(
   problemId: string,
   language: LanguageId = 'cpp',
   code: string = ''
 ): void {
-  saveSubmission({
-    id: `cses-official-${problemId}-${Date.now()}`,
-    problemId,
-    language,
-    code,
-    charCount: code.length,
-    timestamp: Date.now(),
-    status: 'AC',
-    passedCount: 1,
-    totalCount: 1,
-    maxTimeMs: 50,
-    maxMemoryBytes: 1024 * 1024,
-  });
+  // Add to solved IDs set
+  const current = getSolvedProblems();
+  current.add(problemId);
+  persistSolvedProblems(current);
+
+  // Only record submission if actual source code is present to avoid empty 0-character bench entries
+  if (code && code.trim().length > 0) {
+    saveSubmission({
+      id: `cses-official-${problemId}-${Date.now()}`,
+      problemId,
+      language,
+      code,
+      charCount: code.length,
+      timestamp: Date.now(),
+      status: 'AC',
+      passedCount: 1,
+      totalCount: 1,
+      maxTimeMs: 50,
+      maxMemoryBytes: 1024 * 1024,
+    });
+  }
+}
+
+/**
+ * Removes a problem from solved problems tracking.
+ */
+export function removeSolvedProblem(problemId: string): void {
+  const current = getSolvedProblems();
+  current.delete(problemId);
+  persistSolvedProblems(current);
+}
+
+/**
+ * Removes empty dummy submissions that have no code to keep submission bench clean.
+ */
+export function cleanEmptySubmissions(): void {
+  const raw = getItem(SUBMISSIONS_KEY);
+  if (!raw) return;
+  try {
+    const list: SubmissionRecord[] = JSON.parse(raw);
+    if (!Array.isArray(list)) return;
+    const filtered = list.filter((sub) => {
+      // Keep real submissions or submissions that contain code
+      if (!sub.code || sub.code.trim().length === 0) {
+        return false;
+      }
+      return true;
+    });
+    setItem(SUBMISSIONS_KEY, JSON.stringify(filtered));
+  } catch {}
 }
 
 /**

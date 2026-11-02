@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CheckCircle2,
+  Check,
   Layers,
   Database,
   User as UserIcon,
@@ -28,6 +29,8 @@ export interface HeaderProps {
   categories: Category[];
   solvedCount: number;
   totalProblems: number;
+  solvedProblemIds?: Set<string>;
+  onToggleSolved?: (problemId: string) => void;
   onSelectProblem: (id: string) => void;
   onOpenCommandPalette: () => void;
   zenMode: boolean;
@@ -46,6 +49,8 @@ export function Header({
   categories,
   solvedCount,
   totalProblems,
+  solvedProblemIds,
+  onToggleSolved,
   onSelectProblem,
   onOpenCommandPalette,
   zenMode,
@@ -261,26 +266,48 @@ export function Header({
                   {currentCategoryObj?.name || 'Category'} Tasks (
                   {problemsInCurrentCategory.length})
                 </div>
-                {problemsInCurrentCategory.map((prob) => (
-                  <button
-                    key={prob.id}
-                    type="button"
-                    onClick={() => {
-                      setIsProblemOpen(false);
-                      onSelectProblem(prob.id);
-                    }}
-                    className={`w-full text-left px-3 py-2 text-xs flex items-center space-x-2 hover:bg-surface-2 transition-colors ${
-                      currentProblem.id === prob.id
-                        ? 'text-sky-400 bg-sky-500/10 font-semibold'
-                        : 'text-slate-200'
-                    }`}
-                  >
-                    <span className="font-mono text-slate-400 text-[11px] w-10">
-                      #{prob.id}
-                    </span>
-                    <span className="truncate flex-1">{prob.title}</span>
-                  </button>
-                ))}
+                {problemsInCurrentCategory.map((prob) => {
+                  const isSolved = solvedProblemIds?.has(prob.id);
+                  return (
+                    <button
+                      key={prob.id}
+                      type="button"
+                      onClick={() => {
+                        setIsProblemOpen(false);
+                        onSelectProblem(prob.id);
+                      }}
+                      className={`w-full text-left px-3 py-2 text-xs flex items-center space-x-2.5 hover:bg-surface-2 transition-colors group ${
+                        currentProblem.id === prob.id
+                          ? 'text-sky-400 bg-sky-500/10 font-semibold'
+                          : 'text-slate-200'
+                      }`}
+                    >
+                      {/* Interactive completion tick box */}
+                      <span
+                        role="checkbox"
+                        aria-checked={isSolved}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onToggleSolved?.(prob.id);
+                        }}
+                        className={cn(
+                          'w-4 h-4 rounded flex items-center justify-center shrink-0 transition-colors border cursor-pointer',
+                          isSolved
+                            ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50 hover:bg-emerald-500/30'
+                            : 'border-slate-700 bg-surface-2/40 hover:border-slate-500 hover:bg-surface-2'
+                        )}
+                        title={isSolved ? 'Mark as unsolved' : 'Mark as solved'}
+                      >
+                        {isSolved && <Check className="w-3 h-3 stroke-[3]" />}
+                      </span>
+
+                      <span className="font-mono text-slate-400 text-[11px] w-10 shrink-0">
+                        #{prob.id}
+                      </span>
+                      <span className="truncate flex-1">{prob.title}</span>
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>

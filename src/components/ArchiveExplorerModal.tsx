@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   X,
   Database,
@@ -11,25 +11,32 @@ import {
   ExternalLink,
   Flame,
   CheckCircle,
+  Check,
   FileCode,
   Loader2,
 } from 'lucide-react';
 import { CsesArchiveEntry } from '@/core/types';
 import { categories } from '@/data/categories';
+import { cn } from '@/lib/utils';
 
 interface ArchiveExplorerModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSelectProblem?: (problemId: string) => void;
+  solvedIds?: Set<string>;
+  onToggleSolved?: (problemId: string) => void;
 }
 
 export function ArchiveExplorerModal({
   isOpen,
   onClose,
   onSelectProblem,
+  solvedIds,
+  onToggleSolved,
 }: ArchiveExplorerModalProps) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'solved' | 'unsolved'>('all');
   const [sortBy, setSortBy] = useState<'id' | 'solved' | 'rate'>('id');
   const [items, setItems] = useState<CsesArchiveEntry[]>([]);
   const [total, setTotal] = useState(0);
@@ -78,6 +85,16 @@ export function ArchiveExplorerModal({
     a.click();
     URL.revokeObjectURL(url);
   };
+
+  const filteredItems = useMemo(() => {
+    if (statusFilter === 'solved') {
+      return items.filter((item) => solvedIds?.has(item.problemId));
+    }
+    if (statusFilter === 'unsolved') {
+      return items.filter((item) => !solvedIds?.has(item.problemId));
+    }
+    return items;
+  }, [items, statusFilter, solvedIds]);
 
   if (!isOpen) return null;
 
@@ -158,6 +175,17 @@ export function ArchiveExplorerModal({
             <option value="rate">Sort: Success Rate</option>
           </select>
 
+          {/* Status Filter */}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as any)}
+            className="bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-purple-500"
+          >
+            <option value="all">All Solved Status</option>
+            <option value="solved">Solved Only (✓)</option>
+            <option value="unsolved">Unsolved Only</option>
+          </select>
+
           <button
             onClick={fetchArchive}
             disabled={isLoading}
@@ -170,7 +198,7 @@ export function ArchiveExplorerModal({
         {/* Items Grid */}
         <div className="p-6 overflow-y-auto space-y-3">
           <div className="flex items-center justify-between text-xs text-zinc-400">
-            <span>Showing {items.length} of {total} archive records</span>
+            <span>Showing {filteredItems.length} of {total} archive records</span>
             <span>Continuous Mirror: Active</span>
           </div>
 
@@ -179,13 +207,15 @@ export function ArchiveExplorerModal({
               <Loader2 className="w-8 h-8 animate-spin text-purple-400" />
               <p className="text-xs">Querying CSES archive database...</p>
             </div>
-          ) : items.length === 0 ? (
+          ) : filteredItems.length === 0 ? (
             <div className="text-center py-16 text-zinc-500 text-xs">
               No matching archive records found.
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {items.map((item) => (
+              {filteredItems.map((item) => {
+                const isSolved = solvedIds?.has(item.problemId);
+                return (
                 <div
                   key={item.problemId}
                   className="p-4 bg-zinc-800/40 hover:bg-zinc-800/70 border border-zinc-700/60 rounded-xl transition-all flex flex-col justify-between group"
@@ -194,6 +224,23 @@ export function ArchiveExplorerModal({
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <div className="flex items-center gap-2">
+                          {/* Completion tick box */}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onToggleSolved?.(item.problemId);
+                            }}
+                            className={cn(
+                              'w-4 h-4 rounded flex items-center justify-center shrink-0 transition-colors border cursor-pointer',
+                              isSolved
+                                ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50 hover:bg-emerald-500/30'
+                                : 'border-zinc-700 bg-zinc-800/40 hover:border-zinc-500 hover:bg-zinc-800'
+                            )}
+                            title={isSolved ? 'Mark as unsolved' : 'Mark as solved'}
+                          >
+                            {isSolved && <Check className="w-3 h-3 stroke-[3]" />}
+                          </button>
                           <span className="text-xs font-mono font-bold text-purple-400">
                             #{item.problemId}
                           </span>
@@ -258,7 +305,8 @@ export function ArchiveExplorerModal({
                     )}
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

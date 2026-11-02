@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Clock,
   HardDrive,
@@ -23,9 +23,13 @@ import {
   Lock,
   KeyRound,
   ExternalLink,
+  Search,
+  Filter,
+  ArrowUpDown,
 } from 'lucide-react';
 import { SubmissionRecord, LanguageId, VerdictStatus, CsesSubmissionSummary } from '@/core/types';
 import { getStoredCsesSessionCookie } from '@/core/cses-client';
+import { getDraft } from '@/core/storage';
 import { cn } from '@/lib/utils';
 import { CsesCodeViewerModal } from './CsesCodeViewerModal';
 
@@ -150,8 +154,16 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
     solverName?: string;
     language?: string;
     score?: string;
+    statusText?: string;
     scoreType?: 'time' | 'size' | 'queue';
+    initialCode?: string;
   } | null>(null);
+
+  // Sorting & Filtering State for CSES Queue
+  const [filterLang, setFilterLang] = useState<string>('all');
+  const [filterVerdict, setFilterVerdict] = useState<string>('all');
+  const [searchUser, setSearchUser] = useState<string>('');
+  const [sortBy, setSortBy] = useState<'time_desc' | 'time_asc' | 'runtime_asc' | 'size_asc'>('time_desc');
 
   const fetchQueue = useCallback(async () => {
     if (!problemId) return;
@@ -183,6 +195,43 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
     }
   }, [problemId, fetchQueue]);
 
+  const filteredQueue = useMemo(() => {
+    let list = [...queueSubmissions];
+    if (filterLang !== 'all') {
+      list = list.filter((s) => s.language?.toLowerCase().includes(filterLang.toLowerCase()));
+    }
+    if (filterVerdict !== 'all') {
+      list = list.filter((s) => s.status?.toUpperCase() === filterVerdict.toUpperCase());
+    }
+    if (searchUser.trim()) {
+      const q = searchUser.trim().toLowerCase();
+      list = list.filter(
+        (s) =>
+          s.user?.toLowerCase().includes(q) ||
+          s.userId?.toLowerCase().includes(q) ||
+          s.id.toLowerCase().includes(q)
+      );
+    }
+    if (sortBy === 'runtime_asc') {
+      list.sort((a, b) => {
+        const tA = parseFloat(a.runtime?.replace(/[^\d.]/g, '') || '999');
+        const tB = parseFloat(b.runtime?.replace(/[^\d.]/g, '') || '999');
+        return tA - tB;
+      });
+    } else if (sortBy === 'size_asc') {
+      list.sort((a, b) => {
+        const sA = parseInt(a.size?.replace(/\D/g, '') || '999999', 10);
+        const sB = parseInt(b.size?.replace(/\D/g, '') || '999999', 10);
+        return sA - sB;
+      });
+    } else if (sortBy === 'time_asc') {
+      list.sort((a, b) => a.time.localeCompare(b.time));
+    } else {
+      list.sort((a, b) => b.time.localeCompare(a.time));
+    }
+    return list;
+  }, [queueSubmissions, filterLang, filterVerdict, searchUser, sortBy]);
+
   const handleCopyCode = async (id: string, code: string) => {
     try {
       await navigator.clipboard.writeText(code);
@@ -194,7 +243,16 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
   };
 
   const handleLoadCode = (id: string, code: string, lang: LanguageId) => {
-    onSelectCode(code, lang);
+    let effectiveCode = code;
+    if (!effectiveCode || effectiveCode.trim().length === 0) {
+      if (problemId) {
+        effectiveCode = getDraft(problemId, lang) || '';
+      }
+    }
+    if (!effectiveCode || effectiveCode.trim().length === 0) {
+      return;
+    }
+    onSelectCode(effectiveCode, lang);
     setLoadedId(id);
     setTimeout(() => setLoadedId(null), 1500);
   };
@@ -260,6 +318,84 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
       {/* VIEW 1: OFFICIAL CSES QUEUE */}
       {activeSubTab === 'cses_queue' && (
         <div className="space-y-3">
+          {/* CSES Queue Sort & Filter Toolbar */}
+          {queueSubmissions.length > 0 && !isLocked && (
+            <div className="flex flex-wrap items-center justify-between gap-2.5 p-2.5 rounded-xl border border-border-subtle bg-surface-1/80 text-xs shadow-xs">
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Search solver handle or ID */}
+                <div className="relative min-w-[140px] sm:min-w-[170px]">
+                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <input
+                    type="text"
+                    value={searchUser}
+                    onChange={(e) => setSearchUser(e.target.value)}
+                    placeholder="Search solver..."
+                    className="w-full pl-8 pr-2.5 py-1.5 rounded-lg bg-surface-2 border border-border-subtle text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-sky-500"
+                  />
+                </div>
+
+                {/* Filter Language */}
+                <select
+                  value={filterLang}
+                  onChange={(e) => setFilterLang(e.target.value)}
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                >
+                  <option value="all">All Languages</option>
+                  <option value="c++">C++</option>
+                  <option value="python">Python</option>
+                  <option value="java">Java</option>
+                  <option value="rust">Rust</option>
+                  <option value="go">Go</option>
+                  <option value="c">C</option>
+                  <option value="pascal">Pascal</option>
+                </select>
+
+                {/* Filter Verdict */}
+                <select
+                  value={filterVerdict}
+                  onChange={(e) => setFilterVerdict(e.target.value)}
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                >
+                  <option value="all">All Verdicts</option>
+                  <option value="ACCEPTED">Accepted (AC)</option>
+                  <option value="WRONG ANSWER">Wrong Answer (WA)</option>
+                </select>
+
+                {/* Sort Option */}
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                >
+                  <option value="time_desc">Sort: Newest First</option>
+                  <option value="time_asc">Sort: Oldest First</option>
+                  <option value="runtime_asc">Sort: Fastest Runtime</option>
+                  <option value="size_asc">Sort: Shortest Code</option>
+                </select>
+              </div>
+
+              <div className="flex items-center gap-2 text-slate-400 text-[11px]">
+                <span>
+                  Showing {filteredQueue.length} of {queueSubmissions.length}
+                </span>
+                {(filterLang !== 'all' || filterVerdict !== 'all' || searchUser.trim() || sortBy !== 'time_desc') && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFilterLang('all');
+                      setFilterVerdict('all');
+                      setSearchUser('');
+                      setSortBy('time_desc');
+                    }}
+                    className="text-sky-400 hover:underline cursor-pointer"
+                  >
+                    Reset Filters
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
           {isLoadingQueue ? (
             <div className="p-12 flex flex-col items-center justify-center space-y-3 rounded-xl border border-border-subtle bg-surface-1/40">
               <Loader2 className="w-6 h-6 animate-spin text-sky-400" />
@@ -326,7 +462,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-subtle/50">
-                  {queueSubmissions.map((sub) => (
+                  {filteredQueue.map((sub) => (
                     <tr key={sub.id} className="hover:bg-surface-2/30 transition-colors">
                       <td className="py-2.5 px-3.5 font-mono font-medium text-sky-400">
                         #{sub.id}
@@ -385,6 +521,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                               solverName: sub.user || 'CSES Submitter',
                               language: sub.language,
                               score: sub.runtime,
+                              statusText: sub.status,
                               scoreType: 'queue',
                             })
                           }
@@ -494,30 +631,6 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
 
                         <button
                           type="button"
-                          onClick={() => handleLoadCode(sub.id, sub.code, sub.language)}
-                          className={cn(
-                            'inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium transition-colors border cursor-pointer',
-                            loadedId === sub.id
-                              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                              : 'bg-surface-2 hover:bg-surface-3 text-slate-200 hover:text-white border-border-subtle'
-                          )}
-                          title="Load this submission's code into the editor"
-                        >
-                          {loadedId === sub.id ? (
-                            <>
-                              <Check className="w-3 h-3 text-emerald-400" />
-                              <span>Loaded</span>
-                            </>
-                          ) : (
-                            <>
-                              <RotateCcw className="w-3 h-3 text-sky-400" />
-                              <span>Load Code</span>
-                            </>
-                          )}
-                        </button>
-
-                        <button
-                          type="button"
                           onClick={() => setExpandedId(isExpanded ? null : sub.id)}
                           className="p-1 rounded hover:bg-surface-2 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
                           title={isExpanded ? 'Collapse code' : 'View code'}
@@ -532,49 +645,59 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                     </div>
 
                     {/* Expandable Code Body */}
-                    {isExpanded && (
-                      <div className="border-t border-border-subtle bg-surface-0/60 p-4 space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-medium text-slate-400 flex items-center gap-1.5">
-                            <FileCode2 className="w-3.5 h-3.5 text-sky-400" />
-                            <span>Submitted Source Code ({sub.charCount} characters)</span>
-                          </span>
+                    {isExpanded && (() => {
+                      const effectiveCode = sub.code || (problemId ? getDraft(sub.problemId || problemId, sub.language) : '') || '';
+                      const isRestoredDraft = !sub.code && Boolean(effectiveCode);
 
-                          <div className="flex items-center gap-2">
-                            <button
-                              type="button"
-                              onClick={() => handleCopyCode(sub.id, sub.code)}
-                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-surface-2 hover:bg-surface-3 text-slate-300 hover:text-white transition-colors cursor-pointer"
-                            >
-                              {copiedId === sub.id ? (
-                                <>
-                                  <Check className="w-3 h-3 text-emerald-400" />
-                                  <span className="text-emerald-400">Copied</span>
-                                </>
-                              ) : (
-                                <>
-                                  <Copy className="w-3 h-3" />
-                                  <span>Copy</span>
-                                </>
+                      return (
+                        <div className="border-t border-border-subtle bg-surface-0/60 p-4 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-medium text-slate-400 flex items-center gap-1.5">
+                              <FileCode2 className="w-3.5 h-3.5 text-sky-400" />
+                              <span>Submitted Source Code ({effectiveCode.length} characters)</span>
+                              {isRestoredDraft && (
+                                <span className="text-[10px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+                                  Draft Code Recovery
+                                </span>
                               )}
-                            </button>
+                            </span>
 
-                            <button
-                              type="button"
-                              onClick={() => handleLoadCode(sub.id, sub.code, sub.language)}
-                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 transition-colors cursor-pointer"
-                            >
-                              <RotateCcw className="w-3 h-3" />
-                              <span>{loadedId === sub.id ? 'Loaded!' : 'Load Code'}</span>
-                            </button>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => handleCopyCode(sub.id, effectiveCode)}
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-surface-2 hover:bg-surface-3 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                              >
+                                {copiedId === sub.id ? (
+                                  <>
+                                    <Check className="w-3 h-3 text-emerald-400" />
+                                    <span className="text-emerald-400">Copied</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Copy className="w-3 h-3" />
+                                    <span>Copy</span>
+                                  </>
+                                )}
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => handleLoadCode(sub.id, effectiveCode, sub.language)}
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 transition-colors cursor-pointer"
+                              >
+                                <RotateCcw className="w-3 h-3" />
+                                <span>{loadedId === sub.id ? 'Loaded!' : 'Load Code'}</span>
+                              </button>
+                            </div>
                           </div>
-                        </div>
 
-                        <pre className="p-3.5 rounded-lg bg-surface-0 border border-border-subtle font-mono text-xs text-slate-200 overflow-x-auto whitespace-pre leading-relaxed select-all max-h-96">
-                          {sub.code}
-                        </pre>
-                      </div>
-                    )}
+                          <pre className="p-3.5 rounded-lg bg-surface-0 border border-border-subtle font-mono text-xs text-slate-200 overflow-x-auto whitespace-pre leading-relaxed select-all max-h-96">
+                            {effectiveCode || '// No source code recorded for this run.'}
+                          </pre>
+                        </div>
+                      );
+                    })()}
                   </div>
                 );
               })}
@@ -594,7 +717,9 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
           problemTitle={problemTitle}
           language={selectedCodeEntry.language}
           score={selectedCodeEntry.score}
+          statusText={selectedCodeEntry.statusText}
           scoreType={selectedCodeEntry.scoreType}
+          initialCode={selectedCodeEntry.initialCode}
           onLoadIntoEditor={onSelectCode}
         />
       )}

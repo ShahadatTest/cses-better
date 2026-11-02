@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Trophy,
   Zap,
@@ -18,8 +18,12 @@ import {
   ListOrdered,
   Loader2,
   Eye,
+  Search,
+  Filter,
+  ArrowUpDown,
 } from 'lucide-react';
 import { ProblemStats, LeaderboardEntry, LanguageId, CsesSubmissionSummary } from '@/core/types';
+import { getStoredCsesSessionCookie } from '@/core/cses-client';
 import { cn } from '@/lib/utils';
 import { CsesCodeViewerModal } from './CsesCodeViewerModal';
 
@@ -60,15 +64,28 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
     submissionId?: string;
     language?: string;
     score?: string;
+    statusText?: string;
     scoreType?: 'time' | 'size' | 'queue';
     initialCode?: string;
   } | null>(null);
+
+  // Sorting and Filtering State
+  const [filterLang, setFilterLang] = useState<string>('all');
+  const [filterVerdict, setFilterVerdict] = useState<string>('all');
+  const [searchUser, setSearchUser] = useState<string>('');
+  const [sortBy, setSortBy] = useState<'rank_asc' | 'score_asc' | 'user_asc'>('rank_asc');
+  const [queueSortBy, setQueueSortBy] = useState<'time_desc' | 'time_asc' | 'runtime_asc' | 'size_asc'>('time_desc');
 
   const fetchQueue = useCallback(async () => {
     if (!problemId) return;
     setIsLoadingQueue(true);
     try {
-      const res = await fetch(`/api/cses/submissions/${problemId}`);
+      const sessionCookie = getStoredCsesSessionCookie();
+      const headers: Record<string, string> = {};
+      if (sessionCookie) {
+        headers['x-cses-session'] = sessionCookie;
+      }
+      const res = await fetch(`/api/cses/submissions/${problemId}`, { headers });
       if (res.ok) {
         const data = await res.json();
         setQueueSubmissions(data.submissions || []);
@@ -85,6 +102,82 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
       fetchQueue();
     }
   }, [activeSubTab, problemId, fetchQueue]);
+
+  const filterAndSortEntries = useCallback(
+    (entries: LeaderboardEntry[] = [], type: 'time' | 'size') => {
+      let list = [...entries];
+      if (filterLang !== 'all') {
+        list = list.filter((e) => e.language.toLowerCase().includes(filterLang.toLowerCase()));
+      }
+      if (searchUser.trim()) {
+        const q = searchUser.trim().toLowerCase();
+        list = list.filter(
+          (e) =>
+            e.user.toLowerCase().includes(q) ||
+            e.userId?.toLowerCase().includes(q)
+        );
+      }
+      if (sortBy === 'score_asc') {
+        list.sort((a, b) => {
+          const valA = parseFloat(a.score.replace(/[^\d.]/g, '') || '9999');
+          const valB = parseFloat(b.score.replace(/[^\d.]/g, '') || '9999');
+          return valA - valB;
+        });
+      } else if (sortBy === 'user_asc') {
+        list.sort((a, b) => a.user.localeCompare(b.user));
+      } else {
+        list.sort((a, b) => a.rank - b.rank);
+      }
+      return list;
+    },
+    [filterLang, searchUser, sortBy]
+  );
+
+  const filteredFastest = useMemo(
+    () => filterAndSortEntries(stats?.fastest, 'time'),
+    [stats?.fastest, filterAndSortEntries]
+  );
+  const filteredShortest = useMemo(
+    () => filterAndSortEntries(stats?.shortest, 'size'),
+    [stats?.shortest, filterAndSortEntries]
+  );
+
+  const filteredQueue = useMemo(() => {
+    let list = [...queueSubmissions];
+    if (filterLang !== 'all') {
+      list = list.filter((s) => s.language?.toLowerCase().includes(filterLang.toLowerCase()));
+    }
+    if (filterVerdict !== 'all') {
+      list = list.filter((s) => s.status?.toUpperCase() === filterVerdict.toUpperCase());
+    }
+    if (searchUser.trim()) {
+      const q = searchUser.trim().toLowerCase();
+      list = list.filter(
+        (s) =>
+          s.user?.toLowerCase().includes(q) ||
+          s.userId?.toLowerCase().includes(q) ||
+          s.id.toLowerCase().includes(q)
+      );
+    }
+    if (queueSortBy === 'runtime_asc') {
+      list.sort((a, b) => {
+        const tA = parseFloat(a.runtime?.replace(/[^\d.]/g, '') || '999');
+        const tB = parseFloat(b.runtime?.replace(/[^\d.]/g, '') || '999');
+        return tA - tB;
+      });
+    } else if (queueSortBy === 'size_asc') {
+      list.sort((a, b) => {
+        const sA = parseInt(a.size?.replace(/\D/g, '') || '999999', 10);
+        const sB = parseInt(b.size?.replace(/\D/g, '') || '999999', 10);
+        return sA - sB;
+      });
+    } else if (queueSortBy === 'time_asc') {
+      list.sort((a, b) => a.time.localeCompare(b.time));
+    } else {
+      list.sort((a, b) => b.time.localeCompare(a.time));
+    }
+    return list;
+  }, [queueSubmissions, filterLang, filterVerdict, searchUser, queueSortBy]);
 
   const hasStats =
     stats &&
@@ -504,20 +597,80 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
             </div>
           )}
 
-          {/* 3. Top 5 Fastest & Shortest Tables */}
+          {/* 3. Sort & Filter Controls for Standings */}
+          {hasStats && (
+            <div className="flex flex-wrap items-center justify-between gap-2.5 p-2.5 rounded-xl border border-border-subtle bg-surface-1/80 text-xs shadow-xs">
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Search solver */}
+                <div className="relative min-w-[130px] sm:min-w-[160px]">
+                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <input
+                    type="text"
+                    value={searchUser}
+                    onChange={(e) => setSearchUser(e.target.value)}
+                    placeholder="Search solver..."
+                    className="w-full pl-8 pr-2.5 py-1.5 rounded-lg bg-surface-2 border border-border-subtle text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-sky-500"
+                  />
+                </div>
+
+                {/* Filter Language */}
+                <select
+                  value={filterLang}
+                  onChange={(e) => setFilterLang(e.target.value)}
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                >
+                  <option value="all">All Languages</option>
+                  <option value="c++">C++</option>
+                  <option value="python">Python</option>
+                  <option value="java">Java</option>
+                  <option value="rust">Rust</option>
+                  <option value="go">Go</option>
+                  <option value="pascal">Pascal</option>
+                  <option value="c">C</option>
+                </select>
+
+                {/* Sort By */}
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                >
+                  <option value="rank_asc">Sort: Rank (Best First)</option>
+                  <option value="score_asc">Sort: Score</option>
+                  <option value="user_asc">Sort: Solver Name (A-Z)</option>
+                </select>
+              </div>
+
+              {(filterLang !== 'all' || searchUser.trim() || sortBy !== 'rank_asc') && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFilterLang('all');
+                    setSearchUser('');
+                    setSortBy('rank_asc');
+                  }}
+                  className="text-xs text-sky-400 hover:underline cursor-pointer"
+                >
+                  Reset Filters
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* 4. Top Fastest & Shortest Tables */}
           {hasStats ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {renderTable(
                 'Fastest Code',
                 <Zap className="w-4 h-4 text-emerald-400" />,
-                stats.fastest,
+                filteredFastest,
                 'Runtime',
                 'time'
               )}
               {renderTable(
                 'Shortest Code',
                 <FileCode2 className="w-4 h-4 text-sky-400" />,
-                stats.shortest,
+                filteredShortest,
                 'Characters',
                 'size'
               )}
@@ -543,6 +696,77 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
               {queueSubmissions.length} Submissions Loaded
             </span>
           </div>
+
+          {/* Queue Filter & Sort Bar */}
+          {queueSubmissions.length > 0 && (
+            <div className="flex flex-wrap items-center justify-between gap-2.5 p-2.5 rounded-xl border border-border-subtle bg-surface-1/80 text-xs shadow-xs">
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="relative min-w-[130px] sm:min-w-[160px]">
+                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <input
+                    type="text"
+                    value={searchUser}
+                    onChange={(e) => setSearchUser(e.target.value)}
+                    placeholder="Search solver..."
+                    className="w-full pl-8 pr-2.5 py-1.5 rounded-lg bg-surface-2 border border-border-subtle text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-sky-500"
+                  />
+                </div>
+
+                <select
+                  value={filterLang}
+                  onChange={(e) => setFilterLang(e.target.value)}
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                >
+                  <option value="all">All Languages</option>
+                  <option value="c++">C++</option>
+                  <option value="python">Python</option>
+                  <option value="java">Java</option>
+                  <option value="rust">Rust</option>
+                  <option value="go">Go</option>
+                  <option value="c">C</option>
+                </select>
+
+                <select
+                  value={filterVerdict}
+                  onChange={(e) => setFilterVerdict(e.target.value)}
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                >
+                  <option value="all">All Verdicts</option>
+                  <option value="ACCEPTED">Accepted (AC)</option>
+                  <option value="WRONG ANSWER">Wrong Answer (WA)</option>
+                </select>
+
+                <select
+                  value={queueSortBy}
+                  onChange={(e) => setQueueSortBy(e.target.value as any)}
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                >
+                  <option value="time_desc">Sort: Newest First</option>
+                  <option value="time_asc">Sort: Oldest First</option>
+                  <option value="runtime_asc">Sort: Fastest Runtime</option>
+                  <option value="size_asc">Sort: Shortest Code</option>
+                </select>
+              </div>
+
+              <div className="flex items-center gap-2 text-slate-400 text-[11px]">
+                <span>Showing {filteredQueue.length} of {queueSubmissions.length}</span>
+                {(filterLang !== 'all' || filterVerdict !== 'all' || searchUser.trim() || queueSortBy !== 'time_desc') && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFilterLang('all');
+                      setFilterVerdict('all');
+                      setSearchUser('');
+                      setQueueSortBy('time_desc');
+                    }}
+                    className="text-sky-400 hover:underline cursor-pointer"
+                  >
+                    Reset
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
 
           {isLoadingQueue ? (
             <div className="p-12 text-center rounded-xl border border-border-subtle bg-surface-1/40 flex flex-col items-center justify-center space-y-2">
@@ -575,7 +799,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-subtle/50">
-                  {queueSubmissions.map((sub) => (
+                  {filteredQueue.map((sub) => (
                     <tr key={sub.id} className="hover:bg-surface-2/30 transition-colors">
                       <td className="py-2.5 px-3.5 font-mono font-medium text-sky-400">
                         #{sub.id}
@@ -629,6 +853,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                               solverName: sub.user || 'CSES Submitter',
                               language: sub.language,
                               score: sub.runtime,
+                              statusText: sub.status,
                               scoreType: 'queue',
                             })
                           }
@@ -658,6 +883,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
           problemTitle={problemTitle}
           language={selectedCodeEntry.language}
           score={selectedCodeEntry.score}
+          statusText={selectedCodeEntry.statusText}
           scoreType={selectedCodeEntry.scoreType}
           initialCode={selectedCodeEntry.initialCode}
           onLoadIntoEditor={onSelectCode}
