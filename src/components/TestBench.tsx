@@ -6,6 +6,8 @@ import {
   Plus,
   X,
   Play,
+  Pause,
+  Square,
   Copy,
   Check,
   Clock,
@@ -23,6 +25,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { TestCase, TestResult, VerdictStatus } from '@/core/types';
+import { cn } from '@/lib/utils';
 import VerdictBadge from './VerdictBadge';
 import DiffViewer from './DiffViewer';
 
@@ -37,6 +40,9 @@ export interface TestBenchProps {
   isLoadingOfficialTests?: boolean;
   problemId?: string;
   isRunning?: boolean;
+  isPaused?: boolean;
+  onPauseResume?: () => void;
+  onCancel?: () => void;
   overallStatus?: VerdictStatus;
   submissionResults?: TestResult[] | null;
   className?: string;
@@ -53,6 +59,9 @@ export const TestBench: React.FC<TestBenchProps> = ({
   isLoadingOfficialTests = false,
   problemId,
   isRunning = false,
+  isPaused = false,
+  onPauseResume,
+  onCancel,
   overallStatus,
   submissionResults,
   className = '',
@@ -356,13 +365,70 @@ export const TestBench: React.FC<TestBenchProps> = ({
                 </div>
               </div>
 
-              {isEvaluating ? (
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-400/40 text-cyan-300 text-xs font-medium animate-pulse">
-                  <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
-                  <span>
-                    Running tests: {completedCount} of {submissionResults.length} completed (
-                    {passedCount} passed)...
-                  </span>
+              {isEvaluating || overallStatus === 'RUNNING' || overallStatus === 'PAUSED' ? (
+                <div className="flex items-center gap-2">
+                  <div
+                    className={cn(
+                      'flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium',
+                      isPaused
+                        ? 'bg-amber-500/10 border-amber-400/40 text-amber-300'
+                        : 'bg-cyan-500/10 border-cyan-400/40 text-cyan-300 animate-pulse'
+                    )}
+                  >
+                    {isPaused ? (
+                      <>
+                        <Pause className="w-4 h-4 fill-current text-amber-400" />
+                        <span>
+                          Paused: {completedCount} of {submissionResults.length} done ({passedCount} passed)
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                        <span>
+                          Parallel tests: {completedCount} of {submissionResults.length} done ({passedCount} passed)...
+                        </span>
+                      </>
+                    )}
+                  </div>
+
+                  {onPauseResume && (
+                    <button
+                      type="button"
+                      onClick={onPauseResume}
+                      className={cn(
+                        'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border shadow-xs transition-colors cursor-pointer',
+                        isPaused
+                          ? 'bg-amber-500 text-zinc-950 hover:bg-amber-400 border-amber-400'
+                          : 'bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border-amber-500/40'
+                      )}
+                      title={isPaused ? 'Resume test execution' : 'Pause test execution'}
+                    >
+                      {isPaused ? (
+                        <>
+                          <Play className="w-3.5 h-3.5 fill-current" />
+                          <span>Resume</span>
+                        </>
+                      ) : (
+                        <>
+                          <Pause className="w-3.5 h-3.5 fill-current" />
+                          <span>Pause</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+
+                  {onCancel && (
+                    <button
+                      type="button"
+                      onClick={onCancel}
+                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 border border-rose-500/40 transition-colors cursor-pointer"
+                      title="Stop remaining test execution"
+                    >
+                      <Square className="w-3 h-3 fill-current" />
+                      <span>Stop</span>
+                    </button>
+                  )}
                 </div>
               ) : allPassed ? (
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium">

@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-// In-memory sliding window rate limiter: 30 requests per 60 seconds per IP
+// In-memory sliding window rate limiter: 120 requests per 60 seconds per IP (supports parallel test suites)
 const ipRateLimit = new Map<string, number[]>();
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
-const MAX_REQUESTS_PER_WINDOW = 30;
+const MAX_REQUESTS_PER_WINDOW = 120;
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();

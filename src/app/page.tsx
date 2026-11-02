@@ -25,6 +25,9 @@ import {
   getSolvedProblems,
   saveSolvedProblem,
   removeSolvedProblem,
+  getStarredProblems,
+  saveStarredProblem,
+  removeStarredProblem,
   cleanEmptySubmissions,
   getSettings,
   saveSettings,
@@ -42,6 +45,13 @@ import {
 import { getLanguageTemplate } from '../core/templates';
 import { executeCode } from '../core/compiler';
 import { evaluateTestCase, computeDiff, summarizeTestResults } from '../core/judge';
+import {
+  playVerdictChime,
+  sendDesktopNotification,
+  requestNotificationPermission,
+} from '../core/notifications';
+import { Check, X, AlertTriangle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 import { SplitPane } from '../components/SplitPane';
 import { Header } from '../components/Header';
@@ -55,6 +65,7 @@ import { CsesSubmitModal } from '../components/CsesSubmitModal';
 import { CsesUserProfileModal } from '../components/CsesUserProfileModal';
 import { ArchiveExplorerModal } from '../components/ArchiveExplorerModal';
 import { CsesAccountModal } from '../components/CsesAccountModal';
+import { AllNotesModal } from '../components/AllNotesModal';
 
 const allProblems = problemsData as Problem[];
 
@@ -75,10 +86,12 @@ export default function CSESBetterApp() {
   const [inspectedCsesNick, setInspectedCsesNick] = useState<string>('');
   const [isArchiveModalOpen, setIsArchiveModalOpen] = useState<boolean>(false);
   const [isCsesAccountModalOpen, setIsCsesAccountModalOpen] = useState<boolean>(false);
+  const [isAllNotesOpen, setIsAllNotesOpen] = useState<boolean>(false);
 
   // Settings & Storage State
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_APP_SETTINGS);
   const [solvedIds, setSolvedIds] = useState<Set<string>>(new Set());
+  const [starredIds, setStarredIds] = useState<Set<string>>(new Set());
   const [submissions, setSubmissions] = useState<SubmissionRecord[]>([]);
 
   // Testing & Execution State
@@ -87,8 +100,31 @@ export default function CSESBetterApp() {
   const [testResults, setTestResults] = useState<Record<string, TestResult>>({});
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const isPausedRef = React.useRef<boolean>(false);
+  const isCancelledRef = React.useRef<boolean>(false);
   const [overallVerdict, setOverallVerdict] = useState<VerdictStatus | undefined>(undefined);
   const [submissionResults, setSubmissionResults] = useState<TestResult[] | null>(null);
+  const [completionToast, setCompletionToast] = useState<{
+    status: VerdictStatus;
+    message: string;
+    submessage?: string;
+  } | null>(null);
+
+  const handleTogglePause = useCallback(() => {
+    if (!isSubmitting) return;
+    const nextPaused = !isPausedRef.current;
+    isPausedRef.current = nextPaused;
+    setIsPaused(nextPaused);
+    setOverallVerdict(nextPaused ? 'PAUSED' : 'RUNNING');
+  }, [isSubmitting]);
+
+  const handleCancelSubmit = useCallback(() => {
+    if (!isSubmitting) return;
+    isCancelledRef.current = true;
+    isPausedRef.current = false;
+    setIsPaused(false);
+  }, [isSubmitting]);
 
   // Live CSES Problem Stats & Leaderboard Cache
   const [liveStats, setLiveStats] = useState<Record<string, ProblemStats>>({});
@@ -163,6 +199,7 @@ export default function CSESBetterApp() {
     const loadedSettings = getSettings();
     setSettings(loadedSettings);
     setSolvedIds(getSolvedProblems());
+    setStarredIds(getStarredProblems());
 
     // Load initial code draft or fallback to template
     const initialProbId = hash && allProblems.some((p) => p.id === hash) ? hash : '1068';
@@ -190,9 +227,10 @@ export default function CSESBetterApp() {
           const user = mapSupabaseUser(data.session.user);
           setCurrentUser(user);
           saveStoredUser(user);
-          // Continuous bidirectional cloud sync (solves, drafts, notes)
+          // Continuous bidirectional cloud sync (solves, drafts, notes, starred)
           syncAllLocalProgressToCloud(user.id).then(() => {
             setSolvedIds(getSolvedProblems());
+            setStarredIds(getStarredProblems());
           });
         }
       });
@@ -204,6 +242,7 @@ export default function CSESBetterApp() {
           saveStoredUser(user);
           syncAllLocalProgressToCloud(user.id).then(() => {
             setSolvedIds(getSolvedProblems());
+            setStarredIds(getStarredProblems());
           });
         } else {
           setCurrentUser(null);
@@ -301,6 +340,31 @@ export default function CSESBetterApp() {
       });
     },
     [currentUser, activeLanguage, code]
+  );
+
+  // Manual toggle for problem starred status
+  const handleToggleStarred = useCallback(
+    (pId: string) => {
+      setStarredIds((prev) => {
+        const updated = new Set(prev);
+        if (updated.has(pId)) {
+          updated.delete(pId);
+          removeStarredProblem(pId);
+        } else {
+          updated.add(pId);
+          saveStarredProblem(pId);
+        }
+
+        if (currentUser) {
+          syncUserDataToCloud(currentUser.id, {
+            starredIds: Array.from(updated),
+          }).catch((e) => console.warn('[Cloud sync notice]:', e));
+        }
+
+        return updated;
+      });
+    },
+    [currentUser]
   );
 
   const handleOpenCsesProfile = useCallback((nickOrId?: string, userId?: string) => {
@@ -558,19 +622,24 @@ export default function CSESBetterApp() {
     settings,
   ]);
 
-  // "SUBMIT" Handler: Executes code against all test cases with progressive real-time feedback
+  // "SUBMIT" Handler: Executes code against test cases in parallel according to rate limits with Pause/Resume and Notifications
   const handleSubmit = useCallback(async () => {
     if (isRunning || isSubmitting) return;
     if (combinedTestCases.length === 0) return;
 
+    // Prompt desktop notification permission in the background if not yet requested
+    requestNotificationPermission().catch(() => {});
+
     setIsSubmitting(true);
+    setIsPaused(false);
+    isPausedRef.current = false;
+    isCancelledRef.current = false;
     setOverallVerdict('RUNNING');
 
-    // 1. Initialize submission results matrix immediately:
-    // First test marked RUNNING, subsequent tests marked IDLE (queued)
-    const initialSubmissionMatrix: TestResult[] = combinedTestCases.map((tc, idx) => ({
+    // 1. Initialize submission results matrix immediately: all tests marked IDLE
+    const initialSubmissionMatrix: TestResult[] = combinedTestCases.map((tc) => ({
       testCaseId: tc.id,
-      status: idx === 0 ? 'RUNNING' : 'IDLE',
+      status: 'IDLE',
       executionTimeMs: 0,
       memoryBytes: 0,
       actualOutput: '',
@@ -579,11 +648,10 @@ export default function CSESBetterApp() {
     setSubmissionResults(initialSubmissionMatrix);
 
     const initialResultsDict: Record<string, TestResult> = {};
-    for (let idx = 0; idx < combinedTestCases.length; idx++) {
-      const tc = combinedTestCases[idx];
+    for (const tc of combinedTestCases) {
       initialResultsDict[tc.id] = {
         testCaseId: tc.id,
-        status: idx === 0 ? 'RUNNING' : 'IDLE',
+        status: 'IDLE',
         executionTimeMs: 0,
         memoryBytes: 0,
         actualOutput: '',
@@ -592,147 +660,186 @@ export default function CSESBetterApp() {
     }
     setTestResults(initialResultsDict);
 
-    const evaluatedResults: TestResult[] = [];
+    const evaluatedResults: TestResult[] = new Array(combinedTestCases.length);
     const timeLimitSec = parseFloat(currentProblem.timeLimit) || 1.0;
 
+    let nextIndex = 0;
     let hasCE = false;
     let maxTime = 0;
     let maxMemory = 0;
 
-    // 2. Run sequentially through each testcase (optimal for API limit: max 2 concurrent runs)
-    for (let i = 0; i < combinedTestCases.length; i++) {
-      const tc = combinedTestCases[i];
+    // 2. Parallel Worker Pool: concurrency of 2 stays safely under API rate limits while cutting wait time in half
+    const concurrency = Math.min(2, combinedTestCases.length);
 
-      // Mark current testcase as RUNNING in real-time
-      setTestResults((prev) => ({
-        ...prev,
-        [tc.id]: {
-          testCaseId: tc.id,
-          status: 'RUNNING',
-          executionTimeMs: 0,
-          memoryBytes: 0,
-          actualOutput: '',
-          expectedOutput: tc.expectedOutput,
-        },
-      }));
-
-      setSubmissionResults((prev) => {
-        if (!prev) return prev;
-        const updated = [...prev];
-        updated[i] = {
-          ...updated[i],
-          status: 'RUNNING',
-        };
-        return updated;
-      });
-
-      // Check if input size exceeds OnlineCompiler.io 100KB limit
-      if (isLargeInput(tc.input)) {
-        const skippedResult: TestResult = {
-          testCaseId: tc.id,
-          status: 'SKIPPED',
-          executionTimeMs: 0,
-          memoryBytes: 0,
-          actualOutput: '(Large input > 100KB: cloud execution bypassed)',
-          expectedOutput: tc.expectedOutput,
-          stderr: `Notice: Test case input size (${(tc.input.length / 1024).toFixed(1)} KB) exceeds the 100KB compiler sandbox limit. Automatically marked as done.`,
-        };
-
-        evaluatedResults.push(skippedResult);
-        setTestResults((prev) => ({ ...prev, [tc.id]: skippedResult }));
-        setSubmissionResults((prev) => {
-          if (!prev) return [skippedResult];
-          const updated = [...prev];
-          updated[i] = skippedResult;
-          return updated;
-        });
-
-        continue;
+    const runWorker = async (workerId: number) => {
+      // Stagger start slightly to avoid simultaneous network bursts
+      if (workerId > 0) {
+        await new Promise((resolve) => setTimeout(resolve, workerId * 140));
       }
 
-      try {
-        const res = await executeCode({
-          language: activeLanguage,
-          code,
-          stdin: tc.input,
-          endpoint: settings.compilerEndpoint,
-          apiKey: settings.apiKey,
-          timeoutMs: 25000, // Generous HTTP timeout for cloud compilation
-        });
+      while (true) {
+        // Handle Pause state: wait while paused unless cancelled
+        while (isPausedRef.current && !isCancelledRef.current) {
+          await new Promise((resolve) => setTimeout(resolve, 150));
+        }
 
-        const status = evaluateTestCase(
-          tc.expectedOutput,
-          res.output,
-          res.exitCode,
-          res.stderr,
-          res.wallTimeMs,
-          timeLimitSec
-        );
-
-        const diff = computeDiff(tc.expectedOutput, res.output);
-
-        const tResult: TestResult = {
-          testCaseId: tc.id,
-          status,
-          executionTimeMs: res.wallTimeMs,
-          memoryBytes: res.memoryBytes,
-          actualOutput: res.output,
-          expectedOutput: tc.expectedOutput,
-          stderr: res.stderr,
-          diff: diff || undefined,
-        };
-
-        evaluatedResults.push(tResult);
-
-        // Instantly update UI for this test case
-        setTestResults((prev) => ({ ...prev, [tc.id]: tResult }));
-        setSubmissionResults((prev) => {
-          if (!prev) return [tResult];
-          const updated = [...prev];
-          updated[i] = tResult;
-          return updated;
-        });
-
-        maxTime = Math.max(maxTime, res.wallTimeMs);
-        maxMemory = Math.max(maxMemory, res.memoryBytes);
-
-        if (status === 'CE') {
-          hasCE = true;
-          // Stop immediately on Compilation Error since subsequent runs will fail identically
+        // Check if Cancelled or has Compilation Error
+        if (isCancelledRef.current || hasCE) {
           break;
         }
-      } catch (err: any) {
-        const errResult: TestResult = {
-          testCaseId: tc.id,
-          status: 'RE',
-          executionTimeMs: 0,
-          memoryBytes: 0,
-          actualOutput: '',
-          expectedOutput: tc.expectedOutput,
-          stderr: err?.message || 'Execution failed',
-        };
-        evaluatedResults.push(errResult);
-        setTestResults((prev) => ({ ...prev, [tc.id]: errResult }));
+
+        // Claim next available testcase
+        const i = nextIndex++;
+        if (i >= combinedTestCases.length) {
+          break;
+        }
+
+        const tc = combinedTestCases[i];
+
+        // Mark current testcase as RUNNING in real-time
+        setTestResults((prev) => ({
+          ...prev,
+          [tc.id]: {
+            testCaseId: tc.id,
+            status: 'RUNNING',
+            executionTimeMs: 0,
+            memoryBytes: 0,
+            actualOutput: '',
+            expectedOutput: tc.expectedOutput,
+          },
+        }));
+
         setSubmissionResults((prev) => {
-          if (!prev) return [errResult];
+          if (!prev) return prev;
           const updated = [...prev];
-          updated[i] = errResult;
+          updated[i] = {
+            ...updated[i],
+            status: 'RUNNING',
+          };
           return updated;
         });
-      }
 
-      // Small cooldown between sequential requests to avoid backend container congestion
-      if (i < combinedTestCases.length - 1 && !hasCE) {
-        await new Promise((resolve) => setTimeout(resolve, 60));
+        // Check if input size exceeds OnlineCompiler.io 100KB limit
+        if (isLargeInput(tc.input)) {
+          const skippedResult: TestResult = {
+            testCaseId: tc.id,
+            status: 'SKIPPED',
+            executionTimeMs: 0,
+            memoryBytes: 0,
+            actualOutput: '(Large input > 100KB: cloud execution bypassed)',
+            expectedOutput: tc.expectedOutput,
+            stderr: `Notice: Test case input size (${(tc.input.length / 1024).toFixed(1)} KB) exceeds the 100KB compiler sandbox limit. Automatically marked as done.`,
+          };
+
+          evaluatedResults[i] = skippedResult;
+          setTestResults((prev) => ({ ...prev, [tc.id]: skippedResult }));
+          setSubmissionResults((prev) => {
+            if (!prev) return [skippedResult];
+            const updated = [...prev];
+            updated[i] = skippedResult;
+            return updated;
+          });
+          continue;
+        }
+
+        try {
+          const res = await executeCode({
+            language: activeLanguage,
+            code,
+            stdin: tc.input,
+            endpoint: settings.compilerEndpoint,
+            apiKey: settings.apiKey,
+            timeoutMs: 25000,
+          });
+
+          const status = evaluateTestCase(
+            tc.expectedOutput,
+            res.output,
+            res.exitCode,
+            res.stderr,
+            res.wallTimeMs,
+            timeLimitSec
+          );
+
+          const diff = computeDiff(tc.expectedOutput, res.output);
+
+          const tResult: TestResult = {
+            testCaseId: tc.id,
+            status,
+            executionTimeMs: res.wallTimeMs,
+            memoryBytes: res.memoryBytes,
+            actualOutput: res.output,
+            expectedOutput: tc.expectedOutput,
+            stderr: res.stderr,
+            diff: diff || undefined,
+          };
+
+          evaluatedResults[i] = tResult;
+
+          // Instantly update UI for this test case
+          setTestResults((prev) => ({ ...prev, [tc.id]: tResult }));
+          setSubmissionResults((prev) => {
+            if (!prev) return [tResult];
+            const updated = [...prev];
+            updated[i] = tResult;
+            return updated;
+          });
+
+          maxTime = Math.max(maxTime, res.wallTimeMs);
+          maxMemory = Math.max(maxMemory, res.memoryBytes);
+
+          if (status === 'CE') {
+            hasCE = true;
+            break;
+          }
+        } catch (err: any) {
+          const errResult: TestResult = {
+            testCaseId: tc.id,
+            status: 'RE',
+            executionTimeMs: 0,
+            memoryBytes: 0,
+            actualOutput: '',
+            expectedOutput: tc.expectedOutput,
+            stderr: err?.message || 'Execution failed',
+          };
+          evaluatedResults[i] = errResult;
+          setTestResults((prev) => ({ ...prev, [tc.id]: errResult }));
+          setSubmissionResults((prev) => {
+            if (!prev) return [errResult];
+            const updated = [...prev];
+            updated[i] = errResult;
+            return updated;
+          });
+        }
+
+        // Small inter-run breath to prevent TCP socket exhaustion
+        await new Promise((resolve) => setTimeout(resolve, 80));
       }
-    }
+    };
+
+    const workers = Array.from({ length: concurrency }, (_, workerId) => runWorker(workerId));
+    await Promise.all(workers);
 
     // 3. Summarize final results
-    const summary = summarizeTestResults(evaluatedResults);
-    const finalVerdict: VerdictStatus = hasCE ? 'CE' : summary.status;
+    const completedResults = evaluatedResults.filter(Boolean);
+    const summary = summarizeTestResults(completedResults.length > 0 ? completedResults : []);
+    const finalVerdict: VerdictStatus = isCancelledRef.current
+      ? (completedResults.length > 0 ? summary.status : 'WA')
+      : hasCE
+      ? 'CE'
+      : summary.status;
 
     setOverallVerdict(finalVerdict);
-    setSubmissionResults(evaluatedResults);
+    setSubmissionResults(
+      evaluatedResults.map((r, idx) => r || {
+        testCaseId: combinedTestCases[idx].id,
+        status: isCancelledRef.current ? 'IDLE' : hasCE ? 'CE' : 'IDLE',
+        executionTimeMs: 0,
+        memoryBytes: 0,
+        actualOutput: '',
+        expectedOutput: combinedTestCases[idx].expectedOutput,
+      })
+    );
 
     const passedCount = summary.passedCount;
 
@@ -755,7 +862,7 @@ export default function CSESBetterApp() {
     setSubmissions(getSubmissions(currentProblem.id));
 
     // If Accepted: Fire Confetti Celebration & update Solved Problems
-    if (finalVerdict === 'AC') {
+    if (finalVerdict === 'AC' && !isCancelledRef.current) {
       const updatedSolved = getSolvedProblems();
       updatedSolved.add(currentProblem.id);
       saveSolvedProblem(currentProblem.id);
@@ -782,7 +889,36 @@ export default function CSESBetterApp() {
       }
     }
 
+    // 4. Send Completion Notifications (Desktop Notification + Audio Chime + Floating In-App Toast)
+    sendDesktopNotification(
+      finalVerdict === 'AC'
+        ? `Accepted! #${currentProblem.id} ${currentProblem.title}`
+        : `Evaluation Finished: ${finalVerdict} (#${currentProblem.id})`,
+      {
+        body: `${passedCount} of ${combinedTestCases.length} test cases passed (Max runtime: ${maxTime} ms)`,
+      }
+    );
+
+    playVerdictChime(finalVerdict);
+
+    setCompletionToast({
+      status: finalVerdict,
+      message:
+        finalVerdict === 'AC'
+          ? `Accepted! All ${passedCount} test cases passed!`
+          : isCancelledRef.current
+          ? `Execution Stopped (${passedCount}/${combinedTestCases.length} completed)`
+          : `Verdict: ${finalVerdict} (${passedCount}/${combinedTestCases.length} passed)`,
+      submessage: `Max time: ${maxTime} ms • Memory: ${(maxMemory / (1024 * 1024)).toFixed(1)} MB`,
+    });
+
+    setTimeout(() => {
+      setCompletionToast(null);
+    }, 5000);
+
     setIsSubmitting(false);
+    setIsPaused(false);
+    isPausedRef.current = false;
   }, [
     isRunning,
     isSubmitting,
@@ -837,6 +973,8 @@ export default function CSESBetterApp() {
         totalProblems={allProblems.length}
         solvedProblemIds={solvedIds}
         onToggleSolved={handleToggleSolved}
+        starredProblemIds={starredIds}
+        onToggleStarred={handleToggleStarred}
         onSelectProblem={handleSelectProblem}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         zenMode={zenMode}
@@ -845,6 +983,7 @@ export default function CSESBetterApp() {
         currentUser={currentUser}
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onOpenArchive={() => setIsArchiveModalOpen(true)}
+        onOpenAllNotes={() => setIsAllNotesOpen(true)}
         onOpenCsesProfile={handleOpenCsesProfile}
         onOpenCsesAccount={() => setIsCsesAccountModalOpen(true)}
       />
@@ -865,6 +1004,8 @@ export default function CSESBetterApp() {
               problem={currentProblem}
               submissions={submissions}
               isSolved={solvedIds.has(currentProblem.id)}
+              isStarred={starredIds.has(currentProblem.id)}
+              onToggleStar={handleToggleStarred}
               onSelectCode={handleSelectSubmissionCode}
               userExecutionTimeMs={userBestTimeMs}
               userCharCount={code.length}
@@ -874,6 +1015,8 @@ export default function CSESBetterApp() {
               statsRefreshedAt={statsRefreshedAt[currentProblemId]}
               currentUser={currentUser}
               onOpenCsesAccount={() => setIsCsesAccountModalOpen(true)}
+              onSelectProblem={handleSelectProblem}
+              onOpenAllNotes={() => setIsAllNotesOpen(true)}
               className="h-full w-full"
             />
           </div>
@@ -900,6 +1043,9 @@ export default function CSESBetterApp() {
                   onSubmitCses={() => setIsCsesSubmitModalOpen(true)}
                   isRunning={isRunning}
                   isSubmitting={isSubmitting}
+                  isPaused={isPaused}
+                  onPauseResume={handleTogglePause}
+                  onCancel={handleCancelSubmit}
                   fontSize={settings.fontSize}
                   problemId={currentProblem.id}
                   problemTitle={currentProblem.title}
@@ -928,6 +1074,9 @@ export default function CSESBetterApp() {
                   isLoadingOfficialTests={isLoadingOfficialTests}
                   problemId={currentProblemId}
                   isRunning={isRunning || isSubmitting}
+                  isPaused={isPaused}
+                  onPauseResume={handleTogglePause}
+                  onCancel={handleCancelSubmit}
                   overallStatus={overallVerdict}
                   submissionResults={submissionResults}
                   className="h-full w-full"
@@ -992,6 +1141,8 @@ export default function CSESBetterApp() {
         onSelectProblem={handleSelectProblem}
         solvedIds={solvedIds}
         onToggleSolved={handleToggleSolved}
+        starredIds={starredIds}
+        onToggleStarred={handleToggleStarred}
       />
 
       {/* Official CSES Account Connect & Solves Sync Modal */}
@@ -1000,6 +1151,61 @@ export default function CSESBetterApp() {
         onClose={() => setIsCsesAccountModalOpen(false)}
         onSolvesSynced={handleCsesSolvesSynced}
       />
+
+      {/* CSES Notebook: All Problem Notes Modal */}
+      <AllNotesModal
+        isOpen={isAllNotesOpen}
+        onClose={() => setIsAllNotesOpen(false)}
+        onSelectProblem={(id) => {
+          handleSelectProblem(id);
+          setIsAllNotesOpen(false);
+        }}
+        currentProblemId={currentProblemId}
+        allProblems={allProblems}
+      />
+
+      {/* Floating Completion Toast Notification */}
+      {completionToast && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 p-3.5 rounded-xl bg-surface-1/95 border border-border-muted shadow-2xl backdrop-blur-md text-slate-100 max-w-md animate-in fade-in slide-in-from-bottom-3 duration-200">
+          <div
+            className={cn(
+              'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border',
+              completionToast.status === 'AC'
+                ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
+                : completionToast.status === 'WA'
+                ? 'bg-rose-500/20 text-rose-400 border-rose-500/40'
+                : completionToast.status === 'CE'
+                ? 'bg-purple-500/20 text-purple-400 border-purple-500/40'
+                : 'bg-amber-500/20 text-amber-400 border-amber-500/40'
+            )}
+          >
+            {completionToast.status === 'AC' ? (
+              <Check className="w-4 h-4 stroke-[3]" />
+            ) : completionToast.status === 'WA' ? (
+              <X className="w-4 h-4 stroke-[3]" />
+            ) : (
+              <AlertTriangle className="w-4 h-4" />
+            )}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-semibold truncate text-slate-200">
+              {completionToast.message}
+            </p>
+            {completionToast.submessage && (
+              <p className="text-[11px] text-slate-400 truncate mt-0.5">
+                {completionToast.submessage}
+              </p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => setCompletionToast(null)}
+            className="p-1 text-slate-400 hover:text-slate-200 rounded hover:bg-surface-2 transition-colors cursor-pointer"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

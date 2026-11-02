@@ -2,6 +2,7 @@ import {
   AppSettings,
   DEFAULT_APP_SETTINGS,
   LanguageId,
+  NoteEntry,
   SubmissionRecord,
   UserDataExport,
   UserProfile,
@@ -11,6 +12,7 @@ const DRAFT_PREFIX = 'cses_draft_';
 const NOTE_PREFIX = 'cses_notes_';
 const SUBMISSIONS_KEY = 'cses_submissions';
 const SOLVED_PROBLEMS_KEY = 'cses_solved_problem_ids';
+export const STARRED_PROBLEMS_KEY = 'cses_starred_problem_ids';
 const SETTINGS_KEY = 'cses_settings';
 const USER_PROFILE_KEY = 'cses_user_profile';
 
@@ -107,30 +109,42 @@ export function saveDraft(
  * Returns saved markdown notes for a specific problem.
  */
 export function getNote(problemId: string): string | null {
-  return getItem(`${NOTE_PREFIX}${problemId}`);
+  return getItem(`${NOTE_PREFIX}${problemId}`) ?? getItem(`cses_note_${problemId}`);
 }
 
 /**
  * Saves or clears markdown notes for a specific problem.
  */
-export function saveNote(problemId: string, content: string): void {
+export function saveNote(problemId: string, content: string, updatedAt?: number): void {
   const key = `${NOTE_PREFIX}${problemId}`;
+  const metaKey = `cses_notemeta_${problemId}`;
   if (!content || content.trim() === '') {
     removeItem(key);
+    removeItem(`cses_note_${problemId}`);
+    removeItem(metaKey);
+    removeItem(`cses_note_meta_${problemId}`);
   } else {
     setItem(key, content);
+    setItem(metaKey, JSON.stringify({ updatedAt: updatedAt ?? Date.now() }));
   }
 }
 
 /**
  * Retrieves all notes across all problems as a map: { [problemId]: content }
+ * Preserves backwards compatibility for existing tests and cloud sync.
  */
 export function getAllNotes(): Record<string, string> {
   const keys = getAllKeys();
   const notes: Record<string, string> = {};
   for (const k of keys) {
+    if (k.startsWith('cses_notemeta_') || k.startsWith('cses_note_meta_')) continue;
+    let pId: string | null = null;
     if (k.startsWith(NOTE_PREFIX)) {
-      const pId = k.slice(NOTE_PREFIX.length);
+      pId = k.slice(NOTE_PREFIX.length);
+    } else if (k.startsWith('cses_note_')) {
+      pId = k.slice('cses_note_'.length);
+    }
+    if (pId && notes[pId] === undefined) {
       const val = getItem(k);
       if (val !== null && val.trim() !== '') {
         notes[pId] = val;
@@ -138,6 +152,52 @@ export function getAllNotes(): Record<string, string> {
     }
   }
   return notes;
+}
+
+/**
+ * Retrieves all notes across all problems as a structured list of entries.
+ */
+export function getAllNotesList(): NoteEntry[] {
+  const keys = getAllKeys();
+  const seen = new Set<string>();
+  const list: Array<{ problemId: string; content: string; updatedAt?: number }> = [];
+
+  for (const k of keys) {
+    if (k.startsWith('cses_notemeta_') || k.startsWith('cses_note_meta_')) continue;
+    let pId: string | null = null;
+    if (k.startsWith(NOTE_PREFIX)) {
+      pId = k.slice(NOTE_PREFIX.length);
+    } else if (k.startsWith('cses_note_')) {
+      pId = k.slice('cses_note_'.length);
+    }
+
+    if (pId && !seen.has(pId)) {
+      seen.add(pId);
+      const val = getItem(k);
+      if (val !== null && val.trim() !== '') {
+        let updatedAt: number | undefined;
+        const meta = getItem(`cses_notemeta_${pId}`) || getItem(`cses_note_meta_${pId}`);
+        if (meta) {
+          try {
+            const parsed = JSON.parse(meta);
+            if (typeof parsed.updatedAt === 'number') {
+              updatedAt = parsed.updatedAt;
+            }
+          } catch {
+            // ignore
+          }
+        }
+        list.push({
+          problemId: pId,
+          content: val,
+          updatedAt: updatedAt ?? Date.now(),
+        });
+      }
+    }
+  }
+
+  list.sort((a, b) => (b.updatedAt ?? 0) - (a.updatedAt ?? 0));
+  return list;
 }
 
 /**
@@ -270,6 +330,71 @@ export function removeSolvedProblem(problemId: string): void {
 }
 
 /**
+ * Returns a Set of problem IDs that have been starred/bookmarked by the user.
+ */
+export function getStarredProblems(): Set<string> {
+  const starred = new Set<string>();
+  const raw = getItem(STARRED_PROBLEMS_KEY);
+  if (raw) {
+    try {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) {
+        for (const id of arr) {
+          if (typeof id === 'string' && id) starred.add(id);
+        }
+      }
+    } catch {}
+  }
+  return starred;
+}
+
+/**
+ * Persists an array or set of starred problem IDs directly.
+ */
+export function persistStarredProblems(starredIds: Set<string> | string[]): void {
+  const arr = Array.from(starredIds);
+  setItem(STARRED_PROBLEMS_KEY, JSON.stringify(arr));
+}
+
+/**
+ * Saves a problem ID as starred/bookmarked.
+ */
+export function saveStarredProblem(id: string): void {
+  if (!id) return;
+  const current = getStarredProblems();
+  current.add(id);
+  persistStarredProblems(current);
+}
+
+/**
+ * Removes a problem ID from starred/bookmarked.
+ */
+export function removeStarredProblem(id: string): void {
+  if (!id) return;
+  const current = getStarredProblems();
+  current.delete(id);
+  persistStarredProblems(current);
+}
+
+/**
+ * Toggles the starred/bookmarked status for a problem ID.
+ * Returns true if the problem is now starred, or false if unstarred.
+ */
+export function toggleStarredProblem(id: string): boolean {
+  if (!id) return false;
+  const current = getStarredProblems();
+  if (current.has(id)) {
+    current.delete(id);
+    persistStarredProblems(current);
+    return false;
+  } else {
+    current.add(id);
+    persistStarredProblems(current);
+    return true;
+  }
+}
+
+/**
  * Removes empty dummy submissions that have no code to keep submission bench clean.
  */
 export function cleanEmptySubmissions(): void {
@@ -311,6 +436,7 @@ export function exportUserData(): string {
     drafts,
     submissions: getSubmissions(),
     notes: getAllNotes(),
+    starredIds: Array.from(getStarredProblems()),
     exportedAt: Date.now(),
   };
 
@@ -362,6 +488,17 @@ export function importUserData(jsonStr: string): boolean {
       setItem(SUBMISSIONS_KEY, JSON.stringify(existing));
     }
 
+    // Restore starred problems
+    if (Array.isArray(data.starredIds)) {
+      const currentStarred = getStarredProblems();
+      for (const id of data.starredIds) {
+        if (typeof id === 'string' && id) {
+          currentStarred.add(id);
+        }
+      }
+      persistStarredProblems(currentStarred);
+    }
+
     return true;
   } catch {
     return false;
@@ -374,7 +511,17 @@ export function importUserData(jsonStr: string): boolean {
 export function clearAllStorage(): void {
   const keys = getAllKeys();
   for (const k of keys) {
-    if (k.startsWith(DRAFT_PREFIX) || k.startsWith(NOTE_PREFIX) || k === SUBMISSIONS_KEY || k === SETTINGS_KEY) {
+    if (
+      k.startsWith(DRAFT_PREFIX) ||
+      k.startsWith(NOTE_PREFIX) ||
+      k.startsWith('cses_note_') ||
+      k.startsWith('cses_notemeta_') ||
+      k === SUBMISSIONS_KEY ||
+      k === SETTINGS_KEY ||
+      k === SOLVED_PROBLEMS_KEY ||
+      k === STARRED_PROBLEMS_KEY ||
+      k === USER_PROFILE_KEY
+    ) {
       removeItem(k);
     }
   }

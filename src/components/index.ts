@@ -18,4 +18,5 @@ export * from './CsesUserProfileModal';
 export * from './AuthModal';
 export * from './CsesSubmitModal';
 export * from './ArchiveExplorerModal';
+export * from './AllNotesModal';
 

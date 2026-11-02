@@ -4,6 +4,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import Editor, { OnMount } from '@monaco-editor/react';
 import { LanguageId } from '@/core/types';
 import { getLanguageConfig } from '@/core/templates';
+import { extractCodeFromMarkdown } from '@/core/markdown-code';
 
 export interface MonacoEditorViewProps {
   code: string;
@@ -15,6 +16,9 @@ export interface MonacoEditorViewProps {
   onRun: () => void;
   onSubmit: () => void;
   editorRef?: React.MutableRefObject<any>;
+  onDetectedLanguage?: (lang: LanguageId) => void;
+  onCleanNotification?: (lang: string) => void;
+  onCleanLlmCode?: () => void;
 }
 
 export function MonacoEditorSkeleton() {
@@ -67,9 +71,13 @@ export const MonacoEditorView: React.FC<MonacoEditorViewProps> = ({
   onRun,
   onSubmit,
   editorRef,
+  onDetectedLanguage,
+  onCleanNotification,
+  onCleanLlmCode,
 }) => {
   const onRunRef = useRef(onRun);
   const onSubmitRef = useRef(onSubmit);
+  const onCleanLlmCodeRef = useRef(onCleanLlmCode);
   const internalEditorRef = useRef<any>(null);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -80,6 +88,10 @@ export const MonacoEditorView: React.FC<MonacoEditorViewProps> = ({
   useEffect(() => {
     onSubmitRef.current = onSubmit;
   }, [onSubmit]);
+
+  useEffect(() => {
+    onCleanLlmCodeRef.current = onCleanLlmCode;
+  }, [onCleanLlmCode]);
 
   const langConfig = getLanguageConfig(language);
   const monacoLanguage = langConfig?.monacoLanguage || 'cpp';
@@ -115,6 +127,19 @@ export const MonacoEditorView: React.FC<MonacoEditorViewProps> = ({
       },
     });
 
+    editor.addAction({
+      id: 'cses-clean-llm-code',
+      label: 'Clean LLM Markdown Code (ChatGPT / Claude / DeepSeek)',
+      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.KeyV],
+      contextMenuGroupId: '1_cses',
+      contextMenuOrder: 3,
+      run: () => {
+        if (onCleanLlmCodeRef.current) {
+          onCleanLlmCodeRef.current();
+        }
+      },
+    });
+
     // Also bind direct command fallbacks
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
       onRunRef.current();
@@ -125,8 +150,44 @@ export const MonacoEditorView: React.FC<MonacoEditorViewProps> = ({
     });
   };
 
+  // Intercept paste event when user pastes Markdown fences from ChatGPT / Claude / DeepSeek
+  const handleContainerPaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const rawText = e.clipboardData?.getData('text/plain');
+    if (rawText && rawText.includes('```')) {
+      const extracted = extractCodeFromMarkdown(rawText, language);
+      if (extracted.wasMarkdown && extracted.code) {
+        e.preventDefault();
+        e.stopPropagation();
+        const editor = internalEditorRef.current;
+        if (editor) {
+          const selection = editor.getSelection();
+          if (selection && !selection.isEmpty()) {
+            editor.executeEdits('llm-markdown-paste', [
+              { range: selection, text: extracted.code, forceMoveMarkers: true },
+            ]);
+          } else {
+            editor.setValue(extracted.code);
+          }
+        } else {
+          onChange(extracted.code);
+        }
+
+        if (extracted.detectedLanguage && onDetectedLanguage) {
+          onDetectedLanguage(extracted.detectedLanguage);
+        }
+
+        if (onCleanNotification) {
+          onCleanNotification(extracted.detectedLanguage || language);
+        }
+      }
+    }
+  };
+
   return (
-    <div className="relative w-full h-full min-h-[300px] overflow-hidden bg-[#1e1e1e]">
+    <div
+      onPaste={handleContainerPaste}
+      className="relative w-full h-full min-h-[300px] overflow-hidden bg-[#1e1e1e]"
+    >
       <Editor
         height="100%"
         width="100%"

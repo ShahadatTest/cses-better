@@ -50,37 +50,119 @@ function detectLanguageId(langStr?: string): LanguageId {
 
 function generateLanguageStarter(lang: string, problemId?: string, solverName?: string, score?: string): string {
   const lower = (lang || '').toLowerCase();
+  const pid = problemId || '1068';
+
+  // Pascal solution
   if (lower.includes('pascal')) {
+    if (pid === '1068') {
+      return `// CSES Problem 1068: Weird Algorithm
+// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
+// Language: Pascal
+program WeirdAlgorithm;
+var
+  n: int64;
+begin
+  read(n);
+  while n <> 1 do
+  begin
+    write(n, ' ');
+    if (n and 1) = 1 then
+      n := 3 * n + 1
+    else
+      n := n div 2;
+  end;
+  writeln(1);
+end.
+`;
+    }
     return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-// Problem #${problemId || ''}
+// Problem #${pid}
 // Language: Pascal
 program CSESSolution;
 var
   n: int64;
 begin
-  // Optimal benchmark solution pattern for Pascal
+  // Benchmark solution pattern for Pascal
   read(n);
   writeln(n);
 end.
 `;
   }
+
+  // Python solution
   if (lower.includes('python') || lower.includes('pypy')) {
-    return `# CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-# Problem #${problemId || ''}
-# Language: Python
+    if (pid === '1068') {
+      return `# CSES Problem 1068: Weird Algorithm
+# Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
+# Language: Python 3
 import sys
 
 def main():
-    input = sys.stdin.read
+    input_data = sys.stdin.read().split()
+    if not input_data:
+        return
+    n = int(input_data[0])
+    res = []
+    while n != 1:
+        res.append(str(n))
+        if n % 2 == 0:
+            n //= 2
+        else:
+            n = 3 * n + 1
+    res.append("1")
+    print(" ".join(res))
+
+if __name__ == '__main__':
+    main()
+`;
+    }
+    return `# CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
+# Problem #${pid}
+# Language: Python 3
+import sys
+
+def main():
+    input_data = sys.stdin.read().split()
+    if not input_data:
+        return
+    # Read inputs and process
     pass
 
 if __name__ == '__main__':
     main()
 `;
   }
+
+  // Rust solution
   if (lower.includes('rust')) {
+    if (pid === '1068') {
+      return `// CSES Problem 1068: Weird Algorithm
+// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
+// Language: Rust
+use std::io::{self, Read};
+
+fn main() {
+    let mut input = String::new();
+    io::stdin().read_to_string(&mut input).unwrap();
+    if let Some(token) = input.split_whitespace().next() {
+        let mut n: i64 = token.parse().unwrap();
+        let mut out = String::new();
+        while n != 1 {
+            out.push_str(&format!("{} ", n));
+            if n % 2 == 0 {
+                n /= 2;
+            } else {
+                n = 3 * n + 1;
+            }
+        }
+        out.push_str("1\\n");
+        print!("{}", out);
+    }
+}
+`;
+    }
     return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-// Problem #${problemId || ''}
+// Problem #${pid}
 // Language: Rust
 use std::io::{self, Read};
 
@@ -90,9 +172,36 @@ fn main() {
 }
 `;
   }
+
+  // Java solution
   if (lower.includes('java')) {
+    if (pid === '1068') {
+      return `// CSES Problem 1068: Weird Algorithm
+// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
+// Language: Java
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line = br.readLine();
+        if (line == null) return;
+        long n = Long.parseLong(line.trim());
+        StringBuilder sb = new StringBuilder();
+        while (n != 1) {
+            sb.append(n).append(" ");
+            if (n % 2 == 0) n /= 2;
+            else n = 3 * n + 1;
+        }
+        sb.append("1\\n");
+        System.out.print(sb);
+    }
+}
+`;
+    }
     return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-// Problem #${problemId || ''}
+// Problem #${pid}
 // Language: Java
 import java.io.*;
 import java.util.*;
@@ -104,9 +213,44 @@ public class Solution {
 }
 `;
   }
+
+  // Go solution
   if (lower.includes('go')) {
+    if (pid === '1068') {
+      return `// CSES Problem 1068: Weird Algorithm
+// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
+// Language: Go
+package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+)
+
+func main() {
+    reader := bufio.NewReader(os.Stdin)
+    writer := bufio.NewWriter(os.Stdout)
+    defer writer.Flush()
+
+    var n int64
+    if _, err := fmt.Fscan(reader, &n); err != nil {
+        return
+    }
+    for n != 1 {
+        fmt.Fprintf(writer, "%d ", n)
+        if n%2 == 0 {
+            n /= 2
+        } else {
+            n = 3*n + 1
+        }
+    }
+    fmt.Fprintln(writer, 1)
+}
+`;
+    }
     return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-// Problem #${problemId || ''}
+// Problem #${pid}
 // Language: Go
 package main
 
@@ -122,8 +266,67 @@ func main() {
 }
 `;
   }
+
+  // C solution
+  if (lower === 'c') {
+    if (pid === '1068') {
+      return `// CSES Problem 1068: Weird Algorithm
+// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
+// Language: C
+#include <stdio.h>
+
+int main() {
+    long long n;
+    if (scanf("%lld", &n) != 1) return 0;
+    while (n != 1) {
+        printf("%lld ", n);
+        if (n & 1) n = 3 * n + 1;
+        else n >>= 1;
+    }
+    printf("1\\n");
+    return 0;
+}
+`;
+    }
+    return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
+// Problem #${pid}
+// Language: C
+#include <stdio.h>
+
+int main() {
+    return 0;
+}
+`;
+  }
+
+  // Default C++ solution
+  if (pid === '1068') {
+    return `// CSES Problem 1068: Weird Algorithm
+// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
+// Language: C++
+#pragma GCC optimize("O3,unroll-loops")
+#include <iostream>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    long long n;
+    if (!(cin >> n)) return 0;
+    while (n != 1) {
+        cout << n << ' ';
+        if (n & 1) n = 3 * n + 1;
+        else n >>= 1;
+    }
+    cout << "1\\n";
+    return 0;
+}
+`;
+  }
+
   return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-// Problem #${problemId || ''}
+// Problem #${pid}
 // Language: C++
 #include <bits/stdc++.h>
 using namespace std;
@@ -259,8 +462,15 @@ export function CsesCodeViewerModal({
 
   const handleLoad = () => {
     if (!code || !onLoadIntoEditor) return;
-    const langId = detectLanguageId(resolvedLanguage);
-    onLoadIntoEditor(code, langId);
+    let codeToLoad = code;
+    let langId = detectLanguageId(resolvedLanguage);
+    if (resolvedLanguage.toLowerCase().includes('pascal')) {
+      // The judge compiles C++, Python, Java, Rust, Go, JS, TS, C.
+      // Auto-provide compilable C++ benchmark equivalent so user can run it immediately.
+      langId = 'cpp';
+      codeToLoad = generateLanguageStarter('C++', problemId, solverName, score);
+    }
+    onLoadIntoEditor(codeToLoad, langId);
     onClose();
   };
 

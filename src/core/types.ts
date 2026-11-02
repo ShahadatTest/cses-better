@@ -68,6 +68,7 @@ export type VerdictStatus =
   | 'CE'
   | 'RE'
   | 'RUNNING'
+  | 'PAUSED'
   | 'IDLE'
   | 'SKIPPED';
 
@@ -133,11 +134,18 @@ export interface ExecutionResponse {
   signal?: string | null;
 }
 
+export interface NoteEntry {
+  problemId: string;
+  content: string;
+  updatedAt?: number;
+}
+
 export interface UserDataExport {
   version: number;
   drafts: Record<string, string>;
   submissions: SubmissionRecord[];
   notes?: Record<string, string>;
+  starredIds?: string[];
   exportedAt: number;
 }
 

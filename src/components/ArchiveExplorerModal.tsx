@@ -14,9 +14,11 @@ import {
   Check,
   FileCode,
   Loader2,
+  Star,
 } from 'lucide-react';
 import { CsesArchiveEntry } from '@/core/types';
 import { categories } from '@/data/categories';
+import { getStarredProblems, toggleStarredProblem } from '@/core/storage';
 import { cn } from '@/lib/utils';
 
 interface ArchiveExplorerModalProps {
@@ -25,6 +27,8 @@ interface ArchiveExplorerModalProps {
   onSelectProblem?: (problemId: string) => void;
   solvedIds?: Set<string>;
   onToggleSolved?: (problemId: string) => void;
+  starredIds?: Set<string>;
+  onToggleStarred?: (problemId: string) => void;
 }
 
 export function ArchiveExplorerModal({
@@ -33,14 +37,38 @@ export function ArchiveExplorerModal({
   onSelectProblem,
   solvedIds,
   onToggleSolved,
+  starredIds,
+  onToggleStarred,
 }: ArchiveExplorerModalProps) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'solved' | 'unsolved'>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'starred' | 'solved' | 'unsolved'>('all');
   const [sortBy, setSortBy] = useState<'id' | 'solved' | 'rate'>('id');
   const [items, setItems] = useState<CsesArchiveEntry[]>([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [localStarred, setLocalStarred] = useState<Set<string>>(() => getStarredProblems());
+
+  useEffect(() => {
+    if (isOpen) {
+      if (starredIds) {
+        setLocalStarred(starredIds);
+      } else {
+        setLocalStarred(getStarredProblems());
+      }
+    }
+  }, [isOpen, starredIds]);
+
+  const activeStarredIds = starredIds ?? localStarred;
+
+  const handleToggleStar = (problemId: string) => {
+    if (onToggleStarred) {
+      onToggleStarred(problemId);
+    } else {
+      toggleStarredProblem(problemId);
+      setLocalStarred(getStarredProblems());
+    }
+  };
 
   const fetchArchive = async () => {
     setIsLoading(true);
@@ -87,6 +115,9 @@ export function ArchiveExplorerModal({
   };
 
   const filteredItems = useMemo(() => {
+    if (statusFilter === 'starred') {
+      return items.filter((item) => activeStarredIds.has(item.problemId));
+    }
     if (statusFilter === 'solved') {
       return items.filter((item) => solvedIds?.has(item.problemId));
     }
@@ -94,7 +125,7 @@ export function ArchiveExplorerModal({
       return items.filter((item) => !solvedIds?.has(item.problemId));
     }
     return items;
-  }, [items, statusFilter, solvedIds]);
+  }, [items, statusFilter, solvedIds, activeStarredIds]);
 
   if (!isOpen) return null;
 
@@ -175,14 +206,57 @@ export function ArchiveExplorerModal({
             <option value="rate">Sort: Success Rate</option>
           </select>
 
+          {/* Quick Filter Pills */}
+          <div className="flex items-center gap-1 bg-zinc-800 p-1 rounded-xl border border-zinc-700">
+            <button
+              type="button"
+              onClick={() => setStatusFilter('all')}
+              className={cn(
+                'px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer',
+                statusFilter === 'all'
+                  ? 'bg-purple-600 text-white shadow-xs'
+                  : 'text-zinc-400 hover:text-zinc-200'
+              )}
+            >
+              All
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter('starred')}
+              className={cn(
+                'flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer',
+                statusFilter === 'starred'
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-xs'
+                  : 'text-zinc-400 hover:text-amber-400'
+              )}
+            >
+              <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
+              <span>Starred</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter('solved')}
+              className={cn(
+                'flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer',
+                statusFilter === 'solved'
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-xs'
+                  : 'text-zinc-400 hover:text-emerald-400'
+              )}
+            >
+              <Check className="w-3 h-3 text-emerald-400" />
+              <span>Solved</span>
+            </button>
+          </div>
+
           {/* Status Filter */}
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as any)}
             className="bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-purple-500"
           >
-            <option value="all">All Solved Status</option>
-            <option value="solved">Solved Only (✓)</option>
+            <option value="all">All</option>
+            <option value="starred">Starred (★)</option>
+            <option value="solved">Solved (✓)</option>
             <option value="unsolved">Unsolved Only</option>
           </select>
 
@@ -215,15 +289,19 @@ export function ArchiveExplorerModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {filteredItems.map((item) => {
                 const isSolved = solvedIds?.has(item.problemId);
+                const isStarred = activeStarredIds.has(item.problemId);
                 return (
                 <div
                   key={item.problemId}
-                  className="p-4 bg-zinc-800/40 hover:bg-zinc-800/70 border border-zinc-700/60 rounded-xl transition-all flex flex-col justify-between group"
+                  className={cn(
+                    'p-4 bg-zinc-800/40 hover:bg-zinc-800/70 border rounded-xl transition-all flex flex-col justify-between group',
+                    isStarred ? 'border-amber-500/40 bg-amber-500/5' : 'border-zinc-700/60'
+                  )}
                 >
                   <div>
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           {/* Completion tick box */}
                           <button
                             type="button"
@@ -241,12 +319,48 @@ export function ArchiveExplorerModal({
                           >
                             {isSolved && <Check className="w-3 h-3 stroke-[3]" />}
                           </button>
+
+                          {/* Star bookmark button */}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleToggleStar(item.problemId);
+                            }}
+                            className={cn(
+                              'p-0.5 rounded transition-colors cursor-pointer shrink-0',
+                              isStarred
+                                ? 'text-amber-400 hover:text-amber-300'
+                                : 'text-zinc-600 hover:text-amber-400 opacity-40 group-hover:opacity-100'
+                            )}
+                            title={isStarred ? 'Unstar problem' : 'Star this problem'}
+                            aria-label={isStarred ? 'Unstar problem' : 'Star this problem'}
+                          >
+                            <Star
+                              className={cn(
+                                'w-3.5 h-3.5',
+                                isStarred ? 'text-amber-400 fill-amber-400' : 'text-zinc-600'
+                              )}
+                            />
+                          </button>
+
                           <span className="text-xs font-mono font-bold text-purple-400">
                             #{item.problemId}
                           </span>
                           <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-700/60 text-zinc-300">
                             {item.category}
                           </span>
+
+                          {/* Gold star badge */}
+                          {isStarred && (
+                            <span
+                              className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30 shadow-xs"
+                              title="Starred problem"
+                            >
+                              <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
+                              <span>Starred</span>
+                            </span>
+                          )}
                         </div>
                         <h4 className="font-semibold text-sm text-zinc-100 group-hover:text-purple-300 transition-colors mt-1">
                           {item.title}

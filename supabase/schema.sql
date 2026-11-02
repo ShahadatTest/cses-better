@@ -120,3 +120,20 @@ CREATE POLICY "Users can manage own notes"
   ON public.user_notes FOR ALL
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
+
+-- 6. User Starred Problems (Cross-device bookmark synchronization)
+CREATE TABLE IF NOT EXISTS public.user_starred (
+  id BIGSERIAL PRIMARY KEY,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  problem_id TEXT NOT NULL,
+  starred_at TIMESTAMPTZ DEFAULT NOW(),
+  CONSTRAINT user_starred_unique UNIQUE (user_id, problem_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_starred_user ON public.user_starred(user_id);
+ALTER TABLE public.user_starred ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage own starred problems"
+  ON public.user_starred FOR ALL
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);

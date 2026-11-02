@@ -5,6 +5,8 @@ import {
   Code2,
   Terminal,
   Play,
+  Pause,
+  Square,
   Send,
   Sparkles,
   Copy,
@@ -16,9 +18,12 @@ import {
   Columns,
   ChevronDown,
   FileDown,
+  Bot,
 } from 'lucide-react';
 import { LanguageId } from '@/core/types';
+import { cn } from '@/lib/utils';
 import { SUPPORTED_LANGUAGES, getLanguageConfig } from '@/core/templates';
+import { extractCodeFromMarkdown } from '@/core/markdown-code';
 import MonacoEditorView from './MonacoEditorView';
 import InbuiltCompilerView from './InbuiltCompilerView';
 
@@ -35,6 +40,9 @@ export interface EditorWorkbenchProps {
   problemTitle?: string;
   isRunning?: boolean;
   isSubmitting?: boolean;
+  isPaused?: boolean;
+  onPauseResume?: () => void;
+  onCancel?: () => void;
   fontSize?: number;
   apiKey?: string;
   widgetKey?: string;
@@ -57,6 +65,9 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
   problemTitle,
   isRunning = false,
   isSubmitting = false,
+  isPaused = false,
+  onPauseResume,
+  onCancel,
   fontSize: initialFontSize = 14,
   apiKey,
   widgetKey,
@@ -71,9 +82,58 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
   const [copied, setCopied] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const [currentFontSize, setCurrentFontSize] = useState(initialFontSize);
+  const [llmNotice, setLlmNotice] = useState<string | null>(null);
 
   const editorInstanceRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Cleans LLM markdown fences or extracts pure code from clipboard
+  const handleCleanLlmMarkdown = async () => {
+    // 1. If current editor already contains markdown fences, clean in place
+    const currentExtracted = extractCodeFromMarkdown(code, language);
+    if (currentExtracted.wasMarkdown && currentExtracted.code) {
+      onChange(currentExtracted.code);
+      if (currentExtracted.detectedLanguage && currentExtracted.detectedLanguage !== language) {
+        onLanguageChange(currentExtracted.detectedLanguage);
+      }
+      setLlmNotice(
+        `✨ Cleaned Markdown fences! Extracted pure ${currentExtracted.detectedLanguage || language} code.`
+      );
+      setTimeout(() => setLlmNotice(null), 4000);
+      return;
+    }
+
+    // 2. Otherwise read from clipboard
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          const clipExtracted = extractCodeFromMarkdown(text, language);
+          if (clipExtracted.wasMarkdown && clipExtracted.code) {
+            onChange(clipExtracted.code);
+            if (clipExtracted.detectedLanguage && clipExtracted.detectedLanguage !== language) {
+              onLanguageChange(clipExtracted.detectedLanguage);
+            }
+            setLlmNotice(
+              `✨ Pasted from LLM! Extracted pure ${clipExtracted.detectedLanguage || language} code.`
+            );
+            setTimeout(() => setLlmNotice(null), 4000);
+            return;
+          } else if (text.trim()) {
+            onChange(text);
+            setLlmNotice('Pasted code from clipboard');
+            setTimeout(() => setLlmNotice(null), 3000);
+            return;
+          }
+        }
+      }
+    } catch {
+      // Clipboard access blocked
+    }
+
+    setLlmNotice('No LLM Markdown code detected in editor or clipboard');
+    setTimeout(() => setLlmNotice(null), 3000);
+  };
 
   // Compute filename based on problem and language
   const downloadFilename = useMemo(() => {
@@ -284,6 +344,16 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
             <Sparkles className="w-3.5 h-3.5" />
           </button>
 
+          {/* Clean LLM Markdown / Paste from ChatGPT/Claude */}
+          <button
+            type="button"
+            onClick={handleCleanLlmMarkdown}
+            className="p-1.5 rounded-md text-slate-400 hover:text-amber-400 hover:bg-surface-2 transition-colors relative"
+            title="Clean LLM Code (Strips markdown backticks & preamble from ChatGPT, Claude, DeepSeek)"
+          >
+            <Bot className="w-3.5 h-3.5" />
+          </button>
+
           {/* Copy Code */}
           <button
             type="button"
@@ -346,6 +416,14 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
 
       {/* ── Main Editor Canvas ── */}
       <div className="relative flex-1 w-full min-h-0 bg-[#1e1e1e]">
+        {/* Floating LLM Markdown notification */}
+        {llmNotice && (
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-40 px-3.5 py-1.5 rounded-lg bg-indigo-950/95 border border-indigo-500/40 text-indigo-200 text-xs shadow-2xl flex items-center gap-2 backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-200">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
+            <span className="font-medium">{llmNotice}</span>
+          </div>
+        )}
+
         {editorMode === 'monaco' ? (
           <MonacoEditorView
             code={code}
@@ -357,6 +435,12 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
             onRun={onRun}
             onSubmit={onSubmit}
             editorRef={editorInstanceRef}
+            onDetectedLanguage={onLanguageChange}
+            onCleanNotification={(detectedLang) => {
+              setLlmNotice(`✨ Auto-cleaned LLM Markdown: Extracted pure ${detectedLang} code`);
+              setTimeout(() => setLlmNotice(null), 4000);
+            }}
+            onCleanLlmCode={handleCleanLlmMarkdown}
           />
         ) : (
           <InbuiltCompilerView
@@ -452,24 +536,60 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
                 </kbd>
               </button>
 
-              {/* Test Cases Button (Internal Judge - runs against test cases without CSES) */}
-              <button
-                type="button"
-                onClick={onSubmit}
-                disabled={isRunning || isSubmitting}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-surface-2 hover:bg-surface-3 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 shadow-sm transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
-                title="Run all test cases locally/in cloud sandbox without submitting to CSES (Ctrl+Shift+Enter)"
-              >
-                {isSubmitting ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                ) : (
+              {/* Test Cases Button + Pause / Resume / Stop Controls */}
+              {isSubmitting ? (
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={onPauseResume}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold border shadow-sm transition-all active:scale-95 cursor-pointer',
+                      isPaused
+                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 hover:bg-amber-500/30'
+                        : 'bg-surface-2 text-amber-400 border-amber-500/30 hover:bg-surface-3'
+                    )}
+                    title={isPaused ? 'Resume test execution' : 'Pause test execution'}
+                  >
+                    {isPaused ? (
+                      <>
+                        <Play className="w-3.5 h-3.5 fill-current text-amber-400" />
+                        <span>Resume</span>
+                      </>
+                    ) : (
+                      <>
+                        <Pause className="w-3.5 h-3.5 fill-current text-amber-400" />
+                        <span>Pause</span>
+                      </>
+                    )}
+                  </button>
+
+                  {onCancel && (
+                    <button
+                      type="button"
+                      onClick={onCancel}
+                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-medium bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 transition-all active:scale-95 cursor-pointer"
+                      title="Stop remaining test cases"
+                    >
+                      <Square className="w-3 h-3 fill-current" />
+                      <span>Stop</span>
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onSubmit}
+                  disabled={isRunning}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-surface-2 hover:bg-surface-3 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 shadow-sm transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+                  title="Run all test cases in parallel according to rate limits (Ctrl+Shift+Enter)"
+                >
                   <Check className="w-3.5 h-3.5" />
-                )}
-                <span>Test Cases</span>
-                <kbd className="hidden sm:inline-block ml-1 px-1 py-0.5 text-[10px] text-emerald-300/80 bg-emerald-950/60 rounded border border-emerald-800/60 font-mono">
-                  Ctrl+Shift+↵
-                </kbd>
-              </button>
+                  <span>Test Cases</span>
+                  <kbd className="hidden sm:inline-block ml-1 px-1 py-0.5 text-[10px] text-emerald-300/80 bg-emerald-950/60 rounded border border-emerald-800/60 font-mono">
+                    Ctrl+Shift+↵
+                  </kbd>
+                </button>
+              )}
 
               {/* Official CSES Submit Button */}
               {onSubmitCses && (

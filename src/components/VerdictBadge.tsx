@@ -10,6 +10,7 @@ import {
   Loader2,
   MinusCircle,
   Database,
+  PauseCircle,
   type LucideIcon,
 } from 'lucide-react';
 import { VerdictStatus } from '@/core/types';
@@ -65,6 +66,11 @@ const VERDICT_CONFIGS: Record<VerdictStatus, VerdictConfig> = {
     classes: 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30',
     icon: Loader2,
     spinIcon: true,
+  },
+  PAUSED: {
+    label: 'Paused',
+    classes: 'bg-amber-500/10 text-amber-400 border border-amber-500/30',
+    icon: PauseCircle,
   },
   IDLE: {
     label: 'Idle',

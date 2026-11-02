@@ -16,8 +16,10 @@ import {
   ShieldAlert,
   Terminal,
   Download,
+  Star,
 } from 'lucide-react';
 import { Problem, SubmissionRecord, LanguageId } from '@/core/types';
+import { getStarredProblems, toggleStarredProblem } from '@/core/storage';
 import { KaTeXRenderer } from './KaTeXRenderer';
 import { LeaderboardTab } from './LeaderboardTab';
 import { SubmissionsTab } from './SubmissionsTab';
@@ -30,6 +32,8 @@ export interface ProblemPaneProps {
   problem: Problem;
   submissions?: SubmissionRecord[];
   isSolved?: boolean;
+  isStarred?: boolean;
+  onToggleStar?: (problemId: string) => void;
   onSelectCode?: (code: string, lang: LanguageId) => void;
   userExecutionTimeMs?: number;
   userCharCount?: number;
@@ -42,6 +46,8 @@ export interface ProblemPaneProps {
   statsRefreshedAt?: number;
   currentUser?: import('@/core/types').UserProfile | null;
   onOpenCsesAccount?: () => void;
+  onSelectProblem?: (id: string) => void;
+  onOpenAllNotes?: () => void;
 }
 
 /**
@@ -77,6 +83,8 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
   problem,
   submissions = [],
   isSolved = false,
+  isStarred,
+  onToggleStar,
   onSelectCode = () => {},
   userExecutionTimeMs,
   userCharCount,
@@ -89,10 +97,34 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
   statsRefreshedAt,
   currentUser,
   onOpenCsesAccount,
+  onSelectProblem,
+  onOpenAllNotes,
 }) => {
   const [internalTab, setInternalTab] = useState<ProblemTab>('statement');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [internalStarred, setInternalStarred] = useState<boolean>(() => {
+    return isStarred !== undefined ? isStarred : getStarredProblems().has(problem.id);
+  });
+
+  React.useEffect(() => {
+    if (isStarred !== undefined) {
+      setInternalStarred(isStarred);
+    } else {
+      setInternalStarred(getStarredProblems().has(problem.id));
+    }
+  }, [isStarred, problem.id]);
+
+  const activeStarred = isStarred !== undefined ? isStarred : internalStarred;
+
+  const handleToggleStar = () => {
+    if (onToggleStar) {
+      onToggleStar(problem.id);
+    } else {
+      const next = toggleStarredProblem(problem.id);
+      setInternalStarred(next);
+    }
+  };
 
   const currentTab = activeTab ?? internalTab;
 
@@ -250,14 +282,36 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                 </span>
               </div>
 
-              {/* Problem Title & ID */}
-              <div className="flex flex-wrap items-baseline gap-3">
+              {/* Problem Title & ID & Star Button */}
+              <div className="flex flex-wrap items-center gap-3">
                 <h1 className="text-xl sm:text-2xl font-bold text-slate-100 tracking-tight">
                   {problem.title}
                 </h1>
                 <span className="px-2 py-0.5 rounded text-xs font-mono font-semibold bg-surface-2 text-slate-300 border border-border-subtle">
                   #{problem.id}
                 </span>
+
+                {/* Star / Bookmark Button */}
+                <button
+                  type="button"
+                  onClick={handleToggleStar}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border transition-all cursor-pointer',
+                    activeStarred
+                      ? 'bg-amber-400/15 text-amber-300 border-amber-400/40 hover:bg-amber-400/25 shadow-xs'
+                      : 'bg-surface-2/60 text-slate-400 border-border-subtle hover:text-amber-400 hover:border-amber-400/30 hover:bg-surface-2'
+                  )}
+                  title="Star this problem (bookmark)"
+                  aria-label="Star this problem (bookmark)"
+                >
+                  <Star
+                    className={cn(
+                      'w-3.5 h-3.5 transition-transform active:scale-125',
+                      activeStarred ? 'text-amber-400 fill-amber-400' : 'text-slate-400'
+                    )}
+                  />
+                  <span>{activeStarred ? 'Starred' : 'Star'}</span>
+                </button>
               </div>
 
               {/* Metadata Badges */}
@@ -501,7 +555,16 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
         )}
 
         {/* TAB 4: NOTES */}
-        {currentTab === 'notes' && <NotesTab problemId={problem.id} currentUser={currentUser} />}
+        {currentTab === 'notes' && (
+          <NotesTab
+            problemId={problem.id}
+            problemTitle={problem.title}
+            problemCategory={problem.category}
+            currentUser={currentUser}
+            onSelectProblem={onSelectProblem}
+            onOpenAllNotes={onOpenAllNotes}
+          />
+        )}
       </div>
     </div>
   );

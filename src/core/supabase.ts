@@ -8,6 +8,8 @@ import {
   saveDraft,
   saveSubmission,
   getSubmissions,
+  getStarredProblems,
+  saveStarredProblem,
 } from './storage';
 
 const DEFAULT_SUPABASE_URL = 'https://oxxctjyrtdgicbhmlhfy.supabase.co';
@@ -30,10 +32,18 @@ export const isSupabaseConfigured = Boolean(
 let supabaseInstance: SupabaseClient | null = null;
 
 /**
+ * Sets or overrides singleton SupabaseClient (useful for testing and custom client injection)
+ */
+export function setSupabaseInstance(client: SupabaseClient | null): void {
+  supabaseInstance = client;
+}
+
+/**
  * Returns a singleton SupabaseClient.
  * Uses createBrowserClient in browser context to automatically sync session with cookies set by Next.js SSR.
  */
 export function getSupabase(): SupabaseClient | null {
+  if (supabaseInstance) return supabaseInstance;
   if (!isSupabaseConfigured) return null;
   if (!supabaseInstance) {
     if (typeof window !== 'undefined') {
@@ -178,6 +188,7 @@ export async function syncUserDataToCloud(
     drafts?: Record<string, string>;
     submissions?: SubmissionRecord[];
     notes?: Record<string, string>;
+    starredIds?: string[];
   }
 ): Promise<boolean> {
   const client = getSupabase();
@@ -267,6 +278,22 @@ export async function syncUserDataToCloud(
       });
     }
 
+    // 6. Batch upsert starred problems
+    if (data.starredIds && data.starredIds.length > 0) {
+      try {
+        const starredPayload = data.starredIds.map((problemId) => ({
+          user_id: userId,
+          problem_id: problemId,
+          starred_at: new Date().toISOString(),
+        }));
+        await client.from('user_starred').upsert(starredPayload, {
+          onConflict: 'user_id,problem_id',
+        });
+      } catch (err) {
+        console.warn('[Supabase Sync] Starred sync notice:', err);
+      }
+    }
+
     return true;
   } catch (err) {
     console.warn('[Supabase Sync] Cloud sync notice:', err);
@@ -275,34 +302,37 @@ export async function syncUserDataToCloud(
 }
 
 /**
- * Fetch user solved problems, drafts, and notes from Supabase
+ * Fetch user solved problems, drafts, notes, and starred problems from Supabase
  */
 export async function fetchUserDataFromCloud(userId: string): Promise<{
   solvedIds: string[];
   drafts: Record<string, string>;
   notes: Record<string, string>;
+  starredIds: string[];
 } | null> {
   const client = getSupabase();
   if (!client || !userId) return null;
 
   try {
-    const [solvedRes, draftsRes, notesRes] = await Promise.all([
+    const [solvedRes, draftsRes, notesRes, starredRes] = await Promise.all([
       client.from('user_solved').select('problem_id').eq('user_id', userId),
       client.from('user_drafts').select('problem_id, language, code').eq('user_id', userId),
       client.from('user_notes').select('problem_id, content').eq('user_id', userId),
+      client.from('user_starred').select('problem_id').eq('user_id', userId),
     ]);
 
-    const solvedIds: string[] = (solvedRes.data || []).map((row: any) => row.problem_id);
+    const solvedIds: string[] = (solvedRes?.data || []).map((row: any) => row.problem_id);
     const drafts: Record<string, string> = {};
     const notes: Record<string, string> = {};
+    const starredIds: string[] = (starredRes?.data || []).map((row: any) => row.problem_id);
 
-    if (draftsRes.data) {
+    if (draftsRes?.data) {
       for (const d of draftsRes.data) {
         drafts[`cses_draft_${d.problem_id}_${d.language}`] = d.code;
       }
     }
 
-    if (notesRes.data) {
+    if (notesRes?.data) {
       for (const n of notesRes.data) {
         if (n.content) {
           notes[n.problem_id] = n.content;
@@ -310,7 +340,7 @@ export async function fetchUserDataFromCloud(userId: string): Promise<{
       }
     }
 
-    return { solvedIds, drafts, notes };
+    return { solvedIds, drafts, notes, starredIds };
   } catch (err) {
     console.warn('[Supabase Fetch] Cloud fetch notice:', err);
     return null;
@@ -318,18 +348,54 @@ export async function fetchUserDataFromCloud(userId: string): Promise<{
 }
 
 /**
+ * Persists an individual problem star/bookmark to Supabase cloud
+ */
+export async function saveUserStarredToCloud(
+  userId: string,
+  problemId: string,
+  starred: boolean
+): Promise<boolean> {
+  const client = getSupabase();
+  if (!client || !userId || !problemId) return false;
+
+  try {
+    if (!starred) {
+      await client
+        .from('user_starred')
+        .delete()
+        .eq('user_id', userId)
+        .eq('problem_id', problemId);
+    } else {
+      await client.from('user_starred').upsert(
+        {
+          user_id: userId,
+          problem_id: problemId,
+          starred_at: new Date().toISOString(),
+        },
+        { onConflict: 'user_id,problem_id' }
+      );
+    }
+    return true;
+  } catch (err) {
+    console.warn('[Supabase Cloud Starred] Upsert error:', err);
+    return false;
+  }
+}
+
+/**
  * One-click bidirectional synchronization:
- * 1. Pushes all local progress (solves, drafts, submissions, notes) to cloud
+ * 1. Pushes all local progress (solves, drafts, submissions, notes, starred) to cloud
  * 2. Pulls all cloud progress down to local storage
  */
 export async function syncAllLocalProgressToCloud(
   userId: string
-): Promise<{ success: boolean; syncedNotes: number; syncedSolves: number }> {
-  if (!userId) return { success: false, syncedNotes: 0, syncedSolves: 0 };
+): Promise<{ success: boolean; syncedNotes: number; syncedSolves: number; syncedStarred?: number }> {
+  if (!userId) return { success: false, syncedNotes: 0, syncedSolves: 0, syncedStarred: 0 };
 
   const localSolved = Array.from(getSolvedProblems());
   const localNotes = getAllNotes();
   const localSubmissions = getSubmissions();
+  const localStarred = Array.from(getStarredProblems());
 
   // Push local data up
   const pushOk = await syncUserDataToCloud(userId, {
@@ -337,12 +403,14 @@ export async function syncAllLocalProgressToCloud(
     drafts: {},
     submissions: localSubmissions,
     notes: localNotes,
+    starredIds: localStarred,
   });
 
   // Pull cloud data down
   const cloudData = await fetchUserDataFromCloud(userId);
   let syncedSolves = localSolved.length;
   let syncedNotes = Object.keys(localNotes).length;
+  let syncedStarred = localStarred.length;
 
   if (cloudData) {
     // Merge cloud solved problems
@@ -383,7 +451,17 @@ export async function syncAllLocalProgressToCloud(
       }
     }
     syncedNotes = Math.max(syncedNotes, Object.keys(cloudData.notes).length);
+
+    // Merge cloud starred problems into local storage
+    if (cloudData.starredIds && Array.isArray(cloudData.starredIds)) {
+      for (const pId of cloudData.starredIds) {
+        if (!localStarred.includes(pId)) {
+          saveStarredProblem(pId);
+        }
+      }
+      syncedStarred = Math.max(syncedStarred, cloudData.starredIds.length);
+    }
   }
 
-  return { success: pushOk, syncedNotes, syncedSolves };
+  return { success: pushOk, syncedNotes, syncedSolves, syncedStarred };
 }

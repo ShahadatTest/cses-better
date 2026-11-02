@@ -18,9 +18,12 @@ import {
   User as UserIcon,
   Award,
   KeyRound,
+  Star,
+  BookOpen,
 } from 'lucide-react';
 import { Problem, Category, UserProfile } from '../core/types';
 import { getStoredCsesCredentials } from '../core/cses-client';
+import { getStarredProblems, toggleStarredProblem } from '../core/storage';
 import { cn } from '../lib/utils';
 
 export interface HeaderProps {
@@ -31,6 +34,8 @@ export interface HeaderProps {
   totalProblems: number;
   solvedProblemIds?: Set<string>;
   onToggleSolved?: (problemId: string) => void;
+  starredProblemIds?: Set<string>;
+  onToggleStarred?: (problemId: string) => void;
   onSelectProblem: (id: string) => void;
   onOpenCommandPalette: () => void;
   zenMode: boolean;
@@ -39,8 +44,10 @@ export interface HeaderProps {
   currentUser?: UserProfile | null;
   onOpenAuth?: () => void;
   onOpenArchive?: () => void;
+  onOpenAllNotes?: () => void;
   onOpenCsesProfile?: (nick?: string) => void;
   onOpenCsesAccount?: () => void;
+  initialProblemOpen?: boolean;
 }
 
 export function Header({
@@ -51,6 +58,8 @@ export function Header({
   totalProblems,
   solvedProblemIds,
   onToggleSolved,
+  starredProblemIds,
+  onToggleStarred,
   onSelectProblem,
   onOpenCommandPalette,
   zenMode,
@@ -59,14 +68,17 @@ export function Header({
   currentUser,
   onOpenAuth,
   onOpenArchive,
+  onOpenAllNotes,
   onOpenCsesProfile,
   onOpenCsesAccount,
+  initialProblemOpen,
 }: HeaderProps) {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [isProblemOpen, setIsProblemOpen] = useState(false);
+  const [isProblemOpen, setIsProblemOpen] = useState(initialProblemOpen ?? false);
   const [isMac, setIsMac] = useState(false);
   const [savedCsesNick, setSavedCsesNick] = useState<string | null>(null);
   const [savedCsesUserId, setSavedCsesUserId] = useState<string | null>(null);
+  const activeStarredIds = starredProblemIds ?? getStarredProblems();
 
   useEffect(() => {
     const updateCreds = () => {
@@ -253,6 +265,9 @@ export function Header({
               className="flex items-center space-x-1.5 text-xs text-white px-2 py-1 rounded-md bg-surface-2/60 hover:bg-surface-2 border border-border-subtle transition-colors max-w-[220px] sm:max-w-[280px]"
               title="Switch problem in this section"
             >
+              {activeStarredIds.has(currentProblem.id) && (
+                <Star className="w-3 h-3 text-amber-400 fill-amber-400 shrink-0" />
+              )}
               <span className="text-sky-400 font-mono font-medium">
                 #{currentProblem.id}
               </span>
@@ -268,6 +283,7 @@ export function Header({
                 </div>
                 {problemsInCurrentCategory.map((prob) => {
                   const isSolved = solvedProblemIds?.has(prob.id);
+                  const isStarred = activeStarredIds.has(prob.id);
                   return (
                     <button
                       key={prob.id}
@@ -299,6 +315,34 @@ export function Header({
                         title={isSolved ? 'Mark as unsolved' : 'Mark as solved'}
                       >
                         {isSolved && <Check className="w-3 h-3 stroke-[3]" />}
+                      </span>
+
+                      {/* Interactive Star Bookmark */}
+                      <span
+                        role="button"
+                        aria-label={isStarred ? 'Unstar problem' : 'Star problem'}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (onToggleStarred) {
+                            onToggleStarred(prob.id);
+                          } else {
+                            toggleStarredProblem(prob.id);
+                          }
+                        }}
+                        className={cn(
+                          'p-0.5 rounded transition-colors cursor-pointer shrink-0',
+                          isStarred
+                            ? 'text-amber-400 hover:text-amber-300'
+                            : 'text-slate-600 hover:text-amber-400 opacity-40 group-hover:opacity-100'
+                        )}
+                        title={isStarred ? 'Unstar problem' : 'Star this problem'}
+                      >
+                        <Star
+                          className={cn(
+                            'w-3.5 h-3.5',
+                            isStarred ? 'text-amber-400 fill-amber-400' : 'text-slate-500'
+                          )}
+                        />
                       </span>
 
                       <span className="font-mono text-slate-400 text-[11px] w-10 shrink-0">
@@ -364,6 +408,19 @@ export function Header({
           >
             <Database className="w-3.5 h-3.5" />
             <span>Archive</span>
+          </button>
+        )}
+
+        {/* Notebook / All Notes Button */}
+        {onOpenAllNotes && (
+          <button
+            type="button"
+            onClick={onOpenAllNotes}
+            className="hidden md:flex items-center space-x-1.5 text-xs text-sky-400 hover:text-sky-300 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/25 rounded-lg px-2.5 py-1.5 transition-colors cursor-pointer"
+            title="Open CSES Notebook (All Problem Notes)"
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Notes</span>
           </button>
         )}
 
