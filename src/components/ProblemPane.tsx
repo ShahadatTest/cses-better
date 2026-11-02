@@ -33,6 +33,7 @@ export interface ProblemPaneProps {
   submissions?: SubmissionRecord[];
   isSolved?: boolean;
   isStarred?: boolean;
+  onToggleSolved?: (problemId: string) => void;
   onToggleStar?: (problemId: string) => void;
   onSelectCode?: (code: string, lang: LanguageId) => void;
   userExecutionTimeMs?: number;
@@ -84,6 +85,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
   submissions = [],
   isSolved = false,
   isStarred,
+  onToggleSolved,
   onToggleStar,
   onSelectCode = () => {},
   userExecutionTimeMs,
@@ -290,6 +292,28 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                 <span className="px-2 py-0.5 rounded text-xs font-mono font-semibold bg-surface-2 text-slate-300 border border-border-subtle">
                   #{problem.id}
                 </span>
+
+                {/* Solved / Completion Button */}
+                <button
+                  type="button"
+                  onClick={() => onToggleSolved?.(problem.id)}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border transition-all cursor-pointer',
+                    isSolved
+                      ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40 hover:bg-emerald-500/25 shadow-xs'
+                      : 'bg-surface-2/60 text-slate-400 border-border-subtle hover:text-emerald-400 hover:border-emerald-400/30 hover:bg-surface-2'
+                  )}
+                  title={isSolved ? 'Mark problem as unsolved' : 'Mark problem as solved'}
+                  aria-label={isSolved ? 'Mark problem as unsolved' : 'Mark problem as solved'}
+                >
+                  <Check
+                    className={cn(
+                      'w-3.5 h-3.5 transition-transform',
+                      isSolved ? 'text-emerald-400 stroke-[3]' : 'text-slate-500'
+                    )}
+                  />
+                  <span>{isSolved ? 'Solved' : 'Mark Solved'}</span>
+                </button>
 
                 {/* Star / Bookmark Button */}
                 <button

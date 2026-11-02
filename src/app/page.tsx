@@ -34,6 +34,7 @@ import {
   getStoredUser,
   saveStoredUser,
   clearStoredUser,
+  getAllNotes,
 } from '../core/storage';
 import {
   getSupabase,
@@ -130,6 +131,36 @@ export default function CSESBetterApp() {
   const [liveStats, setLiveStats] = useState<Record<string, ProblemStats>>({});
   const [isRefreshingStats, setIsRefreshingStats] = useState<boolean>(false);
   const [statsRefreshedAt, setStatsRefreshedAt] = useState<Record<string, number>>({});
+  const debouncedSyncTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  // Debounced cloud sync: batches updates and respects the 60s cooldown without spamming on every click
+  const queueDebouncedCloudSync = useCallback((userId: string) => {
+    if (debouncedSyncTimerRef.current) {
+      clearTimeout(debouncedSyncTimerRef.current);
+    }
+    debouncedSyncTimerRef.current = setTimeout(() => {
+      const localSolved = Array.from(getSolvedProblems());
+      const localNotes = getAllNotes();
+      const localSubmissions = getSubmissions();
+      const localStarred = Array.from(getStarredProblems());
+
+      syncUserDataToCloud(userId, {
+        solvedIds: localSolved,
+        drafts: {},
+        submissions: localSubmissions,
+        notes: localNotes,
+        starredIds: localStarred,
+      }).catch((e) => console.warn('[Cloud sync notice]:', e));
+    }, 15000);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (debouncedSyncTimerRef.current) {
+        clearTimeout(debouncedSyncTimerRef.current);
+      }
+    };
+  }, []);
 
 
   const handleFetchStats = useCallback(async (problemId: string, force: boolean = false) => {
@@ -227,7 +258,7 @@ export default function CSESBetterApp() {
           const user = mapSupabaseUser(data.session.user);
           setCurrentUser(user);
           saveStoredUser(user);
-          // Continuous bidirectional cloud sync (solves, drafts, notes, starred)
+          // Sync once on initial mount if a valid session exists
           syncAllLocalProgressToCloud(user.id).then(() => {
             setSolvedIds(getSolvedProblems());
             setStarredIds(getStarredProblems());
@@ -235,15 +266,18 @@ export default function CSESBetterApp() {
         }
       });
 
-      const { data: authSub } = supabase.auth.onAuthStateChange((_event, session) => {
+      const { data: authSub } = supabase.auth.onAuthStateChange((event, session) => {
         if (session?.user) {
           const user = mapSupabaseUser(session.user);
           setCurrentUser(user);
           saveStoredUser(user);
-          syncAllLocalProgressToCloud(user.id).then(() => {
-            setSolvedIds(getSolvedProblems());
-            setStarredIds(getStarredProblems());
-          });
+          // Only sync on explicit SIGNED_IN event, never on TOKEN_REFRESHED or repeatedly on mount
+          if (event === 'SIGNED_IN') {
+            syncAllLocalProgressToCloud(user.id).then(() => {
+              setSolvedIds(getSolvedProblems());
+              setStarredIds(getStarredProblems());
+            });
+          }
         } else {
           setCurrentUser(null);
           clearStoredUser();
@@ -297,17 +331,13 @@ export default function CSESBetterApp() {
       } catch {}
 
       if (currentUser) {
-        syncUserDataToCloud(currentUser.id, {
-          solvedIds: Array.from(new Set([...solvedIds, pId])),
-          drafts: { [`cses_draft_${pId}_${finalLang}`]: finalCode },
-          submissions,
-        });
+        queueDebouncedCloudSync(currentUser.id);
       }
 
       // Immediately bypass cache and pull live CSES leaderboard containing the new submission
       handleFetchStats(pId, true);
     },
-    [currentUser, solvedIds, activeLanguage, code, submissions, handleFetchStats]
+    [currentUser, solvedIds, activeLanguage, code, submissions, handleFetchStats, queueDebouncedCloudSync]
   );
 
   // Manual toggle for problem solved status from tick boxes
@@ -331,15 +361,13 @@ export default function CSESBetterApp() {
         }
 
         if (currentUser) {
-          syncUserDataToCloud(currentUser.id, {
-            solvedIds: Array.from(updated),
-          }).catch((e) => console.warn('[Cloud sync notice]:', e));
+          queueDebouncedCloudSync(currentUser.id);
         }
 
         return updated;
       });
     },
-    [currentUser, activeLanguage, code]
+    [currentUser, activeLanguage, code, queueDebouncedCloudSync]
   );
 
   // Manual toggle for problem starred status
@@ -356,15 +384,13 @@ export default function CSESBetterApp() {
         }
 
         if (currentUser) {
-          syncUserDataToCloud(currentUser.id, {
-            starredIds: Array.from(updated),
-          }).catch((e) => console.warn('[Cloud sync notice]:', e));
+          queueDebouncedCloudSync(currentUser.id);
         }
 
         return updated;
       });
     },
-    [currentUser]
+    [currentUser, queueDebouncedCloudSync]
   );
 
   const handleOpenCsesProfile = useCallback((nickOrId?: string, userId?: string) => {
@@ -384,12 +410,10 @@ export default function CSESBetterApp() {
       });
 
       if (currentUser) {
-        syncUserDataToCloud(currentUser.id, {
-          solvedIds: Array.from(new Set([...solvedIds, ...newSolvedIds])),
-        }).catch((e) => console.warn('[Cloud sync notice]:', e));
+        queueDebouncedCloudSync(currentUser.id);
       }
     },
-    [currentUser, solvedIds]
+    [currentUser, solvedIds, queueDebouncedCloudSync]
   );
 
   // Sync problem change with draft code and submissions
@@ -868,13 +892,9 @@ export default function CSESBetterApp() {
       saveSolvedProblem(currentProblem.id);
       setSolvedIds(updatedSolved);
 
-      // Cloud persistence symmetry for authenticated users
+      // Cloud persistence symmetry for authenticated users (debounced & cooldown throttled)
       if (currentUser) {
-        syncUserDataToCloud(currentUser.id, {
-          solvedIds: Array.from(updatedSolved),
-          drafts: { [`cses_draft_${currentProblem.id}_${activeLanguage}`]: code },
-          submissions: [record, ...submissions],
-        });
+        queueDebouncedCloudSync(currentUser.id);
       }
 
       try {
@@ -929,6 +949,7 @@ export default function CSESBetterApp() {
     settings,
     currentUser,
     submissions,
+    queueDebouncedCloudSync,
   ]);
 
   // Global Keyboard Shortcuts
@@ -1005,6 +1026,7 @@ export default function CSESBetterApp() {
               submissions={submissions}
               isSolved={solvedIds.has(currentProblem.id)}
               isStarred={starredIds.has(currentProblem.id)}
+              onToggleSolved={handleToggleSolved}
               onToggleStar={handleToggleStarred}
               onSelectCode={handleSelectSubmissionCode}
               userExecutionTimeMs={userBestTimeMs}

@@ -80,7 +80,7 @@ export function AuthModal({
     setSyncMessage(null);
     setError(null);
     try {
-      const res = await syncAllLocalProgressToCloud(currentUser.id);
+      const res = await syncAllLocalProgressToCloud(currentUser.id, true);
       if (res.success) {
         setSyncMessage(`Synced ${res.syncedSolves} solves & ${res.syncedNotes} notes across devices`);
       } else {

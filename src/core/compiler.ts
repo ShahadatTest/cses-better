@@ -1,6 +1,59 @@
 import { getLanguageConfig } from './templates';
 import { ExecutionOptions, ExecutionResponse, isLargeInput } from './types';
 
+export const DEFAULT_COMPILER_API_KEY = 'b4b490a8bb89d44e4f65b2d857570af2';
+
+/**
+ * Checks if an error output corresponds to a compilation error.
+ */
+export function isCompilationError(stderr: string): boolean {
+  if (!stderr) return false;
+  return /compilation\s*error|syntaxerror|compile\s*error|:\s*error:|fatal\s*error:|error:\s*cannot\s*find/i.test(
+    stderr
+  );
+}
+
+/**
+ * Normalizes and formats compiler and runner stderr into user-friendly messages.
+ */
+export function formatCompilerStderr(
+  rawStderr: string,
+  signal?: string | null,
+  exitCode?: number
+): string {
+  let stderr = rawStderr || '';
+
+  // Strip ANSI color/control codes
+  stderr = stderr.replace(/\x1B\[[0-9;]*[a-zA-Z]/g, '');
+
+  // Normalize sandbox internal filenames (e.g. code.cc -> solution.cpp)
+  stderr = stderr.replace(/(?:^|\/)[a-zA-Z0-9_\-\.\/]*\/code\.cc(?=:\d+)/g, 'solution.cpp');
+  stderr = stderr.replace(/\bcode\.cc(?=:\d+)/g, 'solution.cpp');
+
+  stderr = stderr.trim();
+
+  // If stderr is empty and the process terminated due to a signal
+  if (!stderr && signal) {
+    const signalNames: Record<string, string> = {
+      SIGSEGV: 'Segmentation Fault (invalid memory access, out-of-bounds pointer, or stack overflow)',
+      SIGFPE: 'Floating Point Exception (division or modulo by zero)',
+      SIGABRT: 'Process Aborted (assertion failure, abort() call, or uncaught exception)',
+      SIGKILL: 'Process Killed (memory limit exceeded or execution timed out)',
+      SIGBUS: 'Bus Error (misaligned memory access or invalid memory address)',
+      SIGILL: 'Illegal Instruction (invalid or privileged CPU instruction)',
+    };
+    const desc = signalNames[signal] ? ` - ${signalNames[signal]}` : '';
+    return `Runtime Error: Process terminated with signal ${signal}${desc}`;
+  }
+
+  // If stderr is empty and exitCode is non-zero
+  if (!stderr && typeof exitCode === 'number' && exitCode !== 0) {
+    return `Runtime Error: Process exited with non-zero exit code ${exitCode}`;
+  }
+
+  return stderr;
+}
+
 /**
  * Executes user source code against a compiler/runner API (such as Piston or internal /api/compile).
  */
@@ -27,7 +80,7 @@ export async function executeCode(
 
   const langConfig = getLanguageConfig(options.language);
 
-  const fileName = `solution${langConfig.extension}`;
+  const fileName = options.language === 'java' ? 'Main.java' : `solution${langConfig.extension}`;
   const payload = {
     language: langConfig.pistonLanguage,
     version: langConfig.pistonVersion,
@@ -45,9 +98,13 @@ export async function executeCode(
     'Content-Type': 'application/json',
   };
 
-  if (options.apiKey) {
-    headers['Authorization'] = options.apiKey;
-    headers['x-api-key'] = options.apiKey;
+  const effectiveApiKey =
+    options.apiKey ||
+    (endpoint.includes('onlinecompiler.io') ? DEFAULT_COMPILER_API_KEY : undefined);
+
+  if (effectiveApiKey) {
+    headers['Authorization'] = effectiveApiKey;
+    headers['x-api-key'] = effectiveApiKey;
   }
 
   const timeoutMs = options.timeoutMs ?? 30000;
@@ -146,79 +203,94 @@ export async function executeCode(
     };
   }
 
-    // 1. Direct standard ExecutionResponse format
-    if (typeof data.exitCode === 'number' && (data.output !== undefined || data.stderr !== undefined)) {
-      return {
-        output: data.output ?? '',
-        stderr: data.stderr ?? '',
-        exitCode: data.exitCode,
-        wallTimeMs: data.wallTimeMs ?? elapsedMs,
-        memoryBytes: data.memoryBytes ?? 0,
-        status: data.exitCode === 0 && !data.error ? 'success' : 'error',
-        error: data.error,
-        signal: data.signal ?? null,
-      };
-    }
-
-    // 2. Piston API format with compile / run stages
-    if (data.compile && data.compile.code !== 0) {
-      // Compilation error
-      const compileErr = data.compile.stderr || data.compile.output || 'Compilation failed';
-      return {
-        output: data.compile.output || '',
-        stderr: compileErr,
-        exitCode: data.compile.code ?? 1,
-        wallTimeMs: elapsedMs,
-        memoryBytes: 0,
-        status: 'error',
-        error: 'Compilation Error',
-        signal: data.compile.signal ?? null,
-      };
-    }
-
-    if (data.run) {
-      const runCode = data.run.code ?? 0;
-      const stdout = data.run.stdout ?? data.run.output ?? '';
-      const stderr = data.run.stderr || (runCode !== 0 ? data.run.output || '' : '');
-      const signal = data.run.signal ?? null;
-
-      // Extract memory and time if reported by runner.
-      // OnlineCompiler.io returns wall_time in milliseconds (e.g. 16, 22).
-      // If a runner returns fractional seconds (e.g. 0.05), convert to milliseconds.
-      let reportedTime: number;
-      if (typeof data.run.wall_time === 'number') {
-        if (data.run.wall_time > 0 && data.run.wall_time < 5) {
-          reportedTime = Math.round(data.run.wall_time * 1000);
-        } else {
-          reportedTime = Math.round(data.run.wall_time);
-        }
-      } else {
-        reportedTime = elapsedMs;
-      }
-      const reportedMemory = typeof data.run.memory === 'number'
-        ? data.run.memory
-        : 0;
-
-      return {
-        output: stdout,
-        stderr,
-        exitCode: runCode,
-        wallTimeMs: reportedTime,
-        memoryBytes: reportedMemory,
-        status: runCode === 0 && !signal ? 'success' : 'error',
-        error: signal ? `Process terminated with signal ${signal}` : undefined,
-        signal,
-      };
-    }
-
-    // 3. Fallback generic response
+  // 1. Direct standard ExecutionResponse format
+  if (typeof data.exitCode === 'number' && (data.output !== undefined || data.stderr !== undefined)) {
     return {
-      output: typeof data === 'string' ? data : JSON.stringify(data),
-      stderr: '',
-      exitCode: 0,
+      output: data.output ?? '',
+      stderr: formatCompilerStderr(data.stderr ?? '', data.signal, data.exitCode),
+      exitCode: data.exitCode,
+      wallTimeMs: data.wallTimeMs ?? elapsedMs,
+      memoryBytes: data.memoryBytes ?? 0,
+      status: data.exitCode === 0 && !data.error ? 'success' : 'error',
+      error: data.error,
+      signal: data.signal ?? null,
+    };
+  }
+
+  // 2. Piston API format with compile / run stages
+  if (data.compile && data.compile.code !== 0) {
+    // Compilation error
+    const compileErr = formatCompilerStderr(
+      data.compile.stderr || data.compile.output || 'Compilation failed',
+      data.compile.signal,
+      data.compile.code
+    );
+    return {
+      output: data.compile.output || '',
+      stderr: compileErr,
+      exitCode: data.compile.code ?? 1,
       wallTimeMs: elapsedMs,
       memoryBytes: 0,
-      status: 'success',
-      signal: null,
+      status: 'error',
+      error: 'Compilation Error',
+      signal: data.compile.signal ?? null,
     };
+  }
+
+  if (data.run) {
+    const runCode = data.run.code ?? 0;
+    const stdout = data.run.stdout ?? data.run.output ?? '';
+    const rawStderr = data.run.stderr || (runCode !== 0 ? data.run.output || '' : '');
+    const signal = data.run.signal ?? null;
+    const formattedStderr = formatCompilerStderr(rawStderr, signal, runCode);
+
+    // Extract memory and time if reported by runner.
+    // OnlineCompiler.io returns wall_time in milliseconds (e.g. 16, 22).
+    // If a runner returns fractional seconds (e.g. 0.05), convert to milliseconds.
+    let reportedTime: number;
+    if (typeof data.run.wall_time === 'number') {
+      if (data.run.wall_time > 0 && data.run.wall_time < 5) {
+        reportedTime = Math.round(data.run.wall_time * 1000);
+      } else {
+        reportedTime = Math.round(data.run.wall_time);
+      }
+    } else {
+      reportedTime = elapsedMs;
+    }
+    const reportedMemory = typeof data.run.memory === 'number'
+      ? data.run.memory
+      : 0;
+
+    const isCE = isCompilationError(formattedStderr);
+    let errorCategory: string | undefined = undefined;
+    if (signal) {
+      errorCategory = `Process terminated with signal ${signal}`;
+    } else if (isCE) {
+      errorCategory = 'Compilation Error';
+    } else if (runCode !== 0 && data.run.message) {
+      errorCategory = data.run.message;
+    }
+
+    return {
+      output: stdout,
+      stderr: formattedStderr,
+      exitCode: runCode,
+      wallTimeMs: reportedTime,
+      memoryBytes: reportedMemory,
+      status: runCode === 0 && !signal ? 'success' : 'error',
+      error: errorCategory,
+      signal,
+    };
+  }
+
+  // 3. Fallback generic response
+  return {
+    output: typeof data === 'string' ? data : JSON.stringify(data),
+    stderr: '',
+    exitCode: 0,
+    wallTimeMs: elapsedMs,
+    memoryBytes: 0,
+    status: 'success',
+    signal: null,
+  };
 }

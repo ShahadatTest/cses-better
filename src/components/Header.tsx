@@ -276,7 +276,7 @@ export function Header({
             </button>
 
             {isProblemOpen && (
-              <div className="absolute left-0 mt-1.5 w-72 max-h-80 overflow-y-auto rounded-lg bg-surface-1 border border-border-muted shadow-2xl py-1.5 z-50">
+              <div className="absolute left-0 mt-1.5 w-84 max-h-80 overflow-y-auto rounded-lg bg-surface-1 border border-border-muted shadow-2xl py-1.5 z-50">
                 <div className="px-3 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-border-subtle">
                   {currentCategoryObj?.name || 'Category'} Tasks (
                   {problemsInCurrentCategory.length})

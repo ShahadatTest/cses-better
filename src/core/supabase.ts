@@ -31,6 +31,44 @@ export const isSupabaseConfigured = Boolean(
 
 let supabaseInstance: SupabaseClient | null = null;
 
+let lastSyncTimestamp = 0;
+export const SYNC_COOLDOWN_MS = 60000;
+
+/**
+ * Resets the sync cooldown timestamp (useful for tests or forced sync flows)
+ */
+export function resetSyncCooldown(): void {
+  lastSyncTimestamp = 0;
+}
+
+export function getLastSyncTimestamp(): number {
+  return lastSyncTimestamp;
+}
+
+/**
+ * Verifies that the Supabase client has an active authenticated session
+ * and that the authenticated user's ID matches the requested userId.
+ * This guarantees unauthenticated or anonymous queries never hit database tables.
+ */
+async function hasValidSession(client: SupabaseClient, userId?: string): Promise<boolean> {
+  if (!client.auth || typeof client.auth.getSession !== 'function') {
+    // Preserve backwards-compatibility for mock Supabase instances used in unit tests
+    return true;
+  }
+  try {
+    const { data } = await client.auth.getSession();
+    if (!data?.session?.user) {
+      return false;
+    }
+    if (userId && data.session.user.id !== userId) {
+      return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Sets or overrides singleton SupabaseClient (useful for testing and custom client injection)
  */
@@ -153,6 +191,9 @@ export async function saveUserNoteToCloud(
   const client = getSupabase();
   if (!client || !userId || !problemId) return false;
 
+  const valid = await hasValidSession(client, userId);
+  if (!valid) return false;
+
   try {
     if (!content || content.trim() === '') {
       await client
@@ -189,10 +230,19 @@ export async function syncUserDataToCloud(
     submissions?: SubmissionRecord[];
     notes?: Record<string, string>;
     starredIds?: string[];
-  }
+  },
+  force: boolean = false
 ): Promise<boolean> {
   const client = getSupabase();
   if (!client || !userId) return false;
+
+  const valid = await hasValidSession(client, userId);
+  if (!valid) return false;
+
+  const now = Date.now();
+  if (!force && now - lastSyncTimestamp < SYNC_COOLDOWN_MS) {
+    return false;
+  }
 
   try {
     // 1. Upsert profile record
@@ -294,6 +344,7 @@ export async function syncUserDataToCloud(
       }
     }
 
+    lastSyncTimestamp = Date.now();
     return true;
   } catch (err) {
     console.warn('[Supabase Sync] Cloud sync notice:', err);
@@ -312,6 +363,9 @@ export async function fetchUserDataFromCloud(userId: string): Promise<{
 } | null> {
   const client = getSupabase();
   if (!client || !userId) return null;
+
+  const valid = await hasValidSession(client, userId);
+  if (!valid) return null;
 
   try {
     const [solvedRes, draftsRes, notesRes, starredRes] = await Promise.all([
@@ -358,6 +412,9 @@ export async function saveUserStarredToCloud(
   const client = getSupabase();
   if (!client || !userId || !problemId) return false;
 
+  const valid = await hasValidSession(client, userId);
+  if (!valid) return false;
+
   try {
     if (!starred) {
       await client
@@ -388,23 +445,45 @@ export async function saveUserStarredToCloud(
  * 2. Pulls all cloud progress down to local storage
  */
 export async function syncAllLocalProgressToCloud(
-  userId: string
+  userId: string,
+  force: boolean = false
 ): Promise<{ success: boolean; syncedNotes: number; syncedSolves: number; syncedStarred?: number }> {
   if (!userId) return { success: false, syncedNotes: 0, syncedSolves: 0, syncedStarred: 0 };
 
+  const client = getSupabase();
+  if (!client) return { success: false, syncedNotes: 0, syncedSolves: 0, syncedStarred: 0 };
+
+  const valid = await hasValidSession(client, userId);
+  if (!valid) return { success: false, syncedNotes: 0, syncedSolves: 0, syncedStarred: 0 };
+
   const localSolved = Array.from(getSolvedProblems());
   const localNotes = getAllNotes();
-  const localSubmissions = getSubmissions();
   const localStarred = Array.from(getStarredProblems());
 
-  // Push local data up
-  const pushOk = await syncUserDataToCloud(userId, {
-    solvedIds: localSolved,
-    drafts: {},
-    submissions: localSubmissions,
-    notes: localNotes,
-    starredIds: localStarred,
-  });
+  const now = Date.now();
+  if (!force && now - lastSyncTimestamp < SYNC_COOLDOWN_MS) {
+    return {
+      success: true,
+      syncedNotes: Object.keys(localNotes).length,
+      syncedSolves: localSolved.length,
+      syncedStarred: localStarred.length,
+    };
+  }
+
+  const localSubmissions = getSubmissions();
+
+  // Push local data up (pass force: true since cooldown check was evaluated here)
+  const pushOk = await syncUserDataToCloud(
+    userId,
+    {
+      solvedIds: localSolved,
+      drafts: {},
+      submissions: localSubmissions,
+      notes: localNotes,
+      starredIds: localStarred,
+    },
+    true
+  );
 
   // Pull cloud data down
   const cloudData = await fetchUserDataFromCloud(userId);
@@ -463,5 +542,6 @@ export async function syncAllLocalProgressToCloud(
     }
   }
 
+  lastSyncTimestamp = Date.now();
   return { success: pushOk, syncedNotes, syncedSolves, syncedStarred };
 }

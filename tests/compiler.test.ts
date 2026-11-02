@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { executeCode } from '../src/core/compiler';
+import { executeCode, formatCompilerStderr, isCompilationError } from '../src/core/compiler';
 
 describe('compiler: executeCode', () => {
   const originalFetch = global.fetch;
@@ -223,5 +223,62 @@ describe('compiler: executeCode', () => {
     expect(res.status).toBe('success');
     expect(res.exitCode).toBe(0);
     expect(res.stderr).toContain('Input exceeds maximum size of 100KB');
+  });
+
+  it('formats internal compiler filename code.cc into solution.cpp and strips ANSI escape codes', () => {
+    const raw = '\x1B[01;31mcode.cc:5:10: error:\x1B[0m expected semicolon';
+    const formatted = formatCompilerStderr(raw);
+    expect(formatted).toBe('solution.cpp:5:10: error: expected semicolon');
+  });
+
+  it('generates friendly error message for SIGSEGV and SIGFPE when stderr is empty', () => {
+    const segvMsg = formatCompilerStderr('', 'SIGSEGV', 139);
+    expect(segvMsg).toContain('SIGSEGV');
+    expect(segvMsg).toContain('Segmentation Fault');
+
+    const fpeMsg = formatCompilerStderr('', 'SIGFPE', 136);
+    expect(fpeMsg).toContain('SIGFPE');
+    expect(fpeMsg).toContain('Floating Point Exception');
+  });
+
+  it('detects compilation errors with isCompilationError', () => {
+    expect(isCompilationError('solution.cpp:5:10: error: expected ;')).toBe(true);
+    expect(isCompilationError('fatal error: iostream: No such file or directory')).toBe(true);
+    expect(isCompilationError('SyntaxError: Unexpected identifier')).toBe(true);
+    expect(isCompilationError('IndexOutOfBoundsException: Index 5 out of bounds for length 3')).toBe(false);
+  });
+
+  it('correctly executes C++ CP template with using namespace std;', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      text: async () =>
+        JSON.stringify({
+          run: {
+            stdout: '1 2 3\n',
+            stderr: '',
+            code: 0,
+            wall_time: 15,
+            memory: 65536,
+          },
+        }),
+    });
+
+    const res = await executeCode({
+      language: 'cpp',
+      code: `#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    vector<int> a = {1, 2, 3};
+    for (int x : a) cout << x << " ";
+    cout << "\\n";
+    return 0;
+}`,
+      stdin: '',
+    });
+
+    expect(res.status).toBe('success');
+    expect(res.exitCode).toBe(0);
+    expect(res.output).toBe('1 2 3\n');
+    expect(res.wallTimeMs).toBe(15);
   });
 });

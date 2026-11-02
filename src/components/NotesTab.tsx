@@ -146,6 +146,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
   const [isInternalAllNotesOpen, setIsInternalAllNotesOpen] = useState<boolean>(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastBlurSyncRef = useRef<number>(0);
 
   // Load note from storage when problemId changes
   useEffect(() => {
@@ -158,24 +159,13 @@ export const NotesTab: React.FC<NotesTabProps> = ({
     }
   }, [problemId]);
 
-  // Persist content to localStorage and Cloud (if logged in)
-  const persistNote = useCallback(
-    async (text: string) => {
+  // Fast, local-only note persistence to localStorage (never sends Supabase requests)
+  const saveNoteLocally = useCallback(
+    (text: string) => {
       try {
         setSaveStatus('saving');
         saveNote(problemId, text);
-
-        if (currentUser?.id) {
-          const cloudOk = await saveUserNoteToCloud(currentUser.id, problemId, text);
-          if (cloudOk) {
-            setSaveStatus('cloud-saved');
-          } else {
-            setSaveStatus('saved');
-          }
-        } else {
-          setSaveStatus('saved');
-        }
-
+        setSaveStatus('saved');
         setTimeout(() => {
           setSaveStatus('idle');
         }, 1500);
@@ -183,10 +173,34 @@ export const NotesTab: React.FC<NotesTabProps> = ({
         setSaveStatus('idle');
       }
     },
-    [problemId, currentUser]
+    [problemId]
   );
 
-  // Handle changes with debounce
+  // Syncs note to Supabase cloud only once on blur or explicit save if authenticated & 60s cooldown passed
+  const syncNoteToCloudIfEligible = useCallback(
+    async (text: string) => {
+      if (!currentUser?.id) return;
+      const now = Date.now();
+      if (now - lastBlurSyncRef.current < 60000) {
+        return; // Throttled under 1-minute cooldown
+      }
+      lastBlurSyncRef.current = now;
+      try {
+        const cloudOk = await saveUserNoteToCloud(currentUser.id, problemId, text);
+        if (cloudOk) {
+          setSaveStatus('cloud-saved');
+          setTimeout(() => {
+            setSaveStatus('idle');
+          }, 1500);
+        }
+      } catch {
+        // Silently preserve local note
+      }
+    },
+    [currentUser, problemId]
+  );
+
+  // Handle changes with debounce - strictly local, zero network requests
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const nextVal = e.target.value;
     setContent(nextVal);
@@ -197,16 +211,17 @@ export const NotesTab: React.FC<NotesTabProps> = ({
     }
 
     saveTimeoutRef.current = setTimeout(() => {
-      persistNote(nextVal);
+      saveNoteLocally(nextVal);
     }, 600);
   };
 
-  // Immediate save on blur
+  // Immediate save on blur: local write + single throttled cloud sync if eligible
   const handleBlur = () => {
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }
-    persistNote(content);
+    saveNoteLocally(content);
+    syncNoteToCloudIfEligible(content);
   };
 
   // Keyboard shortcut Ctrl+S, Ctrl+B, Ctrl+I
@@ -219,7 +234,8 @@ export const NotesTab: React.FC<NotesTabProps> = ({
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current);
       }
-      persistNote(content);
+      saveNoteLocally(content);
+      syncNoteToCloudIfEligible(content);
     } else if (isCtrl && e.key === 'b') {
       e.preventDefault();
       applyWrapFormat('**', '**', 'bold text');
@@ -242,7 +258,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
 
     const nextVal = content.slice(0, start) + replacement + content.slice(end);
     setContent(nextVal);
-    persistNote(nextVal);
+    saveNoteLocally(nextVal);
 
     setTimeout(() => {
       textarea.focus();
@@ -269,7 +285,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
       const prefixed = lines.map((l) => `${prefix}${l}`).join('\n');
       const nextVal = content.slice(0, start) + prefixed + content.slice(end);
       setContent(nextVal);
-      persistNote(nextVal);
+      saveNoteLocally(nextVal);
       setTimeout(() => {
         textarea.focus();
         textarea.setSelectionRange(start, start + prefixed.length);
@@ -277,7 +293,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
     } else {
       const nextVal = content.slice(0, lineStart) + prefix + content.slice(lineStart);
       setContent(nextVal);
-      persistNote(nextVal);
+      saveNoteLocally(nextVal);
       setTimeout(() => {
         textarea.focus();
         const cursor = start + prefix.length;
@@ -302,7 +318,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
   const insertTemplate = (templateText: string) => {
     const nextContent = content ? `${content.trim()}\n\n---\n\n${templateText}` : templateText;
     setContent(nextContent);
-    persistNote(nextContent);
+    saveNoteLocally(nextContent);
     setTemplateMenuOpen(false);
   };
 
@@ -313,7 +329,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
       const normalized = normalizeLlmMarkdown(text);
       const nextContent = content ? `${content.trim()}\n\n${normalized}` : normalized;
       setContent(nextContent);
-      persistNote(nextContent);
+      saveNoteLocally(nextContent);
     } catch {
       // Fallback: prompt user
       const pasted = window.prompt('Paste markdown or math solution from ChatGPT / Claude / DeepSeek / Gemini:');
@@ -321,7 +337,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
         const normalized = normalizeLlmMarkdown(pasted);
         const nextContent = content ? `${content.trim()}\n\n${normalized}` : normalized;
         setContent(nextContent);
-        persistNote(nextContent);
+        saveNoteLocally(nextContent);
       }
     }
   };
@@ -329,7 +345,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
   const handleClear = () => {
     if (content && window.confirm('Clear all notes for this problem?')) {
       setContent('');
-      persistNote('');
+      saveNoteLocally('');
     }
   };
 
