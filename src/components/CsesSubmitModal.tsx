@@ -70,7 +70,7 @@ export function CsesSubmitModal({
       const stored = getStoredCsesCredentials();
       if (stored) {
         setNick(stored.nick);
-        setPass(stored.pass);
+        setPass(stored.pass || '');
         setRemember(true);
       }
       setStage('IDLE');
@@ -116,9 +116,18 @@ export function CsesSubmitModal({
         return;
       }
 
+      if (submitRes.sessionCookie && !useBot) {
+        saveStoredCsesCredentials({
+          nick: nick.trim(),
+          pass,
+          sessionCookie: submitRes.sessionCookie,
+          remember,
+        });
+      }
+
       setStage('POLLING');
 
-      // Poll live CSES result passing the authenticated session cookie
+      // Poll live CSES result passing the authenticated session cookie and problemId
       const finalResult = await pollCsesVerdict(
         submitRes.submissionId,
         (partial) => {
@@ -126,7 +135,8 @@ export function CsesSubmitModal({
         },
         40,
         1500,
-        submitRes.sessionCookie
+        submitRes.sessionCookie,
+        problemId
       );
 
       setVerdictResult(finalResult);

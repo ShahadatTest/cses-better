@@ -1,5 +1,6 @@
 import {
   CsesCredentials,
+  StoredCsesAccount,
   CsesSubmitPayload,
   CsesSubmitResponse,
   CsesVerdictResult,
@@ -7,7 +8,7 @@ import {
 
 const CSES_CRED_KEY = 'cses_user_credentials';
 
-export function getStoredCsesCredentials(): CsesCredentials | null {
+export function getStoredCsesCredentials(): StoredCsesAccount | null {
   if (typeof window === 'undefined') return null;
   try {
     const raw = localStorage.getItem(CSES_CRED_KEY);
@@ -17,15 +18,21 @@ export function getStoredCsesCredentials(): CsesCredentials | null {
   }
 }
 
-export function saveStoredCsesCredentials(creds: CsesCredentials): void {
+export function saveStoredCsesCredentials(creds: Partial<StoredCsesAccount> & { nick: string }): void {
   if (typeof window === 'undefined') return;
   try {
-    if (creds.remember) {
-      // Security: Only persist nickname, userId, and remember preference; never store plaintext passwords in persistent localStorage
-      localStorage.setItem(
-        CSES_CRED_KEY,
-        JSON.stringify({ nick: creds.nick, userId: creds.userId, pass: '', remember: true })
-      );
+    if (creds.remember !== false) {
+      const existing = getStoredCsesCredentials() || ({} as StoredCsesAccount);
+      const updated: StoredCsesAccount = {
+        nick: creds.nick.trim(),
+        userId: creds.userId || existing.userId,
+        pass: creds.pass !== undefined ? creds.pass : existing.pass,
+        sessionCookie: creds.sessionCookie || existing.sessionCookie,
+        lastSyncedAt: creds.lastSyncedAt || existing.lastSyncedAt,
+        solvedCount: creds.solvedCount !== undefined ? creds.solvedCount : existing.solvedCount,
+        remember: true,
+      };
+      localStorage.setItem(CSES_CRED_KEY, JSON.stringify(updated));
     } else {
       localStorage.removeItem(CSES_CRED_KEY);
     }
@@ -43,13 +50,18 @@ export function clearStoredCsesCredentials(): void {
   }
 }
 
+export function getStoredCsesSessionCookie(): string | undefined {
+  const creds = getStoredCsesCredentials();
+  return creds?.sessionCookie;
+}
+
 /**
  * Validate CSES credentials against CSES.fi
  */
 export async function testCsesAuth(
   nick: string,
   pass: string
-): Promise<{ success: boolean; nick?: string; userId?: string; error?: string }> {
+): Promise<{ success: boolean; nick?: string; userId?: string; sessionCookie?: string; error?: string }> {
   try {
     const res = await fetch('/api/cses/auth', {
       method: 'POST',
@@ -60,6 +72,62 @@ export async function testCsesAuth(
     return data;
   } catch (err: any) {
     return { success: false, error: err?.message || 'Network error verifying CSES credentials' };
+  }
+}
+
+/**
+ * Synchronize completed problems and session from official CSES
+ */
+export async function syncCsesAccount(credentials?: {
+  nick?: string;
+  pass?: string;
+  sessionCookie?: string;
+  userId?: string;
+}): Promise<{
+  success: boolean;
+  nick?: string;
+  userId?: string;
+  sessionCookie?: string;
+  solvedCount?: number;
+  solvedProblemIds?: string[];
+  solvedProblems?: { id: string; name: string }[];
+  syncedAt?: number;
+  error?: string;
+}> {
+  try {
+    const stored = getStoredCsesCredentials();
+    const payload = {
+      nick: credentials?.nick || stored?.nick,
+      pass: credentials?.pass || stored?.pass,
+      sessionCookie: credentials?.sessionCookie || stored?.sessionCookie,
+      userId: credentials?.userId || stored?.userId,
+    };
+
+    if (!payload.nick && !payload.sessionCookie) {
+      return { success: false, error: 'No CSES account credentials found. Please connect your CSES account.' };
+    }
+
+    const res = await fetch('/api/cses/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      saveStoredCsesCredentials({
+        nick: data.nick,
+        userId: data.userId,
+        pass: payload.pass,
+        sessionCookie: data.sessionCookie,
+        lastSyncedAt: data.syncedAt || Date.now(),
+        solvedCount: data.solvedCount,
+        remember: true,
+      });
+    }
+    return data;
+  } catch (err: any) {
+    return { success: false, error: err?.message || 'Network error syncing from CSES' };
   }
 }
 
@@ -90,16 +158,20 @@ export async function pollCsesVerdict(
   onUpdate?: (result: CsesVerdictResult) => void,
   maxAttempts = 40,
   intervalMs = 1500,
-  sessionCookie?: string
+  sessionCookie?: string,
+  problemId?: string
 ): Promise<CsesVerdictResult> {
   const headers: Record<string, string> = {};
-  if (sessionCookie) {
-    headers['x-cses-session'] = sessionCookie;
+  const activeCookie = sessionCookie || getStoredCsesSessionCookie();
+  if (activeCookie) {
+    headers['x-cses-session'] = activeCookie;
   }
+
+  const queryParam = problemId ? `?problemId=${encodeURIComponent(problemId)}` : '';
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
-      const res = await fetch(`/api/cses/result/${submissionId}`, { headers });
+      const res = await fetch(`/api/cses/result/${submissionId}${queryParam}`, { headers });
       if (res.ok) {
         const result: CsesVerdictResult = await res.json();
         if (onUpdate) onUpdate(result);

@@ -236,13 +236,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       submissionId,
       resultUrl: `${CSES_BASE_URL}/problemset/result/${submissionId}/`,
       problemId,
       sessionCookie,
     });
+
+    if (sessionCookie) {
+      response.cookies.set('cses_session', sessionCookie, {
+        path: '/',
+        httpOnly: false,
+        sameSite: 'lax',
+        maxAge: 86400 * 30,
+      });
+    }
+
+    return response;
   } catch (err: any) {
     console.error('[CSES Submit] Error:', err);
     return NextResponse.json(

@@ -41,6 +41,7 @@ export interface ProblemPaneProps {
   isRefreshingStats?: boolean;
   statsRefreshedAt?: number;
   currentUser?: import('@/core/types').UserProfile | null;
+  onOpenCsesAccount?: () => void;
 }
 
 /**
@@ -87,6 +88,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
   isRefreshingStats,
   statsRefreshedAt,
   currentUser,
+  onOpenCsesAccount,
 }) => {
   const [internalTab, setInternalTab] = useState<ProblemTab>('statement');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -494,6 +496,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
             problemId={problem.id}
             problemTitle={problem.title}
             onSelectUser={onSelectUser}
+            onOpenCsesAccount={onOpenCsesAccount}
           />
         )}
 

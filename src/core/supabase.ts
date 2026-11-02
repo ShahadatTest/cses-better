@@ -174,9 +174,9 @@ export async function saveUserNoteToCloud(
 export async function syncUserDataToCloud(
   userId: string,
   data: {
-    solvedIds: string[];
-    drafts: Record<string, string>;
-    submissions: SubmissionRecord[];
+    solvedIds?: string[];
+    drafts?: Record<string, string>;
+    submissions?: SubmissionRecord[];
     notes?: Record<string, string>;
   }
 ): Promise<boolean> {
@@ -194,7 +194,7 @@ export async function syncUserDataToCloud(
     );
 
     // 2. Batch upsert solved problems
-    if (data.solvedIds.length > 0) {
+    if (data.solvedIds && data.solvedIds.length > 0) {
       const solvedPayload = data.solvedIds.map((problemId) => ({
         user_id: userId,
         problem_id: problemId,
@@ -206,7 +206,7 @@ export async function syncUserDataToCloud(
     }
 
     // 3. Batch upsert recent drafts
-    const draftEntries = Object.entries(data.drafts);
+    const draftEntries = data.drafts ? Object.entries(data.drafts) : [];
     if (draftEntries.length > 0) {
       const draftsPayload = draftEntries.map(([key, code]) => {
         // key format: cses_draft_${problemId}_${language} or ${problemId}_${language}

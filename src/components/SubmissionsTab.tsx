@@ -20,8 +20,12 @@ import {
   Eye,
   Globe,
   Laptop,
+  Lock,
+  KeyRound,
+  ExternalLink,
 } from 'lucide-react';
 import { SubmissionRecord, LanguageId, VerdictStatus, CsesSubmissionSummary } from '@/core/types';
+import { getStoredCsesSessionCookie } from '@/core/cses-client';
 import { cn } from '@/lib/utils';
 import { CsesCodeViewerModal } from './CsesCodeViewerModal';
 
@@ -31,6 +35,7 @@ export interface SubmissionsTabProps {
   problemId?: string;
   problemTitle?: string;
   onSelectUser?: (nick: string, userId?: string) => void;
+  onOpenCsesAccount?: () => void;
   className?: string;
 }
 
@@ -129,10 +134,13 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
   problemId,
   problemTitle,
   onSelectUser,
+  onOpenCsesAccount,
   className,
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<'cses_queue' | 'local'>('local');
   const [queueSubmissions, setQueueSubmissions] = useState<CsesSubmissionSummary[]>([]);
+  const [isLocked, setIsLocked] = useState<boolean>(false);
+  const [lockedMessage, setLockedMessage] = useState<string | null>(null);
   const [isLoadingQueue, setIsLoadingQueue] = useState<boolean>(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -149,10 +157,18 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
     if (!problemId) return;
     setIsLoadingQueue(true);
     try {
-      const res = await fetch(`/api/cses/submissions/${problemId}`);
+      const sessionCookie = getStoredCsesSessionCookie();
+      const headers: Record<string, string> = {};
+      if (sessionCookie) {
+        headers['x-cses-session'] = sessionCookie;
+      }
+
+      const res = await fetch(`/api/cses/submissions/${problemId}`, { headers });
       if (res.ok) {
         const data = await res.json();
         setQueueSubmissions(data.submissions || []);
+        setIsLocked(Boolean(data.isLocked));
+        setLockedMessage(data.message || null);
       }
     } catch (err) {
       console.warn('[Queue fetch] Failed to load official submissions queue:', err);
@@ -250,15 +266,50 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
               <span className="text-xs text-slate-400">Fetching live submissions queue from CSES.fi...</span>
             </div>
           ) : queueSubmissions.length === 0 ? (
-            <div className="p-10 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-2">
-              <Code2 className="w-8 h-8 text-slate-500 mx-auto mb-1 opacity-50" />
-              <p className="text-sm font-medium text-slate-200">
-                No submissions found in CSES queue for task #{problemId}.
-              </p>
-              <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                Use the "Submit to CSES" action in the editor workbench to submit your code directly to the official CSES judges.
-              </p>
-            </div>
+            isLocked ? (
+              <div className="p-8 text-center rounded-xl border border-amber-500/30 bg-amber-500/10 space-y-3">
+                <div className="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto border border-amber-500/30">
+                  <Lock className="w-5 h-5" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-sm font-semibold text-amber-200">CSES Queue Locked for Task #{problemId}</h4>
+                  <p className="text-xs text-zinc-300 max-w-md mx-auto leading-relaxed">
+                    {lockedMessage || 'Official CSES rules require solving this problem before viewing other solvers\' submissions.'}
+                  </p>
+                </div>
+                <div className="pt-2 flex flex-wrap items-center justify-center gap-2">
+                  {onOpenCsesAccount && (
+                    <button
+                      type="button"
+                      onClick={onOpenCsesAccount}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-zinc-950 hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
+                    >
+                      <KeyRound className="w-3.5 h-3.5" />
+                      <span>Connect CSES Account</span>
+                    </button>
+                  )}
+                  <a
+                    href={`https://cses.fi/problemset/task/${problemId}/`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition-colors"
+                  >
+                    <span>View on CSES.fi</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <div className="p-10 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-2">
+                <Code2 className="w-8 h-8 text-slate-500 mx-auto mb-1 opacity-50" />
+                <p className="text-sm font-medium text-slate-200">
+                  No submissions found in CSES queue for task #{problemId}.
+                </p>
+                <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                  Use the "Submit to CSES" action in the editor workbench to submit your code directly to the official CSES judges.
+                </p>
+              </div>
+            )
           ) : (
             <div className="overflow-x-auto rounded-xl border border-border-subtle bg-surface-1/60">
               <table className="w-full text-left border-collapse text-xs">

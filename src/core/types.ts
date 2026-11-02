@@ -177,6 +177,18 @@ export interface CsesCredentials {
   userId?: string;
   pass: string;
   remember?: boolean;
+  sessionCookie?: string;
+  lastSyncedAt?: number;
+}
+
+export interface StoredCsesAccount {
+  nick: string;
+  pass?: string;
+  userId?: string;
+  sessionCookie?: string;
+  lastSyncedAt?: number;
+  remember: boolean;
+  solvedCount?: number;
 }
 
 export interface CsesSubmissionSummary {

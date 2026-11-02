@@ -16,9 +16,11 @@ import {
   Database,
   User as UserIcon,
   Award,
+  KeyRound,
 } from 'lucide-react';
 import { Problem, Category, UserProfile } from '../core/types';
 import { getStoredCsesCredentials } from '../core/cses-client';
+import { cn } from '../lib/utils';
 
 export interface HeaderProps {
   currentProblem: Problem;
@@ -35,6 +37,7 @@ export interface HeaderProps {
   onOpenAuth?: () => void;
   onOpenArchive?: () => void;
   onOpenCsesProfile?: (nick?: string) => void;
+  onOpenCsesAccount?: () => void;
 }
 
 export function Header({
@@ -52,6 +55,7 @@ export function Header({
   onOpenAuth,
   onOpenArchive,
   onOpenCsesProfile,
+  onOpenCsesAccount,
 }: HeaderProps) {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isProblemOpen, setIsProblemOpen] = useState(false);
@@ -60,11 +64,19 @@ export function Header({
   const [savedCsesUserId, setSavedCsesUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    const creds = getStoredCsesCredentials();
-    if (creds?.nick) {
-      setSavedCsesNick(creds.nick);
-      if (creds.userId) setSavedCsesUserId(creds.userId);
-    }
+    const updateCreds = () => {
+      const creds = getStoredCsesCredentials();
+      if (creds?.nick) {
+        setSavedCsesNick(creds.nick);
+        if (creds.userId) setSavedCsesUserId(creds.userId);
+      } else {
+        setSavedCsesNick(null);
+        setSavedCsesUserId(null);
+      }
+    };
+    updateCreds();
+    window.addEventListener('storage', updateCreds);
+    return () => window.removeEventListener('storage', updateCreds);
   }, []);
 
   const categoryRef = useRef<HTMLDivElement>(null);
@@ -328,16 +340,34 @@ export function Header({
           </button>
         )}
 
-        {/* CSES Profile Button */}
-        {onOpenCsesProfile && (
+        {/* CSES Account & Solves Sync Button */}
+        {(onOpenCsesAccount || onOpenCsesProfile) && (
           <button
             type="button"
-            onClick={() => onOpenCsesProfile(savedCsesUserId || savedCsesNick || undefined)}
-            className="hidden sm:flex items-center space-x-1.5 text-xs text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/25 rounded-lg px-2.5 py-1.5 transition-colors"
-            title={savedCsesNick ? `CSES Account: ${savedCsesNick}${savedCsesUserId ? ` (#${savedCsesUserId})` : ''}` : 'Inspect CSES Profile'}
+            onClick={onOpenCsesAccount || (() => onOpenCsesProfile?.(savedCsesUserId || savedCsesNick || undefined))}
+            className={cn(
+              'hidden sm:flex items-center space-x-1.5 text-xs rounded-lg px-2.5 py-1.5 transition-colors border',
+              savedCsesNick
+                ? 'text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30'
+                : 'text-zinc-400 hover:text-zinc-200 bg-zinc-800/80 hover:bg-zinc-800 border-zinc-700/60'
+            )}
+            title={
+              savedCsesNick
+                ? `Connected to CSES: @${savedCsesNick}${savedCsesUserId ? ` (#${savedCsesUserId})` : ''} - Click to sync completed problems`
+                : 'Connect official CSES account to sync solved problems and unlock queues'
+            }
           >
-            <Award className="w-3.5 h-3.5" />
-            <span className="font-mono">{savedCsesNick || 'CSES User'}</span>
+            {savedCsesNick ? (
+              <>
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                <span className="font-mono font-medium">CSES: @{savedCsesNick}</span>
+              </>
+            ) : (
+              <>
+                <KeyRound className="w-3.5 h-3.5 text-amber-400" />
+                <span>Connect CSES</span>
+              </>
+            )}
           </button>
         )}
 

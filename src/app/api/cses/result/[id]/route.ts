@@ -27,7 +27,11 @@ export async function GET(
   const problemId = request.nextUrl.searchParams.get('problemId') || '';
 
   try {
-    const sessionCookie = await getSharedCsesSession();
+    const userSessionCookie =
+      request.headers.get('x-cses-session') ||
+      request.cookies.get('cses_session')?.value;
+
+    let sessionCookie = userSessionCookie || (await getSharedCsesSession());
     let html = '';
     let url = `${CSES_BASE_URL}/problemset/result/${submissionId}/`;
     let language: string | undefined;
@@ -36,10 +40,25 @@ export async function GET(
     let status: CsesVerdictResult['status'] = 'ACCEPTED';
     let rawStatusText = 'ACCEPTED';
 
-    // 1. If problemId is provided, attempt hack entry endpoint first (accessible for all public submissions)
-    if (problemId) {
+    // 1. Query official result page first (provides real-time judge testing, verdict, test details, compiler logs)
+    let res = await csesRequest(url, { cookie: sessionCookie });
+    if (res.statusCode === 200 && !res.body.includes('Submission not found')) {
+      html = res.body;
+    } else if (problemId) {
+      // 2. If result page returned 404/403 (e.g. inspecting another solver's submission), query hack entry endpoint
       const hackUrl = `${CSES_BASE_URL}/problemset/hack/${problemId}/entry/${submissionId}/`;
-      const hackRes = await csesRequest(hackUrl, { cookie: sessionCookie });
+      let hackRes = await csesRequest(hackUrl, { cookie: sessionCookie });
+
+      // Fallback: if user session couldn't read hack entry, try shared bot session
+      if (hackRes.statusCode !== 200 && userSessionCookie) {
+        try {
+          const sharedCookie = await getSharedCsesSession();
+          if (sharedCookie && sharedCookie !== sessionCookie) {
+            hackRes = await csesRequest(hackUrl, { cookie: sharedCookie });
+          }
+        } catch {}
+      }
+
       if (
         hackRes.statusCode === 200 &&
         (hackRes.body.includes('<pre') || hackRes.body.includes('prettyprint'))
@@ -63,21 +82,11 @@ export async function GET(
       }
     }
 
-    // 2. If not fetched via hack URL, query official result page
     if (!html) {
-      const res = await csesRequest(url, { cookie: sessionCookie });
-      if (res.statusCode === 200) {
-        html = res.body;
-      } else if (res.statusCode === 404 && !problemId) {
-        return NextResponse.json(
-          { error: 'CSES submission not found or requires problemId parameter for inspection' },
-          { status: 404 }
-        );
-      }
-    }
-
-    if (!html) {
-      return NextResponse.json({ error: 'CSES submission not found or private' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'CSES submission not found, private, or locked. Connect your CSES account to inspect.' },
+        { status: 404 }
+      );
     }
 
     // Parse status

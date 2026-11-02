@@ -52,6 +52,7 @@ import { AuthModal } from '../components/AuthModal';
 import { CsesSubmitModal } from '../components/CsesSubmitModal';
 import { CsesUserProfileModal } from '../components/CsesUserProfileModal';
 import { ArchiveExplorerModal } from '../components/ArchiveExplorerModal';
+import { CsesAccountModal } from '../components/CsesAccountModal';
 
 const allProblems = problemsData as Problem[];
 
@@ -71,6 +72,7 @@ export default function CSESBetterApp() {
   const [isCsesUserModalOpen, setIsCsesUserModalOpen] = useState<boolean>(false);
   const [inspectedCsesNick, setInspectedCsesNick] = useState<string>('');
   const [isArchiveModalOpen, setIsArchiveModalOpen] = useState<boolean>(false);
+  const [isCsesAccountModalOpen, setIsCsesAccountModalOpen] = useState<boolean>(false);
 
   // Settings & Storage State
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_APP_SETTINGS);
@@ -248,6 +250,26 @@ export default function CSESBetterApp() {
     setInspectedCsesNick(userId || nickOrId || '');
     setIsCsesUserModalOpen(true);
   }, []);
+
+  const handleCsesSolvesSynced = useCallback(
+    (newSolvedIds: string[]) => {
+      setSolvedIds((prev) => {
+        const updated = new Set(prev);
+        newSolvedIds.forEach((id) => {
+          updated.add(id);
+          saveSolvedProblem(id);
+        });
+        return updated;
+      });
+
+      if (currentUser) {
+        syncUserDataToCloud(currentUser.id, {
+          solvedIds: Array.from(new Set([...solvedIds, ...newSolvedIds])),
+        }).catch((e) => console.warn('[Cloud sync notice]:', e));
+      }
+    },
+    [currentUser, solvedIds]
+  );
 
   // Sync problem change with draft code and submissions
   const handleSelectProblem = useCallback(
@@ -765,6 +787,7 @@ export default function CSESBetterApp() {
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onOpenArchive={() => setIsArchiveModalOpen(true)}
         onOpenCsesProfile={handleOpenCsesProfile}
+        onOpenCsesAccount={() => setIsCsesAccountModalOpen(true)}
       />
 
       {/* Main Workspace Body */}
@@ -791,6 +814,7 @@ export default function CSESBetterApp() {
               isRefreshingStats={isRefreshingStats}
               statsRefreshedAt={statsRefreshedAt[currentProblemId]}
               currentUser={currentUser}
+              onOpenCsesAccount={() => setIsCsesAccountModalOpen(true)}
               className="h-full w-full"
             />
           </div>
@@ -907,6 +931,13 @@ export default function CSESBetterApp() {
         isOpen={isArchiveModalOpen}
         onClose={() => setIsArchiveModalOpen(false)}
         onSelectProblem={handleSelectProblem}
+      />
+
+      {/* Official CSES Account Connect & Solves Sync Modal */}
+      <CsesAccountModal
+        isOpen={isCsesAccountModalOpen}
+        onClose={() => setIsCsesAccountModalOpen(false)}
+        onSolvesSynced={handleCsesSolvesSynced}
       />
     </div>
   );

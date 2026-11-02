@@ -13,8 +13,10 @@ import {
   Download,
   AlertCircle,
   Terminal,
+  Trophy,
 } from 'lucide-react';
 import { LanguageId } from '@/core/types';
+import { getStoredCsesSessionCookie } from '@/core/cses-client';
 
 export interface CsesCodeViewerModalProps {
   isOpen: boolean;
@@ -42,6 +44,94 @@ function detectLanguageId(langStr?: string): LanguageId {
   if (lower.includes('typescript')) return 'typescript';
   if (lower === 'c') return 'c';
   return 'cpp';
+}
+
+function generateLanguageStarter(lang: string, problemId?: string, solverName?: string, score?: string): string {
+  const lower = (lang || '').toLowerCase();
+  if (lower.includes('pascal')) {
+    return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
+// Problem #${problemId || ''}
+// Language: Pascal
+program CSESSolution;
+var
+  n: int64;
+begin
+  // Optimal benchmark solution pattern for Pascal
+  read(n);
+  writeln(n);
+end.
+`;
+  }
+  if (lower.includes('python') || lower.includes('pypy')) {
+    return `# CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
+# Problem #${problemId || ''}
+# Language: Python
+import sys
+
+def main():
+    input = sys.stdin.read
+    pass
+
+if __name__ == '__main__':
+    main()
+`;
+  }
+  if (lower.includes('rust')) {
+    return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
+// Problem #${problemId || ''}
+// Language: Rust
+use std::io::{self, Read};
+
+fn main() {
+    let mut input = String::new();
+    io::stdin().read_to_string(&mut input).unwrap();
+}
+`;
+  }
+  if (lower.includes('java')) {
+    return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
+// Problem #${problemId || ''}
+// Language: Java
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    }
+}
+`;
+  }
+  if (lower.includes('go')) {
+    return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
+// Problem #${problemId || ''}
+// Language: Go
+package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+)
+
+func main() {
+    reader := bufio.NewReader(os.Stdin)
+    _ = reader
+}
+`;
+  }
+  return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
+// Problem #${problemId || ''}
+// Language: C++
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    return 0;
+}
+`;
 }
 
 export function CsesCodeViewerModal({
@@ -78,7 +168,13 @@ export function CsesCodeViewerModal({
       setIsLoading(true);
       setError(null);
       const queryParam = problemId ? `?problemId=${encodeURIComponent(problemId)}` : '';
-      fetch(`/api/cses/result/${submissionId}${queryParam}`)
+      const headers: Record<string, string> = {};
+      const sessionCookie = getStoredCsesSessionCookie();
+      if (sessionCookie) {
+        headers['x-cses-session'] = sessionCookie;
+      }
+
+      fetch(`/api/cses/result/${submissionId}${queryParam}`, { headers })
         .then((res) => {
           if (!res.ok) throw new Error('Submission code not available');
           return res.json();
@@ -101,31 +197,10 @@ export function CsesCodeViewerModal({
           setIsLoading(false);
         });
     } else {
-      // Fallback sample reference benchmark template for HOF entry
-      const langId = detectLanguageId(language);
-      const sampleFastCpp = `// CSES Problem ${problemId || ''} - ${solverName} (${score || ''})
-// Fastest / Shortest Benchmark Reference
-#pragma GCC optimize("O3,unroll-loops")
-#include <iostream>
-using namespace std;
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    
-    // Optimal benchmark solution pattern
-    long long n;
-    if (!(cin >> n)) return 0;
-    while (n != 1) {
-        cout << n << ' ';
-        if (n & 1) n = 3 * n + 1;
-        else n >>= 1;
-    }
-    cout << "1\\n";
-    return 0;
-}
-`;
-      setCode(sampleFastCpp);
+      // Language-accurate reference starter for Hall of Fame benchmark entry
+      const starter = generateLanguageStarter(language, problemId, solverName, score);
+      setCode(starter);
+      setResolvedLanguage(language);
     }
   }, [isOpen, submissionId, initialCode, language, solverName, problemId, score]);
 
@@ -242,6 +317,21 @@ int main() {
 
         {/* Code Content Body */}
         <div className="flex-1 p-4 overflow-y-auto bg-zinc-950/80 font-mono text-xs">
+          {!submissionId && !initialCode && (
+            <div className="p-3.5 mb-3 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-start gap-3 text-amber-200">
+              <Trophy className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <div className="text-xs space-y-1">
+                <div className="font-semibold text-amber-300">
+                  Official CSES Leaderboard Benchmark Entry
+                </div>
+                <p className="text-zinc-300 leading-relaxed font-sans text-[11px]">
+                  CSES ranks top solvers by runtime ({score}) and language ({resolvedLanguage}), but hides original submission IDs and source code for Hall of Fame records.
+                  To inspect verified source codes, explore the <span className="font-semibold text-sky-400">Official CSES Queue</span> on the Submissions tab or load this {resolvedLanguage} template into your editor.
+                </p>
+              </div>
+            </div>
+          )}
+
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20 text-zinc-400 space-y-2">
               <Loader2 className="w-6 h-6 animate-spin text-sky-400" />

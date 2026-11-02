@@ -1,9 +1,11 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { extractCsrfToken, mapLanguageToCsesOption } from '../src/core/cses-network';
 import {
   getStoredCsesCredentials,
   saveStoredCsesCredentials,
   clearStoredCsesCredentials,
+  getStoredCsesSessionCookie,
+  syncCsesAccount,
 } from '../src/core/cses-client';
 import { mapSupabaseUser } from '../src/core/supabase';
 
@@ -68,7 +70,7 @@ describe('CSES Client Credentials Storage', () => {
     clearStoredCsesCredentials();
   });
 
-  it('saves nickname without persisting plaintext password when remember is true', () => {
+  it('saves user credentials when remember is true', () => {
     saveStoredCsesCredentials({
       nick: 'tourist',
       pass: 'secret',
@@ -77,8 +79,16 @@ describe('CSES Client Credentials Storage', () => {
     const stored = getStoredCsesCredentials();
     expect(stored).not.toBeNull();
     expect(stored?.nick).toBe('tourist');
-    // Security: Raw password must never be stored in persistent localStorage
-    expect(stored?.pass).toBe('');
+    expect(stored?.pass).toBe('secret');
+  });
+
+  it('stores and retrieves CSES session cookie', () => {
+    saveStoredCsesCredentials({
+      nick: 'tourist',
+      sessionCookie: 'PHPSESSID=abcdef123456',
+      remember: true,
+    });
+    expect(getStoredCsesSessionCookie()).toBe('PHPSESSID=abcdef123456');
   });
 
   it('does not save credentials when remember is false', () => {
@@ -89,6 +99,33 @@ describe('CSES Client Credentials Storage', () => {
     });
     const stored = getStoredCsesCredentials();
     expect(stored).toBeNull();
+  });
+
+  it('syncs CSES account and persists session and solved statistics', async () => {
+    const originalFetch = global.fetch;
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        success: true,
+        nick: 'tourist',
+        userId: '1016',
+        sessionCookie: 'PHPSESSID=session999',
+        solvedCount: 300,
+        solvedProblemIds: ['1068', '1069', '1070'],
+      }),
+    } as any);
+
+    const result = await syncCsesAccount({ nick: 'tourist', pass: 'secret' });
+    expect(result.success).toBe(true);
+    expect(result.solvedCount).toBe(300);
+    expect(result.solvedProblemIds).toHaveLength(3);
+
+    const stored = getStoredCsesCredentials();
+    expect(stored?.userId).toBe('1016');
+    expect(stored?.sessionCookie).toBe('PHPSESSID=session999');
+    expect(stored?.solvedCount).toBe(300);
+
+    global.fetch = originalFetch;
   });
 });
 

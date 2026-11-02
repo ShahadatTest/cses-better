@@ -20,7 +20,10 @@ export async function GET(
   }
 
   try {
-    const sessionCookie = await getSharedCsesSession();
+    const userSession =
+      request.headers.get('x-cses-session') ||
+      request.cookies.get('cses_session')?.value;
+    const sessionCookie = userSession || (await getSharedCsesSession());
 
     // 1. Resolve numeric CSES user ID
     let targetUserId = resolveUserNickToId(inputParam);

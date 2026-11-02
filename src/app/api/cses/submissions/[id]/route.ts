@@ -16,7 +16,11 @@ export async function GET(
   }
 
   try {
-    const sessionCookie = await getSharedCsesSession();
+    const userSessionCookie =
+      request.headers.get('x-cses-session') ||
+      request.cookies.get('cses_session')?.value;
+
+    const sessionCookie = userSessionCookie || (await getSharedCsesSession());
     const submissions: CsesSubmissionSummary[] = [];
     const seenIds = new Set<string>();
 
@@ -110,10 +114,16 @@ export async function GET(
       }
     }
 
+    const isLocked = queueRes.statusCode === 404 && viewRes.statusCode === 404 && submissions.length === 0;
+
     return NextResponse.json({
       problemId,
       count: submissions.length,
       submissions,
+      isLocked,
+      message: isLocked
+        ? "CSES locks the submission queue until this problem is solved. Solve and submit this problem on CSES (or connect a CSES account that solved it) to unlock live submissions."
+        : undefined,
     });
   } catch (err: any) {
     console.error(`[CSES Submissions ${problemId}] Error:`, err);

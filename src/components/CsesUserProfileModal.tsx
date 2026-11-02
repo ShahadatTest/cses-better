@@ -20,6 +20,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { CsesUserProfile, ProblemStats } from '@/core/types';
+import { getStoredCsesSessionCookie } from '@/core/cses-client';
 
 interface CsesUserProfileModalProps {
   isOpen: boolean;
@@ -60,7 +61,12 @@ export function CsesUserProfileModal({
     setIsNumericNotice(false);
     setInspectedProblem(null);
     try {
-      const res = await fetch(`/api/cses/user/${encodeURIComponent(targetNick.trim())}`);
+      const headers: Record<string, string> = {};
+      const session = getStoredCsesSessionCookie();
+      if (session) {
+        headers['x-cses-session'] = session;
+      }
+      const res = await fetch(`/api/cses/user/${encodeURIComponent(targetNick.trim())}`, { headers });
       const data = await res.json();
       if (!res.ok) {
         if (data.isNumericRequired) {
