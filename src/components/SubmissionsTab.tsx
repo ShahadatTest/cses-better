@@ -28,7 +28,7 @@ import {
   ArrowUpDown,
 } from 'lucide-react';
 import { SubmissionRecord, LanguageId, VerdictStatus, CsesSubmissionSummary } from '@/core/types';
-import { getStoredCsesSessionCookie } from '@/core/cses-client';
+import { getStoredCsesSessionCookie, getStoredCsesCredentials } from '@/core/cses-client';
 import { getDraft } from '@/core/storage';
 import { cn } from '@/lib/utils';
 import { CsesCodeViewerModal } from './CsesCodeViewerModal';
@@ -41,6 +41,20 @@ export interface SubmissionsTabProps {
   onSelectUser?: (nick: string, userId?: string) => void;
   onOpenCsesAccount?: () => void;
   className?: string;
+}
+
+function detectLanguageId(langStr?: string): LanguageId {
+  if (!langStr) return 'cpp';
+  const lower = langStr.toLowerCase();
+  if (lower.includes('c++') || lower.includes('cpp')) return 'cpp';
+  if (lower.includes('python') || lower.includes('pypy')) return 'python';
+  if (lower.includes('java')) return 'java';
+  if (lower.includes('rust')) return 'rust';
+  if (lower.includes('go')) return 'go';
+  if (lower.includes('javascript') || lower.includes('node')) return 'javascript';
+  if (lower.includes('typescript')) return 'typescript';
+  if (lower === 'c') return 'c';
+  return 'cpp';
 }
 
 const LANGUAGE_LABELS: Record<string, string> = {
@@ -143,6 +157,10 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<'cses_queue' | 'local'>('local');
   const [queueSubmissions, setQueueSubmissions] = useState<CsesSubmissionSummary[]>([]);
+  const [myCsesSubmissions, setMyCsesSubmissions] = useState<CsesSubmissionSummary[]>([]);
+  const [csesAccountInfo, setCsesAccountInfo] = useState<{ nick?: string; userId?: string } | null>(null);
+  const [subFilter, setSubFilter] = useState<'all' | 'cses' | 'local'>('all');
+  const [loadingCsesId, setLoadingCsesId] = useState<string | null>(null);
   const [isLocked, setIsLocked] = useState<boolean>(false);
   const [lockedMessage, setLockedMessage] = useState<string | null>(null);
   const [isLoadingQueue, setIsLoadingQueue] = useState<boolean>(false);
@@ -165,6 +183,13 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
   const [searchUser, setSearchUser] = useState<string>('');
   const [sortBy, setSortBy] = useState<'time_desc' | 'time_asc' | 'runtime_asc' | 'size_asc'>('time_desc');
 
+  useEffect(() => {
+    const creds = getStoredCsesCredentials();
+    if (creds?.nick) {
+      setCsesAccountInfo({ nick: creds.nick, userId: creds.userId });
+    }
+  }, []);
+
   const fetchQueue = useCallback(async () => {
     if (!problemId) return;
     setIsLoadingQueue(true);
@@ -179,6 +204,10 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
       if (res.ok) {
         const data = await res.json();
         setQueueSubmissions(data.submissions || []);
+        setMyCsesSubmissions(data.mySubmissions || []);
+        if (data.currentUser) {
+          setCsesAccountInfo(data.currentUser);
+        }
         setIsLocked(Boolean(data.isLocked));
         setLockedMessage(data.message || null);
       }
@@ -194,6 +223,32 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
       fetchQueue();
     }
   }, [problemId, fetchQueue]);
+
+  const handleLoadCsesSubmission = async (id: string, langName?: string) => {
+    setLoadingCsesId(id);
+    try {
+      const sessionCookie = getStoredCsesSessionCookie();
+      const headers: Record<string, string> = {};
+      if (sessionCookie) {
+        headers['x-cses-session'] = sessionCookie;
+      }
+      const queryParam = problemId ? `?problemId=${encodeURIComponent(problemId)}` : '';
+      const res = await fetch(`/api/cses/result/${id}${queryParam}`, { headers });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.code) {
+          const targetLang = detectLanguageId(data.language || langName);
+          onSelectCode(data.code, targetLang);
+          setLoadedId(id);
+          setTimeout(() => setLoadedId(null), 1500);
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to load CSES submission code:', e);
+    } finally {
+      setLoadingCsesId(null);
+    }
+  };
 
   const filteredQueue = useMemo(() => {
     let list = [...queueSubmissions];
@@ -292,27 +347,25 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
             )}
           >
             <Laptop className="w-3.5 h-3.5 text-slate-400" />
-            <span>My Workbench Runs</span>
-            {submissions.length > 0 && (
+            <span>My Submissions & Runs</span>
+            {(submissions.length + myCsesSubmissions.length) > 0 && (
               <span className="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-surface-2 text-slate-300 font-mono">
-                {submissions.length}
+                {submissions.length + myCsesSubmissions.length}
               </span>
             )}
           </button>
         </div>
 
-        {activeSubTab === 'cses_queue' && (
-          <button
-            type="button"
-            onClick={fetchQueue}
-            disabled={isLoadingQueue}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-slate-400 hover:text-sky-300 bg-surface-2/60 hover:bg-surface-2 border border-border-subtle transition-colors disabled:opacity-50 cursor-pointer"
-            title="Refresh CSES live queue submissions"
-          >
-            <RefreshCw className={cn('w-3 h-3', isLoadingQueue && 'animate-spin text-sky-400')} />
-            <span>Refresh</span>
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={fetchQueue}
+          disabled={isLoadingQueue}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-slate-400 hover:text-sky-300 bg-surface-2/60 hover:bg-surface-2 border border-border-subtle transition-colors disabled:opacity-50 cursor-pointer"
+          title="Refresh CSES live queue and personal submissions"
+        >
+          <RefreshCw className={cn('w-3 h-3', isLoadingQueue && 'animate-spin text-sky-400')} />
+          <span>Refresh</span>
+        </button>
       </div>
 
       {/* VIEW 1: OFFICIAL CSES QUEUE */}
@@ -462,77 +515,123 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-subtle/50">
-                  {filteredQueue.map((sub) => (
-                    <tr key={sub.id} className="hover:bg-surface-2/30 transition-colors">
-                      <td className="py-2.5 px-3.5 font-mono font-medium text-sky-400">
-                        #{sub.id}
-                      </td>
-                      <td className="py-2.5 px-3.5">
-                        {sub.userId || sub.user ? (
-                          <button
-                            type="button"
-                            onClick={() => onSelectUser?.(sub.user || 'Unknown', sub.userId)}
-                            className="text-sky-400 hover:text-sky-300 hover:underline font-mono inline-flex items-center gap-1 font-medium cursor-pointer"
-                            title={`Inspect official profile for ${sub.user}`}
-                          >
-                            <span>{sub.user || 'User'}</span>
-                            {sub.userId && (
-                              <span className="text-[10px] text-slate-500 font-normal">
-                                #{sub.userId}
+                  {filteredQueue.map((sub) => {
+                    const isOwnSubmission =
+                      (csesAccountInfo?.nick && sub.user?.toLowerCase() === csesAccountInfo.nick.toLowerCase()) ||
+                      (csesAccountInfo?.userId && sub.userId === csesAccountInfo.userId) ||
+                      sub.user === 'You' ||
+                      myCsesSubmissions.some((m) => m.id === sub.id);
+
+                    return (
+                      <tr
+                        key={sub.id}
+                        className={cn(
+                          'hover:bg-surface-2/30 transition-colors',
+                          isOwnSubmission && 'bg-sky-500/10 border-l-2 border-l-sky-400'
+                        )}
+                      >
+                        <td className="py-2.5 px-3.5 font-mono font-medium text-sky-400">
+                          #{sub.id}
+                        </td>
+                        <td className="py-2.5 px-3.5">
+                          <div className="flex items-center gap-1.5">
+                            {sub.userId || sub.user ? (
+                              <button
+                                type="button"
+                                onClick={() => onSelectUser?.(sub.user || 'Unknown', sub.userId)}
+                                className="text-sky-400 hover:text-sky-300 hover:underline font-mono inline-flex items-center gap-1 font-medium cursor-pointer"
+                                title={`Inspect official profile for ${sub.user}`}
+                              >
+                                <span>{sub.user || 'User'}</span>
+                                {sub.userId && (
+                                  <span className="text-[10px] text-slate-500 font-normal">
+                                    #{sub.userId}
+                                  </span>
+                                )}
+                              </button>
+                            ) : (
+                              <span className="text-slate-500">Unknown</span>
+                            )}
+                            {isOwnSubmission && (
+                              <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                                You
                               </span>
                             )}
-                          </button>
-                        ) : (
-                          <span className="text-slate-500">Unknown</span>
-                        )}
-                      </td>
-                      <td className="py-2.5 px-3.5 text-slate-400 font-mono text-[11px]">
-                        {sub.time}
-                      </td>
-                      <td className="py-2.5 px-3.5">
-                        <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
-                          {sub.language}
-                        </span>
-                      </td>
-                      <td className="py-2.5 px-3.5 font-mono text-emerald-400 font-semibold">
-                        {sub.runtime || '—'}
-                      </td>
-                      <td className="py-2.5 px-3.5 font-mono text-slate-300">
-                        {sub.size || '—'}
-                      </td>
-                      <td className="py-2.5 px-3.5">
-                        <span
-                          className={cn(
-                            'px-2 py-0.5 rounded text-[10px] font-bold font-mono uppercase border',
-                            sub.status === 'ACCEPTED'
-                              ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                              : 'bg-rose-500/15 text-rose-300 border-rose-500/30'
-                          )}
-                        >
-                          {sub.status}
-                        </span>
-                      </td>
-                      <td className="py-2.5 px-3.5 text-right">
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setSelectedCodeEntry({
-                              submissionId: sub.id,
-                              solverName: sub.user || 'CSES Submitter',
-                              language: sub.language,
-                              score: sub.runtime,
-                              statusText: sub.status,
-                              scoreType: 'queue',
-                            })
-                          }
-                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 text-xs font-medium transition-colors cursor-pointer"
-                        >
-                          <Eye className="w-3 h-3" />
-                          <span>View Code</span>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                          </div>
+                        </td>
+                        <td className="py-2.5 px-3.5 text-slate-400 font-mono text-[11px]">
+                          {sub.time}
+                        </td>
+                        <td className="py-2.5 px-3.5">
+                          <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
+                            {sub.language}
+                          </span>
+                        </td>
+                        <td className="py-2.5 px-3.5 font-mono text-emerald-400 font-semibold">
+                          {sub.runtime || '—'}
+                        </td>
+                        <td className="py-2.5 px-3.5 font-mono text-slate-300">
+                          {sub.size || '—'}
+                        </td>
+                        <td className="py-2.5 px-3.5">
+                          <span
+                            className={cn(
+                              'px-2 py-0.5 rounded text-[10px] font-bold font-mono uppercase border',
+                              sub.status === 'ACCEPTED'
+                                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                                : 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+                            )}
+                          >
+                            {sub.status}
+                          </span>
+                        </td>
+                        <td className="py-2.5 px-3.5 text-right">
+                          <div className="flex items-center justify-end gap-1.5">
+                            {isOwnSubmission && /^\d+$/.test(sub.id) && (
+                              <button
+                                type="button"
+                                onClick={() => handleLoadCsesSubmission(sub.id, sub.language)}
+                                disabled={loadingCsesId === sub.id}
+                                className={cn(
+                                  'inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-colors border cursor-pointer',
+                                  loadedId === sub.id
+                                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                                    : 'bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30'
+                                )}
+                                title="Load this submission into the editor"
+                              >
+                                {loadingCsesId === sub.id ? (
+                                  <Loader2 className="w-3 h-3 animate-spin text-sky-400" />
+                                ) : loadedId === sub.id ? (
+                                  <Check className="w-3 h-3 text-emerald-400" />
+                                ) : (
+                                  <RotateCcw className="w-3 h-3 text-sky-400" />
+                                )}
+                                <span>{loadedId === sub.id ? 'Loaded' : 'Load'}</span>
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setSelectedCodeEntry({
+                                  submissionId: sub.id,
+                                  solverName: sub.user || 'CSES Submitter',
+                                  language: sub.language,
+                                  score: sub.runtime,
+                                  statusText: sub.status,
+                                  scoreType: 'queue',
+                                })
+                              }
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 text-xs font-medium transition-colors cursor-pointer"
+                            >
+                              <Eye className="w-3 h-3" />
+                              <span>View Code</span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -540,167 +639,442 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
         </div>
       )}
 
-      {/* VIEW 2: LOCAL WORKBENCH RUNS */}
+      {/* VIEW 2: MY SUBMISSIONS & RUNS (OFFICIAL CSES + LOCAL WORKBENCH) */}
       {activeSubTab === 'local' && (
-        <div className="space-y-3">
-          {submissions.length === 0 ? (
-            <div className="p-10 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-2">
-              <Inbox className="w-8 h-8 text-slate-500 mx-auto mb-1 opacity-50" />
-              <p className="text-sm font-semibold text-slate-200">
-                No submissions yet
-              </p>
-              <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                Run testcases or submit your code in the editor to record local verdicts, memory benchmarks, and diff revisions.
-              </p>
+        <div className="space-y-4">
+          {/* Sub-filter & CSES Account Toolbar */}
+          <div className="flex flex-wrap items-center justify-between gap-2.5 p-2 rounded-xl border border-border-subtle bg-surface-1/60 shadow-xs">
+            <div className="flex items-center gap-1.5 p-1 rounded-lg bg-surface-0/60 border border-border-subtle text-xs">
+              <button
+                type="button"
+                onClick={() => setSubFilter('all')}
+                className={cn(
+                  'px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer',
+                  subFilter === 'all'
+                    ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow-xs'
+                    : 'text-slate-400 hover:text-slate-200'
+                )}
+              >
+                All ({submissions.length + myCsesSubmissions.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setSubFilter('cses')}
+                className={cn(
+                  'flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer',
+                  subFilter === 'cses'
+                    ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow-xs'
+                    : 'text-slate-400 hover:text-slate-200'
+                )}
+              >
+                <Globe className="w-3 h-3 text-sky-400" />
+                <span>Official CSES.fi</span>
+                <span className="font-mono text-[10px] ml-0.5">({myCsesSubmissions.length})</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSubFilter('local')}
+                className={cn(
+                  'flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer',
+                  subFilter === 'local'
+                    ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow-xs'
+                    : 'text-slate-400 hover:text-slate-200'
+                )}
+              >
+                <Laptop className="w-3 h-3 text-slate-400" />
+                <span>Local Workbench</span>
+                <span className="font-mono text-[10px] ml-0.5">({submissions.length})</span>
+              </button>
             </div>
-          ) : (
-            <div className="space-y-2.5">
-              {submissions.map((sub) => {
-                const statusConfig = getStatusConfig(sub.status);
-                const StatusIcon = statusConfig.icon;
-                const isExpanded = expandedId === sub.id;
-                const memoryMb = (sub.maxMemoryBytes / (1024 * 1024)).toFixed(1);
-                const langDisplay = LANGUAGE_LABELS[sub.language] || sub.language;
 
-                return (
-                  <div
-                    key={sub.id}
-                    className="rounded-lg border border-border-subtle bg-surface-1/70 transition-all hover:border-border-muted overflow-hidden shadow-xs"
+            {/* CSES Account badge / trigger */}
+            <div className="flex items-center gap-2">
+              {csesAccountInfo?.nick ? (
+                <button
+                  type="button"
+                  onClick={onOpenCsesAccount}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 border border-emerald-500/20 font-mono transition-colors cursor-pointer"
+                  title="Click to manage CSES account or sync solves"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span>CSES: @{csesAccountInfo.nick}</span>
+                </button>
+              ) : (
+                onOpenCsesAccount && (
+                  <button
+                    type="button"
+                    onClick={onOpenCsesAccount}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 border border-amber-500/30 transition-colors cursor-pointer"
                   >
-                    {/* Header Row */}
-                    <div className="p-3.5 flex flex-wrap items-center justify-between gap-3">
-                      <div className="flex items-center gap-3">
-                        <span
-                          className={cn(
-                            'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border',
-                            statusConfig.className
-                          )}
-                        >
-                          <StatusIcon className="w-3.5 h-3.5" />
-                          <span>{statusConfig.label}</span>
-                        </span>
+                    <KeyRound className="w-3 h-3" />
+                    <span>Connect CSES Account</span>
+                  </button>
+                )
+              )}
+            </div>
+          </div>
 
-                        <span className="text-xs text-slate-300 font-medium">
-                          {sub.passedCount} / {sub.totalCount} passed
-                        </span>
+          {/* Section 1: Official CSES submissions */}
+          {(subFilter === 'all' || subFilter === 'cses') && (
+            <div className="space-y-2.5">
+              {subFilter === 'all' && myCsesSubmissions.length > 0 && (
+                <div className="flex items-center justify-between text-xs font-semibold text-slate-300 px-1 pt-1">
+                  <div className="flex items-center gap-1.5">
+                    <Globe className="w-3.5 h-3.5 text-sky-400" />
+                    <span>Official CSES.fi Submissions ({myCsesSubmissions.length})</span>
+                  </div>
+                  <span className="text-[11px] text-slate-500">Recorded on official CSES servers</span>
+                </div>
+              )}
 
-                        <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
-                          {langDisplay}
-                        </span>
-                      </div>
+              {myCsesSubmissions.length > 0 ? (
+                myCsesSubmissions.map((sub) => {
+                  const isAc = sub.status === 'ACCEPTED';
+                  const isWa = sub.status === 'WRONG ANSWER';
+                  const isTle = sub.status.includes('TIME');
 
-                      <div className="flex items-center gap-4 text-xs text-slate-400">
-                        <span className="font-mono text-emerald-400 font-medium">
-                          {sub.maxTimeMs} ms
-                        </span>
-                        <span className="font-mono text-slate-400">
-                          {memoryMb} MB
-                        </span>
-                        {sub.charCount !== undefined && (
-                          <span className="font-mono text-slate-400">
-                            {sub.charCount} ch.
+                  return (
+                    <div
+                      key={sub.id}
+                      className="rounded-lg border border-border-subtle bg-surface-1/70 transition-all hover:border-sky-500/40 overflow-hidden shadow-xs"
+                    >
+                      <div className="p-3.5 flex flex-wrap items-center justify-between gap-3">
+                        {/* Left Side: Verdict badge, CSES.fi Official badge, and details */}
+                        <div className="flex flex-wrap items-center gap-2.5">
+                          <span
+                            className={cn(
+                              'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold font-mono border',
+                              isAc
+                                ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                                : isWa
+                                ? 'bg-rose-500/15 text-rose-400 border-rose-500/30'
+                                : isTle
+                                ? 'bg-amber-500/15 text-amber-400 border-amber-500/30'
+                                : 'bg-red-500/15 text-red-400 border-red-500/30'
+                            )}
+                          >
+                            {isAc ? (
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                            ) : (
+                              <XCircle className="w-3.5 h-3.5" />
+                            )}
+                            <span>{sub.status}</span>
                           </span>
-                        )}
-                        <span title={formatExactDate(sub.timestamp)}>
-                          {formatTimestamp(sub.timestamp)}
-                        </span>
 
-                        <button
-                          type="button"
-                          onClick={() => handleLoadCode(sub.id, sub.code, sub.language)}
-                          className={cn(
-                            'inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium transition-colors border cursor-pointer',
-                            loadedId === sub.id
-                              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                              : 'bg-surface-2 hover:bg-surface-3 text-slate-200 hover:text-white border-border-subtle'
-                          )}
-                          title="Load this submission's code into the editor"
-                        >
-                          {loadedId === sub.id ? (
-                            <>
-                              <Check className="w-3 h-3 text-emerald-400" />
-                              <span>Loaded</span>
-                            </>
-                          ) : (
-                            <>
-                              <RotateCcw className="w-3 h-3 text-sky-400" />
-                              <span>Load Code</span>
-                            </>
-                          )}
-                        </button>
+                          <a
+                            href={sub.resultUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-sky-500/15 text-sky-300 border border-sky-500/30 hover:bg-sky-500/25 transition-colors"
+                            title="Open submission details on cses.fi"
+                          >
+                            <Globe className="w-3 h-3 text-sky-400" />
+                            <span>CSES.fi Official</span>
+                            <ExternalLink className="w-2.5 h-2.5 opacity-70" />
+                          </a>
 
-                        <button
-                          type="button"
-                          onClick={() => setExpandedId(isExpanded ? null : sub.id)}
-                          className="p-1 rounded hover:bg-surface-2 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
-                          title={isExpanded ? 'Collapse code' : 'View code'}
-                        >
-                          {isExpanded ? (
-                            <ChevronUp className="w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="w-4 h-4" />
+                          <span className="font-mono text-xs font-semibold text-sky-400">
+                            #{sub.id}
+                          </span>
+
+                          <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
+                            {sub.language}
+                          </span>
+                        </div>
+
+                        {/* Right Side: Runtime, Size, Time, Actions */}
+                        <div className="flex items-center gap-3 text-xs text-slate-400">
+                          <span className="font-mono text-emerald-400 font-semibold">
+                            {sub.runtime || '—'}
+                          </span>
+                          {sub.size && (
+                            <span className="font-mono text-slate-300">
+                              {sub.size}
+                            </span>
                           )}
-                        </button>
+                          <span className="font-mono text-[11px] text-slate-400">
+                            {sub.time}
+                          </span>
+
+                          {/* Load in Editor Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleLoadCsesSubmission(sub.id, sub.language)}
+                            disabled={loadingCsesId === sub.id}
+                            className={cn(
+                              'inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium transition-colors border cursor-pointer',
+                              loadedId === sub.id
+                                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                                : 'bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30'
+                            )}
+                            title="Fetch source code from official CSES and load into editor"
+                          >
+                            {loadingCsesId === sub.id ? (
+                              <>
+                                <Loader2 className="w-3 h-3 animate-spin text-sky-400" />
+                                <span>Loading...</span>
+                              </>
+                            ) : loadedId === sub.id ? (
+                              <>
+                                <Check className="w-3 h-3 text-emerald-400" />
+                                <span>Loaded</span>
+                              </>
+                            ) : (
+                              <>
+                                <RotateCcw className="w-3 h-3 text-sky-400" />
+                                <span>Load in Editor</span>
+                              </>
+                            )}
+                          </button>
+
+                          {/* View Code Button */}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setSelectedCodeEntry({
+                                submissionId: sub.id,
+                                solverName: sub.user || (csesAccountInfo?.nick ? `@${csesAccountInfo.nick}` : 'You'),
+                                language: sub.language,
+                                score: sub.runtime,
+                                statusText: sub.status,
+                                scoreType: 'queue',
+                              })
+                            }
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-surface-2 hover:bg-surface-3 text-slate-200 border border-border-subtle transition-colors cursor-pointer"
+                            title="Inspect submission source code and verdicts"
+                          >
+                            <Eye className="w-3 h-3 text-slate-400" />
+                            <span>View Code</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
-
-                    {/* Expandable Code Body */}
-                    {isExpanded && (() => {
-                      const effectiveCode = sub.code || (problemId ? getDraft(sub.problemId || problemId, sub.language) : '') || '';
-                      const isRestoredDraft = !sub.code && Boolean(effectiveCode);
-
-                      return (
-                        <div className="border-t border-border-subtle bg-surface-0/60 p-4 space-y-3">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-medium text-slate-400 flex items-center gap-1.5">
-                              <FileCode2 className="w-3.5 h-3.5 text-sky-400" />
-                              <span>Submitted Source Code ({effectiveCode.length} characters)</span>
-                              {isRestoredDraft && (
-                                <span className="text-[10px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
-                                  Draft Code Recovery
-                                </span>
-                              )}
-                            </span>
-
-                            <div className="flex items-center gap-2">
-                              <button
-                                type="button"
-                                onClick={() => handleCopyCode(sub.id, effectiveCode)}
-                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-surface-2 hover:bg-surface-3 text-slate-300 hover:text-white transition-colors cursor-pointer"
-                              >
-                                {copiedId === sub.id ? (
-                                  <>
-                                    <Check className="w-3 h-3 text-emerald-400" />
-                                    <span className="text-emerald-400">Copied</span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Copy className="w-3 h-3" />
-                                    <span>Copy</span>
-                                  </>
-                                )}
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() => handleLoadCode(sub.id, effectiveCode, sub.language)}
-                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 transition-colors cursor-pointer"
-                              >
-                                <RotateCcw className="w-3 h-3" />
-                                <span>{loadedId === sub.id ? 'Loaded!' : 'Load Code'}</span>
-                              </button>
-                            </div>
-                          </div>
-
-                          <pre className="p-3.5 rounded-lg bg-surface-0 border border-border-subtle font-mono text-xs text-slate-200 overflow-x-auto whitespace-pre leading-relaxed select-all max-h-96">
-                            {effectiveCode || '// No source code recorded for this run.'}
-                          </pre>
-                        </div>
-                      );
-                    })()}
+                  );
+                })
+              ) : subFilter === 'cses' ? (
+                <div className="p-8 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-3">
+                  <Globe className="w-8 h-8 text-slate-500 mx-auto opacity-50" />
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-semibold text-slate-200">No Official CSES.fi Submissions Found</h4>
+                    <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+                      {csesAccountInfo?.nick
+                        ? `No submissions recorded on cses.fi for task #${problemId} under @${csesAccountInfo.nick}. Submit your solution via "Submit to CSES" to test on official servers.`
+                        : 'Connect your official CSES account using the button above to automatically sync and display all submissions you made on cses.fi.'}
+                    </p>
                   </div>
-                );
-              })}
+                  {onOpenCsesAccount && !csesAccountInfo?.nick && (
+                    <button
+                      type="button"
+                      onClick={onOpenCsesAccount}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-zinc-950 hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
+                    >
+                      <KeyRound className="w-3.5 h-3.5" />
+                      <span>Connect CSES Account</span>
+                    </button>
+                  )}
+                </div>
+              ) : null}
+            </div>
+          )}
+
+          {/* Section 2: Local Workbench Runs */}
+          {(subFilter === 'all' || subFilter === 'local') && (
+            <div className="space-y-2.5">
+              {subFilter === 'all' && submissions.length > 0 && (
+                <div className="flex items-center justify-between text-xs font-semibold text-slate-300 px-1 pt-2">
+                  <div className="flex items-center gap-1.5">
+                    <Laptop className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Local Workbench Runs ({submissions.length})</span>
+                  </div>
+                  <span className="text-[11px] text-slate-500">In-browser testbench history</span>
+                </div>
+              )}
+
+              {submissions.length > 0 ? (
+                submissions.map((sub) => {
+                  const statusConfig = getStatusConfig(sub.status);
+                  const StatusIcon = statusConfig.icon;
+                  const isExpanded = expandedId === sub.id;
+                  const memoryMb = (sub.maxMemoryBytes / (1024 * 1024)).toFixed(1);
+                  const langDisplay = LANGUAGE_LABELS[sub.language] || sub.language;
+
+                  return (
+                    <div
+                      key={sub.id}
+                      className="rounded-lg border border-border-subtle bg-surface-1/70 transition-all hover:border-border-muted overflow-hidden shadow-xs"
+                    >
+                      {/* Header Row */}
+                      <div className="p-3.5 flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <span
+                            className={cn(
+                              'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border',
+                              statusConfig.className
+                            )}
+                          >
+                            <StatusIcon className="w-3.5 h-3.5" />
+                            <span>{statusConfig.label}</span>
+                          </span>
+
+                          <span className="text-xs text-slate-300 font-medium">
+                            {sub.passedCount} / {sub.totalCount} passed
+                          </span>
+
+                          <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
+                            {langDisplay}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-4 text-xs text-slate-400">
+                          <span className="font-mono text-emerald-400 font-medium">
+                            {sub.maxTimeMs} ms
+                          </span>
+                          <span className="font-mono text-slate-400">
+                            {memoryMb} MB
+                          </span>
+                          {sub.charCount !== undefined && (
+                            <span className="font-mono text-slate-400">
+                              {sub.charCount} ch.
+                            </span>
+                          )}
+                          <span title={formatExactDate(sub.timestamp)}>
+                            {formatTimestamp(sub.timestamp)}
+                          </span>
+
+                          <button
+                            type="button"
+                            onClick={() => handleLoadCode(sub.id, sub.code, sub.language)}
+                            className={cn(
+                              'inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium transition-colors border cursor-pointer',
+                              loadedId === sub.id
+                                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                                : 'bg-surface-2 hover:bg-surface-3 text-slate-200 hover:text-white border-border-subtle'
+                            )}
+                            title="Load this submission's code into the editor"
+                          >
+                            {loadedId === sub.id ? (
+                              <>
+                                <Check className="w-3 h-3 text-emerald-400" />
+                                <span>Loaded</span>
+                              </>
+                            ) : (
+                              <>
+                                <RotateCcw className="w-3 h-3 text-sky-400" />
+                                <span>Load Code</span>
+                              </>
+                            )}
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setExpandedId(isExpanded ? null : sub.id)}
+                            className="p-1 rounded hover:bg-surface-2 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+                            title={isExpanded ? 'Collapse code' : 'View code'}
+                          >
+                            {isExpanded ? (
+                              <ChevronUp className="w-4 h-4" />
+                            ) : (
+                              <ChevronDown className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Expandable Code Body */}
+                      {isExpanded && (() => {
+                        const effectiveCode = sub.code || (problemId ? getDraft(sub.problemId || problemId, sub.language) : '') || '';
+                        const isRestoredDraft = !sub.code && Boolean(effectiveCode);
+
+                        return (
+                          <div className="border-t border-border-subtle bg-surface-0/60 p-4 space-y-3">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-medium text-slate-400 flex items-center gap-1.5">
+                                <FileCode2 className="w-3.5 h-3.5 text-sky-400" />
+                                <span>Submitted Source Code ({effectiveCode.length} characters)</span>
+                                {isRestoredDraft && (
+                                  <span className="text-[10px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+                                    Draft Code Recovery
+                                  </span>
+                                )}
+                              </span>
+
+                              <div className="flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleCopyCode(sub.id, effectiveCode)}
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-surface-2 hover:bg-surface-3 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                                >
+                                  {copiedId === sub.id ? (
+                                    <>
+                                      <Check className="w-3 h-3 text-emerald-400" />
+                                      <span className="text-emerald-400">Copied</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Copy className="w-3 h-3" />
+                                      <span>Copy</span>
+                                    </>
+                                  )}
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleLoadCode(sub.id, effectiveCode, sub.language)}
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 transition-colors cursor-pointer"
+                                >
+                                  <RotateCcw className="w-3 h-3" />
+                                  <span>{loadedId === sub.id ? 'Loaded!' : 'Load Code'}</span>
+                                </button>
+                              </div>
+                            </div>
+
+                            <pre className="p-3.5 rounded-lg bg-surface-0 border border-border-subtle font-mono text-xs text-slate-200 overflow-x-auto whitespace-pre leading-relaxed select-all max-h-96">
+                              {effectiveCode || '// No source code recorded for this run.'}
+                            </pre>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  );
+                })
+              ) : subFilter === 'local' ? (
+                <div className="p-10 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-2">
+                  <Inbox className="w-8 h-8 text-slate-500 mx-auto mb-1 opacity-50" />
+                  <p className="text-sm font-semibold text-slate-200">
+                    No Local Workbench Runs
+                  </p>
+                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                    Run testcases or submit your code in the editor to record local verdicts, memory benchmarks, and diff revisions.
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          )}
+
+          {/* Empty state for All Submissions */}
+          {subFilter === 'all' && myCsesSubmissions.length === 0 && submissions.length === 0 && (
+            <div className="p-10 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-3">
+              <Inbox className="w-8 h-8 text-slate-500 mx-auto mb-1 opacity-50" />
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-slate-200">
+                  No submissions yet
+                </p>
+                <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                  Submit code directly via "Submit to CSES" or run your code in the workbench to track testcases and benchmarks.
+                </p>
+              </div>
+              {onOpenCsesAccount && !csesAccountInfo?.nick && (
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    onClick={onOpenCsesAccount}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-zinc-950 hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
+                  >
+                    <KeyRound className="w-3.5 h-3.5" />
+                    <span>Connect CSES Account</span>
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

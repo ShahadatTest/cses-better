@@ -155,6 +155,16 @@ describe('SubmissionsTab Component', () => {
     );
     expect(html).toContain('No submissions yet');
   });
+
+  it('renders official CSES Queue tab and Submissions & Runs sub-filter toolbar', () => {
+    const html = renderToStaticMarkup(
+      <SubmissionsTab submissions={mockSubmissions} onSelectCode={() => {}} problemId="1068" />
+    );
+    expect(html).toContain('Official CSES Queue');
+    expect(html).toContain('My Submissions &amp; Runs');
+    expect(html).toContain('Official CSES.fi');
+    expect(html).toContain('Local Workbench');
+  });
 });
 
 describe('NotesTab Component', () => {

@@ -22,6 +22,7 @@ export async function GET(
 
     const sessionCookie = userSessionCookie || (await getSharedCsesSession());
     const submissions: CsesSubmissionSummary[] = [];
+    const mySubmissions: CsesSubmissionSummary[] = [];
     const seenIds = new Set<string>();
 
     // 1. Fetch personal results from view page first to identify personal submissions & account details
@@ -58,6 +59,18 @@ export async function GET(
           ? 'WRONG ANSWER'
           : rawStatus.toUpperCase();
 
+        const personalRecord: CsesSubmissionSummary = {
+          id: submissionId,
+          user: personalUser,
+          userId: personalUserId,
+          time,
+          language,
+          runtime,
+          size,
+          status,
+          resultUrl: `${CSES_BASE_URL}/problemset/result/${submissionId}/`,
+        };
+
         personalSubmissionsByTime.set(time, {
           id: submissionId,
           user: personalUser,
@@ -65,19 +78,44 @@ export async function GET(
           status,
         });
 
+        mySubmissions.push(personalRecord);
+
         if (!seenIds.has(submissionId)) {
           seenIds.add(submissionId);
-          submissions.push({
+          submissions.push(personalRecord);
+        }
+      }
+
+      // Also parse sidebar "Your submissions" list to ensure no historical submissions are missed
+      const sidebarRegex =
+        /<a[^>]*href="\/problemset\/result\/(\d+)\/?"[^>]*>([\d\s:-]+)\s*<span[^>]*class="[^"]*task-score[^"]*icon\s+([^"]+)"[^>]*><\/span><\/a>/gi;
+      let sMatch: RegExpExecArray | null;
+      while ((sMatch = sidebarRegex.exec(viewRes.body)) !== null) {
+        const submissionId = sMatch[1].trim();
+        const time = sMatch[2].trim();
+        const rawStatus = sMatch[3].trim();
+
+        if (!seenIds.has(submissionId)) {
+          seenIds.add(submissionId);
+          const status = rawStatus.includes('full')
+            ? 'ACCEPTED'
+            : rawStatus.includes('zero')
+            ? 'WRONG ANSWER'
+            : rawStatus.toUpperCase();
+
+          const rec: CsesSubmissionSummary = {
             id: submissionId,
             user: personalUser,
             userId: personalUserId,
             time,
-            language,
-            runtime,
-            size,
+            language: 'C++',
+            runtime: '--',
+            size: '--',
             status,
             resultUrl: `${CSES_BASE_URL}/problemset/result/${submissionId}/`,
-          });
+          };
+          mySubmissions.push(rec);
+          submissions.push(rec);
         }
       }
     }
@@ -146,6 +184,8 @@ export async function GET(
       problemId,
       count: submissions.length,
       submissions,
+      mySubmissions,
+      currentUser: personalUser !== 'You' ? { nick: personalUser, userId: personalUserId } : undefined,
       isLocked,
       message: isLocked
         ? "CSES locks the submission queue until this problem is solved. Solve and submit this problem on CSES (or connect a CSES account that solved it) to unlock live submissions."
