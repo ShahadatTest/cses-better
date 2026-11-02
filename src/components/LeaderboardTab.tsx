@@ -564,13 +564,14 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr className="border-b border-border-subtle bg-surface-0/40 text-slate-400 font-medium uppercase tracking-wider text-[11px]">
-                    <th className="py-2.5 px-3.5">Submission ID</th>
+                    <th className="py-2.5 px-3.5">ID</th>
+                    <th className="py-2.5 px-3.5">User</th>
                     <th className="py-2.5 px-3.5">Timestamp</th>
                     <th className="py-2.5 px-3.5">Language</th>
                     <th className="py-2.5 px-3.5">Runtime</th>
                     <th className="py-2.5 px-3.5">Size</th>
                     <th className="py-2.5 px-3.5">Verdict</th>
-                    <th className="py-2.5 px-3.5 text-right">Original Code</th>
+                    <th className="py-2.5 px-3.5 text-right">Code</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-subtle/50">
@@ -578,6 +579,21 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                     <tr key={sub.id} className="hover:bg-surface-2/30 transition-colors">
                       <td className="py-2.5 px-3.5 font-mono font-medium text-sky-400">
                         #{sub.id}
+                      </td>
+                      <td className="py-2.5 px-3.5">
+                        {sub.userId || sub.user ? (
+                          <button
+                            type="button"
+                            onClick={() => onSelectUser?.(sub.user || 'Unknown', sub.userId)}
+                            className="text-sky-400 hover:text-sky-300 hover:underline font-mono inline-flex items-center gap-1 font-medium cursor-pointer"
+                            title={`Inspect official profile for ${sub.user}`}
+                          >
+                            <span>{sub.user || 'User'}</span>
+                            {sub.userId && <span className="text-[10px] text-slate-500 font-normal">#{sub.userId}</span>}
+                          </button>
+                        ) : (
+                          <span className="text-slate-500">Unknown</span>
+                        )}
                       </td>
                       <td className="py-2.5 px-3.5 text-slate-400 font-mono text-[11px]">
                         {sub.time}
@@ -610,6 +626,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                           onClick={() =>
                             setSelectedCodeEntry({
                               submissionId: sub.id,
+                              solverName: sub.user || 'CSES Submitter',
                               language: sub.language,
                               score: sub.runtime,
                               scoreType: 'queue',

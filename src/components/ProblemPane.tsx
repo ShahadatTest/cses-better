@@ -491,6 +491,9 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
           <SubmissionsTab
             submissions={submissions}
             onSelectCode={onSelectCode}
+            problemId={problem.id}
+            problemTitle={problem.title}
+            onSelectUser={onSelectUser}
           />
         )}
 

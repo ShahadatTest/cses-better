@@ -4,12 +4,14 @@ import {
   LanguageId,
   SubmissionRecord,
   UserDataExport,
+  UserProfile,
 } from './types';
 
 const DRAFT_PREFIX = 'cses_draft_';
 const NOTE_PREFIX = 'cses_notes_';
 const SUBMISSIONS_KEY = 'cses_submissions';
 const SETTINGS_KEY = 'cses_settings';
+const USER_PROFILE_KEY = 'cses_user_profile';
 
 // In-memory fallback for SSR and non-browser test environments
 const memoryStorage = new Map<string, string>();
@@ -342,5 +344,36 @@ export function getSettings(): AppSettings {
  */
 export function saveSettings(settings: AppSettings): void {
   setItem(SETTINGS_KEY, JSON.stringify(settings));
+}
+
+/**
+ * Persists authenticated user profile for immediate UI hydration
+ */
+export function saveStoredUser(user: UserProfile | null): void {
+  if (!user) {
+    removeItem(USER_PROFILE_KEY);
+    return;
+  }
+  setItem(USER_PROFILE_KEY, JSON.stringify(user));
+}
+
+/**
+ * Retrieves persisted user profile
+ */
+export function getStoredUser(): UserProfile | null {
+  const raw = getItem(USER_PROFILE_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as UserProfile;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Clears persisted user profile
+ */
+export function clearStoredUser(): void {
+  removeItem(USER_PROFILE_KEY);
 }
 

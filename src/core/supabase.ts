@@ -10,8 +10,16 @@ import {
   getSubmissions,
 } from './storage';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const DEFAULT_SUPABASE_URL = 'https://oxxctjyrtdgicbhmlhfy.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94eGN0anlydGRnaWNiaG1saGZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM1NTEwNjQsImV4cCI6MjEwOTEyNzA2NH0.YlPXSsdZEG0-WlwKDi-YMsTC7Ov2HeL0hSQD9OYJ1lo';
+
+const sanitizeEnv = (val?: string) => (val || '').replace(/^\uFEFF/, '').trim();
+
+const supabaseUrl =
+  sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_URL) || DEFAULT_SUPABASE_URL;
+const supabaseAnonKey =
+  sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) || DEFAULT_SUPABASE_ANON_KEY;
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl &&
@@ -90,16 +98,27 @@ export async function signOutUser(): Promise<{ error: Error | null }> {
  */
 export function mapSupabaseUser(user: User): UserProfile {
   const metadata = user.user_metadata || {};
+  const identityData = user.identities?.[0]?.identity_data || {};
+
   // GitHub returns user_name or preferred_username for the handle (e.g. codewithpom)
   const githubUser =
     metadata.user_name ||
     metadata.preferred_username ||
     metadata.nickname ||
-    metadata.login;
+    metadata.login ||
+    identityData.user_name ||
+    identityData.preferred_username ||
+    identityData.nickname ||
+    identityData.login;
 
-  const fullName = metadata.full_name || metadata.name;
+  const fullName =
+    metadata.full_name ||
+    metadata.name ||
+    identityData.full_name ||
+    identityData.name;
+
   const displayName = githubUser || fullName || user.email?.split('@')[0] || 'Developer';
-  const avatarUrl = metadata.avatar_url || metadata.picture;
+  const avatarUrl = metadata.avatar_url || metadata.picture || identityData.avatar_url;
   const provider = (user.app_metadata?.provider as any) || 'github';
 
   return {

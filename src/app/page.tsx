@@ -26,6 +26,9 @@ import {
   saveSolvedProblem,
   getSettings,
   saveSettings,
+  getStoredUser,
+  saveStoredUser,
+  clearStoredUser,
 } from '../core/storage';
 import {
   getSupabase,
@@ -168,6 +171,12 @@ export default function CSESBetterApp() {
       window.history.replaceState(null, '', window.location.pathname + window.location.hash);
     }
 
+    // Immediate local user hydration
+    const cachedUser = getStoredUser();
+    if (cachedUser) {
+      setCurrentUser(cachedUser);
+    }
+
     // Check for existing Supabase Auth Session
     const supabase = getSupabase();
     if (supabase) {
@@ -175,6 +184,7 @@ export default function CSESBetterApp() {
         if (data.session?.user) {
           const user = mapSupabaseUser(data.session.user);
           setCurrentUser(user);
+          saveStoredUser(user);
           // Continuous bidirectional cloud sync (solves, drafts, notes)
           syncAllLocalProgressToCloud(user.id).then(() => {
             setSolvedIds(getSolvedProblems());
@@ -186,11 +196,13 @@ export default function CSESBetterApp() {
         if (session?.user) {
           const user = mapSupabaseUser(session.user);
           setCurrentUser(user);
+          saveStoredUser(user);
           syncAllLocalProgressToCloud(user.id).then(() => {
             setSolvedIds(getSolvedProblems());
           });
         } else {
           setCurrentUser(null);
+          clearStoredUser();
         }
       });
 
@@ -864,7 +876,10 @@ export default function CSESBetterApp() {
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         currentUser={currentUser}
-        onUserChange={setCurrentUser}
+        onUserChange={(user) => {
+          setCurrentUser(user);
+          saveStoredUser(user);
+        }}
         solvedCount={solvedIds.size}
       />
 

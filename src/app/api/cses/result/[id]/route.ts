@@ -24,21 +24,63 @@ export async function GET(
     return NextResponse.json({ error: 'Valid numeric submission ID is required' }, { status: 400 });
   }
 
+  const problemId = request.nextUrl.searchParams.get('problemId') || '';
+
   try {
     const sessionCookie = await getSharedCsesSession();
-    const url = `${CSES_BASE_URL}/problemset/result/${submissionId}/`;
-    const res = await csesRequest(url, { cookie: sessionCookie });
+    let html = '';
+    let url = `${CSES_BASE_URL}/problemset/result/${submissionId}/`;
+    let language: string | undefined;
+    let totalTime: string | undefined;
+    let totalMemory: string | undefined;
+    let status: CsesVerdictResult['status'] = 'ACCEPTED';
+    let rawStatusText = 'ACCEPTED';
 
-    if (res.statusCode === 404) {
+    // 1. If problemId is provided, attempt hack entry endpoint first (accessible for all public submissions)
+    if (problemId) {
+      const hackUrl = `${CSES_BASE_URL}/problemset/hack/${problemId}/entry/${submissionId}/`;
+      const hackRes = await csesRequest(hackUrl, { cookie: sessionCookie });
+      if (
+        hackRes.statusCode === 200 &&
+        (hackRes.body.includes('<pre') || hackRes.body.includes('prettyprint'))
+      ) {
+        html = hackRes.body;
+        url = hackUrl;
+
+        // Parse hack page table (time, victim/author, lang, max time)
+        const tableMatch = html.match(/<table[^>]*>([\s\S]*?)<\/table>/i);
+        if (tableMatch) {
+          const cells = [...tableMatch[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map((c) =>
+            c[1].replace(/<[^>]+>/g, '').trim()
+          );
+          if (cells.length >= 3) {
+            language = cells[2];
+          }
+          if (cells.length >= 4) {
+            totalTime = cells[3];
+          }
+        }
+      }
+    }
+
+    // 2. If not fetched via hack URL, query official result page
+    if (!html) {
+      const res = await csesRequest(url, { cookie: sessionCookie });
+      if (res.statusCode === 200) {
+        html = res.body;
+      } else if (res.statusCode === 404 && !problemId) {
+        return NextResponse.json(
+          { error: 'CSES submission not found or requires problemId parameter for inspection' },
+          { status: 404 }
+        );
+      }
+    }
+
+    if (!html) {
       return NextResponse.json({ error: 'CSES submission not found or private' }, { status: 404 });
     }
 
-    const html = res.body;
-
     // Parse status
-    let status: CsesVerdictResult['status'] = 'UNKNOWN';
-    let rawStatusText = 'PENDING';
-
     const statusMatch = html.match(/Result:<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>/i);
     if (statusMatch) {
       rawStatusText = statusMatch[1].replace(/<[^>]+>/g, '').trim();
@@ -70,27 +112,30 @@ export async function GET(
       status = upperRaw as any;
     }
 
-    // Parse Language
-    let language: string | undefined;
-    const langMatch = html.match(/Language:<\/td>\s*<td[^>]*>([^<]+)<\/td>/i);
-    if (langMatch) language = langMatch[1].trim();
+    // Parse Language if not parsed already
+    if (!language) {
+      const langMatch = html.match(/Language:<\/td>\s*<td[^>]*>([^<]+)<\/td>/i);
+      if (langMatch) language = langMatch[1].trim();
+    }
 
-    // Parse Total Time & Memory
-    let totalTime: string | undefined;
-    let totalMemory: string | undefined;
+    // Parse Total Time & Memory if not parsed already
+    if (!totalTime) {
+      const timeMatch = html.match(/Total time:<\/td>\s*<td[^>]*>([^<]+)<\/td>/i);
+      if (timeMatch) totalTime = timeMatch[1].trim();
+    }
 
-    const timeMatch = html.match(/Total time:<\/td>\s*<td[^>]*>([^<]+)<\/td>/i);
-    if (timeMatch) totalTime = timeMatch[1].trim();
-
-    const memMatch = html.match(/Total memory:<\/td>\s*<td[^>]*>([^<]+)<\/td>/i);
-    if (memMatch) totalMemory = memMatch[1].trim();
+    if (!totalMemory) {
+      const memMatch = html.match(/Total memory:<\/td>\s*<td[^>]*>([^<]+)<\/td>/i);
+      if (memMatch) totalMemory = memMatch[1].trim();
+    }
 
     // Parse Source Code
     let code: string | undefined;
     const codeMatch =
       html.match(/<pre[^>]*class="[^"]*prettyprint[^"]*"[^>]*>([\s\S]*?)<\/pre>/i) ||
       html.match(/<pre[^>]*class="[^"]*linenums[^"]*"[^>]*>([\s\S]*?)<\/pre>/i) ||
-      html.match(/<h3>Code<\/h3>\s*<pre[^>]*>([\s\S]*?)<\/pre>/i);
+      html.match(/<h3>Code<\/h3>\s*<pre[^>]*>([\s\S]*?)<\/pre>/i) ||
+      html.match(/<pre[^>]*>([\s\S]*?)<\/pre>/i);
 
     if (codeMatch) {
       code = unescapeHtml(codeMatch[1]).trim();
@@ -107,7 +152,8 @@ export async function GET(
 
     // Parse test breakdown
     const tests: CsesTestDetail[] = [];
-    const tableRowRegex = /<tr>\s*<td>#?(\d+)<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>\s*<\/tr>/gi;
+    const tableRowRegex =
+      /<tr>\s*<td[^>]*>#?(\d+)<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>\s*(?:<td[^>]*>[\s\S]*?<\/td>\s*)?<\/tr>/gi;
     let rowMatch;
 
     while ((rowMatch = tableRowRegex.exec(html)) !== null) {

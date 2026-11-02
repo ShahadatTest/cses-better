@@ -89,11 +89,17 @@ export async function pollCsesVerdict(
   submissionId: string,
   onUpdate?: (result: CsesVerdictResult) => void,
   maxAttempts = 40,
-  intervalMs = 1500
+  intervalMs = 1500,
+  sessionCookie?: string
 ): Promise<CsesVerdictResult> {
+  const headers: Record<string, string> = {};
+  if (sessionCookie) {
+    headers['x-cses-session'] = sessionCookie;
+  }
+
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
-      const res = await fetch(`/api/cses/result/${submissionId}`);
+      const res = await fetch(`/api/cses/result/${submissionId}`, { headers });
       if (res.ok) {
         const result: CsesVerdictResult = await res.json();
         if (onUpdate) onUpdate(result);

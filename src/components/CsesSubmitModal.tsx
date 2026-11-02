@@ -58,6 +58,7 @@ export function CsesSubmitModal({
   const [nick, setNick] = useState('');
   const [pass, setPass] = useState('');
   const [remember, setRemember] = useState(true);
+  const [useBot, setUseBot] = useState(false);
 
   const [stage, setStage] = useState<SubmissionStage>('IDLE');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -81,29 +82,32 @@ export function CsesSubmitModal({
   if (!isOpen) return null;
 
   const handleSubmitToCses = async () => {
-    if (!nick.trim() || !pass) {
-      setErrorMessage('Please enter both your CSES nickname and password.');
+    if (!useBot && (!nick.trim() || !pass)) {
+      setErrorMessage('Please enter both your CSES nickname and password, or use the Shared Bot.');
       return;
     }
 
     setErrorMessage(null);
     setStage('AUTHENTICATING');
 
-    // Save or clear credentials
-    saveStoredCsesCredentials({
-      nick: nick.trim(),
-      pass,
-      remember,
-    });
+    if (!useBot) {
+      // Save or clear credentials
+      saveStoredCsesCredentials({
+        nick: nick.trim(),
+        pass,
+        remember,
+      });
+    }
 
     try {
       setStage('TRANSMITTING');
       const submitRes = await submitToCses({
-        nick: nick.trim(),
-        pass,
+        nick: useBot ? undefined : nick.trim(),
+        pass: useBot ? undefined : pass,
         problemId,
         language,
         code,
+        useDefaultBot: useBot,
       });
 
       if (!submitRes.success || !submitRes.submissionId) {
@@ -114,10 +118,16 @@ export function CsesSubmitModal({
 
       setStage('POLLING');
 
-      // Poll live CSES result
-      const finalResult = await pollCsesVerdict(submitRes.submissionId, (partial) => {
-        setVerdictResult(partial);
-      });
+      // Poll live CSES result passing the authenticated session cookie
+      const finalResult = await pollCsesVerdict(
+        submitRes.submissionId,
+        (partial) => {
+          setVerdictResult(partial);
+        },
+        40,
+        1500,
+        submitRes.sessionCookie
+      );
 
       setVerdictResult(finalResult);
       setStage('COMPLETED');
@@ -222,55 +232,90 @@ export function CsesSubmitModal({
                 </p>
               </div>
 
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-xs font-medium text-zinc-300 mb-1.5">
-                    CSES Nickname / Handle
-                  </label>
-                  <div className="relative">
-                    <User className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="text"
-                      value={nick}
-                      onChange={(e) => setNick(e.target.value)}
-                      placeholder="e.g. tourist or your_nick"
-                      className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-zinc-300 mb-1.5">
-                    CSES Password
-                  </label>
-                  <div className="relative">
-                    <Lock className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="password"
-                      value={pass}
-                      onChange={(e) => setPass(e.target.value)}
-                      placeholder="••••••••••••"
-                      className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 pt-1">
-                  <input
-                    type="checkbox"
-                    id="rememberCreds"
-                    checked={remember}
-                    onChange={(e) => setRemember(e.target.checked)}
-                    className="rounded border-zinc-700 bg-zinc-800 text-blue-500 focus:ring-0 focus:ring-offset-0 cursor-pointer"
-                  />
-                  <label
-                    htmlFor="rememberCreds"
-                    className="text-xs text-zinc-400 select-none cursor-pointer"
-                  >
-                    Remember credentials in this browser
-                  </label>
-                </div>
+              {/* Bot or Personal Account Switch */}
+              <div className="flex items-center gap-2 p-1 bg-zinc-800/60 rounded-xl border border-zinc-700/60 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setUseBot(false)}
+                  className={`flex-1 py-1.5 px-3 rounded-lg font-medium transition-all ${
+                    !useBot
+                      ? 'bg-zinc-700 text-zinc-100 shadow'
+                      : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  My CSES Account
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setUseBot(true)}
+                  className={`flex-1 py-1.5 px-3 rounded-lg font-medium transition-all ${
+                    useBot
+                      ? 'bg-emerald-600 text-white shadow'
+                      : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  Shared Bot (csesbetter99)
+                </button>
               </div>
+
+              {useBot ? (
+                <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-xs text-emerald-300 leading-relaxed space-y-1">
+                  <p className="font-semibold text-emerald-400">Submitting with Shared Bot</p>
+                  <p>
+                    Your solution will be judged directly by CSES.fi under the verified bot account <code>csesbetter99</code> (User #520654). No personal CSES credentials required.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                      CSES Nickname / Handle
+                    </label>
+                    <div className="relative">
+                      <User className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        value={nick}
+                        onChange={(e) => setNick(e.target.value)}
+                        placeholder="e.g. tourist or your_nick"
+                        className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-blue-500 transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                      CSES Password
+                    </label>
+                    <div className="relative">
+                      <Lock className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="password"
+                        value={pass}
+                        onChange={(e) => setPass(e.target.value)}
+                        placeholder="••••••••••••"
+                        className="w-full bg-zinc-800/80 border border-zinc-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-blue-500 transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-1">
+                    <input
+                      type="checkbox"
+                      id="rememberCreds"
+                      checked={remember}
+                      onChange={(e) => setRemember(e.target.checked)}
+                      className="rounded border-zinc-700 bg-zinc-800 text-blue-500 focus:ring-0 focus:ring-offset-0 cursor-pointer"
+                    />
+                    <label
+                      htmlFor="rememberCreds"
+                      className="text-xs text-zinc-400 select-none cursor-pointer"
+                    >
+                      Remember credentials in this browser
+                    </label>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

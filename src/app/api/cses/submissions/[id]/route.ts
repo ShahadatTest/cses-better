@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { csesRequest, CSES_BASE_URL, getSharedCsesSession } from '@/core/cses-network';
+import { registerUserMapping } from '@/core/cses-user-cache';
 import { CsesSubmissionSummary } from '@/core/types';
 
 export const dynamic = 'force-dynamic';
@@ -16,45 +17,97 @@ export async function GET(
 
   try {
     const sessionCookie = await getSharedCsesSession();
-    const url = `${CSES_BASE_URL}/problemset/view/${problemId}/`;
-    const res = await csesRequest(url, { cookie: sessionCookie });
+    const submissions: CsesSubmissionSummary[] = [];
+    const seenIds = new Set<string>();
 
-    if (res.statusCode === 404) {
-      return NextResponse.json({ problemId, submissions: [] });
+    // 1. Fetch official CSES Queue (all users' live submissions)
+    const queueUrl = `${CSES_BASE_URL}/problemset/queue/${problemId}/1/`;
+    const queueRes = await csesRequest(queueUrl, { cookie: sessionCookie });
+
+    if (queueRes.statusCode === 200) {
+      const queueRowRegex =
+        /<tr>\s*<td[^>]*>([\d\s:-]+)<\/td>\s*<td[^>]*>(?:<a[^>]*href="\/user\/(\d+)\/?"[^>]*>([^<]+)<\/a>|([^<]+))<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*class="[^"]*task-score[^"]*icon\s+([^"]+)"[^>]*><\/td>\s*<td[^>]*>(?:<a[^>]*href="[^"]*(?:entry|result)\/(\d+)\/?"[^>]*>.*?<\/a>)?<\/td>\s*<\/tr>/gi;
+
+      let match: RegExpExecArray | null;
+      while ((match = queueRowRegex.exec(queueRes.body)) !== null) {
+        const time = match[1].trim();
+        const userId = match[2]?.trim();
+        const user = (match[3] || match[4] || 'Anonymous').trim();
+        const language = match[5].trim();
+        const runtime = match[6].replace(/&nbsp;/g, ' ').trim();
+        const size = match[7].replace(/&nbsp;/g, ' ').trim();
+        const rawStatus = match[8].trim();
+        const submissionId = match[9]?.trim();
+
+        if (userId && user) {
+          registerUserMapping(user, userId);
+        }
+
+        const status = rawStatus.includes('full')
+          ? 'ACCEPTED'
+          : rawStatus.includes('zero')
+          ? 'WRONG ANSWER'
+          : rawStatus.toUpperCase();
+
+        if (submissionId) {
+          seenIds.add(submissionId);
+        }
+
+        submissions.push({
+          id: submissionId || `queue-${submissions.length + 1}`,
+          user,
+          userId,
+          time,
+          language,
+          runtime,
+          size,
+          status,
+          resultUrl: submissionId
+            ? `${CSES_BASE_URL}/problemset/hack/${problemId}/entry/${submissionId}/`
+            : `${CSES_BASE_URL}/problemset/queue/${problemId}/1/`,
+        });
+      }
     }
 
-    const html = res.body;
-    const submissions: CsesSubmissionSummary[] = [];
+    // 2. Also fetch personal results from view page if available
+    const viewUrl = `${CSES_BASE_URL}/problemset/view/${problemId}/`;
+    const viewRes = await csesRequest(viewUrl, { cookie: sessionCookie });
 
-    // Parse submissions table rows
-    // e.g.: <tr><td>2026-11-02 05:33:03</td><td>C++</td><td>0.00 s</td><td>152 ch.</td><td class="task-score icon full"></td><td><a class="details-link" href="/problemset/result/19253839/">details</a></td></tr>
-    const rowRegex =
-      /<tr>\s*<td[^>]*>([\d\s:-]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*class="[^"]*task-score[^"]*icon\s+([^"]+)"[^>]*><\/td>\s*<td[^>]*><a[^>]*href="\/problemset\/result\/(\d+)\/?"[^>]*>.*?<\/a><\/td>\s*<\/tr>/gi;
+    if (viewRes.statusCode === 200) {
+      const viewRowRegex =
+        /<tr>\s*<td[^>]*>([\d\s:-]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*class="[^"]*task-score[^"]*icon\s+([^"]+)"[^>]*><\/td>\s*<td[^>]*><a[^>]*href="\/problemset\/result\/(\d+)\/?"[^>]*>.*?<\/a><\/td>\s*<\/tr>/gi;
 
-    let match: RegExpExecArray | null;
-    while ((match = rowRegex.exec(html)) !== null) {
-      const time = match[1].trim();
-      const language = match[2].trim();
-      const runtime = match[3].trim();
-      const size = match[4].trim();
-      const rawStatus = match[5].trim();
-      const submissionId = match[6].trim();
+      let vMatch: RegExpExecArray | null;
+      while ((vMatch = viewRowRegex.exec(viewRes.body)) !== null) {
+        const time = vMatch[1].trim();
+        const language = vMatch[2].trim();
+        const runtime = vMatch[3].replace(/&nbsp;/g, ' ').trim();
+        const size = vMatch[4].replace(/&nbsp;/g, ' ').trim();
+        const rawStatus = vMatch[5].trim();
+        const submissionId = vMatch[6].trim();
 
-      const status = rawStatus.includes('full')
-        ? 'ACCEPTED'
-        : rawStatus.includes('zero')
-        ? 'WRONG ANSWER'
-        : rawStatus.toUpperCase();
+        const status = rawStatus.includes('full')
+          ? 'ACCEPTED'
+          : rawStatus.includes('zero')
+          ? 'WRONG ANSWER'
+          : rawStatus.toUpperCase();
 
-      submissions.push({
-        id: submissionId,
-        time,
-        language,
-        runtime,
-        size,
-        status,
-        resultUrl: `${CSES_BASE_URL}/problemset/result/${submissionId}/`,
-      });
+        if (!seenIds.has(submissionId)) {
+          seenIds.add(submissionId);
+          // Insert at the front so user's own submissions are prominent
+          submissions.unshift({
+            id: submissionId,
+            user: 'csesbetter99',
+            userId: '520654',
+            time,
+            language,
+            runtime,
+            size,
+            status,
+            resultUrl: `${CSES_BASE_URL}/problemset/result/${submissionId}/`,
+          });
+        }
+      }
     }
 
     return NextResponse.json({

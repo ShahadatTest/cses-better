@@ -4,6 +4,8 @@ import {
   extractCsrfToken,
   mapLanguageToCsesOption,
   CSES_BASE_URL,
+  DEFAULT_CSES_BOT_NICK,
+  DEFAULT_CSES_BOT_PASS,
 } from '@/core/cses-network';
 import { registerUserMapping } from '@/core/cses-user-cache';
 
@@ -70,7 +72,7 @@ function getFileExtension(language: string): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { nick, pass, problemId, language, code } = await request.json();
+    const { nick, pass, problemId, language, code, useDefaultBot } = await request.json();
 
     if (!problemId || !code) {
       return NextResponse.json(
@@ -79,7 +81,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!nick || !pass) {
+    const effectiveNick = useDefaultBot || (!nick && !pass)
+      ? (process.env.CSES_BOT_NICK?.trim() || DEFAULT_CSES_BOT_NICK)
+      : (nick ? nick.trim() : '');
+    const effectivePass = useDefaultBot || (!nick && !pass)
+      ? (process.env.CSES_BOT_PASS || DEFAULT_CSES_BOT_PASS)
+      : pass;
+
+    if (!effectiveNick || !effectivePass) {
       return NextResponse.json(
         { success: false, error: 'CSES username and password are required for official submission' },
         { status: 400 }
@@ -99,8 +108,8 @@ export async function POST(request: NextRequest) {
 
     const loginBody = new URLSearchParams({
       csrf_token: loginCsrf,
-      nick: nick.trim(),
-      pass,
+      nick: effectiveNick,
+      pass: effectivePass,
     }).toString();
 
     const authRes = await csesRequest(`${CSES_BASE_URL}/login`, {
@@ -232,6 +241,7 @@ export async function POST(request: NextRequest) {
       submissionId,
       resultUrl: `${CSES_BASE_URL}/problemset/result/${submissionId}/`,
       problemId,
+      sessionCookie,
     });
   } catch (err: any) {
     console.error('[CSES Submit] Error:', err);

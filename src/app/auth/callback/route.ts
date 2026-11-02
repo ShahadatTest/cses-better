@@ -18,8 +18,13 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     const cookieStore = cookies();
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const sanitizeEnv = (val?: string) => (val || '').replace(/^\uFEFF/, '').trim();
+    const supabaseUrl =
+      sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_URL) ||
+      'https://oxxctjyrtdgicbhmlhfy.supabase.co';
+    const supabaseAnonKey =
+      sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) ||
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94eGN0anlydGRnaWNiaG1saGZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM1NTEwNjQsImV4cCI6MjEwOTEyNzA2NH0.YlPXSsdZEG0-WlwKDi-YMsTC7Ov2HeL0hSQD9OYJ1lo';
 
     if (supabaseUrl && supabaseAnonKey) {
       const response = NextResponse.redirect(`${origin}/?auth_success=true`);

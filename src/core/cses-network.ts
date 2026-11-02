@@ -126,25 +126,46 @@ export function extractCsrfToken(html: string): string | null {
 }
 
 // Shared server-side CSES session for stats and profile scraping
+export const DEFAULT_CSES_BOT_NICK = 'csesbetter99';
+export const DEFAULT_CSES_BOT_PASS = 'SecretPass12345!';
+
 let cachedSharedCookie = '';
 let sharedCookieExpiresAt = 0;
+let inFlightSessionPromise: Promise<string> | null = null;
 
 export async function getSharedCsesSession(forceRefresh = false): Promise<string> {
+  const envSession = process.env.CSES_SESSION_COOKIE?.trim();
+  if (envSession && !forceRefresh) {
+    return envSession;
+  }
+
   const now = Date.now();
   if (!forceRefresh && cachedSharedCookie && now < sharedCookieExpiresAt) {
     return cachedSharedCookie;
   }
 
-  try {
-    const loginPage = await csesRequest(`${CSES_BASE_URL}/login`);
-    const csrfToken = extractCsrfToken(loginPage.body);
-    const initialCookie = loginPage.cookies;
+  if (inFlightSessionPromise && !forceRefresh) {
+    return inFlightSessionPromise;
+  }
 
-    if (csrfToken) {
+  inFlightSessionPromise = (async () => {
+    try {
+      const botNick = process.env.CSES_BOT_NICK?.trim() || DEFAULT_CSES_BOT_NICK;
+      const botPass = process.env.CSES_BOT_PASS || DEFAULT_CSES_BOT_PASS;
+
+      const loginPage = await csesRequest(`${CSES_BASE_URL}/login`);
+      const csrfToken = extractCsrfToken(loginPage.body);
+      const initialCookie = loginPage.cookies;
+
+      if (!csrfToken) {
+        console.warn('[CSES Shared Session] Failed to extract CSRF token from login page');
+        return cachedSharedCookie || '';
+      }
+
       const postBody = new URLSearchParams({
         csrf_token: csrfToken,
-        nick: 'csesbetter99',
-        pass: 'SecretPass12345!',
+        nick: botNick,
+        pass: botPass,
       }).toString();
 
       const authRes = await csesRequest(`${CSES_BASE_URL}/login`, {
@@ -155,18 +176,32 @@ export async function getSharedCsesSession(forceRefresh = false): Promise<string
         },
         body: postBody,
         cookie: initialCookie,
+        followRedirects: false,
       });
+
+      // Verify authentication outcome
+      const isAuthError =
+        authRes.body.includes('Invalid username or password') ||
+        (authRes.statusCode === 200 && authRes.body.includes('action="/login"'));
+
+      if (isAuthError) {
+        console.error(`[CSES Shared Session] Authentication failed for bot nick: ${botNick}`);
+        return '';
+      }
 
       const sessionCookie = authRes.cookies || initialCookie;
       cachedSharedCookie = sessionCookie;
-      sharedCookieExpiresAt = now + 45 * 60 * 1000; // 45 min TTL
+      sharedCookieExpiresAt = Date.now() + 45 * 60 * 1000; // 45 min TTL
       return cachedSharedCookie;
+    } catch (err) {
+      console.warn('[CSES Shared Session] Auth handshake notice:', err);
+      return cachedSharedCookie || '';
+    } finally {
+      inFlightSessionPromise = null;
     }
-  } catch (err) {
-    console.warn('[CSES Shared Session] Auth handshake notice:', err);
-  }
+  })();
 
-  return '';
+  return inFlightSessionPromise;
 }
 
 /**

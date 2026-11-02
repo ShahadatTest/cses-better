@@ -181,6 +181,8 @@ export interface CsesCredentials {
 
 export interface CsesSubmissionSummary {
   id: string;
+  user?: string;
+  userId?: string;
   time: string;
   language: string;
   runtime?: string;
@@ -190,17 +192,20 @@ export interface CsesSubmissionSummary {
 }
 
 export interface CsesSubmitPayload {
-  nick: string;
-  pass: string;
+  nick?: string;
+  pass?: string;
   problemId: string;
   language: LanguageId;
   code: string;
+  useDefaultBot?: boolean;
 }
 
 export interface CsesSubmitResponse {
   success: boolean;
   submissionId?: string;
   resultUrl?: string;
+  problemId?: string;
+  sessionCookie?: string;
   error?: string;
 }
 

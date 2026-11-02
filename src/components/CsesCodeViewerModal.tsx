@@ -77,7 +77,8 @@ export function CsesCodeViewerModal({
     if (submissionId) {
       setIsLoading(true);
       setError(null);
-      fetch(`/api/cses/result/${submissionId}`)
+      const queryParam = problemId ? `?problemId=${encodeURIComponent(problemId)}` : '';
+      fetch(`/api/cses/result/${submissionId}${queryParam}`)
         .then((res) => {
           if (!res.ok) throw new Error('Submission code not available');
           return res.json();
