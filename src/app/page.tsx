@@ -487,21 +487,39 @@ export default function CSESBetterApp() {
     if (isLoadingOfficialTests) return;
     setIsLoadingOfficialTests(true);
     try {
-      const res = await fetch(`/api/tests/${currentProblemId}?format=json`);
+      const JSZip = (await import('jszip')).default;
+      const res = await fetch(`https://cses-tests.pages.dev/${currentProblemId}.zip`);
       if (!res.ok) throw new Error('Failed to load official tests');
-      const data = await res.json();
-      if (Array.isArray(data.testCases) && data.testCases.length > 0) {
+      const zip = await JSZip.loadAsync(await res.arrayBuffer());
+      const inputFiles = Object.keys(zip.files)
+        .map((name) => ({ name, match: name.match(/^(\d+)\.in$/) }))
+        .filter((file): file is { name: string; match: RegExpMatchArray } => !!file.match)
+        .sort((a, b) => Number(a.match[1]) - Number(b.match[1]));
+      const testCases: TestCase[] = [];
+      for (const { name, match } of inputFiles) {
+        const number = Number(match[1]);
+        const inputFile = zip.file(name);
+        const outputFile = zip.file(`${number}.out`);
+        if (inputFile && outputFile) {
+          const [input, expectedOutput] = await Promise.all([
+            inputFile.async('text'),
+            outputFile.async('text'),
+          ]);
+          testCases.push({ id: `official-${number}`, input, expectedOutput, isSample: number === 1 });
+        }
+      }
+      if (testCases.length > 0) {
         setCustomTestCases((prev) => {
           const existing = prev[currentProblemId] || [];
           const existingIds = new Set(existing.map((t) => t.id));
-          const newTests = data.testCases.filter((t: TestCase) => !existingIds.has(t.id));
+          const newTests = testCases.filter((t) => !existingIds.has(t.id));
           return {
             ...prev,
             [currentProblemId]: [...existing, ...newTests],
           };
         });
-        if (data.testCases[0]) {
-          setActiveTestCaseId(data.testCases[0].id);
+        if (testCases[0]) {
+          setActiveTestCaseId(testCases[0].id);
         }
       }
     } catch (err) {
