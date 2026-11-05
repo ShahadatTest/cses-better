@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "For n=1 or n=2, a valid arrangement exists and can be written directly.",
+    "For n=3, no ordering avoids placing a consecutive pair next to each other.",
+    "For n>=4, put all evens together, then all odds; verify the join as well as neighbors within each group."
+  ],
+  "analogy": "Separate even and odd numbers into two blocks so consecutive values are usually far apart.",
+  "example": "For n=5, 2 4 1 3 5 works: neighboring differences are 2,3,2,2, none is 1.",
+  "algorithm": "Handle the small cases explicitly; otherwise output evens in increasing order followed by odds in increasing order.",
+  "correctness": "Within each parity block consecutive printed values differ by 2, and for n>=4 the boundary between the blocks is not a consecutive pair.",
+  "complexity": "O(n) time and O(1) extra space apart from output.",
+  "visual": {
+    "kind": "trace",
+    "title": "Permutations: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=5, 2 4 1 3 5 works: neighboring differences are 2,3,2,2, none is 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Handle the small cases explicitly; otherwise output evens in increasing order followed by odds in increasing order."
+      },
+      {
+        "label": "Result",
+        "detail": "4 2 5 3 1"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5"
+      ]
+    ],
+    "caption": "Illustrative example - For n=5, 2 4 1 3 5 works: neighboring differences are 2,3,2,2, none is 1."
+  }
+}

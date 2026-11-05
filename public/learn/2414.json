@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "Sort the unknown list as well as the pair sums.",
+    "The smallest two sums must be a1+a2 and a1+a3.",
+    "Try which early sum is a2+a3, then reconstruct greedily with a multiset."
+  ],
+  "analogy": "Guess the first three numbers from three pair sums, then repeatedly remove the sums forced by the next smallest number.",
+  "example": "For pair sums [3,4,5], the three equations give numbers [1,2,3].",
+  "algorithm": "Sort B. Let s12=B[0] and s13=B[1]. Try each of the first n pair sums as s23. Compute a1=(s12+s13-s23)/2, a2=s12-a1 and a3=s13-a1, rejecting nonintegral, nonpositive or unordered candidates. Put all B values in a frequency multiset and remove the three pair sums of these initial numbers. While fewer than n numbers are known, the smallest remaining sum must be a1+next; derive next, require it to be at least the preceding number, and remove its sum with every known number. If every removal succeeds and the multiset becomes empty, output the list.",
+  "correctness": "For sorted A, its two smallest pair sums are a1+a2 and a1+a3, and a2+a3 is among the first n pair sums because every sum preceding it must include a1. Once the initial numbers are fixed, all sums among known numbers are removed, so the smallest remaining sum is a1 plus the smallest unknown number. The multiset checks every required occurrence, including duplicates.",
+  "complexity": "For n numbers, at most O(n) candidates each perform O(n^2) multiset operations, for O(n^3 log n) time and O(n^2) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "List of Sums: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For pair sums [3,4,5], the three equations give numbers [1,2,3]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort B. Let s12=B[0] and s13=B[1]. Try each of the first n pair sums as s23. Compute a1=(s12+s13-s23)/2, a2=s12-a1 and a3=s13-a1, rejecting nonintegral, nonpositive or unordered candidates. Put all B values in a frequency multiset and remove the three pair sums of these initial numbers. While fewer than n numbers are known, the smallest remaining sum must be a1+next; derive next, require it to be at least the preceding number, and remove its sum with every known number. If every removal succeeds and the multiset becomes empty, output the list."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Pair sums",
+      "Equations result"
+    ],
+    "rows": [
+      [
+        "3,4,5",
+        "values 1,2,3"
+      ]
+    ],
+    "caption": "Illustrative example - The three pair sums determine the original numbers."
+  }
+}

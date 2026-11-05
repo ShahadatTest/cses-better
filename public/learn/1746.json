@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Every value is between 1 and m, and neighbors may differ by at most one.",
+    "Let dp[v] count valid prefixes ending with value v.",
+    "At each position, a fixed input value permits only that value; zero permits all values."
+  ],
+  "analogy": "Extend each partial array by a value matching the next clue and close to its last value.",
+  "example": "For description [2,0,2], the middle can be 1, 2, or 3, giving three arrays.",
+  "algorithm": "Initialize first-position counts according to its known value or all possibilities. For each next position, dpNew[v]=dp[v-1]+dp[v]+dp[v+1] if allowed by the clue, modulo the modulus; sum final states.",
+  "correctness": "A valid prefix ending at v can be extended exactly from previous endings v-1, v, or v+1; the clue filter enforces known positions.",
+  "complexity": "O(nm) time and O(m) space.",
+  "visual": {
+    "kind": "dp",
+    "title": "Array Description: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For description [2,0,2], the middle can be 1, 2, or 3, giving three arrays."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize first-position counts according to its known value or all possibilities. For each next position, dpNew[v]=dp[v-1]+dp[v]+dp[v+1] if allowed by the clue, modulo the modulus; sum final states."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "0",
+      "1",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For description [2,0,2], the middle can be 1, 2, or 3, giving three arrays."
+  }
+}

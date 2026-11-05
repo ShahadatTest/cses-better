@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "How can you check whether writing all numbers from 1 through x uses any digit more than n times?",
+    "Count each digit by place value; zero needs special treatment because leading zeroes are not written.",
+    "The check is monotone in x, so binary-search the largest feasible x."
+  ],
+  "analogy": "Imagine ten counters, one per key: writing another number can only increase the counters.",
+  "example": "For n=5, writing 1 through 12 uses five ones; 13 would use a sixth, so the answer is 12.",
+  "algorithm": "For a candidate x, count occurrences of every digit in 1..x using high, current, and low parts at each decimal place, subtracting leading zeroes for digit 0. Binary-search the largest x whose ten counts are all at most n. Use 10n+1 as an infeasible upper bound: the numbers ending in 1 already use that key n+1 times. Use wide integer arithmetic for powers and counts.",
+  "correctness": "Every place-value count includes exactly the written digits at that position. Since extending the list never decreases any count, binary search finds the last feasible endpoint.",
+  "complexity": "O((log U)^2) time and O(1) auxiliary space, for a safe upper bound U on the answer.",
+  "visual": {
+    "kind": "trace",
+    "title": "Writing Numbers: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=5, writing 1 through 12 uses five ones; 13 would use a sixth, so the answer is 12."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For a candidate x, count occurrences of every digit in 1..x using high, current, and low parts at each decimal place, subtracting leading zeroes for digit 0. Binary-search the largest x whose ten counts are all at most n. Use 10n+1 as an infeasible upper bound: the numbers ending in 1 already use that key n+1 times. Use wide integer arithmetic for powers and counts."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Range written",
+      "Count of digit 1",
+      "Stop?"
+    ],
+    "rows": [
+      [
+        "1..12",
+        "5",
+        "No"
+      ],
+      [
+        "1..13",
+        "6",
+        "Yes"
+      ]
+    ],
+    "caption": "Illustrative example - The largest n whose written numbers contain five ones is 12."
+  }
+}

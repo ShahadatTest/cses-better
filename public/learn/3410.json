@@ -1,0 +1,54 @@
+{
+  "hints": [
+    "Manhattan distance is |dx|+|dy|.",
+    "It equals the maximum difference in either x+y or x-y.",
+    "Maintain the minimum and maximum of both transformed coordinates as points arrive."
+  ],
+  "analogy": "Two diagonal rulers replace separate horizontal and vertical measurements.",
+  "example": "For (0,0) and (2,-1), x-y differs by 3, so their Manhattan distance is 3.",
+  "algorithm": "For each new point update the minimum and maximum of x+y and x-y. Print the larger of their two ranges; with one point both ranges are zero. Use wide integers.",
+  "correctness": "For every pair, |dx|+|dy| equals max(|dx+dy|,|dx-dy|). The greatest absolute difference among transformed values is their maximum minus minimum, so the larger range is the desired diameter.",
+  "complexity": "For n points, O(n) time and O(1) extra space.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Maximum Manhattan Distances: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For (0,0) and (2,-1), x-y differs by 3, so their Manhattan distance is 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each new point update the minimum and maximum of x+y and x-y. Print the larger of their two ranges; with one point both ranges are zero. Use wide integers."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "(0,0)",
+        "x": 10,
+        "y": 10
+      },
+      {
+        "id": "2",
+        "label": "(2,-1)",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "edges": [],
+    "caption": "Illustrative example - For (0,0) and (2,-1), x-y differs by 3, so their Manhattan distance is 3."
+  }
+}

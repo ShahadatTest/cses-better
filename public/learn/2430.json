@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "Track distinct subsequences starting with each bit, counting the empty subsequence in both totals.",
+    "Prepending one bit adds the other count to its own count.",
+    "Reverse this process with Euclid?s algorithm and try all possible coprime final counts."
+  ],
+  "analogy": "A binary string corresponds to a path from (1,1) using additions of one coordinate to the other.",
+  "example": "The string 101 has 6 distinct nonempty subsequences; the corresponding final pair has total 8 when each category includes the empty subsequence.",
+  "algorithm": "Let N=n+2. For every a from 1 to N-1 with gcd(a,N)=1, set b=N-a. Compute the number of subtractive Euclid steps needed to reduce (a,b) to (1,1), using integer division to batch repeated subtractions; keep the pair with minimum length. Re-run those subtractions, writing 1 when a>b and 0 when b>a, to construct the string. Output that shortest trace.",
+  "correctness": "For a string, let a and b count distinct subsequences beginning with 1 and 0, with the empty subsequence included in each. Prepending 1 changes (a,b) to (a+b,b), and prepending 0 changes it to (a,a+b). Hence the nonempty count is a+b-2, and every string gives a unique coprime pair reachable from (1,1). Subtractive Euclid reverses these steps, so trying all pairs of total n+2 and minimizing trace length finds a shortest string.",
+  "complexity": "For n up to 10^6, scanning all candidate pairs with batched Euclid takes O(n log n) time and O(log n) space for the chosen output.",
+  "visual": {
+    "kind": "trace",
+    "title": "Binary Subsequences: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "The string 101 has 6 distinct nonempty subsequences; the corresponding final pair has total 8 when each category includes the empty subsequence."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let N=n+2. For every a from 1 to N-1 with gcd(a,N)=1, set b=N-a. Compute the number of subtractive Euclid steps needed to reduce (a,b) to (1,1), using integer division to batch repeated subtractions; keep the pair with minimum length. Re-run those subtractions, writing 1 when a>b and 0 when b>a, to construct the string. Output that shortest trace."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "String",
+      "Distinct nonempty subsequences",
+      "Pair total"
+    ],
+    "rows": [
+      [
+        "101",
+        "6",
+        "8"
+      ]
+    ],
+    "caption": "Illustrative example - The final pair count includes the empty subsequence in each category."
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "hints": [
+    "One color class must be an independent set.",
+    "Represent a subset of at most 16 vertices by a bit mask.",
+    "For each mask, try choosing an independent submask as the next color class."
+  ],
+  "analogy": "Partition a group into the fewest teams where no conflicting pair shares a team.",
+  "example": "A four-cycle can use one color for vertices 1 and 3 and another for 2 and 4, so the answer is 2.",
+  "algorithm": "Precompute whether every vertex subset is independent: remove one vertex and check that it has no neighbor in the remaining subset. Set dp[0]=0. For every nonempty mask, enumerate independent nonempty submasks containing a fixed vertex of mask and minimize 1+dp[mask without submask]. Store the chosen submask to reconstruct each color class.",
+  "correctness": "Every legal coloring partitions the vertices into independent sets, and its class containing the fixed vertex appears among the considered submasks. Conversely, appending any considered independent set to an optimal coloring of the remainder is legal. The recurrence therefore finds the minimum.",
+  "complexity": "For n vertices, subset enumeration costs O(3^n) time and O(2^n+n^2) space; n is at most 16.",
+  "visual": {
+    "kind": "graph",
+    "title": "Graph Coloring: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A four-cycle can use one color for vertices 1 and 3 and another for 2 and 4, so the answer is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Precompute whether every vertex subset is independent: remove one vertex and check that it has no neighbor in the remaining subset. Set dp[0]=0. For every nonempty mask, enumerate independent nonempty submasks containing a fixed vertex of mask and minimize 1+dp[mask without submask]. Store the chosen submask to reconstruct each color class."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 36.66666666666667,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 63.333333333333336,
+        "y": 50
+      },
+      {
+        "id": "4",
+        "label": "4",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2",
+        "label": "color 1"
+      },
+      {
+        "from": "2",
+        "to": "3",
+        "label": "color 2"
+      },
+      {
+        "from": "3",
+        "to": "4",
+        "label": "color 1"
+      },
+      {
+        "from": "4",
+        "to": "1",
+        "label": "color 2"
+      }
+    ],
+    "caption": "Illustrative example - Opposite vertices share a color on a four-cycle."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "Let dp[s] be the fewest coins needed to make sum s.",
+    "For each coin c<=s, try using c last after making s-c.",
+    "Use an unreachable sentinel and return -1 if x remains unreachable."
+  ],
+  "analogy": "To make a total, consider which coin is the last one placed and add it to the best smaller total.",
+  "example": "With coins 1,5,7 and x=11, dp[11] can use 5 after dp[6]=2, yielding three coins 5+5+1.",
+  "algorithm": "Initialize dp[0]=0 and others to infinity. For each sum s, set dp[s]=min(dp[s-c]+1) for every coin c<=s.",
+  "correctness": "Any coin collection for s has some final coin c; the rest make s-c, so choosing the best such predecessor gives the minimum.",
+  "complexity": "O(nx) time and O(x) space.",
+  "visual": {
+    "kind": "dp",
+    "title": "Minimizing Coins: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With coins 1,5,7 and x=11, dp[11] can use 5 after dp[6]=2, yielding three coins 5+5+1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize dp[0]=0 and others to infinity. For each sum s, set dp[s]=min(dp[s-c]+1) for every coin c<=s."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "State",
+      "Ways / value"
+    ],
+    "rows": [
+      [
+        "6",
+        "2"
+      ]
+    ],
+    "caption": "Illustrative example - With coins 1,5,7 and x=11, dp[11] can use 5 after dp[6]=2, yielding three coins 5+5+1."
+  }
+}

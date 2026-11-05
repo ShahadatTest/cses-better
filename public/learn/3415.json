@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Count squares by their bottom-right corner.",
+    "For one letter, find the largest square ending at each cell that does not contain it.",
+    "A square contains every letter exactly when it is larger than each letter-free square at that corner."
+  ],
+  "analogy": "A square must grow past the largest missing-letter region before it has collected every required letter.",
+  "example": "In the 2 by 2 grid AB/BA with letters A and B, all four single cells fail and the whole grid works, giving 1.",
+  "algorithm": "For each letter in turn, compute a standard maximal-square DP on cells that are not that letter: dp[r,c] is zero on that letter and otherwise one plus the minimum of the top, left and top-left DP values. For each cell store the maximum of these dp values over all letters. If that maximum is M, there are min(r,c)-M valid squares ending there using one-based coordinates. Sum these counts. Only two DP rows are needed per letter; store the maximum for each cell.",
+  "correctness": "For a fixed corner and letter, letter-free squares are nested and have every size up to the computed maximum. A square contains every letter exactly when its size exceeds all these maxima. Every square has exactly one bottom-right corner, so adding the number of valid sizes at each corner counts each once.",
+  "complexity": "For an n by n grid with k letters, time is O(k n^2), and extra space is O(n^2) for the maxima plus O(n) for rolling DP rows.",
+  "visual": {
+    "kind": "dp",
+    "title": "All Letter Subgrid Count I: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In the 2 by 2 grid AB/BA with letters A and B, all four single cells fail and the whole grid works, giving 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each letter in turn, compute a standard maximal-square DP on cells that are not that letter: dp[r,c] is zero on that letter and otherwise one plus the minimum of the top, left and top-left DP values. For each cell store the maximum of these dp values over all letters. If that maximum is M, there are min(r,c)-M valid squares ending there using one-based coordinates. Sum these counts. Only two DP rows are needed per letter; store the maximum for each cell."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "A"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - Only the whole AB/BA grid contains both letters; single cells do not."
+  }
+}

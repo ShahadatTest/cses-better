@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "A flow assigns a nonnegative amount to each directed edge, never exceeding its capacity.",
+    "The amount delivered to the sink equals total flow leaving the source.",
+    "Repeatedly find a residual path from source to sink and augment by its smallest remaining capacity."
+  ],
+  "analogy": "Residual edges let you reroute earlier choices while increasing total transferred data.",
+  "example": "If a path has residual capacities 4,7,3, it can carry 3 more units before one edge fills.",
+  "algorithm": "Use Edmonds-Karp or Dinic on a residual graph. Find augmenting paths, update forward and reverse residual capacities, and stop when no path remains.",
+  "correctness": "When no residual source-to-sink path exists, the vertices reachable from source define a cut whose capacity equals the current flow, proving it is maximum by max-flow min-cut.",
+  "complexity": "O(V^2 E) time with Edmonds-Karp (Dinic is faster on typical inputs) and O(V+E) residual storage.",
+  "visual": {
+    "kind": "graph",
+    "title": "Download Speed: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If a path has residual capacities 4,7,3, it can carry 3 more units before one edge fills."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use Edmonds-Karp or Dinic on a residual graph. Find augmenting paths, update forward and reverse residual capacities, and stop when no path remains."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "4",
+      "7",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - If a path has residual capacities 4,7,3, it can carry 3 more units before one edge fills."
+  }
+}

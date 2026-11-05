@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "Every directed edge contributes one to exactly one outdegree.",
+    "Use DFS to decide non-tree edge directions, then fix each child's parity with its parent edge.",
+    "A component with an odd number of edges is impossible."
+  ],
+  "analogy": "Each child sends any remaining odd parity to its parent through their connecting edge.",
+  "example": "A path of two edges can be oriented 2->1 and 2->3, giving outdegrees 0,2,0.",
+  "algorithm": "Run DFS in each component. Orient every non-tree edge once and track outdegree parity. After finishing a child, orient its tree edge from the child to its parent if the child currently has odd outdegree, otherwise from the parent to the child. After all children, a root with odd parity makes the task impossible.",
+  "correctness": "Each child edge is chosen to make the finished child even and later choices cannot change it. The root parity is forced by the component's edge count, because the sum of all outdegrees equals its number of edges.",
+  "complexity": "For n vertices and m edges, O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Even Outdegree Edges: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A path of two edges can be oriented 2->1 and 2->3, giving outdegrees 0,2,0."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run DFS in each component. Orient every non-tree edge once and track outdegree parity. After finishing a child, orient its tree edge from the child to its parent if the child currently has odd outdegree, otherwise from the parent to the child. After all children, a root with odd parity makes the task impossible."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "2",
+        "label": "2",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "1",
+        "label": "1",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "2",
+        "to": "1"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      }
+    ],
+    "caption": "Illustrative example - A path of two edges can be oriented 2->1 and 2->3, giving outdegrees 0,2,0."
+  }
+}

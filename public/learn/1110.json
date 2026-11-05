@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "Every rotation is a length-n substring of the string doubled.",
+    "Compare candidate starting positions without comparing their common prefix again.",
+    "Booth's algorithm discards a whole range of starts after the first mismatch."
+  ],
+  "analogy": "Two runners compare rotations; the runner with the larger next character and all starts it has passed can be eliminated.",
+  "example": "For acab, the rotations are acab, caba, abac, baca; abac is smallest.",
+  "algorithm": "Run Booth's minimum-rotation algorithm on s+s: keep two distinct candidate starts and an offset. Increase the offset while characters match. At a mismatch, advance the candidate with the larger character past the compared prefix, keep the starts distinct, and reset the offset. Output n characters from the surviving start.",
+  "correctness": "After a mismatch, every skipped start is beaten by a corresponding rotation beginning in the other compared block; therefore no discarded start can be uniquely optimal. The remaining candidate is minimal.",
+  "complexity": "For length n, O(n) time and O(n) space for the doubled string.",
+  "visual": {
+    "kind": "string",
+    "title": "Minimal Rotation: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For acab, the rotations are acab, caba, abac, baca; abac is smallest."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run Booth's minimum-rotation algorithm on s+s: keep two distinct candidate starts and an offset. Increase the offset while characters match. At a mismatch, advance the candidate with the larger character past the compared prefix, keep the starts distinct, and reset the offset. Output n characters from the surviving start."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Rotation",
+      "Order"
+    ],
+    "rows": [
+      [
+        "acab",
+        "3"
+      ],
+      [
+        "caba",
+        "4"
+      ],
+      [
+        "abac",
+        "1"
+      ],
+      [
+        "baca",
+        "2"
+      ]
+    ],
+    "caption": "Illustrative example - The smallest rotation is abac."
+  }
+}

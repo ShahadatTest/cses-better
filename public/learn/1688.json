@@ -1,0 +1,71 @@
+{
+  "hints": [
+    "The lowest common ancestor is the deepest node that is an ancestor of both query nodes.",
+    "Lift the deeper node until both nodes have equal depth.",
+    "Then jump both upward from largest powers down whenever their ancestors differ; their parent is the LCA."
+  ],
+  "analogy": "Bring two employees to the same management level, then raise them together until just before their paths meet.",
+  "example": "If nodes 4 and 5 share parent 2, their lowest common ancestor is 2.",
+  "algorithm": "Precompute depths and binary ancestors. Equalize depths, lift both by powers of two while ancestors differ, then return parent of either.",
+  "correctness": "After equalizing depth, the nodes remain below their LCA; lifting them together while keeping ancestors distinct stops exactly at its children.",
+  "complexity": "O(n log n+q log n) time and O(n log n) space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Company Queries II: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If nodes 4 and 5 share parent 2, their lowest common ancestor is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Precompute depths and binary ancestors. Equalize depths, lift both by powers of two while ancestors differ, then return parent of either."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "2",
+        "label": "2",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "4",
+        "label": "4",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "5",
+        "label": "5",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "2",
+        "to": "4",
+        "label": "child"
+      },
+      {
+        "from": "2",
+        "to": "5",
+        "label": "child"
+      }
+    ],
+    "caption": "Illustrative example - Nodes 4 and 5 share parent 2, so their lowest common ancestor is 2."
+  }
+}

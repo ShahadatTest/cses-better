@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "Sort the array; the smallest m-element subset uses indices 0 through m-1.",
+    "Represent each other subset by its increasing index tuple, and give it a unique parent by decrementing its leftmost index that differs from its initial value.",
+    "These parent links form a heap-ordered tree with at most two children per node, so enumerate its nodes with a min-heap."
+  ],
+  "analogy": "Imagine exploring a tree of substitutions: each step replaces one chosen element by the next larger one, never reducing the sum.",
+  "example": "For sorted -3,0,1,2,5 with m=3, the first sums are -2, -1, 0, 2, 3, 3, 4, 6, 7; equal sums from different subsets are both printed.",
+  "algorithm": "Sort x and start with tuple (0,1,...,m-1) and its sum in a min-heap. For a tuple let p be the first index with c[p]>p, or m if none. For p<m, one child increments c[p] if it remains below c[p+1] (use n as the right sentinel). A second child exists when p>0: increment c[p-1] from p-1 to p; for the initial tuple this is the only child. Update each sum by x[new]-x[old], and push the children. Pop and print k sums. Store the changed suffix c[p..m-1] as a persistent linked stack: incrementing its first value replaces the head and moving p left pushes a head, so each child takes constant extra space.",
+  "correctness": "Every noninitial tuple has a unique valid parent: decrement its leftmost noninitial index. Reversing this parent operation yields exactly the listed children. Sorted values make every child sum at least its parent sum, so heap traversal emits all subset sums in nondecreasing order, preserving duplicates.",
+  "complexity": "O(n log n + k log k) time and O(n+k) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "K Subset Sums II: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For sorted -3,0,1,2,5 with m=3, the first sums are -2, -1, 0, 2, 3, 3, 4, 6, 7; equal sums from different subsets are both printed."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort x and start with tuple (0,1,...,m-1) and its sum in a min-heap. For a tuple let p be the first index with c[p]>p, or m if none. For p<m, one child increments c[p] if it remains below c[p+1] (use n as the right sentinel). A second child exists when p>0: increment c[p-1] from p-1 to p; for the initial tuple this is the only child. Update each sum by x[new]-x[old], and push the children. Pop and print k sums. Store the changed suffix c[p..m-1] as a persistent linked stack: incrementing its first value replaces the head and moving p left pushes a head, so each child takes constant extra space."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "-2",
+      "-1",
+      "0",
+      "2",
+      "3",
+      "3",
+      "4",
+      "6",
+      "7"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - The first nine k-subset sums in sorted order; duplicate sums are retained."
+  }
+}

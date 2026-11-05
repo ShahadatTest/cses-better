@@ -1,0 +1,84 @@
+{
+  "hints": [
+    "Two segments crossing properly have endpoints on opposite sides of each other's lines.",
+    "A zero cross product means a point is collinear, which needs an additional bounds check.",
+    "Check all endpoint-on-segment cases before testing opposite orientation signs."
+  ],
+  "analogy": "Imagine two sticks: they intersect either by crossing or by touching at a point on one of them.",
+  "example": "The segments (0,0)-(2,0) and (1,-1)-(1,1) intersect at (1,0); (3,0)-(4,0) does not intersect the first.",
+  "algorithm": "Calculate the four orientation cross products. If any endpoint is collinear with the other segment and lies within both coordinate bounds, answer YES. Otherwise answer YES only when each segment's endpoints have strictly opposite orientation signs with respect to the other. Use wide integer arithmetic.",
+  "correctness": "A proper crossing requires and is guaranteed by opposite sides for both lines. Every remaining intersection involves collinear contact, which the bounding-box checks detect.",
+  "complexity": "For t tests, O(t) time and O(1) extra space.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Line Segment Intersection: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "The segments (0,0)-(2,0) and (1,-1)-(1,1) intersect at (1,0); (3,0)-(4,0) does not intersect the first."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Calculate the four orientation cross products. If any endpoint is collinear with the other segment and lies within both coordinate bounds, answer YES. Otherwise answer YES only when each segment's endpoints have strictly opposite orientation signs with respect to the other. Use wide integer arithmetic."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "(0,0)",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "(2,0)",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "(1,-1)",
+        "x": 30,
+        "y": 90
+      },
+      {
+        "id": "4",
+        "label": "(1,1)",
+        "x": 30,
+        "y": 10
+      },
+      {
+        "id": "5",
+        "label": "(1,0)",
+        "x": 30,
+        "y": 50
+      },
+      {
+        "id": "6",
+        "label": "(3,0)",
+        "x": 70,
+        "y": 50
+      },
+      {
+        "id": "7",
+        "label": "(4,0)",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [],
+    "caption": "Illustrative example - The segments (0,0)-(2,0) and (1,-1)-(1,1) intersect at (1,0); (3,0)-(4,0) does not intersect the first."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Choose two array positions and store their sum together with both original indices.",
+    "Before searching pairs ending later, look for target minus the current pair sum among sums made by earlier positions.",
+    "Only combine pairs with disjoint positions; otherwise one array element could be used twice."
+  ],
+  "analogy": "Save sums from earlier pairs, then ask whether the current pair needs a matching saved sum.",
+  "algorithm": "For each middle index j, test pairs (j,k) with k>j against sums stored from pairs (i,l) where i<l<j; after tests, add all pairs ending at j. Store representative indices to reconstruct four distinct positions.",
+  "correctness": "The lookup pair ends before j while the current pair starts at j, so positions cannot overlap; every valid four-index combination is found at its split.",
+  "complexity": "O(n^2) time and O(n^2) space.",
+  "example": "For values [1,2,3,4] and target 10, choose all four distinct positions: 1+2+3+4=10.",
+  "visual": {
+    "kind": "array",
+    "title": "Sum of Four Values: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "8 15\n3 2 5 8 1 3 2 3"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For values [1,2,3,4] and target 10, choose all four distinct positions: 1+2+3+4=10."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each middle index j, test pairs (j,k) with k>j against sums stored from pairs (i,l) where i<l<j; after tests, add all pairs ending at j. Store representative indices to reconstruct four distinct positions."
+      },
+      {
+        "label": "Result",
+        "detail": "2 4 6 7"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "8  15"
+      ],
+      [
+        "3  2  5  8  1  3  2  3"
+      ]
+    ],
+    "caption": "Illustrative example - For values [1,2,3,4] and target 10, choose all four distinct positions: 1+2+3+4=10."
+  }
+}

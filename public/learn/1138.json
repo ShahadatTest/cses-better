@@ -1,0 +1,71 @@
+{
+  "hints": [
+    "A root-to-node path query is the sum of values along that path.",
+    "Flatten nodes by DFS order and store each node's value in a Fenwick tree.",
+    "For each node, add its value at entry and its negation just after its subtree; a prefix at tin[u] then equals the root path sum."
+  ],
+  "analogy": "A node's value is active in the Euler array from its entry through the end of its subtree.",
+  "example": "If root=5, parent value=2, and node value=3, the prefix at its entry gives path sum 10.",
+  "algorithm": "On entry at tin[u], add value[u]; at tout[u]+1 add -value[u]. Point updates change both markers; query prefix(tin[u]) for root-to-u total.",
+  "correctness": "The entry/exit difference markers include exactly the ancestors of u at its entry position, so their prefix sum is the desired path sum.",
+  "complexity": "O((n+q) log n) time and O(n) space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Path Queries: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If root=5, parent value=2, and node value=3, the prefix at its entry gives path sum 10."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "On entry at tin[u], add value[u]; at tout[u]+1 add -value[u]. Point updates change both markers; query prefix(tin[u]) for root-to-u total."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "5",
+        "label": "5",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "5",
+        "to": "2",
+        "label": "parent"
+      },
+      {
+        "from": "2",
+        "to": "3",
+        "label": "parent"
+      }
+    ],
+    "caption": "Illustrative example - The root-to-node values 5, 2, 3 sum to 10."
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "hints": [
+    "Subtract p1 from the other two points to form direction vectors.",
+    "The sign of their cross product tells which side of the directed line contains p3.",
+    "Compute (x2-x1)(y3-y1)-(y2-y1)(x3-x1)."
+  ],
+  "analogy": "The cross product measures which way you turn when walking from p1 to p2 and then toward p3.",
+  "example": "From (0,0) to (2,0), (1,1) is LEFT, (1,-1) is RIGHT, and (1,0) TOUCHes.",
+  "algorithm": "For each test compute the signed cross product of p2-p1 and p3-p1. Print LEFT if positive, RIGHT if negative, and TOUCH if zero. Use a sufficiently wide integer type for intermediate products.",
+  "correctness": "A positive cross product means a counterclockwise turn, a negative one a clockwise turn, and zero means the vectors are collinear, exactly matching the three requested cases.",
+  "complexity": "For t tests, O(t) time and O(1) extra space.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Point Location Test: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "From (0,0) to (2,0), (1,1) is LEFT, (1,-1) is RIGHT, and (1,0) TOUCHes."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each test compute the signed cross product of p2-p1 and p3-p1. Print LEFT if positive, RIGHT if negative, and TOUCH if zero. Use a sufficiently wide integer type for intermediate products."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "(0,0)",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "(2,0)",
+        "x": 90,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "(1,1)",
+        "x": 50,
+        "y": 10
+      },
+      {
+        "id": "4",
+        "label": "(1,-1)",
+        "x": 50,
+        "y": 90
+      },
+      {
+        "id": "5",
+        "label": "(1,0)",
+        "x": 50,
+        "y": 50
+      }
+    ],
+    "edges": [],
+    "caption": "Illustrative example - From (0,0) to (2,0), (1,1) is LEFT, (1,-1) is RIGHT, and (1,0) TOUCHes."
+  }
+}

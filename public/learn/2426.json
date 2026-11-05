@@ -1,0 +1,71 @@
+{
+  "hints": [
+    "Compare each applicant?s programming advantage x-y.",
+    "In an optimal assignment, a programmer can be placed before an artist after sorting by this advantage.",
+    "For every split, maintain the best required number of programming and art scores."
+  ],
+  "analogy": "Separate programmer candidates from artist candidates at a boundary, allowing unused people on either side.",
+  "example": "With one programmer and one artist, applicants (10,1), (2,9), and (5,5) yield 10+9=19.",
+  "algorithm": "Sort applicants by x-y in descending order. Scan prefixes with a min-heap of programming scores, keeping the largest a and their sum; record a feasible sum at each boundary. Scan suffixes similarly, keeping the largest b artistic scores. Maximize prefixSum[i]+suffixSum[i+1] over feasible boundaries. Treat a=0 or b=0 as a sum of zero and use 64-bit totals.",
+  "correctness": "If an artist precedes a programmer in advantage order, swapping their roles changes the score by (x_first-y_first)-(x_second-y_second), which is nonnegative. Thus some optimum has all selected programmers before all selected artists. For each possible boundary the heaps choose the best scores independently, so the maximum over boundaries is optimal.",
+  "complexity": "For n applicants, sorting and heap operations take O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Programmers and Artists: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With one programmer and one artist, applicants (10,1), (2,9), and (5,5) yield 10+9=19."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort applicants by x-y in descending order. Scan prefixes with a min-heap of programming scores, keeping the largest a and their sum; record a feasible sum at each boundary. Scan suffixes similarly, keeping the largest b artistic scores. Maximize prefixSum[i]+suffixSum[i+1] over feasible boundaries. Treat a=0 or b=0 as a sum of zero and use 64-bit totals."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Applicant",
+      "Programmer score",
+      "Artist score",
+      "Chosen role"
+    ],
+    "rows": [
+      [
+        "1",
+        "10",
+        "1",
+        "Programmer"
+      ],
+      [
+        "2",
+        "2",
+        "9",
+        "Artist"
+      ],
+      [
+        "3",
+        "5",
+        "5",
+        "Unused"
+      ],
+      [
+        "Total",
+        "",
+        "",
+        "19"
+      ]
+    ],
+    "caption": "Illustrative example - The best assignment gives 10 + 9 = 19."
+  }
+}

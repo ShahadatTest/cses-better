@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "The answer is the longest run of equal bits.",
+    "Flipping one bit affects only the two boundaries next to it.",
+    "Maintain run boundaries in an ordered set and run lengths in a multiset."
+  ],
+  "analogy": "A flipped bit splits or joins only neighboring strips of equal color.",
+  "example": "For 0011, flipping the second bit gives 0111, whose longest run is 3.",
+  "algorithm": "Keep ordered boundaries at positions where adjacent bits differ, plus sentinels at 0 and n. Keep all distances between consecutive boundaries in a multiset. When flipping position i, toggle each valid boundary between i-1 and i and between i and i+1. Inserting a boundary replaces one run length by two; deleting it replaces two lengths by their sum. After both updates, output the largest multiset value.",
+  "correctness": "A boundary exists exactly where consecutive bits differ, so consecutive boundaries delimit precisely the maximal equal-bit runs. A flip changes equality only on its two incident boundaries. Updating the corresponding lengths preserves the invariant, and the largest stored length is the requested answer.",
+  "complexity": "For string length n and q flips, time is O((n+q) log n) and space O(n).",
+  "visual": {
+    "kind": "trace",
+    "title": "Bit Inversions: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 0011, flipping the second bit gives 0111, whose longest run is 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Keep ordered boundaries at positions where adjacent bits differ, plus sentinels at 0 and n. Keep all distances between consecutive boundaries in a multiset. When flipping position i, toggle each valid boundary between i-1 and i and between i and i+1. Inserting a boundary replaces one run length by two; deleting it replaces two lengths by their sum. After both updates, output the largest multiset value."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Binary string",
+      "Operation",
+      "Result",
+      "Longest run"
+    ],
+    "rows": [
+      [
+        "0011",
+        "Flip bit 2",
+        "0111",
+        "3"
+      ]
+    ],
+    "caption": "Illustrative example - One flip joins the adjacent run of three ones."
+  }
+}

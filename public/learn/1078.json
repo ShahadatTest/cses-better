@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Count paths if there were no traps using combinations.",
+    "Sort the traps and subtract paths according to the first trap they hit.",
+    "Treat the destination as one extra point after all traps."
+  ],
+  "analogy": "Count all monotone routes, then remove those that first step onto a forbidden square.",
+  "example": "On a 3 by 3 grid there are 6 paths. If (2,2) is a trap, four pass through it, leaving 2.",
+  "algorithm": "Sort traps by row and column and append destination (n,n). For each point p, start with C(row+col-2,row-1), the number of paths from (1,1). For each earlier trap t with both coordinates no larger than p, subtract ways[t]*C((p.row-t.row)+(p.col-t.col),p.row-t.row). Precompute factorials and inverse factorials modulo 1000000007. The destination value is the answer.",
+  "correctness": "Every monotone path to p either avoids earlier traps or has a unique first trap. The stored ways[t] count paths whose first trap is t, and the binomial coefficient counts all continuations to p. Subtracting those disjoint classes leaves exactly trap-free paths.",
+  "complexity": "For grid size n and m traps, time is O(n+m^2) and space O(n+m), assuming factorials through 2n are precomputed.",
+  "visual": {
+    "kind": "dp",
+    "title": "Grid Paths II: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "On a 3 by 3 grid there are 6 paths. If (2,2) is a trap, four pass through it, leaving 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort traps by row and column and append destination (n,n). For each point p, start with C(row+col-2,row-1), the number of paths from (1,1). For each earlier trap t with both coordinates no larger than p, subtract ways[t]*C((p.row-t.row)+(p.col-t.col),p.row-t.row). Precompute factorials and inverse factorials modulo 1000000007. The destination value is the answer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "6",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - On a 3 by 3 grid there are 6 paths. If (2,2) is a trap, four pass through it, leaving 2."
+  }
+}

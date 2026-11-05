@@ -1,0 +1,44 @@
+{
+  "hints": [
+    "Shortest distance is the primary criterion; among shortest routes, count paths and track minimum and maximum edge counts.",
+    "With positive weights, Dijkstra processes vertices after all shorter predecessors are finalized.",
+    "For an equal-distance relaxation, add path counts and update min/max edge counts too."
+  ],
+  "analogy": "Along with the cheapest arrival, keep how many equally cheap routes arrived and their fewest and most flights.",
+  "example": "If two shortest routes to a city have four and six edges, the count includes both and the edge range is [4,6].",
+  "algorithm": "Run Dijkstra while maintaining dist, ways, minEdges, maxEdges. A strictly shorter route replaces all four values; an equal route adds ways modulo 1e9+7 and combines edge extrema.",
+  "correctness": "Positive edge lengths ensure a shortest predecessor is processed before its destination; every shortest route is then counted through its final edge, with extrema combined over all ties.",
+  "complexity": "O((n+m) log n) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Investigation: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If two shortest routes to a city have four and six edges, the count includes both and the edge range is [4,6]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run Dijkstra while maintaining dist, ways, minEdges, maxEdges. A strictly shorter route replaces all four values; an equal route adds ways modulo 1e9+7 and combines edge extrema."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "4",
+      "6"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - If two shortest routes to a city have four and six edges, the count includes both and the edge range is [4,6]."
+  }
+}

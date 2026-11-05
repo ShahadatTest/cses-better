@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A negative cycle can be anywhere in the graph, not only reachable from one chosen source.",
+    "Initialize every distance to zero, which is equivalent to adding a zero-cost super-source to all vertices.",
+    "After n relaxation rounds, a vertex changed on the nth round lies on or is affected by a negative cycle; follow parents enough times to enter it."
+  ],
+  "analogy": "Give every vertex a free starting point, then repeatedly improve routes; endless improvement reveals a negative loop.",
+  "example": "A cycle with total weight -2 keeps lowering the route cost every time it is repeated.",
+  "algorithm": "Bellman-Ford over all edges with dist=0. If no update on the nth round, print NO; otherwise follow parent n times from the last updated vertex, then collect parent links until returning to the same vertex and output the cycle.",
+  "correctness": "Without a negative cycle, shortest simple paths use at most n-1 edges, so no improvement can remain on round n; following parents enters a cycle whose total weight is negative.",
+  "complexity": "O(nm) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Cycle Finding: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A cycle with total weight -2 keeps lowering the route cost every time it is repeated."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Bellman-Ford over all edges with dist=0. If no update on the nth round, print NO; otherwise follow parent n times from the last updated vertex, then collect parent links until returning to the same vertex and output the cycle."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "0",
+      "-2",
+      "-4",
+      "-6"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - A cycle of weight -2 lowers the route cost by 2 each time it repeats."
+  }
+}

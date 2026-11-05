@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "The given prefix may already be invalid if a closing bracket appears before its matching opening bracket.",
+    "Let the remaining length be r and current balance be b; the rest must contain (r-b)/2 opening brackets.",
+    "Count completions with a ballot/Catalan prefix constraint, and return zero if parity or balance makes completion impossible."
+  ],
+  "analogy": "After the fixed prefix, count balanced endings that never let the closing count get ahead.",
+  "example": "For prefix '(' and total length 2, balance 1, one character remains and must be ')', so there is one completion.",
+  "algorithm": "Validate the prefix balance. Let r=n-prefixLength and b=opens-closes; if b>r or (r-b) is odd return 0. Set opensNeeded=(r-b)/2 and use the ballot count C(r,opensNeeded)-C(r,opensNeeded-1), modulo 1e9+7.",
+  "correctness": "The ballot difference counts suffixes with enough opens to offset the existing balance at every prefix and end at balance zero; invalid parity/balance cannot be repaired.",
+  "complexity": "O(n) preprocessing and O(1) query; O(n) space.",
+  "visual": {
+    "kind": "math",
+    "title": "Bracket Sequences II: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For prefix '(' and total length 2, balance 1, one character remains and must be ')', so there is one completion."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Validate the prefix balance. Let r=n-prefixLength and b=opens-closes; if b>r or (r-b) is odd return 0. Set opensNeeded=(r-b)/2 and use the ballot count C(r,opensNeeded)-C(r,opensNeeded-1), modulo 1e9+7."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Prefix",
+      "Balance",
+      "Remaining char",
+      "Completion"
+    ],
+    "rows": [
+      [
+        "(",
+        "1",
+        ")",
+        1
+      ]
+    ],
+    "caption": "Illustrative example - The only remaining character must close the open prefix."
+  }
+}

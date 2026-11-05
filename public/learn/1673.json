@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "A positive cycle reachable from city 1 and able to reach city n can increase the score without bound.",
+    "Negate the score on each flight so maximizing becomes shortest-path minimization.",
+    "Run Bellman-Ford, then check whether a still-relaxable edge can lead to n."
+  ],
+  "analogy": "A profitable loop matters only if you can reach it and still travel onward to the destination.",
+  "example": "A positive-score loop at an isolated city cannot affect the best 1-to-n route.",
+  "correctness": "Bellman-Ford detects reachable negative cycles after n-1 edge passes; reachability propagation filters cycles that cannot influence the destination.",
+  "complexity": "O(nm) time and O(n+m) space.",
+  "algorithm": "Compute which vertices can reach n by a reverse-graph search. Run Bellman-Ford from 1 for n-1 rounds on negated scores. If an edge can still relax from a reachable vertex into a vertex that can reach n, print -1; otherwise print the negated shortest distance to n.",
+  "visual": {
+    "kind": "graph",
+    "title": "High Score: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A positive-score loop at an isolated city cannot affect the best 1-to-n route."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute which vertices can reach n by a reverse-graph search. Run Bellman-Ford from 1 for n-1 rounds on negated scores. If an edge can still relax from a reachable vertex into a vertex that can reach n, print -1; otherwise print the negated shortest distance to n."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "State",
+      "Can affect best 1-to-n route?"
+    ],
+    "rows": [
+      [
+        "Positive-score loop at isolated city",
+        "No"
+      ]
+    ],
+    "caption": "Illustrative example - A loop disconnected from every 1-to-n route cannot change the answer."
+  }
+}

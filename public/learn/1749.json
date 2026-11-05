@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "The removals array gives a current one-based rank, not an original position.",
+    "Store 1 for each still-present list element and 0 for removed elements in a Fenwick tree.",
+    "Select the k-th live element by prefix counts, output its value, and remove its marker."
+  ],
+  "analogy": "A Fenwick tree lets you find the k-th remaining item even as earlier items disappear.",
+  "example": "From [2,6,1,4], removing rank 2 removes 6; the remaining list is [2,1,4].",
+  "algorithm": "Initialize all Fenwick positions to 1. For each rank k, binary-lift to find the smallest index with prefix count at least k, output its original value, then add -1 at that index.",
+  "correctness": "The prefix count is the number of live elements up to each position, so selecting its kth threshold returns precisely the kth surviving item.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "List Removals: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "From [2,6,1,4], removing rank 2 removes 6; the remaining list is [2,1,4]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize all Fenwick positions to 1. For each rank k, binary-lift to find the smallest index with prefix count at least k, output its original value, then add -1 at that index."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "6",
+      "1",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - From [2,6,1,4], removing rank 2 removes 6; the remaining list is [2,1,4]."
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "Treat each parcel as a unit of flow through directed routes.",
+    "Each route has a capacity and a cost per unit.",
+    "Send k units using minimum-cost flow, or report failure if fewer can reach the destination."
+  ],
+  "analogy": "Each route is a pipe with limited space and a price for each parcel using it.",
+  "example": "Two parallel routes with capacities 1 and 2 and per-parcel costs 2 and 3 deliver 3 parcels for cost 8.",
+  "algorithm": "Build a residual network with each route's capacity and cost and a reverse edge of opposite cost. Repeatedly find a cheapest residual path from city 1 to city n using shortest paths with potentials, augment by the minimum remaining demand and path capacity, and update residual capacities. Print -1 if no path exists before k units are sent.",
+  "correctness": "Residual reverse edges allow previous routing decisions to be revised. Successive shortest augmenting paths preserve minimum cost for each achieved flow value, so reaching k units gives the cheapest delivery.",
+  "complexity": "For n cities, m routes and k parcels, O(k*m log n) time with potentials and Dijkstra, and O(n+m) space.",
+  "visual": {
+    "kind": "flow",
+    "title": "Parcel Delivery: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Two parallel routes with capacities 1 and 2 and per-parcel costs 2 and 3 deliver 3 parcels for cost 8."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a residual network with each route's capacity and cost and a reverse edge of opposite cost. Repeatedly find a cheapest residual path from city 1 to city n using shortest paths with potentials, augment by the minimum remaining demand and path capacity, and update residual capacities. Print -1 if no path exists before k units are sent."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Route",
+      "Capacity",
+      "Cost per parcel"
+    ],
+    "rows": [
+      [
+        "A",
+        "1",
+        "2"
+      ],
+      [
+        "B",
+        "2",
+        "3"
+      ],
+      [
+        "Total delivery",
+        "3",
+        "8"
+      ]
+    ],
+    "caption": "Illustrative example - One parcel uses route A and two use route B: total cost 2+3+3=8."
+  }
+}

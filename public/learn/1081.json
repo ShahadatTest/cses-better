@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "A common divisor cannot exceed the smaller of the two numbers.",
+    "Build frequency counts, then try candidate divisors from largest down.",
+    "For a candidate d, count how many inputs are multiples of d; at least two means d divides a pair."
+  ],
+  "analogy": "Search from large to small for a number that appears as a divisor of at least two inputs.",
+  "example": "If values 3,6,9 occur, 3 divides all three, so it is a common divisor of a pair.",
+  "algorithm": "Count occurrences of each value. For d descending from maxA, sum frequencies at d,2d,3d,...; print the first d whose multiple count is at least 2.",
+  "correctness": "If at least two array entries are multiples of d, d is their common divisor; descending order ensures the first valid candidate is largest.",
+  "complexity": "O(M log M) time and O(M) space.",
+  "visual": {
+    "kind": "math",
+    "title": "Common Divisors: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If values 3,6,9 occur, 3 divides all three, so it is a common divisor of a pair."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Count occurrences of each value. For d descending from maxA, sum frequencies at d,2d,3d,...; print the first d whose multiple count is at least 2."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "6",
+      "9"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - If values 3,6,9 occur, 3 divides all three, so it is a common divisor of a pair."
+  }
+}

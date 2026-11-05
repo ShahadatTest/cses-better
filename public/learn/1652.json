@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "Represent each tree as 1 and each empty cell as 0.",
+    "A 2D prefix sum lets a rectangle be computed from four corner totals.",
+    "Use inclusion-exclusion: add the large prefix and subtract the two excess strips, then add their overlap back."
+  ],
+  "analogy": "Four stored corner totals cancel everything outside the queried rectangle.",
+  "example": "If a rectangle has prefix corners 8,3,2,1 in the formula, its tree count is 8-3-2+1=4.",
+  "algorithm": "Build pref[r][c]=grid[r][c]+top+left-diagonal. For query (y1,x1)..(y2,x2), use P[y2][x2]-P[y1-1][x2]-P[y2][x1-1]+P[y1-1][x1-1].",
+  "correctness": "Cells outside the rectangle are included and excluded equally; cells inside remain exactly once by inclusion-exclusion.",
+  "complexity": "O(n^2+q) time and O(n^2) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Forest Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If a rectangle has prefix corners 8,3,2,1 in the formula, its tree count is 8-3-2+1=4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build pref[r][c]=grid[r][c]+top+left-diagonal. For query (y1,x1)..(y2,x2), use P[y2][x2]-P[y1-1][x2]-P[y2][x1-1]+P[y1-1][x1-1]."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "8",
+      "3",
+      "2",
+      "1",
+      "-3",
+      "-2",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - If a rectangle has prefix corners 8,3,2,1 in the formula, its tree count is 8-3-2+1=4."
+  }
+}

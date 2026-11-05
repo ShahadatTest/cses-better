@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "A tree has exactly one simple path between the query endpoints.",
+    "Any detour to a coin leaves that path and returns along the same edges.",
+    "Precompute distance to the nearest coin for every vertex, then find the minimum along the query path."
+  ],
+  "analogy": "A traveler follows the main road and briefly takes the cheapest side road to a coin before returning.",
+  "example": "On path 1-2-3, if the only coin is on leaf 4 attached to 2, traveling from 1 to 3 costs 2+2=4.",
+  "algorithm": "Run a multi-source BFS starting at all coin vertices to get nearestCoin[v]. Preprocess lowest common ancestors and binary lifting tables storing the minimum nearestCoin value on each upward jump. For query a,b, get the path length using depths and LCA and the minimum nearestCoin along that path using the jump minima. Return distance(a,b)+2 times that minimum.",
+  "correctness": "Any route from a to b must traverse their unique path. A route visiting a coin must reach a coin from some vertex of that path and return; the shortest such detour costs twice the minimum distance from the path to a coin. The BFS and path-minimum queries find exactly that value.",
+  "complexity": "For n vertices and q queries, preprocessing takes O(n log n) time and space; each query takes O(log n).",
+  "visual": {
+    "kind": "graph",
+    "title": "Tree Coin Collecting I: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "On path 1-2-3, if the only coin is on leaf 4 attached to 2, traveling from 1 to 3 costs 2+2=4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run a multi-source BFS starting at all coin vertices to get nearestCoin[v]. Preprocess lowest common ancestors and binary lifting tables storing the minimum nearestCoin value on each upward jump. For query a,b, get the path length using depths and LCA and the minimum nearestCoin along that path using the jump minima. Return distance(a,b)+2 times that minimum."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      }
+    ],
+    "caption": "Illustrative example - On path 1-2-3, if the only coin is on leaf 4 attached to 2, traveling from 1 to 3 costs 2+2=4."
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "hints": [
+    "Sort movies by ending time and assign each movie to a member who is free by its start.",
+    "Among available members, choose the one whose previous movie ends latest; that preserves earlier-free members for future movies.",
+    "If no member is free, skip the movie."
+  ],
+  "analogy": "Reserve the most recently freed compatible viewer, leaving the longest-free viewer available for tighter schedules.",
+  "example": "With two members, movies [1,5),[2,5),[3,6),[6,9): the first two run together, then [6,9) follows one, for three movies.",
+  "algorithm": "Sort intervals by finish time. Keep a multiset of member availability times; for a movie starting s, take the greatest finish<=s, replace it with its end, or skip if none.",
+  "correctness": "Choosing the latest compatible availability leaves all other available members no worse for later movies; earliest finishing order maximizes opportunities for subsequent intervals.",
+  "complexity": "O(n log n + n log k) time and O(k) availability space.",
+  "visual": {
+    "kind": "array",
+    "title": "Movie Festival II: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5 2\n1 5\n8 10\n3 6\n2 5\n6 9"
+      },
+      {
+        "label": "Work through it",
+        "detail": "With two members, movies [1,5),[2,5),[3,6),[6,9): the first two run together, then [6,9) follows one, for three movies."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort intervals by finish time. Keep a multiset of member availability times; for a movie starting s, take the greatest finish<=s, replace it with its end, or skip if none."
+      },
+      {
+        "label": "Result",
+        "detail": "4"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5  2"
+      ],
+      [
+        "1  5"
+      ],
+      [
+        "8  10"
+      ],
+      [
+        "3  6"
+      ],
+      [
+        "2  5"
+      ],
+      [
+        "6  9"
+      ]
+    ],
+    "caption": "Illustrative example - With two members, movies [1,5),[2,5),[3,6),[6,9): the first two run together, then [6,9) follows one, for three movies."
+  }
+}

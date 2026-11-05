@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "Let dp[i] be the cheapest cost when the last killed monster is i.",
+    "Every earlier choice contributes a line f[j]*s[i]+dp[j].",
+    "Insert the initial factor as a line and query a lower hull at each strength."
+  ],
+  "analogy": "Every previously earned skill factor offers a price line; choose the cheapest line for the next monster.",
+  "example": "With initial factor 10, strengths [2,3], and new factors [1,1], killing both costs 20+3=23 versus 30 for only the last.",
+  "algorithm": "Start a minimum line hull with y=x_initial*t. For each level i in order, query the minimum at t=s[i] to obtain dp[i], then insert y=f[i]*t+dp[i]. The monotone strengths and factors allow a deque convex hull, handling equal slopes by keeping the smaller intercept. Print dp[n]. Use wide arithmetic.",
+  "correctness": "If i is killed, the preceding killed monster j or the initial state completely determines its current factor. The recurrence checks all such j, and each hull line represents exactly one valid preceding state.",
+  "complexity": "For n levels, O(n) time and O(n) space with monotone hull operations.",
+  "visual": {
+    "kind": "flow",
+    "title": "Monster Game I: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With initial factor 10, strengths [2,3], and new factors [1,1], killing both costs 20+3=23 versus 30 for only the last."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Start a minimum line hull with y=x_initial*t. For each level i in order, query the minimum at t=s[i] to obtain dp[i], then insert y=f[i]*t+dp[i]. The monotone strengths and factors allow a deque convex hull, handling equal slopes by keeping the smaller intercept. Print dp[n]. Use wide arithmetic."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "10",
+      "2",
+      "3",
+      "1",
+      "20",
+      "23",
+      "30"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - With initial factor 10, strengths [2,3], and new factors [1,1], killing both costs 20+3=23 versus 30 for only the last."
+  }
+}

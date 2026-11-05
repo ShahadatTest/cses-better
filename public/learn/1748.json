@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Count increasing subsequences ending at each value, grouped by their final value.",
+    "A subsequence ending at x can extend any increasing subsequence whose last value is strictly smaller than x.",
+    "A Fenwick tree over compressed values stores the number of subsequences for each value prefix."
+  ],
+  "analogy": "For each item, extend every valid sequence ending with a smaller value and add the new one-item sequence.",
+  "example": "For [1,2,1], the increasing subsequences are [1] at the first item, [2], [1,2], and [1] at the last item: total 4.",
+  "algorithm": "Coordinate-compress values. At each x, ways=1+Fenwick.sum(rank-1); add ways at rank. Sum all ways modulo 1,000,000,007.",
+  "correctness": "Every nonempty increasing subsequence has a unique final index; its earlier part is either empty or ends at a strictly smaller value, exactly what the prefix query counts.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "dp",
+    "title": "Increasing Subsequence II: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,1], the increasing subsequences are [1] at the first item, [2], [1,2], and [1] at the last item: total 4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Coordinate-compress values. At each x, ways=1+Fenwick.sum(rank-1); add ways at rank. Sum all ways modulo 1,000,000,007."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,1], the increasing subsequences are [1] at the first item, [2], [1,2], and [1] at the last item: total 4."
+  }
+}

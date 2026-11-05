@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "The counting position advances by k each time, wrapping around the remaining circle.",
+    "A Fenwick tree can mark which labels are still present and select the label by its live rank.",
+    "Use zero-based ranks carefully: after removing one person, the next starting index is the removed rank modulo the new size."
+  ],
+  "analogy": "Count around a shrinking circle by rank, using an indexed list of the people still present.",
+  "example": "For n=7,k=2, the first removed is 2; continue counting from the next person among the six remaining.",
+  "algorithm": "Maintain live labels in a Fenwick tree. For remaining size m, compute the next zero-based removal rank, select rank+1 among live labels, remove it, and update the rank modulo m.",
+  "correctness": "The rank update is the circular counting rule, and the order-statistic structure returns exactly the label currently occupying that rank.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Josephus Problem II: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "7 2"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=7,k=2, the first removed is 2; continue counting from the next person among the six remaining."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain live labels in a Fenwick tree. For remaining size m, compute the next zero-based removal rank, select rank+1 among live labels, remove it, and update the rank modulo m."
+      },
+      {
+        "label": "Result",
+        "detail": "3 6 2 7 5 1 4"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "7  2"
+      ]
+    ],
+    "caption": "Illustrative example - For n=7,k=2, the first removed is 2; continue counting from the next person among the six remaining."
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "Each arrangement of the nine numbers is a graph state.",
+    "One legal adjacent swap is one graph edge.",
+    "Breadth-first search finds the fewest swaps."
+  ],
+  "analogy": "Explore all board arrangements one swap at a time, like finding the shortest route on a map.",
+  "example": "If only the first two adjacent cells are swapped, one move restores the sorted board.",
+  "algorithm": "Represent the board as a permutation. Start BFS from the input arrangement, generating a neighbor by swapping each horizontally or vertically adjacent pair of positions. Mark permutations visited with their distance; stop upon reaching 1,2,3,4,5,6,7,8,9. A reverse BFS from the target also works.",
+  "correctness": "Every BFS edge is one legal swap and every legal swap appears as an edge. BFS visits states in nondecreasing move count, so the first distance assigned to the sorted board is the minimum.",
+  "complexity": "There are at most 9! states and 12 swaps per state, so time is O(9!*12) and space O(9!).",
+  "visual": {
+    "kind": "trace",
+    "title": "Swap Game: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If only the first two adjacent cells are swapped, one move restores the sorted board."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Represent the board as a permutation. Start BFS from the input arrangement, generating a neighbor by swapping each horizontally or vertically adjacent pair of positions. Mark permutations visited with their distance; stop upon reaching 1,2,3,4,5,6,7,8,9. A reverse BFS from the target also works."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "State",
+      "Array"
+    ],
+    "rows": [
+      [
+        "Before swap",
+        "[2,1]"
+      ],
+      [
+        "Operation",
+        "swap positions 1 and 2"
+      ],
+      [
+        "After swap",
+        "[1,2]"
+      ]
+    ],
+    "caption": "Illustrative example - One adjacent swap restores the sorted two-cell board."
+  }
+}

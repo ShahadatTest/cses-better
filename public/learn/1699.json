@@ -1,0 +1,87 @@
+{
+  "hints": [
+    "A request from a city to itself needs no flight, so discard such requests.",
+    "Group the remaining requests by connected components when directions are ignored.",
+    "A component with no directed cycle can use one directed path; one with a directed cycle can use one directed cycle through all its cities."
+  ],
+  "analogy": "A directed path lets everyone travel forward; closing the path into a loop lets everyone travel in either direction.",
+  "example": "For requests 1->2, 2->3, 2->4, 3->1 and 3->4, all four cities are connected and there is a directed cycle. Four flights suffice, as in the sample.",
+  "algorithm": "Discard self-requests. Find weakly connected components of the request graph. For each component with k cities, test for a directed cycle using topological sorting. Add k-1 to the answer if it is acyclic, otherwise add k.",
+  "correctness": "In an acyclic component, a path through a topological ordering satisfies every request using k-1 edges. A cyclic component is satisfied by a cycle through its k vertices using k edges. Any solution must connect every request component even if it uses extra cities; a nontrivial directed cycle of requests also requires a directed cycle in the flight graph. A connected underlying multigraph containing such a cycle needs at least as many edges as vertices. Combining separate request components cannot lower the sum of these bounds.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Flight Route Requests: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For requests 1->2, 2->3, 2->4, 3->1 and 3->4, all four cities are connected and there is a directed cycle. Four flights suffice, as in the sample."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Discard self-requests. Find weakly connected components of the request graph. For each component with k cities, test for a directed cycle using topological sorting. Add k-1 to the answer if it is acyclic, otherwise add k."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 36.66666666666667,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 63.333333333333336,
+        "y": 50
+      },
+      {
+        "id": "4",
+        "label": "4",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "2",
+        "to": "4"
+      },
+      {
+        "from": "3",
+        "to": "1"
+      },
+      {
+        "from": "3",
+        "to": "4"
+      }
+    ],
+    "caption": "Illustrative example - For requests 1->2, 2->3, 2->4, 3->1 and 3->4, all four cities are connected and there is a directed cycle. Four flights suffice, as in the sample."
+  }
+}

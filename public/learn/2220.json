@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "A valid number has no equal adjacent decimal digits; leading zero padding is not part of the number.",
+    "Count numbers up to a bound with digit DP, remembering the previous actual digit, whether the prefix is still tight, and whether a nonzero digit has started.",
+    "For a range [a,b], subtract count(a-1) from count(b)."
+  ],
+  "analogy": "Build each number digit by digit while forbidding a digit from matching its immediate predecessor.",
+  "example": "From 0 to 20, valid values include 0 through 9 and 10,12,...,20; values 11 are excluded because adjacent digits match.",
+  "algorithm": "Implement countUpTo(N) over its decimal digits with states (position,previousDigit,tight,started). If not started, a zero remains padding; otherwise require digit!=previousDigit. Return countUpTo(b)-countUpTo(a-1).",
+  "correctness": "Each integer has one fixed-width zero-padded representation; the started flag removes fake leading zero comparisons, and each valid number is counted once.",
+  "complexity": "O(d*10*10*4) time and O(10*4) rolling space per bound, where d is digit count.",
+  "visual": {
+    "kind": "dp",
+    "title": "Counting Numbers: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "From 0 to 20, valid values include 0 through 9 and 10,12,...,20; values 11 are excluded because adjacent digits match."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Implement countUpTo(N) over its decimal digits with states (position,previousDigit,tight,started). If not started, a zero remains padding; otherwise require digit!=previousDigit. Return countUpTo(b)-countUpTo(a-1)."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "0",
+      "20",
+      "9",
+      "10",
+      "12",
+      "11"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - From 0 to 20, valid values include 0 through 9 and 10,12,...,20; values 11 are excluded because adjacent digits match."
+  }
+}

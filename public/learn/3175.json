@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Lexicographic order rewards choosing the smallest available next value that still permits a completion.",
+    "Only consecutive integers are forbidden neighbors; when at least four values remain after a choice, a completion always exists.",
+    "Greedily choose the smallest legal next value until four values remain, then try their permutations in lexicographic order."
+  ],
+  "analogy": "Choose the earliest possible next page, keeping a small final puzzle for an exhaustive check.",
+  "example": "For n=5, choose 1; the smallest valid completion is 3, 5, 2, 4, giving 1 3 5 2 4.",
+  "algorithm": "Maintain the unused values in an ordered set and the previously printed value. While more than four values remain, remove the smallest value whose difference from the previous value is not 1 (the first value has no restriction). Enumerate all permutations of the final at most four values in lexicographic order, choosing the first whose first value is compatible with the previous value and whose consecutive differences are not 1. If none exists, print NO SOLUTION.",
+  "correctness": "For any previous value and at least four distinct remaining values, a valid continuation exists: among these vertices the forbidden graph is a subgraph of a path, so its complement has a Hamiltonian path from the previous value. For seven or more vertices this follows from the Hamiltonian-connected minimum-degree bound; the five- and six-vertex cases are finite checks. Therefore each greedy choice made before the final search can be completed. The final exhaustive search finds the smallest possible suffix, so the full answer is lexicographically minimal.",
+  "complexity": "O(n log n) time and O(n) space; the final search has at most 4! permutations.",
+  "visual": {
+    "kind": "trace",
+    "title": "Beautiful Permutation II: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=5, choose 1; the smallest valid completion is 3, 5, 2, 4, giving 1 3 5 2 4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain the unused values in an ordered set and the previously printed value. While more than four values remain, remove the smallest value whose difference from the previous value is not 1 (the first value has no restriction). Enumerate all permutations of the final at most four values in lexicographic order, choosing the first whose first value is compatible with the previous value and whose consecutive differences are not 1. If none exists, print NO SOLUTION."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "5",
+      "1",
+      "3",
+      "2",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=5, choose 1; the smallest valid completion is 3, 5, 2, 4, giving 1 3 5 2 4."
+  }
+}

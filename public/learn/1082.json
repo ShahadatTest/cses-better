@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "Sum divisors by grouping numbers according to their quotient floor(n/i).",
+    "For a block of i values with the same quotient q, the contribution is q times the sum of all integers in that block.",
+    "Use arithmetic-series sums and modular arithmetic to process blocks in about square-root steps."
+  ],
+  "analogy": "Many divisor indices have the same quotient, so add them as a group instead of one at a time.",
+  "example": "For n=10, indices 4 and 5 both have floor(10/i)=2, contributing 2*(4+5)=18.",
+  "algorithm": "Set l=1; while l<=n, q=n/l and r=n/q. Add q*sum(l..r) modulo 1e9+7, then set l=r+1.",
+  "correctness": "The blocks [l,r] partition all divisor indices, and every index in a block has quotient q; regrouping preserves the original sum exactly.",
+  "complexity": "O(sqrt n) time and O(1) extra space.",
+  "visual": {
+    "kind": "math",
+    "title": "Sum of Divisors: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=10, indices 4 and 5 both have floor(10/i)=2, contributing 2*(4+5)=18."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Set l=1; while l<=n, q=n/l and r=n/q. Add q*sum(l..r) modulo 1e9+7, then set l=r+1."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Indices",
+      "floor(10 / i)",
+      "Contribution"
+    ],
+    "rows": [
+      [
+        "4, 5",
+        "2",
+        "2 x (4+5) = 18"
+      ]
+    ],
+    "caption": "Illustrative example - Grouping equal quotients sums a block at once."
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "The answer is the first intersection of the path with an earlier visited point.",
+    "Whether the first t commands contain a repeated point is monotone in t.",
+    "Binary-search the first bad command, using an axis-aligned segment intersection sweep as the test."
+  ],
+  "analogy": "A crossing detector checks a whole prefix of the route at once, then the first bad segment is inspected to locate the exact stopping point.",
+  "example": "Starting at (0,0), moving right 2, up 1, left 2, down 1 returns to the start after distance 6.",
+  "algorithm": "For each command represent only the integer points newly visited: omit its starting point and include its endpoint; also include the origin as a point. To test a prefix, detect overlapping collinear intervals by sorting by fixed coordinate and interval start, and detect horizontal-vertical intersections by a sweep with an ordered structure of active horizontal y coordinates and inclusive endpoints. Binary-search the first prefix with any intersection. If none exists, print the sum of all command lengths. Otherwise scan all earlier segments and the origin against the first bad segment, find its nearest intersection in travel order, and add that distance to the lengths of preceding commands. Use wide coordinates and distance sums.",
+  "correctness": "Omitting each command start prevents the normal shared endpoint of consecutive commands from looking like a revisit; every genuinely visited integer point is still represented once per visit. The two tests cover both parallel and perpendicular intersections, so the prefix predicate is exact and monotone. The first intersection on the first bad command is exactly where the robot stops.",
+  "complexity": "For n commands, O(n log^2 n) time from O(log n) sweep tests and O(n) space.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Robot Path: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Starting at (0,0), moving right 2, up 1, left 2, down 1 returns to the start after distance 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each command represent only the integer points newly visited: omit its starting point and include its endpoint; also include the origin as a point. To test a prefix, detect overlapping collinear intervals by sorting by fixed coordinate and interval start, and detect horizontal-vertical intersections by a sweep with an ordered structure of active horizontal y coordinates and inclusive endpoints. Binary-search the first prefix with any intersection. If none exists, print the sum of all command lengths. Otherwise scan all earlier segments and the origin against the first bad segment, find its nearest intersection in travel order, and add that distance to the lengths of preceding commands. Use wide coordinates and distance sums."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "(0,0)",
+        "x": 50,
+        "y": 50
+      }
+    ],
+    "edges": [],
+    "caption": "Illustrative example - Starting at (0,0), moving right 2, up 1, left 2, down 1 returns to the start after distance 6."
+  }
+}

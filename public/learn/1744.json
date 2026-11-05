@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "If the rectangle is already a square, it needs no cut.",
+    "Try a vertical first cut at every width and a horizontal first cut at every height.",
+    "Each cut splits the job into two smaller rectangles, whose minimum cut counts can be added."
+  ],
+  "analogy": "Try each possible first guillotine cut and keep the one that leaves the least work in both pieces.",
+  "example": "A 3x5 rectangle can be cut into a 3x3 square and 3x2 rectangle; then split 3x2 into squares, for 3 cuts total.",
+  "algorithm": "For all dimensions up to the target, set dp[a][b]=0 when a=b; otherwise minimize 1+dp[left]+dp[right] over all vertical and horizontal splits.",
+  "correctness": "Any valid cutting plan has a first cut; after it, its two independent pieces must each be solved optimally, so considering all first cuts finds the optimum.",
+  "complexity": "O(a*b*(a+b)) time and O(ab) space for an a-by-b rectangle.",
+  "visual": {
+    "kind": "dp",
+    "title": "Rectangle Cutting: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A 3x5 rectangle can be cut into a 3x3 square and 3x2 rectangle; then split 3x2 into squares, for 3 cuts total."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For all dimensions up to the target, set dp[a][b]=0 when a=b; otherwise minimize 1+dp[left]+dp[right] over all vertical and horizontal splits."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Rectangle",
+      "Dimensions"
+    ],
+    "rows": [
+      [
+        "Start",
+        "3 x 5"
+      ],
+      [
+        "After first cut",
+        "3 x 3 and 3 x 2"
+      ],
+      [
+        "Finish",
+        "3 squares, 3 cuts"
+      ]
+    ],
+    "caption": "Illustrative example - The worked example cuts a 3 x 5 rectangle into squares."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "For a mask k, count input elements containing every bit of k.",
+    "Every nonempty subset of those elements has AND containing k.",
+    "Invert these superset counts to recover the number with AND exactly k."
+  ],
+  "analogy": "First count all subsets whose AND includes a required set of bits, then subtract those with extra bits.",
+  "example": "For [1,3], nonempty subset ANDs are 1,3,1, so exact counts at 0 through 3 are 0,2,0,1.",
+  "algorithm": "Choose B bits covering all values and compute superset frequencies with a sum-over-subsets transform. For each mask set F[mask]=2^(count[mask])-1 modulo 10^9+7. Apply the inverse superset transform by subtracting the corresponding higher-bit entries. Output exact counts for masks 0 through n.",
+  "correctness": "F[mask] counts exactly nonempty subsets whose AND is a supermask of mask. Superset inversion subtracts every strict-supermask contribution and leaves each exact AND count.",
+  "complexity": "For n elements and B bits, O(n+B*2^B) time and O(2^B) space.",
+  "visual": {
+    "kind": "bitwise",
+    "title": "And Subset Count: follow one example",
+    "caption": "Track the binary state and the effect of each bit operation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,3], nonempty subset ANDs are 1,3,1, so exact counts at 0 through 3 are 0,2,0,1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Choose B bits covering all values and compute superset frequencies with a sum-over-subsets transform. For each mask set F[mask]=2^(count[mask])-1 modulo 10^9+7. Apply the inverse superset transform by subtracting the corresponding higher-bit entries. Output exact counts for masks 0 through n."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1 (binary 1)",
+      "3 (binary 11)",
+      "0 (binary 0)",
+      "2 (binary 10)"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,3], nonempty subset ANDs are 1,3,1, so exact counts at 0 through 3 are 0,2,0,1."
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "Read all updates before answering so every edge has known active time intervals.",
+    "Place each edge into segment-tree nodes covering its active interval.",
+    "Traverse the time tree with a disjoint-set union that can roll back changes."
+  ],
+  "analogy": "An edge is active over a stretch of time; enter it when visiting that stretch and undo it when leaving.",
+  "example": "With two isolated nodes, adding their edge changes the component count from 2 to 1; removing it changes it back to 2.",
+  "algorithm": "Convert each edge's initial presence and add/remove events into half-open intervals of states 0 through k. Insert each interval into a segment tree over time. DFS the tree, unioning edges stored at each node; record the component count at leaves, then roll back all unions made in that node. Use union by size without path compression so changes can be undone.",
+  "correctness": "At each time leaf, the unions along its root path contain exactly the edges active at that time. Rollback restores the parent state before visiting another branch, so the maintained component count is correct for every state.",
+  "complexity": "For n vertices and M=O(m+k) active intervals over T=k+1 states, O(M log T log n+T) time and O(n+M log T+T) space.",
+  "visual": {
+    "kind": "flow",
+    "title": "Dynamic Connectivity: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With two isolated nodes, adding their edge changes the component count from 2 to 1; removing it changes it back to 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Convert each edge's initial presence and add/remove events into half-open intervals of states 0 through k. Insert each interval into a segment tree over time. DFS the tree, unioning edges stored at each node; record the component count at leaves, then roll back all unions made in that node. Use union by size without path compression so changes can be undone."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Operation",
+      "Components"
+    ],
+    "rows": [
+      [
+        "Start with 2 isolated nodes",
+        "2"
+      ],
+      [
+        "Add edge",
+        "1"
+      ],
+      [
+        "Remove edge",
+        "2"
+      ]
+    ],
+    "caption": "Illustrative example - Dynamic connectivity updates the component count after each operation."
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "Each query asks for the maximum of several lines at one x.",
+    "Two lines change their relative order at most once.",
+    "A Li Chao tree stores the line best at the midpoint and sends the other to the only side where it might win."
+  ],
+  "analogy": "At each interval, keep the midpoint champion and let the challenger compete only where it can still overtake.",
+  "example": "After adding y=x+2 and y=4, queries at x=1 and x=3 return 4 and 5.",
+  "algorithm": "Maintain a Li Chao segment tree on integer x in [0,100000]. To insert a line, compare it with the stored line at the interval midpoint, keep the larger there, and recursively insert the other only on the side where it can beat the stored line. A query takes the maximum along the root-to-leaf path. Use wide integer evaluations.",
+  "correctness": "Two lines cross at most once, so after keeping the midpoint winner the other can improve the envelope on at most one side. Thus every line that could win at a query is represented on that query's path.",
+  "complexity": "For q operations and coordinate domain size X=100001, O(q log X) time and O(q log X) worst-case dynamic-tree space, or O(X) with a fixed tree.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Lines and Queries I: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "After adding y=x+2 and y=4, queries at x=1 and x=3 return 4 and 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain a Li Chao segment tree on integer x in [0,100000]. To insert a line, compare it with the stored line at the interval midpoint, keep the larger there, and recursively insert the other only on the side where it can beat the stored line. A query takes the maximum along the root-to-leaf path. Use wide integer evaluations."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Line",
+      "Query x",
+      "Answer"
+    ],
+    "rows": [
+      [
+        "y = x + 2",
+        "1",
+        "3"
+      ],
+      [
+        "y = 4",
+        "1",
+        "4"
+      ],
+      [
+        "y = x + 2",
+        "3",
+        "5"
+      ]
+    ],
+    "caption": "Illustrative example - Compare active line values at the query coordinates."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Write the first row and column from zero: they form 0,1,2,... .",
+    "Compare the first few rows with bitwise XOR.",
+    "The cell at one-based (y,x) equals (y-1) XOR (x-1)."
+  ],
+  "analogy": "Each row is the first row rearranged by toggling the bits of its row index.",
+  "example": "At (2,3), zero-based coordinates are 1 and 2; 1 XOR 2 is 3.",
+  "algorithm": "For each query subtract one from the row and column indices and print their bitwise XOR.",
+  "correctness": "In row r, values r XOR c for c before x are distinct, and in column x, values r' XOR x for r' before r are distinct. Every number smaller than r XOR x appears to the left or above by flipping its highest differing bit; the current value appears in neither, so it is the mex.",
+  "complexity": "For q queries, O(q) time and O(1) extra space using fixed-width integers.",
+  "visual": {
+    "kind": "trace",
+    "title": "Mex Grid Queries: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "At (2,3), zero-based coordinates are 1 and 2; 1 XOR 2 is 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each query subtract one from the row and column indices and print their bitwise XOR."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "3",
+      "1"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - At (2,3), zero-based coordinates are 1 and 2; 1 XOR 2 is 3."
+  }
+}

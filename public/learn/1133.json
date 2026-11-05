@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "Rerooting changes the sum of distances in a predictable way across one edge.",
+    "Compute subtree sizes and the total distance sum from an initial root.",
+    "Moving root from parent u to child v makes the v-subtree closer by one each and all other nodes farther by one."
+  ],
+  "analogy": "When the root crosses an edge, every node on the child side gets one step closer and every other node one step farther.",
+  "example": "For a 3-node path rooted at an endpoint, distance sum is 3; at the middle, it is 2.",
+  "algorithm": "DFS from root 1 to compute subtree sizes and sumDist[1]. For each parent-child edge, sumDist[child]=sumDist[parent]+n-2*subtreeSize[child].",
+  "correctness": "Exactly subtreeSize nodes reduce their distance by one and n-subtreeSize increase by one, giving the rerooting difference n-2s.",
+  "complexity": "O(n) time and O(n) space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Tree Distances II: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For a 3-node path rooted at an endpoint, distance sum is 3; at the middle, it is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "DFS from root 1 to compute subtree sizes and sumDist[1]. For each parent-child edge, sumDist[child]=sumDist[parent]+n-2*subtreeSize[child]."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      }
+    ],
+    "caption": "Illustrative example - For a three-node path, distance sums are 3 at an endpoint and 2 at the middle."
+  }
+}

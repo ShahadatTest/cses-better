@@ -40,6 +40,9 @@ export function SettingsModal({
     text: string;
   } | null>(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const deploymentWidgetKey = process.env.NEXT_PUBLIC_ONLINECOMPILER_WIDGET_KEY || '';
+  const widgetKeyManagedByDeployment =
+    process.env.NODE_ENV === 'production' && Boolean(deploymentWidgetKey);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -236,7 +239,8 @@ export function SettingsModal({
                 </label>
                 <input
                   type="text"
-                  value={settings.widgetKey || ''}
+                  value={widgetKeyManagedByDeployment ? deploymentWidgetKey : settings.widgetKey || ''}
+                  disabled={widgetKeyManagedByDeployment}
                   onChange={(e) =>
                     onUpdateSettings({
                       ...settings,
@@ -244,10 +248,12 @@ export function SettingsModal({
                     })
                   }
                   placeholder="Enter your widget key (e.g. wgt_abc123...)"
-                  className="w-full bg-surface-2 border border-border-muted rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 font-mono focus:outline-none focus:border-sky-500"
+                  className="w-full bg-surface-2 border border-border-muted rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 font-mono focus:outline-none focus:border-sky-500 disabled:cursor-not-allowed disabled:opacity-70"
                 />
                 <p className="mt-1 text-[11px] text-slate-500">
-                  Required only for the <code className="text-slate-400">OnlineCompiler.io Embed</code> tab. Separate from the execution API key. Generate under{' '}
+                  {widgetKeyManagedByDeployment
+                    ? 'This production deployment uses its host-restricted widget key. '
+                    : <>Required only for the <code className="text-slate-400">OnlineCompiler.io Embed</code> tab. Separate from the execution API key. Generate under{' '}</>}
                   <a
                     href="https://onlinecompiler.io/"
                     target="_blank"

@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "For a range [a,b] to contain distinct values, each value's previous occurrence must lie before a.",
+    "Maintain prev[i], the previous position of x_i, and query the maximum prev value on [a,b].",
+    "A point update changes the previous-position links only around the old and new values."
+  ],
+  "analogy": "A duplicate exists in the range exactly when some position points back to another occurrence still inside the range.",
+  "example": "For [3,2,7,2,8], range [2,5] repeats 2 at positions 2 and 4, so it is not distinct; after changing position 2 to 9, the range becomes distinct.",
+  "algorithm": "Maintain an ordered set of positions for each value and a segment tree over prev[i]. For update at k, remove k from its old value's set and insert it into the new value's set; recompute prev at k and the successor positions affected in both sets. For query [a,b], it is distinct iff max(prev[a..b])<a.",
+  "correctness": "A repeated value inside [a,b] has a later occurrence i whose previous equal position is at least a, so the range maximum reaches a. If the maximum is below a, every occurrence's previous equal value lies outside the range, so all values are distinct.",
+  "complexity": "O(log n) per update or query with ordered position sets and a max segment tree; O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Distinct Values Queries II: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [3,2,7,2,8], range [2,5] repeats 2 at positions 2 and 4, so it is not distinct; after changing position 2 to 9, the range becomes distinct."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain an ordered set of positions for each value and a segment tree over prev[i]. For update at k, remove k from its old value's set and insert it into the new value's set; recompute prev at k and the successor positions affected in both sets. For query [a,b], it is distinct iff max(prev[a..b])<a."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Range 1",
+        "start": 2,
+        "end": 9
+      }
+    ],
+    "caption": "Illustrative example - For [3,2,7,2,8], range [2,5] repeats 2 at positions 2 and 4, so it is not distinct; after changing position 2 to 9, the range becomes distinct."
+  }
+}

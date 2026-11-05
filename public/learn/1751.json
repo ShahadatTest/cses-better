@@ -1,0 +1,93 @@
+{
+  "hints": [
+    "Each planet eventually repeats because every planet has exactly one outgoing link.",
+    "For every start, the number of distinct planets visited equals its distance to a cycle plus that cycle's length.",
+    "Find cycles, then propagate cycle length plus one backward through incoming trees."
+  ],
+  "analogy": "Count the nonrepeating lead-in and add the loop length.",
+  "example": "If a planet reaches a 3-planet cycle after two steps, it visits five distinct planets before repeating.",
+  "algorithm": "Use DFS states or indegree peeling to identify cycles. Assign each cycle node its cycle length, then process reverse-tree nodes so answer[u]=answer[next[u]]+1.",
+  "correctness": "A path from u consists of its unique tree path into a cycle plus every cycle node once; this recurrence counts exactly those distinct nodes.",
+  "complexity": "O(n) time and O(n) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Planets Cycles: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If a planet reaches a 3-planet cycle after two steps, it visits five distinct planets before repeating."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use DFS states or indegree peeling to identify cycles. Assign each cycle node its cycle length, then process reverse-tree nodes so answer[u]=answer[next[u]]+1."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 30,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "4",
+        "label": "4",
+        "x": 70,
+        "y": 50
+      },
+      {
+        "id": "5",
+        "label": "5",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "4"
+      },
+      {
+        "from": "4",
+        "to": "5"
+      },
+      {
+        "from": "5",
+        "to": "3"
+      }
+    ],
+    "caption": "Illustrative example - Two steps reach a three-planet cycle; five distinct planets are visited before the first repeat."
+  }
+}

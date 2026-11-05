@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "The final sequence must be nondecreasing, but values can move in both directions.",
+    "When a smaller value appears, earlier choices that are too large may need to decrease.",
+    "A max-heap tracks the largest adjustable values."
+  ],
+  "analogy": "Think of a descending bump being flattened by lowering an earlier height and raising the current one toward the same level.",
+  "example": "For [3,8,5,6,5], the nondecreasing sequence [3,5,5,5,5] costs 0+3+0+1+0=4.",
+  "algorithm": "Scan the array with a max-heap and a 64-bit answer. Insert the current value x. If the heap maximum is greater than x, remove that maximum y, add y-x to the answer, and insert x again. After the scan, print the answer.",
+  "correctness": "This is the slope-trick form of L1 isotonic regression. After each prefix, the heap stores breakpoints of the minimum cost as a function of its allowed final value. Inserting x adds the absolute-deviation cost; replacing a maximum y>x with x enforces the nondecreasing constraint and adds the unavoidable gap y-x. Induction over prefixes gives the minimum total adjustment cost.",
+  "complexity": "For n values, each heap operation takes O(log n), so time is O(n log n) and space O(n).",
+  "visual": {
+    "kind": "trace",
+    "title": "Increasing Array II: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [3,8,5,6,5], the nondecreasing sequence [3,5,5,5,5] costs 0+3+0+1+0=4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Scan the array with a max-heap and a 64-bit answer. Insert the current value x. If the heap maximum is greater than x, remove that maximum y, add y-x to the answer, and insert x again. After the scan, print the answer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Input",
+      "Nondecreasing target",
+      "Increment cost"
+    ],
+    "rows": [
+      [
+        "3,8,5,6,5",
+        "3,5,5,5,5",
+        "4"
+      ]
+    ],
+    "caption": "Illustrative example - Lowering to the median minimizes the total adjustment."
+  }
+}

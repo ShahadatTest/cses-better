@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "Apple counts are indistinguishable and children may receive zero apples.",
+    "Represent a distribution with n stars and m-1 separators.",
+    "Choose which m-1 positions among n+m-1 are separators."
+  ],
+  "analogy": "Separators split one line of apples into m possibly empty shares.",
+  "correctness": "Each separator placement uniquely determines the number of stars assigned to each child, including empty groups from adjacent separators or edges.",
+  "complexity": "O(n+m) preprocessing and O(1) per case; O(n+m) space.",
+  "example": "With n=3 children and m=2 apples, the six distributions are (0,0,2),(0,1,1),(0,2,0),(1,0,1),(1,1,0),(2,0,0). The count is C(4,2)=6.",
+  "algorithm": "The number of ways to distribute m identical apples among n children is C(n+m-1,n-1). Precompute factorials and inverse factorials modulo 1,000,000,007, then evaluate the binomial coefficient.",
+  "visual": {
+    "kind": "math",
+    "title": "Distributing Apples: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With n=3 children and m=2 apples, the six distributions are (0,0,2),(0,1,1),(0,2,0),(1,0,1),(1,1,0),(2,0,0). The count is C(4,2)=6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "The number of ways to distribute m identical apples among n children is C(n+m-1,n-1). Precompute factorials and inverse factorials modulo 1,000,000,007, then evaluate the binomial coefficient."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "2",
+      "0",
+      "1",
+      "4",
+      "6"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - With n=3 children and m=2 apples, the six distributions are (0,0,2),(0,1,1),(0,2,0),(1,0,1),(1,1,0),(2,0,0). The count is C(4,2)=6."
+  }
+}

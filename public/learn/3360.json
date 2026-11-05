@@ -1,0 +1,52 @@
+{
+  "hints": [
+    "Fix a letter and choose two columns.",
+    "A rectangle exists if two rows contain that letter in both chosen columns.",
+    "Remember previously seen column pairs; stop for that letter at the first repeated pair."
+  ],
+  "analogy": "Each row stamps its pairs of matching-letter columns; a repeated stamp identifies the opposite corners of a rectangle.",
+  "example": "In rows AAB and AAC, columns 1 and 2 contain A in both rows, so A has a valid rectangle.",
+  "algorithm": "For each letter, initialize a bitset indexed by unordered column pairs. Scan rows, list the columns containing that letter, and enumerate their pairs. If a pair was already marked, answer YES; otherwise mark it. If all rows finish without a repeat, answer NO.",
+  "correctness": "A marked pair means an earlier row had the letter in both columns. Seeing the same pair in another row gives four equal corners, and every valid rectangle produces exactly such a repeated pair.",
+  "complexity": "For grid side n and k letters, O(k*n^2+n^2) time: before the first repeat each letter can mark at most n(n-1)/2 pairs. O(n^2) space for the grid and pair bitset.",
+  "visual": {
+    "kind": "flow",
+    "title": "Corner Subgrid Check: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In rows AAB and AAC, columns 1 and 2 contain A in both rows, so A has a valid rectangle."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each letter, initialize a bitset indexed by unordered column pairs. Scan rows, list the columns containing that letter, and enumerate their pairs. If a pair was already marked, answer YES; otherwise mark it. If all rows finish without a repeat, answer NO."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "A",
+        "A",
+        "B"
+      ],
+      [
+        "A",
+        "A",
+        "C"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - Columns 1 and 2 contain A in both rows, forming a rectangle."
+  }
+}

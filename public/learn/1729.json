@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "For a pile size s, a move subtracts one of the allowed numbers.",
+    "A position is winning if some legal move reaches a losing position.",
+    "Compute winning/losing status from smaller pile sizes up to n."
+  ],
+  "analogy": "A position is safe if you can move to a state where the next player has no winning move.",
+  "correctness": "Every move decreases the pile, so all successor states are already classified; the winning definition directly yields this recurrence.",
+  "algorithm": "Read n, the number of stones to classify, and the k allowed move sizes. Set win[0]=false. For s=1..n, set win[s]=true if some allowed move x<=s has win[s-x]==false; otherwise false. Print W/L for sizes 1..n as the statement requests.",
+  "complexity": "O(nk) time and O(n) space, where k is the number of allowed move sizes.",
+  "example": "With allowed moves {1,3}, pile size 2 is losing: the only legal move removes 1 and leaves size 1, which is winning for the next player.",
+  "visual": {
+    "kind": "math",
+    "title": "Stick Game: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With allowed moves {1,3}, pile size 2 is losing: the only legal move removes 1 and leaves size 1, which is winning for the next player."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Read n, the number of stones to classify, and the k allowed move sizes. Set win[0]=false. For s=1..n, set win[s]=true if some allowed move x<=s has win[s-x]==false; otherwise false. Print W/L for sizes 1..n as the statement requests."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "3",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - With allowed moves {1,3}, pile size 2 is losing: the only legal move removes 1 and leaves size 1, which is winning for the next player."
+  }
+}

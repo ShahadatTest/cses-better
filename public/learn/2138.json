@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "The graph is acyclic, so process vertices after all their outgoing neighbors.",
+    "Store a bitset of reachable vertices for each vertex.",
+    "Start with the vertex itself and OR in each outgoing neighbor's bitset."
+  ],
+  "analogy": "Each node collects the destination lists of the nodes it can visit directly.",
+  "example": "With edges 1->2 and 2->3, reachable counts are 3, 2, 1.",
+  "algorithm": "Topologically sort the DAG. Process vertices in reverse order, setting their own bit and ORing in the reachability bitset of each outgoing neighbor. Count set bits for each answer.",
+  "correctness": "Every path from a vertex is either empty or begins with one outgoing edge. Reverse topological order has already computed every neighbor's complete set, so their union plus the vertex is exact.",
+  "complexity": "For n vertices, m edges and machine word size w, O((n+m)*ceil(n/w)) word operations and O(n*ceil(n/w)) words of space.",
+  "visual": {
+    "kind": "flow",
+    "title": "Reachable Nodes: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With edges 1->2 and 2->3, reachable counts are 3, 2, 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Topologically sort the DAG. Process vertices in reverse order, setting their own bit and ORing in the reachability bitset of each outgoing neighbor. Count set bits for each answer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - With edges 1->2 and 2->3, reachable counts are 3, 2, 1."
+  }
+}

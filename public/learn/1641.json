@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Sort values while keeping their original positions.",
+    "Fix one value, then use two pointers on the remaining suffix to search for the other two.",
+    "Move the left or right pointer according to whether the sum is below or above the target."
+  ],
+  "analogy": "Fix one number and let two ends close in on the needed remainder.",
+  "example": "For 2,7,5,1 with target 8, sorted values 1,2,5,7 include 1+2+5=8; return their original indices.",
+  "algorithm": "Sort (value,index) pairs. For each i, run a two-pointer search over j>i and k>j; on equality output the three original indices.",
+  "correctness": "For each fixed first value, sorted pair sums move monotonically with the pointers, so every candidate pair is either found or safely eliminated.",
+  "complexity": "O(n^2) time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Sum of Three Values: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "4 8\n2 7 5 1"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 2,7,5,1 with target 8, sorted values 1,2,5,7 include 1+2+5=8; return their original indices."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort (value,index) pairs. For each i, run a two-pointer search over j>i and k>j; on equality output the three original indices."
+      },
+      {
+        "label": "Result",
+        "detail": "1 3 4"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "4  8"
+      ],
+      [
+        "2  7  5  1"
+      ]
+    ],
+    "caption": "Illustrative example - For 2,7,5,1 with target 8, sorted values 1,2,5,7 include 1+2+5=8; return their original indices."
+  }
+}

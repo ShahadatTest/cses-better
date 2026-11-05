@@ -1,0 +1,60 @@
+{
+  "hints": [
+    "A room is a connected component of floor cells using up, down, left, and right moves.",
+    "Scan every cell; when an unvisited floor cell is found, start a flood fill.",
+    "Mark cells when adding them to the search so each is processed once."
+  ],
+  "analogy": "A room is a region you can walk through without crossing a wall.",
+  "example": "The sample map has three separate groups of dot cells, so the answer is 3.",
+  "algorithm": "Loop over all cells; for each unseen '.', run DFS/BFS over four-neighbor floor cells and increment the room count.",
+  "correctness": "Flood fill visits exactly the cells connected to its starting cell; starting only at unvisited floor cells counts each component once.",
+  "complexity": "O(nm) time and O(nm) space for an n-by-m map.",
+  "visual": {
+    "kind": "graph",
+    "title": "Counting Rooms: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "The sample map has three separate groups of dot cells, so the answer is 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Loop over all cells; for each unseen '.', run DFS/BFS over four-neighbor floor cells and increment the room count."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "Room group 1",
+        "label": "Room group 1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "Room group 2",
+        "label": "Room group 2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "Room group 3",
+        "label": "Room group 3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [],
+    "caption": "Illustrative example - The sample map has three disconnected groups of open cells."
+  }
+}

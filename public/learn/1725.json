@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "Each die independently shows a value from 1 through 6.",
+    "Build the probability distribution of the sum one die at a time.",
+    "Add the probabilities for sums in the requested inclusive interval."
+  ],
+  "analogy": "Each new die shifts the existing sum distribution by one of six equally likely faces.",
+  "example": "For one die, probability of a sum from 2 to 4 is 3/6=0.5.",
+  "algorithm": "Initialize dp[0]=1. For each die, distribute each dp[s]/6 to dpNew[s+1..s+6]; sum dp[a..b] and print with required precision.",
+  "correctness": "The transition lists all six equally likely outcomes for the next independent die, so each final sum receives exactly its probability mass.",
+  "complexity": "O(n^2) time and O(n) space for n dice.",
+  "visual": {
+    "kind": "math",
+    "title": "Dice Probability: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For one die, probability of a sum from 2 to 4 is 3/6=0.5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize dp[0]=1. For each die, distribute each dp[s]/6 to dpNew[s+1..s+6]; sum dp[a..b] and print with required precision."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Die result",
+      "Probability"
+    ],
+    "rows": [
+      [
+        "2",
+        "1/6"
+      ],
+      [
+        "3",
+        "1/6"
+      ],
+      [
+        "4",
+        "1/6"
+      ],
+      [
+        "Total",
+        "3/6 = 0.5"
+      ]
+    ],
+    "caption": "Illustrative example - One fair die lands from 2 through 4 with probability one half."
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "hints": [
+    "A path can enter a cell only from above or from the left.",
+    "A trap cell has zero paths regardless of its neighbors.",
+    "The start cell has one path if it is open; otherwise the destination is unreachable."
+  ],
+  "analogy": "The number of ways to reach each open square is the sum of the ways arriving from its top and left.",
+  "example": "In an open 2x2 grid there are two routes to the lower-right: right-then-down or down-then-right.",
+  "correctness": "Every allowed route to a cell ends with exactly one move from above or left; these cases are disjoint and cover all routes.",
+  "complexity": "O(n^2) time and O(n^2) space, reducible to O(n) row storage.",
+  "algorithm": "Set dp[0][0]=1 if the start is open, else 0. Scan cells row-major; for an open cell add paths from above and left modulo 1,000,000,007. A trap remains zero. Output dp[n-1][n-1].",
+  "visual": {
+    "kind": "dp",
+    "title": "Grid Paths I: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In an open 2x2 grid there are two routes to the lower-right: right-then-down or down-then-right."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Set dp[0][0]=1 if the start is open, else 0. Scan cells row-major; for an open cell add paths from above and left modulo 1,000,000,007. A trap remains zero. Output dp[n-1][n-1]."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "open",
+        "open"
+      ],
+      [
+        "open",
+        "open"
+      ]
+    ],
+    "path": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "caption": "Illustrative example - Two valid routes to the lower-right: right then down, or down then right."
+  }
+}

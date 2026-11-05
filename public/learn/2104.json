@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "Search all patterns together with a trie and failure links.",
+    "Record the earliest text position reaching each automaton state.",
+    "Propagate minimum ending positions from each state to its failure parent."
+  ],
+  "analogy": "Every ending position is passed back to all dictionary prefixes that are suffixes of the scanned text.",
+  "example": "In ababa, aba first starts at position 1 and bab at position 2; ac is absent.",
+  "algorithm": "Build Aho-Corasick for the patterns. Scan the text, keeping the earliest ending position for each reached state. In reverse breadth-first order propagate minima to failure parents. For each pattern with a finite minimum end, subtract its length and add one; otherwise print -1.",
+  "correctness": "A terminal pattern matches at an end position exactly when its node lies on the current state's failure chain. Minima propagated along those links thus give its earliest end and hence earliest start.",
+  "complexity": "For text length n and total pattern length L over 26 letters, O(n+26L) time and O(26L) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Pattern Positions: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In ababa, aba first starts at position 1 and bab at position 2; ac is absent."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build Aho-Corasick for the patterns. Scan the text, keeping the earliest ending position for each reached state. In reverse breadth-first order propagate minima to failure parents. For each pattern with a finite minimum end, subtract its length and add one; otherwise print -1."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Pattern",
+      "First position",
+      "Occurrences"
+    ],
+    "rows": [
+      [
+        "aba",
+        "1",
+        "Present"
+      ],
+      [
+        "bab",
+        "2",
+        "Present"
+      ],
+      [
+        "ac",
+        "-",
+        "Absent"
+      ]
+    ],
+    "caption": "Illustrative example - Pattern positions in ababa."
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "hints": [
+    "A shortest cycle can be exposed by breadth-first search from one of its vertices.",
+    "A non-parent edge joining two visited vertices gives a cycle candidate.",
+    "Run BFS from every vertex and minimize distance[u]+distance[v]+1."
+  ],
+  "analogy": "Growing distance layers from every starting point reveals a shortcut connecting two branches.",
+  "example": "A triangle has a cycle of length 3, the smallest possible in a simple graph.",
+  "algorithm": "For each vertex run BFS, recording distances and parents. For every edge to an already visited vertex that is not the BFS parent edge, consider distance[u]+distance[v]+1. Print the smallest candidate over all searches, or -1 if none exists.",
+  "correctness": "Every non-tree edge supplies a closed walk containing a cycle no longer than its candidate. Starting BFS on a shortest cycle also yields a candidate no longer than that cycle, so the global minimum equals the girth.",
+  "complexity": "For n vertices and m edges, O(n(n+m)) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Graph Girth: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A triangle has a cycle of length 3, the smallest possible in a simple graph."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each vertex run BFS, recording distances and parents. For every edge to an already visited vertex that is not the BFS parent edge, consider distance[u]+distance[v]+1. Print the smallest candidate over all searches, or -1 if none exists."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "1"
+      }
+    ],
+    "caption": "Illustrative example - A triangle is a cycle of length 3."
+  }
+}

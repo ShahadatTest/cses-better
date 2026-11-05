@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "All flight lengths are positive, so Dijkstra's algorithm applies.",
+    "Keep the best known distance to each city and use a min-priority queue to process the smallest tentative distance.",
+    "Ignore stale queue entries after a shorter route has already been found."
+  ],
+  "analogy": "Always expand the currently cheapest known route; positive lengths ensure a finalized route cannot later improve.",
+  "example": "If 1->3 costs 2 and 3->2 costs 3, city 2 has route length 5 even if direct alternatives cost more.",
+  "algorithm": "Initialize dist[1]=0. Pop (distance,u), relax each directed edge u->v with positive weight, and push improved distances.",
+  "correctness": "When u is removed with the smallest tentative distance, any route that could improve it would have to pass through a vertex with no larger distance already processed, so its distance is final.",
+  "complexity": "O((n+m) log n) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Shortest Routes I: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If 1->3 costs 2 and 3->2 costs 3, city 2 has route length 5 even if direct alternatives cost more."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize dist[1]=0. Pop (distance,u), relax each directed edge u->v with positive weight, and push improved distances."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "2"
+      }
+    ],
+    "caption": "Illustrative example - If 1->3 costs 2 and 3->2 costs 3, city 2 has route length 5 even if direct alternatives cost more."
+  }
+}

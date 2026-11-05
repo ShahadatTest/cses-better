@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Reverse the splitting process: merge final pieces into the original stick.",
+    "A merge costs the combined length of its two pieces.",
+    "Repeatedly merge the two shortest pieces, as in Huffman coding."
+  ],
+  "analogy": "Short pieces are combined early so their lengths are charged at deeper levels instead of making large pieces pay repeatedly.",
+  "example": "For lengths 2,3,5, merge 2+3 at cost 5, then 5+5 at cost 10, for total 15.",
+  "algorithm": "Put all target lengths into a min-heap. Repeatedly remove the two smallest, add their sum to the answer, and insert the sum. When one length remains, print the accumulated cost; with one piece the answer is zero. Use wide integers.",
+  "correctness": "In an optimal binary merge tree, two smallest leaves can be placed as deepest siblings without increasing cost. Merging them reduces the problem to an optimal smaller instance, establishing the greedy rule.",
+  "complexity": "For n pieces, O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Stick Divisions: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For lengths 2,3,5, merge 2+3 at cost 5, then 5+5 at cost 10, for total 15."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Put all target lengths into a min-heap. Repeatedly remove the two smallest, add their sum to the answer, and insert the sum. When one length remains, print the accumulated cost; with one piece the answer is zero. Use wide integers."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "3",
+      "5",
+      "10",
+      "15"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For lengths 2,3,5, merge 2+3 at cost 5, then 5+5 at cost 10, for total 15."
+  }
+}

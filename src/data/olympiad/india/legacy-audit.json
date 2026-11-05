@@ -1,0 +1,116 @@
+{
+  "scope": "India legacy official-paper batch, 2002?2011",
+  "sourceIndex": "src/data/olympiad/india/archive-coverage.json",
+  "recordsFile": "legacy-index.json",
+  "summary": {
+    "indexedTaskCount": 16,
+    "contest": "INOI",
+    "yearsCovered": [
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011
+    ],
+    "visualCoverage": "16/16",
+    "sourceCoverage": "16/16 official IARCS question-paper URLs"
+  },
+  "coverageByYear": [
+    {
+      "year": 2002,
+      "contest": "INOI",
+      "paperStatus": "unreadable",
+      "indexedTasks": 0,
+      "notes": "Downloaded PDF text extraction is garbled; task titles could not be verified from extracted text."
+    },
+    {
+      "year": 2003,
+      "contest": "INOI",
+      "paperStatus": "not-found-in-official-index",
+      "indexedTasks": 0,
+      "notes": "The official archive index lists a ZIO paper but no INOI paper for this year."
+    },
+    {
+      "year": 2004,
+      "contest": "INOI",
+      "paperStatus": "indexed",
+      "indexedTasks": 2,
+      "notes": "Two titled programming tasks verified from the official question paper."
+    },
+    {
+      "year": 2005,
+      "contest": "INOI",
+      "paperStatus": "indexed",
+      "indexedTasks": 2,
+      "notes": "Two titled programming tasks verified from the official question paper."
+    },
+    {
+      "year": 2006,
+      "contest": "INOI",
+      "paperStatus": "indexed",
+      "indexedTasks": 2,
+      "notes": "Two titled programming tasks verified from the official question paper."
+    },
+    {
+      "year": 2007,
+      "contest": "INOI",
+      "paperStatus": "indexed",
+      "indexedTasks": 2,
+      "notes": "Two titled programming tasks verified from the official question paper."
+    },
+    {
+      "year": 2008,
+      "contest": "INOI",
+      "paperStatus": "indexed",
+      "indexedTasks": 2,
+      "notes": "Two titled programming tasks verified from the official question paper."
+    },
+    {
+      "year": 2009,
+      "contest": "INOI",
+      "paperStatus": "indexed",
+      "indexedTasks": 2,
+      "notes": "Two titled programming tasks verified from the official question paper."
+    },
+    {
+      "year": 2010,
+      "contest": "INOI",
+      "paperStatus": "indexed",
+      "indexedTasks": 2,
+      "notes": "Two titled programming tasks verified from the official question paper."
+    },
+    {
+      "year": 2011,
+      "contest": "INOI",
+      "paperStatus": "indexed",
+      "indexedTasks": 2,
+      "notes": "Two titled programming tasks verified from the official question paper."
+    }
+  ],
+  "uncoveredContestMaterial": [
+    {
+      "contest": "ZIO",
+      "years": [
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011
+      ],
+      "status": "not-indexed-in-this-legacy-batch",
+      "notes": "The official paper PDFs are in archive-coverage.json. They are reasoning-problem papers rather than named programming task collections; this file currently indexes only verified named INOI programming problems. Do not treat this as complete ZIO archive coverage."
+    }
+  ],
+  "limitations": [
+    "The visual explanations are original schematic learning aids inferred from each verified task statement; they are not official figures or solution proofs.",
+    "ZIO tasks and INOI 2002 remain to be extracted and reviewed before claiming full 2002?2011 legacy coverage."
+  ]
+}

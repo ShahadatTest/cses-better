@@ -1,0 +1,73 @@
+{
+  "hints": [
+    "Every vertex must have equal incoming and outgoing degree for a closed Euler tour to use all edges.",
+    "Hierholzer's algorithm follows unused edges until trapped, then inserts those subroutes into the tour.",
+    "Start at city 1 and verify the resulting tour contains exactly m edges."
+  ],
+  "analogy": "Walk every unused mail road once, stitching closed loops together whenever a route branches.",
+  "example": "A triangle has a closed route 1-2-3-1 using all three roads.",
+  "algorithm": "Check degree balance, then run iterative Hierholzer using adjacency stacks and a vertex stack. Reverse the popped circuit and ensure its length is m+1.",
+  "correctness": "Balanced degrees plus the constructed circuit using every edge proves a valid Euler tour; checking length catches disconnected edge components.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Mail Delivery: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A triangle has a closed route 1-2-3-1 using all three roads."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Check degree balance, then run iterative Hierholzer using adjacency stacks and a vertex stack. Reverse the popped circuit and ensure its length is m+1."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "1"
+      }
+    ],
+    "caption": "Illustrative example - A triangle has a closed route 1-2-3-1 using all three roads."
+  }
+}

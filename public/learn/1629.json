@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "A movie can be watched only if its start is at or after the previous movie's end.",
+    "Sort movies by ending time, not starting time.",
+    "Repeatedly take the earliest-finishing movie that still fits."
+  ],
+  "analogy": "Finish the current movie as early as possible to leave the largest window for later choices.",
+  "example": "Movies [3,5), [4,9), [5,8): choose [3,5) then [5,8), so two are watchable.",
+  "algorithm": "Sort intervals by end time. Select an interval when its start is at least the end of the last selected one.",
+  "correctness": "For any optimal schedule's first movie, replacing it by the earliest-ending compatible choice leaves at least as much time for every later movie; repeat this exchange argument.",
+  "complexity": "O(n log n) time and O(1) extra space beyond sorting.",
+  "visual": {
+    "kind": "array",
+    "title": "Movie Festival: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3\n3 5\n4 9\n5 8"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Movies [3,5), [4,9), [5,8): choose [3,5) then [5,8), so two are watchable."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort intervals by end time. Select an interval when its start is at least the end of the last selected one."
+      },
+      {
+        "label": "Result",
+        "detail": "2"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3"
+      ],
+      [
+        "3  5"
+      ],
+      [
+        "4  9"
+      ],
+      [
+        "5  8"
+      ]
+    ],
+    "caption": "Illustrative example - Movies [3,5), [4,9), [5,8): choose [3,5) then [5,8), so two are watchable."
+  }
+}

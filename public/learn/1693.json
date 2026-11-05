@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "An Euler path uses every directed edge exactly once, starting at 1 and ending at n.",
+    "Check degree conditions: start has one extra outgoing edge, end one extra incoming, and all others balance.",
+    "Run Hierholzer from 1 and verify every edge was used and the route ends at n."
+  ],
+  "analogy": "The route must balance every intermediate city and use every teleport exactly once.",
+  "example": "For two edges 1->2 and 2->3, route 1,2,3 starts at 1 and ends at 3 using both.",
+  "algorithm": "Check in-degree/out-degree conditions, then run iterative Hierholzer from 1; reverse the circuit and require m+1 vertices with endpoints 1,n.",
+  "correctness": "The degree conditions are necessary for an Euler trail, and Hierholzer constructs one when all edges are reachable in the required trail; edge-count verification rejects disconnected leftovers.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Teleporters Path: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For two edges 1->2 and 2->3, route 1,2,3 starts at 1 and ends at 3 using both."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Check in-degree/out-degree conditions, then run iterative Hierholzer from 1; reverse the circuit and require m+1 vertices with endpoints 1,n."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      }
+    ],
+    "caption": "Illustrative example - For two edges 1->2 and 2->3, route 1,2,3 starts at 1 and ends at 3 using both."
+  }
+}

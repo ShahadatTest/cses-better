@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "Count all multiset permutations, then exclude equal adjacent characters.",
+    "For one letter, join selected neighboring copies into blocks.",
+    "Combine the numbers of joins for different letters with a polynomial DP."
+  ],
+  "analogy": "Glue some identical neighbors together, then alternate addition and subtraction to remove every arrangement with a forbidden adjacency.",
+  "example": "For aabc, the six valid orders are abac, abca, acab, acba, baca and caba.",
+  "algorithm": "For a letter occurring c times, choosing j joins among its c-1 internal gaps leaves c-j blocks and contributes (-1)^j*C(c-1,j)/(c-j)! modulo 1000000007. Convolve these coefficients across all present letters to form dp[t], where t is total joins. The answer is the sum over t of dp[t]*(n-t)!. Precompute factorials, inverse factorials and binomial coefficients modulo the prime.",
+  "correctness": "Temporarily distinguish identical copies in their fixed relative order. Inclusion-exclusion chooses which gaps between consecutive copies are forced adjacent. A letter with j chosen gaps has c-j indistinguishable blocks; after all choices, arranging n-t blocks gives (n-t)! divided by each block-count factorial. Alternating signs cancel every string with an equal adjacent pair and leave each valid string once.",
+  "complexity": "For string length n, polynomial convolution over all letters takes O(n^2) time in total and O(n) space with factorial and inverse-factorial tables.",
+  "visual": {
+    "kind": "dp",
+    "title": "Counting Reorders: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For aabc, the six valid orders are abac, abca, acab, acba, baca and caba."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For a letter occurring c times, choosing j joins among its c-1 internal gaps leaves c-j blocks and contributes (-1)^j*C(c-1,j)/(c-j)! modulo 1000000007. Convolve these coefficients across all present letters to form dp[t], where t is total joins. The answer is the sum over t of dp[t]*(n-t)!. Precompute factorials, inverse factorials and binomial coefficients modulo the prime."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "abac",
+      "abca",
+      "acab",
+      "acba",
+      "baca",
+      "caba"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - The six valid distinct reorderings of aabc."
+  }
+}

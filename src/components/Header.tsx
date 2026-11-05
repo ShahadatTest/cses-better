@@ -45,6 +45,8 @@ export interface HeaderProps {
   onOpenAuth?: () => void;
   onOpenArchive?: () => void;
   onOpenAllNotes?: () => void;
+  onOpenLists?: () => void;
+  onOpenContestBank?: () => void;
   onOpenCsesProfile?: (nick?: string) => void;
   onOpenCsesAccount?: () => void;
   initialProblemOpen?: boolean;
@@ -69,6 +71,8 @@ export function Header({
   onOpenAuth,
   onOpenArchive,
   onOpenAllNotes,
+  onOpenLists,
+  onOpenContestBank,
   onOpenCsesProfile,
   onOpenCsesAccount,
   initialProblemOpen,
@@ -172,16 +176,16 @@ export function Header({
       <div className="flex items-center space-x-3.5 min-w-0">
         {/* Brand Logo & Name */}
         <div className="flex items-center space-x-2.5 flex-shrink-0 mr-1">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-500 via-indigo-600 to-violet-600 p-0.5 shadow-md shadow-sky-500/10 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-surface-3 p-0.5 shadow-md shadow-sky-500/10 flex items-center justify-center">
             <div className="w-full h-full bg-surface-0 rounded-[7px] flex items-center justify-center">
               <Code2 className="w-4 h-4 text-sky-400" />
             </div>
           </div>
-          <div className="flex items-baseline space-x-1.5">
+          <div className="hidden xl:flex items-baseline space-x-1.5">
             <span className="font-extrabold tracking-tight text-white text-base">
               CSES
             </span>
-            <span className="text-xs font-semibold uppercase tracking-wider bg-gradient-to-r from-sky-400 to-emerald-400 bg-clip-text text-transparent">
+            <span className="text-xs font-semibold  text-slate-300">
               Better
             </span>
           </div>
@@ -191,7 +195,7 @@ export function Header({
         <span className="text-slate-600 hidden sm:inline">/</span>
 
         {/* Category Dropdown */}
-        <div className="relative hidden md:block" ref={categoryRef}>
+        <div className="relative hidden xl:block" ref={categoryRef}>
           <button
             type="button"
             onClick={() => {
@@ -210,7 +214,7 @@ export function Header({
 
           {isCategoryOpen && (
             <div className="absolute left-0 mt-1.5 w-64 max-h-80 overflow-y-auto rounded-lg bg-surface-1 border border-border-muted shadow-2xl py-1.5 z-50">
-              <div className="px-3 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-border-subtle">
+              <div className="px-3 py-1.5 text-[11px] font-semibold text-slate-400  border-b border-border-subtle">
                 Categories ({categories.filter((c) => c.taskCount > 0).length})
               </div>
               {categories
@@ -241,10 +245,10 @@ export function Header({
           )}
         </div>
 
-        <span className="text-slate-600 hidden md:inline">›</span>
+        <span className="text-slate-600 hidden xl:inline">›</span>
 
         {/* Problem Selector Dropdown + Prev/Next buttons */}
-        <div className="flex items-center space-x-1 min-w-0" ref={problemRef}>
+        <div className="hidden xl:flex items-center space-x-1 min-w-0" ref={problemRef}>
           <button
             type="button"
             onClick={handlePrevProblem}
@@ -277,7 +281,7 @@ export function Header({
 
             {isProblemOpen && (
               <div className="absolute left-0 mt-1.5 w-84 max-h-80 overflow-y-auto rounded-lg bg-surface-1 border border-border-muted shadow-2xl py-1.5 z-50">
-                <div className="px-3 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-border-subtle">
+                <div className="px-3 py-1.5 text-[11px] font-semibold text-slate-400  border-b border-border-subtle">
                   {currentCategoryObj?.name || 'Category'} Tasks (
                   {problemsInCurrentCategory.length})
                 </div>
@@ -378,15 +382,15 @@ export function Header({
           title="Search all 400 CSES problems"
         >
           <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-400 transition-colors" />
-          <span className="hidden sm:inline">Search 400 problems...</span>
-          <kbd className="inline-flex items-center gap-0.5 rounded border border-border-muted bg-surface-0 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 font-semibold shadow-sm">
+          <span className="hidden xl:inline">Search 400 problems...</span>
+          <kbd className="hidden xl:inline-flex items-center gap-0.5 rounded border border-border-muted bg-surface-0 px-1.5 py-0.5 text-[11px] font-mono text-slate-400 font-semibold shadow-sm">
             {isMac ? '⌘K' : 'Ctrl+K'}
           </kbd>
         </button>
 
         {/* Solved Count Badge */}
         <div
-          className="flex items-center space-x-1.5 bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 px-2.5 py-1 rounded-full text-xs font-medium"
+          className="hidden xl:flex items-center space-x-1.5 bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 px-2.5 py-1 rounded-full text-xs font-medium"
           title={`${solvedCount} of ${totalProblems} problems solved`}
         >
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
@@ -398,12 +402,14 @@ export function Header({
           </span>
         </div>
 
+        {onOpenLists && <button type="button" onClick={onOpenLists} className="text-xs text-slate-200 border border-border-muted rounded px-2.5 py-1.5 hover:bg-surface-2">Lists</button>}
+        {onOpenContestBank && <button type="button" onClick={onOpenContestBank} className="text-xs text-slate-200 border border-border-muted rounded px-2.5 py-1.5 hover:bg-surface-2">Olympiad bank</button>}
         {/* Archive Button */}
         {onOpenArchive && (
           <button
             type="button"
             onClick={onOpenArchive}
-            className="hidden md:flex items-center space-x-1.5 text-xs text-purple-400 hover:text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/25 rounded-lg px-2.5 py-1.5 transition-colors"
+            className="hidden xl:flex items-center space-x-1.5 text-xs text-slate-300 hover:text-white hover:bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 transition-colors"
             title="Browse CSES Continuous Mirror & Archive"
           >
             <Database className="w-3.5 h-3.5" />
@@ -416,7 +422,7 @@ export function Header({
           <button
             type="button"
             onClick={onOpenAllNotes}
-            className="hidden md:flex items-center space-x-1.5 text-xs text-sky-400 hover:text-sky-300 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/25 rounded-lg px-2.5 py-1.5 transition-colors cursor-pointer"
+            className="hidden xl:flex items-center space-x-1.5 text-xs text-slate-300 hover:text-white hover:bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 transition-colors cursor-pointer"
             title="Open CSES Notebook (All Problem Notes)"
           >
             <BookOpen className="w-3.5 h-3.5" />
@@ -430,7 +436,7 @@ export function Header({
             type="button"
             onClick={onOpenCsesAccount || (() => onOpenCsesProfile?.(savedCsesUserId || savedCsesNick || undefined))}
             className={cn(
-              'hidden sm:flex items-center space-x-1.5 text-xs rounded-lg px-2.5 py-1.5 transition-colors border',
+              'hidden xl:flex items-center space-x-1.5 text-xs rounded-lg px-2.5 py-1.5 transition-colors border',
               savedCsesNick
                 ? 'text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30'
                 : 'text-zinc-400 hover:text-zinc-200 bg-zinc-800/80 hover:bg-zinc-800 border-zinc-700/60'
@@ -476,7 +482,7 @@ export function Header({
             ) : (
               <UserIcon className="w-3.5 h-3.5 text-blue-400" />
             )}
-            <span className="max-w-[130px] truncate font-medium">
+            <span className="hidden xl:inline max-w-[130px] truncate font-medium">
               {currentUser
                 ? currentUser.username
                   ? `@${currentUser.username}`

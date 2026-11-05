@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "To move n disks, first move the top n-1 disks to the spare peg.",
+    "Move the largest disk directly to the destination.",
+    "Move the n-1 disks from the spare peg onto the largest disk; recurse using the appropriate peg labels."
+  ],
+  "analogy": "The largest disk is blocked until every smaller disk is moved away, then the same smaller-disk task repeats.",
+  "example": "With two disks: move disk 1 from peg 1 to 2, disk 2 from 1 to 3, then disk 1 from 2 to 3: three moves.",
+  "algorithm": "Use recursive Hanoi(n, from, spare, to): solve Hanoi(n-1, from, to, spare), emit from-to, then solve Hanoi(n-1, spare, from, to). Print 2^n-1 before listing moves.",
+  "correctness": "The largest disk must move exactly once after all smaller disks leave it; the two recursive transfers are necessary and optimal by induction.",
+  "complexity": "O(2^n) time and output space, with O(n) recursion depth.",
+  "visual": {
+    "kind": "trace",
+    "title": "Tower of Hanoi: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "2"
+      },
+      {
+        "label": "Work through it",
+        "detail": "With two disks: move disk 1 from peg 1 to 2, disk 2 from 1 to 3, then disk 1 from 2 to 3: three moves."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use recursive Hanoi(n, from, spare, to): solve Hanoi(n-1, from, to, spare), emit from-to, then solve Hanoi(n-1, spare, from, to). Print 2^n-1 before listing moves."
+      },
+      {
+        "label": "Result",
+        "detail": "3\n1 2\n1 3\n2 3"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "2"
+      ]
+    ],
+    "caption": "Illustrative example - With two disks: move disk 1 from peg 1 to 2, disk 2 from 1 to 3, then disk 1 from 2 to 3: three moves."
+  }
+}

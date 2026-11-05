@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "An odd cycle cannot alternate colors on every edge.",
+    "Transform colors by flipping their interpretation on alternating positions.",
+    "The transformed colors at the two ends of the line differ; binary-search a change."
+  ],
+  "analogy": "After alternately flipping labels, a same-color neighboring pair becomes a boundary between different transformed labels.",
+  "example": "For colors R,B,B around 3 chairs, chairs 2 and 3 are equal, so answer 2.",
+  "algorithm": "Query chair 1. Treat an imagined position n+1 as chair 1 but with alternating parity transformed; since n is odd, its transformed color is opposite to position 1. Maintain two positions with different transformed colors. Query the midpoint, replace the endpoint with the same transformed color, and repeat until adjacent. Output the left index, interpreting n+1 as chair 1. Flush every query and final answer.",
+  "correctness": "Different transformed endpoint colors guarantee some adjacent transformed change in the interval. Binary search preserves this invariant, and such a change corresponds exactly to equal original colors on the adjacent chairs.",
+  "complexity": "For odd n<=200000, one initial query plus at most ceil(log2 n) midpoint queries is at most 19; O(log n) time and O(1) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Colored Chairs: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For colors R,B,B around 3 chairs, chairs 2 and 3 are equal, so answer 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Query chair 1. Treat an imagined position n+1 as chair 1 but with alternating parity transformed; since n is odd, its transformed color is opposite to position 1. Maintain two positions with different transformed colors. Query the midpoint, replace the endpoint with the same transformed color, and repeat until adjacent. Output the left index, interpreting n+1 as chair 1. Flush every query and final answer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Chair",
+      "Color"
+    ],
+    "rows": [
+      [
+        "1",
+        "R"
+      ],
+      [
+        "2",
+        "B"
+      ],
+      [
+        "3",
+        "B"
+      ],
+      [
+        "Matching pair",
+        "2 and 3"
+      ]
+    ],
+    "caption": "Illustrative example - Chairs 2 and 3 have the same color."
+  }
+}

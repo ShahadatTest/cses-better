@@ -1,0 +1,65 @@
+{
+  "hints": [
+    "A directed graph is strongly connected when every city can reach every other city.",
+    "Pick city 1 and search forward; then search the reversed graph from 1.",
+    "If either search misses a city, that direction gives a concrete counterexample pair."
+  ],
+  "analogy": "Check whether everyone is reachable from one hub in both the original and reversed road directions.",
+  "example": "If 1 reaches 2 but 2 cannot reach 1, the reversed search from 1 misses 2, proving the network is not strongly connected.",
+  "algorithm": "Run DFS/BFS from vertex 1 in original and reversed graphs. If original misses v, print NO and 1 v; if reversed misses v, print NO and v 1; otherwise YES.",
+  "correctness": "Strong connectivity implies both reachability searches cover all nodes. If both cover all nodes, any u reaches 1 in the reverse-check sense and 1 reaches v, giving u->v.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Flight Routes Check: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If 1 reaches 2 but 2 cannot reach 1, the reversed search from 1 misses 2, proving the network is not strongly connected."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run DFS/BFS from vertex 1 in original and reversed graphs. If original misses v, print NO and 1 v; if reversed misses v, print NO and v 1; otherwise YES."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2",
+        "label": "reachable"
+      },
+      {
+        "from": "2",
+        "to": "1",
+        "label": "missing"
+      }
+    ],
+    "caption": "Illustrative example - Reachability from 1 to 2 does not imply the reverse route."
+  }
+}

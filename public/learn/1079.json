@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "Choose k items from n without caring about order.",
+    "Use C(n,k)=n!/(k!(n-k)!).",
+    "Because answers are modulo a prime, compute division with modular inverses."
+  ],
+  "analogy": "Count ordered choices and divide by the different orders of the same chosen group.",
+  "example": "Choosing 2 from 5 gives 5*4/(2*1)=10.",
+  "algorithm": "Precompute factorials and inverse factorials up to the largest n; answer fact[n]*invFact[k]*invFact[n-k] modulo 1,000,000,007.",
+  "correctness": "Every k-element set has k! orderings, so dividing n!/(n-k)! by k! counts each set once.",
+  "complexity": "O(M+q) preprocessing and O(1) per query; O(M) space.",
+  "visual": {
+    "kind": "math",
+    "title": "Binomial Coefficients: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Choosing 2 from 5 gives 5*4/(2*1)=10."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Precompute factorials and inverse factorials up to the largest n; answer fact[n]*invFact[k]*invFact[n-k] modulo 1,000,000,007."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Choose",
+      "Calculation",
+      "Result"
+    ],
+    "rows": [
+      [
+        "2 from 5",
+        "5 x 4 / (2 x 1)",
+        "10"
+      ]
+    ],
+    "caption": "Illustrative example - The binomial coefficient counts unordered selections."
+  }
+}

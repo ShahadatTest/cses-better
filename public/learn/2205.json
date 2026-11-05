@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "A Gray code lists all n-bit values, with neighboring values differing in one bit.",
+    "Build codes for n bits from the n-1-bit list: first prefix 0 in normal order, then prefix 1 in reverse order.",
+    "This reflection makes the boundary pair differ in just the prefixed bit."
+  ],
+  "analogy": "Fold a list back on itself and label the two halves 0 and 1.",
+  "example": "For n=2, one-bit list 0,1 becomes 00,01 then reversed with 1 prefix: 11,10.",
+  "algorithm": "Start with [0]. At each added bit, append the old list prefixed by 0, then the old list in reverse prefixed by 1.",
+  "correctness": "Within each half, the old one-bit-difference property remains; at the join, the reversed order makes the suffix equal and only the prefix bit changes.",
+  "complexity": "O(n*2^n) time and O(2^n) output space, where n is the code length.",
+  "visual": {
+    "kind": "trace",
+    "title": "Gray Code: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "2"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=2, one-bit list 0,1 becomes 00,01 then reversed with 1 prefix: 11,10."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Start with [0]. At each added bit, append the old list prefixed by 0, then the old list in reverse prefixed by 1."
+      },
+      {
+        "label": "Result",
+        "detail": "00\n01\n11\n10"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "2"
+      ]
+    ],
+    "caption": "Illustrative example - For n=2, one-bit list 0,1 becomes 00,01 then reversed with 1 prefix: 11,10."
+  }
+}

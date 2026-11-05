@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "Use inclusion-exclusion on forbidden adjacent pairs (1,2), (2,3), and so on.",
+    "Selected forbidden pairs form disjoint runs along the number line.",
+    "Each run becomes one block that can be oriented in two ways."
+  ],
+  "analogy": "Glue chosen neighboring numbers together into runs, count the resulting block arrangements, and alternate signs.",
+  "example": "For n=3, every permutation contains either adjacent 1 and 2 or adjacent 2 and 3, so the answer is 0.",
+  "algorithm": "For each number j of selected forbidden edges and c of nonempty runs of selected edges in the path of n numbers, count edge selections as C(j-1,c-1)*C(n-j,c), for j>0. These edges form c nontrivial blocks and n-j total blocks. Their permutations and orientations contribute (n-j)!*2^c. Sum (-1)^j times this quantity over j and c modulo 1000000007; include j=0 as n!. Precompute factorials and binomial coefficients.",
+  "correctness": "Inclusion-exclusion removes permutations containing any forbidden pair. Every chosen set of j edges decomposes uniquely into c runs. Compressing each run leaves n-j blocks; each nontrivial run has exactly two valid orientations. The binomial formula selects positive run lengths and places the separated runs among the n-1 path edges.",
+  "complexity": "For n numbers, evaluating all j,c pairs takes O(n^2) time and O(n^2) space with a binomial table, or O(n) space with factorials and inverse factorials.",
+  "visual": {
+    "kind": "dp",
+    "title": "Counting Permutations: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3, every permutation contains either adjacent 1 and 2 or adjacent 2 and 3, so the answer is 0."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each number j of selected forbidden edges and c of nonempty runs of selected edges in the path of n numbers, count edge selections as C(j-1,c-1)*C(n-j,c), for j>0. These edges form c nontrivial blocks and n-j total blocks. Their permutations and orientations contribute (n-j)!*2^c. Sum (-1)^j times this quantity over j and c modulo 1000000007; include j=0 as n!. Precompute factorials and binomial coefficients."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "n",
+      "Required adjacent pair",
+      "Unavoidable?"
+    ],
+    "rows": [
+      [
+        "3",
+        "1 and 2",
+        "Yes"
+      ],
+      [
+        "3",
+        "2 and 3",
+        "Yes"
+      ],
+      [
+        "Valid permutation",
+        "-",
+        "None"
+      ]
+    ],
+    "caption": "Illustrative example - Every permutation contains one of the forbidden adjacent pairs."
+  }
+}

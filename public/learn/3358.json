@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Each edge can connect two consecutive vertices in a path cover; the graph is a DAG, so these links cannot create a cycle.",
+    "Create a bipartite graph with a left and right copy of every node, and add a bipartite edge for each original directed edge.",
+    "A maximum matching gives the fewest vertex-disjoint paths: the count is n minus the matching size. Reconstruct paths from nodes with no matched predecessor."
+  ],
+  "analogy": "Match each path node to its next node; every successful match saves one path start.",
+  "example": "In the first sample, choose matches 1?2 and 4?5. The resulting paths are 1,2 and 3,4,5, so the two paths cover every node exactly once.",
+  "algorithm": "Run Hopcroft?Karp on the bipartite graph whose left and right sides are copies of the n DAG nodes and whose edges are (u_left,v_right) for every directed edge u?v. A matching of size M defines successor links: each matched u?v makes v the next node after u. If n-M>2, print NO. Otherwise start at every node with no matched predecessor and follow successor links to output each path; if there is only one path, output an empty second path. Print YES and the two node counts and lists.",
+  "correctness": "A path cover with p paths uses exactly n-p links between consecutive path vertices, and those links form a matching because each vertex has at most one predecessor and successor. Thus any cover by at most two paths implies a matching of size at least n-2. Conversely, a matching creates disjoint successor chains; because the original graph is acyclic, these chains cannot form cycles, and they cover all vertices in n-M paths. Therefore a cover by at most two paths exists exactly when the maximum matching has size at least n-2, and reconstruction produces a valid cover.",
+  "complexity": "O((n+m)?n) time with Hopcroft?Karp and O(n+m) space, where n is the number of nodes and m the number of directed edges.",
+  "visual": {
+    "kind": "graph",
+    "title": "Split into Two Paths: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In the first sample, choose matches 1?2 and 4?5. The resulting paths are 1,2 and 3,4,5, so the two paths cover every node exactly once."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run Hopcroft?Karp on the bipartite graph whose left and right sides are copies of the n DAG nodes and whose edges are (u_left,v_right) for every directed edge u?v. A matching of size M defines successor links: each matched u?v makes v the next node after u. If n-M>2, print NO. Otherwise start at every node with no matched predecessor and follow successor links to output each path; if there is only one path, output an empty second path. Print YES and the two node counts and lists."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "4",
+      "5",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - The worked example chooses matches (1,2) and (4,5); the resulting paths cover each node once."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "The order of coins does not matter, so 2+3 and 3+2 are the same selection.",
+    "Process coin types one at a time so later states can add the current coin without creating reordered duplicates.",
+    "For each coin, update sums in increasing order to allow using that coin repeatedly."
+  ],
+  "analogy": "Introduce coin types one by one; each combination is assigned to the largest type it uses.",
+  "example": "For coins 2,3,5 and x=9, the three combinations are 2+2+2+3, 2+2+5, and 3+3+3.",
+  "correctness": "At the stage for c, each counted combination uses only processed coin types; adding c extends it once, while coin order is never separately enumerated.",
+  "complexity": "O(nx) time and O(x) space.",
+  "algorithm": "Initialize dp[0]=1. For each coin c, loop sums s=c..x and set dp[s]=(dp[s]+dp[s-c]) mod 1,000,000,007. Increasing sums allow unlimited copies of c; coin-outer order prevents permutation duplicates.",
+  "visual": {
+    "kind": "dp",
+    "title": "Coin Combinations II: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For coins 2,3,5 and x=9, the three combinations are 2+2+2+3, 2+2+5, and 3+3+3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize dp[0]=1. For each coin c, loop sums s=c..x and set dp[s]=(dp[s]+dp[s-c]) mod 1,000,000,007. Increasing sums allow unlimited copies of c; coin-outer order prevents permutation duplicates."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "3",
+      "5",
+      "9"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For coins 2,3,5 and x=9, the three combinations are 2+2+2+3, 2+2+5, and 3+3+3."
+  }
+}

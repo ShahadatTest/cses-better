@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "During the first sweep, children 2,4,6,... are removed.",
+    "If k is within that first batch, the answer is 2k, except the last child when n is odd wraps to 1.",
+    "For later removals, shrink to the remaining children and map the recursively found rank back to the original labels."
+  ],
+  "analogy": "Remove every second child in a sweep, then treat the surviving circle as a smaller Josephus circle.",
+  "example": "For n=7, the first removed child is 2 and the third is 6; the remaining ranks are mapped back through the next sweep.",
+  "correctness": "The first sweep removes the even labels, with label 1 additionally removed at the wrap for odd n. The survivors form a smaller circle; the mapping restores their original labels and recursion preserves their elimination order.",
+  "complexity": "O(log n) time and O(log n) recursion space.",
+  "algorithm": "Let h=floor(n/2). If k<=h, answer 2k. If n is odd and k=h+1, answer 1. Otherwise recurse on floor(n/2) children with k'=k-ceil(n/2), then map the recursive result y to 2y+1 for odd n or 2y-1 for even n. Use 64-bit integers.",
+  "visual": {
+    "kind": "math",
+    "title": "Josephus Queries: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=7, the first removed child is 2 and the third is 6; the remaining ranks are mapped back through the next sweep."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let h=floor(n/2). If k<=h, answer 2k. If n is odd and k=h+1, answer 1. Otherwise recurse on floor(n/2) children with k'=k-ceil(n/2), then map the recursive result y to 2y+1 for odd n or 2y-1 for even n. Use 64-bit integers."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "n",
+      "Removal order facts"
+    ],
+    "rows": [
+      [
+        "7",
+        "first removed child: 2"
+      ],
+      [
+        "7",
+        "third removed child: 6"
+      ]
+    ],
+    "caption": "Illustrative example - Josephus ranks are remapped after each sweep."
+  }
+}

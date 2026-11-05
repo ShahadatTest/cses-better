@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "Give every possible index a distinct binary label.",
+    "One question can reveal one bit of every hidden index at once.",
+    "Ask one query per bit of i-1 and combine response bits at each output position."
+  ],
+  "analogy": "Each position carries a barcode; the judge permutes the barcode stripes in the same way every time.",
+  "example": "For n=3, labels 00,01,10 identify indices 1,2,3; responses at an output position reveal its label and therefore its index.",
+  "algorithm": "For each bit b needed to represent n-1, send a binary string whose i-th bit is bit b of i-1. Flush and read the returned string. At each output position collect its returned bits into a number and add one. Print all recovered indices after ! and terminate. For n=1 output 1 without queries.",
+  "correctness": "The returned bit at output position j is the bit assigned to index a[j]. Across all questions these bits form the unique binary representation of a[j]-1, so every permutation entry is recovered.",
+  "complexity": "For n<=1000, ceil(log2 n)<=10 queries, O(n log n) local work and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Permuted Binary Strings: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3, labels 00,01,10 identify indices 1,2,3; responses at an output position reveal its label and therefore its index."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each bit b needed to represent n-1, send a binary string whose i-th bit is bit b of i-1. Flush and read the returned string. At each output position collect its returned bits into a number and add one. Print all recovered indices after ! and terminate. For n=1 output 1 without queries."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "00",
+      "01",
+      "10",
+      "1",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=3, labels 00,01,10 identify indices 1,2,3; responses at an output position reveal its label and therefore its index."
+  }
+}

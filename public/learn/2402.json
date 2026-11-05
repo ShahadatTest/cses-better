@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Pop the next required number as soon as it has arrived; this fixes a push time and a pop time for each value.",
+    "Two lifetimes that cross must belong to different stacks, while nested lifetimes can share one.",
+    "Compress the lifetime constraints with an ordered set, a Fenwick tree, and a disjoint-set structure with opposite colors."
+  ],
+  "analogy": "Each number occupies a stack over a time interval; intervals assigned to one stack must nest like properly matched parentheses.",
+  "example": "For input 2 3 1 5 4, assign the numbers to stacks 1 2 1 1 2. Pop 1, 2, 3 as soon as possible, then 4 and 5.",
+  "algorithm": "First simulate arrival and immediate removal of the next needed value to record In and Out times, ignoring stack choice. Process values y in increasing order. Keep a Fenwick tree of In times of unprocessed larger values and an ordered set of active earlier intervals keyed by In. Remove In[y] from the tree. Start at the predecessor of In[y] in the set, then scan forward. For each x whose interval overlaps y, let L=max(In[x],In[y]) and R=min(Out[x],Out[y]); query the tree for an unprocessed start in [L,R]. If In[x]<In[y], the intervals cross: require opposite stacks, or report IMPOSSIBLE if the query is nonzero. Otherwise x is nested inside y: if the query is nonzero require the same stack, then erase x from the set. Insert y. Record same/opposite requirements with a parity DSU; a contradiction means IMPOSSIBLE, otherwise print the assigned stack for each input value.",
+  "correctness": "Crossing intervals cannot share a LIFO stack, whereas nested intervals can. A larger unprocessed interval starting inside an overlap crosses both intervals when the earlier pair crosses, creating an impossible three-way conflict; in the nested case it forces the two earlier values to share a stack. The ordered-set scan retains the outer representative after processing nested intervals, and the parity DSU enforces every necessary relationship. A consistent coloring makes each stack's intervals nested or disjoint, so the recorded pop order is achievable.",
+  "complexity": "O(n log n) time and O(n) space: each set entry is inserted and removed at most once, and each iteration inspects at most one surviving predecessor.",
+  "visual": {
+    "kind": "trace",
+    "title": "Two Stacks Sorting: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For input 2 3 1 5 4, assign the numbers to stacks 1 2 1 1 2. Pop 1, 2, 3 as soon as possible, then 4 and 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "First simulate arrival and immediate removal of the next needed value to record In and Out times, ignoring stack choice. Process values y in increasing order. Keep a Fenwick tree of In times of unprocessed larger values and an ordered set of active earlier intervals keyed by In. Remove In[y] from the tree. Start at the predecessor of In[y] in the set, then scan forward. For each x whose interval overlaps y, let L=max(In[x],In[y]) and R=min(Out[x],Out[y]); query the tree for an unprocessed start in [L,R]. If In[x]<In[y], the intervals cross: require opposite stacks, or report IMPOSSIBLE if the query is nonzero. Otherwise x is nested inside y: if the query is nonzero require the same stack, then erase x from the set. Insert y. Record same/opposite requirements with a parity DSU; a contradiction means IMPOSSIBLE, otherwise print the assigned stack for each input value."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "3",
+      "1",
+      "5",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For input 2 3 1 5 4, assign the numbers to stacks 1 2 1 1 2. Pop 1, 2, 3 as soon as possible, then 4 and 5."
+  }
+}

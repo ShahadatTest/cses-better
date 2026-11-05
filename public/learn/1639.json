@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "Transform one string into the other using insert, delete, and replace operations.",
+    "Let dp[i][j] be the minimum edits to change the first i characters into the first j characters.",
+    "If the last characters match, no new edit is needed; otherwise try each of the three operations."
+  ],
+  "analogy": "Build the target prefix one character at a time, allowing an insertion, removal, or substitution at the end.",
+  "example": "Changing 'cat' to 'cut' takes one replacement, so the edit distance is 1.",
+  "algorithm": "Initialize dp[i][0]=i and dp[0][j]=j. For each pair, use dp[i-1][j-1] when characters match; otherwise 1+min(delete, insert, replace).",
+  "correctness": "The final operation is either unnecessary for equal final characters or one of the three permitted edits; removing that operation gives exactly a smaller prefix problem.",
+  "complexity": "O(nm) time and O(nm) space, reducible to O(min(n,m)) rows.",
+  "visual": {
+    "kind": "dp",
+    "title": "Edit Distance: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Changing 'cat' to 'cut' takes one replacement, so the edit distance is 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize dp[i][0]=i and dp[0][j]=j. For each pair, use dp[i-1][j-1] when characters match; otherwise 1+min(delete, insert, replace)."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Edit step",
+      "String"
+    ],
+    "rows": [
+      [
+        "Start",
+        "cat"
+      ],
+      [
+        "Replace a with u",
+        "cut"
+      ]
+    ],
+    "caption": "Illustrative example - Changing 'cat' to 'cut' uses one replacement."
+  }
+}

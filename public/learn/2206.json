@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "A pizzeria at position i costs price[i]+distance(i,x) to serve x.",
+    "Rewrite distance as either i-x or x-i to separate the query position from the shop value.",
+    "Maintain minima of price[i]-i and price[i]+i in a segment tree; combine left and right of x."
+  ],
+  "analogy": "Split shops on either side of x so the distance formula becomes a stored value plus x or minus x.",
+  "example": "At x=5, a shop at i=2 with price 4 costs 4+3=7, represented by price-i+x=4-2+5=7.",
+  "algorithm": "Store price[i]-i and price[i]+i in range-min trees. Query left of x for min(price-i)+x and right of x for min(price+i)-x; update both leaves when a price changes.",
+  "correctness": "For i<=x, |i-x|=x-i; for i>=x it is i-x. The two minima therefore cover every pizzeria's exact delivery cost.",
+  "complexity": "O(n) build and O(log n) per query/update, O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Pizzeria Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "At x=5, a shop at i=2 with price 4 costs 4+3=7, represented by price-i+x=4-2+5=7."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Store price[i]-i and price[i]+i in range-min trees. Query left of x for min(price-i)+x and right of x for min(price+i)-x; update both leaves when a price changes."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Shop i",
+      "Price",
+      "Position x",
+      "Travel cost"
+    ],
+    "rows": [
+      [
+        "2",
+        "4",
+        "5",
+        "4 + |5-2| = 7"
+      ]
+    ],
+    "caption": "Illustrative example - The shop at 2 costs 7 to serve position 5."
+  }
+}

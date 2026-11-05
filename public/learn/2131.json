@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Each chosen square uses one unit of its row and column quotas.",
+    "Model choices as a flow network.",
+    "Give each row-to-column edge a cost equal to minus the number of coins."
+  ],
+  "analogy": "Send the required number of tokens through cells, collecting the most coins along their paths.",
+  "example": "For a 2 by 2 grid with row and column quotas all 1 and coin values [[5,1],[1,4]], choosing the diagonal collects 9.",
+  "algorithm": "Create source->row edges with row quota capacities, row->column edges of capacity 1 and cost minus that cell?s coins, and column->sink edges with column quota capacities. Find a minimum-cost flow equal to the sum of row quotas, using residual edges and shortest augmenting paths with potentials. If row and column totals differ or the full flow is impossible, print -1; otherwise negate the total flow cost and reconstruct chosen cells from the unit flows.",
+  "correctness": "Integral flow selects each cell at most once and saturation enforces every quota. Flow cost is the negative of the selected coin total, so minimizing cost over all feasible flows maximizes the number of coins. Every valid selection corresponds to such a flow.",
+  "complexity": "For n rows and columns and F chosen cells, the network has O(n^2) edges. Successive shortest paths take O(F n^2 log n) time with a heap and O(n^2) space; potentials maintain nonnegative reduced costs after initialization.",
+  "visual": {
+    "kind": "trace",
+    "title": "Grid Puzzle II: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For a 2 by 2 grid with row and column quotas all 1 and coin values [[5,1],[1,4]], choosing the diagonal collects 9."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Create source->row edges with row quota capacities, row->column edges of capacity 1 and cost minus that cell?s coins, and column->sink edges with column quota capacities. Find a minimum-cost flow equal to the sum of row quotas, using residual edges and shortest augmenting paths with potentials. If row and column totals differ or the full flow is impossible, print -1; otherwise negate the total flow cost and reconstruct chosen cells from the unit flows."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "1",
+      "5",
+      "4",
+      "9"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For a 2 by 2 grid with row and column quotas all 1 and coin values [[5,1],[1,4]], choosing the diagonal collects 9."
+  }
+}

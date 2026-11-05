@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Each subset sum is between zero and the total weight; the total is at most 100,000.",
+    "Start with only sum zero reachable.",
+    "For each coin, update reachable sums downward so one coin cannot be counted twice."
+  ],
+  "analogy": "Keep a checklist of sums possible so far; each coin adds its weight to every previously possible total.",
+  "example": "Coins 2,3 can make sums 2,3,5, but not 1 or 4.",
+  "algorithm": "Use a boolean array reachable[0..sum], initially reachable[0]=true. For each coin c, scan s downward from sum-c and mark reachable[s+c] when reachable[s]; list positive reachable sums.",
+  "correctness": "Every subset is formed by deciding whether to include each coin; descending updates use only earlier coins, so every reachable sum corresponds to a valid subset.",
+  "complexity": "O(nS) time and O(S) space, where S is total coin sum.",
+  "visual": {
+    "kind": "dp",
+    "title": "Money Sums: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Coins 2,3 can make sums 2,3,5, but not 1 or 4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use a boolean array reachable[0..sum], initially reachable[0]=true. For each coin c, scan s downward from sum-c and mark reachable[s+c] when reachable[s]; list positive reachable sums."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "3",
+      "5",
+      "1",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Coins 2,3 can make sums 2,3,5, but not 1 or 4."
+  }
+}

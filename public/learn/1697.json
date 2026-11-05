@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "The requested game counts are degrees of a simple graph.",
+    "A player with highest remaining degree can be connected to players with the next highest degrees.",
+    "Repeat this Havel-Hakimi reduction using a max-heap."
+  ],
+  "analogy": "Give the busiest player games against the other busiest available players, then update their remaining requests.",
+  "example": "Degrees [2,1,1] yield games 1-2 and 1-3; degrees [2,0,0] are impossible.",
+  "algorithm": "Store positive remaining degrees with player IDs in a max-heap. Remove the largest d, then remove d other players with largest positive degrees, create a game with each, decrement them, and reinsert positive remainders. If fewer than d players are available print IMPOSSIBLE; otherwise output all games.",
+  "correctness": "The Havel-Hakimi theorem says this reduction preserves whether a degree sequence is realizable. Each step fixes all remaining games of one player with distinct other players, so a completed construction has exactly the requested degrees.",
+  "complexity": "For n players and total requested degree S, O((n+S) log n) time and O(n+S) space.",
+  "visual": {
+    "kind": "grid",
+    "title": "Chess Tournament: follow one example",
+    "caption": "Follow the construction or state across rows and columns.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Degrees [2,1,1] yield games 1-2 and 1-3; degrees [2,0,0] are impossible."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Store positive remaining degrees with player IDs in a max-heap. Remove the largest d, then remove d other players with largest positive degrees, create a game with each, decrement them, and reinsert positive remainders. If fewer than d players are available print IMPOSSIBLE; otherwise output all games."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "1",
+      "-2",
+      "-3",
+      "0"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Degrees [2,1,1] yield games 1-2 and 1-3; degrees [2,0,0] are impossible."
+  }
+}

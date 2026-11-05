@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "A round is needed whenever some value has to be collected before a smaller value that is currently earlier in the row.",
+    "Record each number's position; values 1..n can be collected in one pass when pos[v]>pos[v+1].",
+    "The number of rounds is one plus the number of such breaks."
+  ],
+  "analogy": "You can collect the next number in the same sweep only if its location is to the right of the previous number.",
+  "example": "For 4,2,1,5,3, positions decrease at 1->2 and 2->3, so 3 rounds are needed.",
+  "algorithm": "Build position[value], then count 1 plus every v from 1 to n-1 with position[v]>position[v+1].",
+  "correctness": "Within a round the collector scans left to right; exactly the position descents force a return to the beginning.",
+  "complexity": "O(n) time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Collecting Numbers: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5\n4 2 1 5 3"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 4,2,1,5,3, positions decrease at 1->2 and 2->3, so 3 rounds are needed."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build position[value], then count 1 plus every v from 1 to n-1 with position[v]>position[v+1]."
+      },
+      {
+        "label": "Result",
+        "detail": "3"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5"
+      ],
+      [
+        "4  2  1  5  3"
+      ]
+    ],
+    "caption": "Illustrative example - For 4,2,1,5,3, positions decrease at 1->2 and 2->3, so 3 rounds are needed."
+  }
+}

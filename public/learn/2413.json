@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "A height-n tower can be extended upward from a tower of height n-1 in one of two top configurations.",
+    "Track two counts: structures whose top blocks connect across both columns and structures whose top is split.",
+    "Derive each new pair of counts from the previous pair, then answer each test height from a precomputed table."
+  ],
+  "analogy": "The top row can be in one of two shapes; each shape has a fixed set of ways to extend it.",
+  "example": "For height 2 the recurrence gives 8 layouts; mirrored or rotated layouts remain distinct as the statement requires.",
+  "correctness": "The top configuration uniquely determines which extension rule applies, and the recurrence counts every valid block arrangement with its orientation preserved.",
+  "complexity": "O(maxQuery) preprocessing, O(1) per query, and O(maxQuery) memory.",
+  "algorithm": "Let A[i] count layouts whose top has two separate vertical blocks and B[i] count layouts whose top is one joined shape. Initialize A[1]=B[1]=1; use A[i]=2*A[i-1]+B[i-1] and B[i]=A[i-1]+4*B[i-1], modulo 1,000,000,007. Answer A[n]+B[n].",
+  "visual": {
+    "kind": "dp",
+    "title": "Counting Towers: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For height 2 the recurrence gives 8 layouts; mirrored or rotated layouts remain distinct as the statement requires."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let A[i] count layouts whose top has two separate vertical blocks and B[i] count layouts whose top is one joined shape. Initialize A[1]=B[1]=1; use A[i]=2*A[i-1]+B[i-1] and B[i]=A[i-1]+4*B[i-1], modulo 1,000,000,007. Answer A[n]+B[n]."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Height",
+      "Ways"
+    ],
+    "rows": [
+      [
+        "2",
+        "8"
+      ]
+    ],
+    "caption": "Illustrative example - At height 2 the recurrence gives 8 layouts; symmetric arrangements remain distinct."
+  }
+}

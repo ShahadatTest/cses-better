@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "Each book can be chosen once, so decide for every book whether to include it.",
+    "Let dp[b] be the greatest pages achievable at total price b.",
+    "Traverse budgets downward for each book; upward traversal would let that same book be reused."
+  ],
+  "analogy": "Each book is a one-time offer; update budgets from high to low so the offer cannot be picked twice.",
+  "example": "With budget 10, books costing 4 and 5 with 5 and 8 pages yield 13 pages at total cost 9.",
+  "algorithm": "Use 0/1 knapsack: initialize dp[0..x]=0; for each book (price h,pages s), loop b=x down to h and set dp[b]=max(dp[b],dp[b-h]+s). Answer max dp.",
+  "correctness": "Descending budgets ensure the transition uses only states from before this book, so each selected book appears at most once; maximizing pages under budget checks all subsets.",
+  "complexity": "O(nx) time and O(x) space.",
+  "visual": {
+    "kind": "dp",
+    "title": "Book Shop: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With budget 10, books costing 4 and 5 with 5 and 8 pages yield 13 pages at total cost 9."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use 0/1 knapsack: initialize dp[0..x]=0; for each book (price h,pages s), loop b=x down to h and set dp[b]=max(dp[b],dp[b-h]+s). Answer max dp."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Book",
+      "Cost",
+      "Pages"
+    ],
+    "rows": [
+      [
+        "A",
+        "4",
+        "5"
+      ],
+      [
+        "B",
+        "5",
+        "8"
+      ],
+      [
+        "Chosen",
+        "9",
+        "13"
+      ]
+    ],
+    "caption": "Illustrative example - Budget 10; choosing both books costs 9 and gives 13 pages."
+  }
+}

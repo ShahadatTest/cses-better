@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Sort weights, then look at the lightest and heaviest unassigned child.",
+    "If they fit together, placing them together is safe; otherwise the heaviest must ride alone.",
+    "Remove the heaviest each time and count one gondola."
+  ],
+  "analogy": "Pair the heaviest rider with the lightest possible partner; if even that partner is too heavy, nobody else can help.",
+  "example": "For weights 2,3,7,9 with limit 10: pair 2+7, while 3 and 9 need separate gondolas: 3 total.",
+  "algorithm": "Sort weights and move pointers inward. Count one gondola for the heaviest; also consume the lightest if their sum is at most x.",
+  "correctness": "The heaviest child must use a gondola now. Pairing them with the lightest feasible child preserves the most capacity for the remaining children; if that pair fails, the heaviest rides alone.",
+  "complexity": "O(n log n) time and O(1) pointer space beyond sorting.",
+  "visual": {
+    "kind": "array",
+    "title": "Ferris Wheel: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "4 10\n7 2 3 9"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For weights 2,3,7,9 with limit 10: pair 2+7, while 3 and 9 need separate gondolas: 3 total."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort weights and move pointers inward. Count one gondola for the heaviest; also consume the lightest if their sum is at most x."
+      },
+      {
+        "label": "Result",
+        "detail": "3"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "4  10"
+      ],
+      [
+        "7  2  3  9"
+      ]
+    ],
+    "caption": "Illustrative example - For weights 2,3,7,9 with limit 10: pair 2+7, while 3 and 9 need separate gondolas: 3 total."
+  }
+}

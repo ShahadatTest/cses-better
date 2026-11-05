@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "You need an order statistic without constructing the table.",
+    "For a candidate x, count how many entries are at most x.",
+    "The count is monotone, so binary search the smallest x reaching the middle rank."
+  ],
+  "analogy": "Ask how many table entries fit under a threshold, and raise or lower that threshold.",
+  "example": "For n=3, five entries are at most 3: 1,2,2,3,3. The fifth entry is therefore 3.",
+  "algorithm": "Let target=(n*n+1)/2. Binary search x from 1 to n*n. For each x, row i contributes min(n, floor(x/i)) entries at most x. Sum these over i=1..n and keep the lower half when the sum is at least target; otherwise search higher. Use 64-bit arithmetic for products and counts.",
+  "correctness": "Each row is i,2i,...,ni, so the formula counts exactly its entries no larger than x. The count never decreases as x grows, and the smallest threshold with at least target entries is exactly the target-th sorted value.",
+  "complexity": "For odd table size n, binary search takes O(n log(n^2)) time and O(1) extra space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Multiplication Table: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3, five entries are at most 3: 1,2,2,3,3. The fifth entry is therefore 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let target=(n*n+1)/2. Binary search x from 1 to n*n. For each x, row i contributes min(n, floor(x/i)) entries at most x. Sum these over i=1..n and keep the lower half when the sum is at least target; otherwise search higher. Use 64-bit arithmetic for products and counts."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=3, five entries are at most 3: 1,2,2,3,3. The fifth entry is therefore 3."
+  }
+}

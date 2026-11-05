@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "Treat each arrival as +1 customer and each leaving time as -1.",
+    "Sort events by time and keep a running number inside.",
+    "All times are distinct, so event order at equal times is not a concern."
+  ],
+  "analogy": "A running headcount changes by one whenever someone enters or exits.",
+  "example": "Customers [2,4), [3,9), [5,8): the count reaches 2 from time 3 until time 4, so maximum is 2.",
+  "algorithm": "Create (time,+1) arrival and (time,-1) departure events, sort them, scan the active count, and retain its maximum.",
+  "correctness": "At every event the running total equals the people present just after that distinct event time; checking all event intervals captures the maximum.",
+  "complexity": "O(n log n) time and O(n) event space.",
+  "visual": {
+    "kind": "array",
+    "title": "Restaurant Customers: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3\n5 8\n2 4\n3 9"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Customers [2,4), [3,9), [5,8): the count reaches 2 from time 3 until time 4, so maximum is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Create (time,+1) arrival and (time,-1) departure events, sort them, scan the active count, and retain its maximum."
+      },
+      {
+        "label": "Result",
+        "detail": "2"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3"
+      ],
+      [
+        "5  8"
+      ],
+      [
+        "2  4"
+      ],
+      [
+        "3  9"
+      ]
+    ],
+    "caption": "Illustrative example - Customers [2,4), [3,9), [5,8): the count reaches 2 from time 3 until time 4, so maximum is 2."
+  }
+}

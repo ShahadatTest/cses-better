@@ -1,0 +1,259 @@
+[
+  {
+    "year": 2002,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2002/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 0,
+    "indexedByContest": {},
+    "unindexedNote": "Official archive reachable. INOI PDF text extraction was garbled; ZIO paper remains unindexed at task level."
+  },
+  {
+    "year": 2003,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2003/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 0,
+    "indexedByContest": {},
+    "unindexedNote": "Official archive lists a ZIO paper but no INOI paper; ZIO task-level records remain unindexed."
+  },
+  {
+    "year": 2004,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2004/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 2,
+    "indexedByContest": {
+      "inoi": 2
+    },
+    "unindexedNote": "Two verified INOI tasks indexed from the official paper; legacy ZIO papers remain unindexed as task-level records."
+  },
+  {
+    "year": 2005,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2005/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 2,
+    "indexedByContest": {
+      "inoi": 2
+    },
+    "unindexedNote": "Two verified INOI tasks indexed from the official paper; legacy ZIO papers remain unindexed as task-level records."
+  },
+  {
+    "year": 2006,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2006/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 2,
+    "indexedByContest": {
+      "inoi": 2
+    },
+    "unindexedNote": "Two verified INOI tasks indexed from the official paper; legacy ZIO papers remain unindexed as task-level records."
+  },
+  {
+    "year": 2007,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2007/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 2,
+    "indexedByContest": {
+      "inoi": 2
+    },
+    "unindexedNote": "Two verified INOI tasks indexed from the official paper; legacy ZIO papers remain unindexed as task-level records."
+  },
+  {
+    "year": 2008,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2008/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 2,
+    "indexedByContest": {
+      "inoi": 2
+    },
+    "unindexedNote": "Two verified INOI tasks indexed from the official paper; legacy ZIO papers remain unindexed as task-level records."
+  },
+  {
+    "year": 2009,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2009/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 2,
+    "indexedByContest": {
+      "inoi": 2
+    },
+    "unindexedNote": "Two verified INOI tasks indexed from the official paper; legacy ZIO papers remain unindexed as task-level records."
+  },
+  {
+    "year": 2010,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2010/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 2,
+    "indexedByContest": {
+      "inoi": 2
+    },
+    "unindexedNote": "Two verified INOI tasks indexed from the official paper; legacy ZIO papers remain unindexed as task-level records."
+  },
+  {
+    "year": 2011,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2011/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 2,
+    "indexedByContest": {
+      "inoi": 2
+    },
+    "unindexedNote": "Two verified INOI tasks indexed from the official paper; legacy ZIO papers remain unindexed as task-level records."
+  },
+  {
+    "year": 2012,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2012/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 6,
+    "indexedByContest": {
+      "inoi": 2,
+      "zco": 4
+    },
+    "unindexedNote": "No task-level records added for this year yet."
+  },
+  {
+    "year": 2013,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2013/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 6,
+    "indexedByContest": {
+      "inoi": 2,
+      "zco": 4
+    },
+    "unindexedNote": "No task-level records added for this year yet."
+  },
+  {
+    "year": 2014,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2014/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 6,
+    "indexedByContest": {
+      "inoi": 2,
+      "zco": 4
+    },
+    "unindexedNote": "No task-level records added for this year yet."
+  },
+  {
+    "year": 2015,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2015/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 6,
+    "indexedByContest": {
+      "inoi": 2,
+      "zco": 4
+    },
+    "unindexedNote": "No task-level records added for this year yet."
+  },
+  {
+    "year": 2016,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2016/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 4,
+    "indexedByContest": {
+      "inoi": 2,
+      "zco": 2
+    },
+    "unindexedNote": "No task-level records added for this year yet."
+  },
+  {
+    "year": 2017,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2017/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 4,
+    "indexedByContest": {
+      "inoi": 2,
+      "zco": 2
+    },
+    "unindexedNote": "No task-level records added for this year yet."
+  },
+  {
+    "year": 2018,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2018/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 4,
+    "indexedByContest": {
+      "inoi": 2,
+      "zco": 2
+    },
+    "unindexedNote": "No task-level records added for this year yet."
+  },
+  {
+    "year": 2019,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2019/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 3,
+    "indexedByContest": {
+      "inoi": 2,
+      "zco": 1
+    },
+    "unindexedNote": "Three task records indexed. The official CodeChef API truncates the Singing Tournament statement before its objective."
+  },
+  {
+    "year": 2020,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2020/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 3,
+    "indexedByContest": {
+      "inoi": 2,
+      "zco": 1
+    },
+    "unindexedNote": "Three task records indexed. The official CodeChef API truncates Weird Ordering inside its recursive algorithm."
+  },
+  {
+    "year": 2021,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2021/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 2,
+    "indexedByContest": {
+      "inoi": 2
+    },
+    "unindexedNote": "Two INOI tasks indexed; the year page exposes no separate ZIO/ZCO task statements in the collected links."
+  },
+  {
+    "year": 2022,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2022/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 4,
+    "indexedByContest": {
+      "zio": 4
+    },
+    "unindexedNote": "Four ZIO tasks indexed. The ZCO question PDF text was not extractable in this pass; six ZCO/INOI CodeChef endpoints return generic authoring templates."
+  },
+  {
+    "year": 2023,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2023/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 4,
+    "indexedByContest": {
+      "zio": 4
+    },
+    "unindexedNote": "Four ZIO tasks indexed. Five ZCO/INOI CodeChef endpoints return generic authoring templates."
+  },
+  {
+    "year": 2024,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2024/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 9,
+    "indexedByContest": {
+      "inoi": 3,
+      "zco": 2,
+      "zio": 4
+    },
+    "unindexedNote": "Nine tasks indexed from ZIO, ZCO, and INOI PDFs."
+  },
+  {
+    "year": 2025,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2025/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 4,
+    "indexedByContest": {
+      "zio": 4
+    },
+    "unindexedNote": "Four ZIO tasks indexed. The official page links ZCO/INOI Codeforces gyms, but their task listings were inaccessible (HTTP 403) during this pass."
+  },
+  {
+    "year": 2026,
+    "archiveUrl": "https://www.iarcs.org.in/inoi/2026/",
+    "archivePageAvailable": true,
+    "indexedTaskCount": 4,
+    "indexedByContest": {
+      "zio": 4
+    },
+    "unindexedNote": "Four ZIO tasks indexed; the archive page exposes no ZCO or INOI paper links yet."
+  }
+]

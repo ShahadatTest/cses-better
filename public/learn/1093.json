@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "The total sum must be even before it can be split equally.",
+    "The target subset sum is half the total; counting subsets of this sum counts each partition twice, once per side.",
+    "Use one-dimensional subset-sum counting and divide by two modulo the required modulus."
+  ],
+  "analogy": "Count all ways to choose one half; each balanced division appears again when the other half is chosen.",
+  "example": "For n=3, {1,2,3} has total 6; subsets summing to 3 are {3} and {1,2}, representing the same split, so answer 1.",
+  "algorithm": "Set dp[0]=1 and process values 1..n with descending sums up to total/2. The answer is dp[target]*inverse(2) modulo 1,000,000,007; use modular inverse because the modulus is prime.",
+  "correctness": "Every equal partition contributes exactly two target-sum subsets, complementary sides; halving the subset count yields each unordered partition once.",
+  "complexity": "O(n*target) time and O(target) space.",
+  "visual": {
+    "kind": "dp",
+    "title": "Two Sets II: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3, {1,2,3} has total 6; subsets summing to 3 are {3} and {1,2}, representing the same split, so answer 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Set dp[0]=1 and process values 1..n with descending sums up to total/2. The answer is dp[target]*inverse(2) modulo 1,000,000,007; use modular inverse because the modulus is prime."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2",
+      "6"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=3, {1,2,3} has total 6; subsets summing to 3 are {3} and {1,2}, representing the same split, so answer 1."
+  }
+}

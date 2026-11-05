@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "A matching chooses edges so no two chosen edges share a vertex.",
+    "Root the tree and process children before their parent.",
+    "For each node, compare leaving it unmatched with matching it to one child, accounting for that child's alternative state."
+  ],
+  "analogy": "At a node, either reserve it for its parent or pair it with one of its children.",
+  "example": "For a path of three nodes, the maximum matching contains one edge.",
+  "algorithm": "Use tree DP with two states: best matching in subtree when u is not matched to its parent, and when it is. In the first state, choose no child edge or match u to one child; combine child states accordingly.",
+  "correctness": "Every matching either uses a child edge incident to u or none; after that choice the child subtrees are independent and their DP states cover all possibilities.",
+  "complexity": "O(n) time and O(n) space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Tree Matching: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For a path of three nodes, the maximum matching contains one edge."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use tree DP with two states: best matching in subtree when u is not matched to its parent, and when it is. In the first state, choose no child edge or match u to one child; combine child states accordingly."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      }
+    ],
+    "caption": "Illustrative example - A three-node path has a maximum matching of one edge."
+  }
+}

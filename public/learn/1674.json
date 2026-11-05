@@ -1,0 +1,71 @@
+{
+  "hints": [
+    "The number of subordinates of a manager is the size of their descendant subtree, excluding the manager.",
+    "Start at the leaves and pass each node's accumulated count upward to its parent.",
+    "A postorder traversal ensures children's counts are ready before the parent."
+  ],
+  "analogy": "Each employee contributes one person plus everyone below them to their manager's total.",
+  "example": "If employee 2 manages employees 4 and 5, they have two subordinates; their manager counts 2 plus all of 2's descendants.",
+  "algorithm": "Run DFS from the root. Set size[u]=1+sum(size[child]); answer size[u]-1 for each non-root node.",
+  "correctness": "The rooted tree's descendants are exactly the disjoint child subtrees; summing their sizes gives every subordinate once.",
+  "complexity": "O(n) time and O(n) space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Subordinates: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If employee 2 manages employees 4 and 5, they have two subordinates; their manager counts 2 plus all of 2's descendants."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run DFS from the root. Set size[u]=1+sum(size[child]); answer size[u]-1 for each non-root node."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "2",
+        "label": "2",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "4",
+        "label": "4",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "5",
+        "label": "5",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "2",
+        "to": "4",
+        "label": "reports to"
+      },
+      {
+        "from": "2",
+        "to": "5",
+        "label": "reports to"
+      }
+    ],
+    "caption": "Illustrative example - Employee 2 has two direct subordinates; descendants are accumulated below their manager."
+  }
+}

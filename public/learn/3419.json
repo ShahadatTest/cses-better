@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Fill cells from top to bottom and left to right.",
+    "For cell (r,c), inspect values already used earlier in row r and earlier in column c.",
+    "Choose the smallest nonnegative value absent from both sets."
+  ],
+  "analogy": "At each square, choose the first number not already seen to its left or above.",
+  "algorithm": "Scan row-major. Mark values present to the left in this row and above in this column, then select the smallest unmarked integer and print it.",
+  "correctness": "The selection is by definition the least nonnegative value missing from both required directions, and scanning order ensures those cells are already assigned.",
+  "complexity": "O(n^3) time with direct scanning and O(n^2) grid space; for n<=100 this is sufficient.",
+  "example": "For a 2x2 grid, first row is 0,1; second row begins 1; the last cell is 0 because neither its left cell nor its upper cell contains 0.",
+  "visual": {
+    "kind": "trace",
+    "title": "Mex Grid Construction: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For a 2x2 grid, first row is 0,1; second row begins 1; the last cell is 0 because neither its left cell nor its upper cell contains 0."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Scan row-major. Mark values present to the left in this row and above in this column, then select the smallest unmarked integer and print it."
+      },
+      {
+        "label": "Result",
+        "detail": "0 1 2 3 4\n1 0 3 2 5\n2 3 0 1 6\n3 2 1 0 7\n4 5 6 7 0"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5"
+      ]
+    ],
+    "caption": "Illustrative example - For a 2x2 grid, first row is 0,1; second row begins 1; the last cell is 0 because neither its left cell nor its upper cell contains 0."
+  }
+}

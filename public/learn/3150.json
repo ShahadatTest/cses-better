@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Count each distinct value once in every subarray containing it.",
+    "Assign a value?s contribution to its first occurrence inside a subarray.",
+    "For an occurrence, valid left endpoints start after its previous occurrence."
+  ],
+  "analogy": "Each occurrence claims the subarrays where it is the first copy of its value.",
+  "example": "For [1,2,1], the distinct counts are 1,1,1,2,2,2, summing to 9.",
+  "algorithm": "Scan positions i=1..n and keep the previous position prev[x] of every value, initially zero. Add (i-prev[x])*(n-i+1) to the answer, then set prev[x]=i. Use 64-bit arithmetic and a map or coordinate compression.",
+  "correctness": "The occurrence at i is the first copy of x in exactly the subarrays whose left endpoint is in prev[x]+1..i and right endpoint in i..n. These classes assign each value in each subarray to exactly one occurrence, so their total is the desired sum.",
+  "complexity": "For n elements, a hash map gives expected O(n) time and O(n) space; sorting for compression gives O(n log n) time.",
+  "visual": {
+    "kind": "trace",
+    "title": "Distinct Values Sum: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,1], the distinct counts are 1,1,1,2,2,2, summing to 9."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Scan positions i=1..n and keep the previous position prev[x] of every value, initially zero. Add (i-prev[x])*(n-i+1) to the answer, then set prev[x]=i. Use 64-bit arithmetic and a map or coordinate compression."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "9"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,1], the distinct counts are 1,1,1,2,2,2, summing to 9."
+  }
+}

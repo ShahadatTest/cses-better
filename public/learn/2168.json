@@ -1,0 +1,59 @@
+{
+  "hints": [
+    "An interval [a,b] contains [c,d] when a<=c and b>=d.",
+    "Sort intervals by start ascending and, for equal starts, end descending.",
+    "A left-to-right scan can mark whether an earlier interval contains this one; a right-to-left scan handles whether a later interval is inside it."
+  ],
+  "analogy": "Lay intervals in sorted order so any possible container is encountered before its contained interval.",
+  "example": "For [1,6] and [2,4], the first contains the second and the second is contained by the first.",
+  "algorithm": "Sort by (left ascending, right descending). Scan forward with the greatest right endpoint seen to mark contained; scan backward with the smallest right endpoint seen to mark containing. Handle exact duplicates as a group.",
+  "correctness": "The sort places every strict container before the interval it contains and every contained interval after it; the running endpoint extrema detect the required relation.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Nested Ranges Check: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "4\n1 6\n2 4\n4 8\n3 6"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,6] and [2,4], the first contains the second and the second is contained by the first."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort by (left ascending, right descending). Scan forward with the greatest right endpoint seen to mark contained; scan backward with the smallest right endpoint seen to mark containing. Handle exact duplicates as a group."
+      },
+      {
+        "label": "Result",
+        "detail": "1 0 0 0\n0 1 0 1"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "4"
+      ],
+      [
+        "1  6"
+      ],
+      [
+        "2  4"
+      ],
+      [
+        "4  8"
+      ],
+      [
+        "3  6"
+      ]
+    ],
+    "caption": "Illustrative example - For [1,6] and [2,4], the first contains the second and the second is contained by the first."
+  }
+}

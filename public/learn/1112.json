@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "Count all strings and subtract those that never complete the required pattern.",
+    "Track the longest suffix of the current string that is also a prefix of the pattern.",
+    "Build KMP prefix-function transitions and use dynamic programming over length and matched-prefix length."
+  ],
+  "analogy": "A progress marker on the pattern moves forward on matching letters and falls back to a shorter matching prefix on a mismatch.",
+  "example": "For length 2 and required pattern AB over uppercase letters, only AB works, so the answer is 1.",
+  "algorithm": "Build transitions for each proper prefix length and each of the 26 letters using the prefix function. Start with one empty string at state zero. For each of n positions, extend each state by every letter; when a transition completes the pattern, count it as already successful, or equivalently count only avoiding strings and subtract their total from 26^n. Work modulo 10^9+7.",
+  "correctness": "The state is exactly the longest pattern prefix that is a suffix, so it contains all information needed for the next character. The DP counts every avoiding string once; its complement is exactly the strings containing the pattern.",
+  "complexity": "For pattern length m and target length n, O(26(nm+m)) time and O(m) DP space, plus O(26m) transitions.",
+  "visual": {
+    "kind": "string",
+    "title": "Required Substring: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For length 2 and required pattern AB over uppercase letters, only AB works, so the answer is 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build transitions for each proper prefix length and each of the 26 letters using the prefix function. Start with one empty string at state zero. For each of n positions, extend each state by every letter; when a transition completes the pattern, count it as already successful, or equivalently count only avoiding strings and subtract their total from 26^n. Work modulo 10^9+7."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Length",
+      "Required pattern",
+      "Valid strings"
+    ],
+    "rows": [
+      [
+        "2",
+        "AB",
+        "AB"
+      ]
+    ],
+    "caption": "Illustrative example - Only the string AB contains the required pattern."
+  }
+}

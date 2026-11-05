@@ -1,0 +1,77 @@
+{
+  "hints": [
+    "Removing edges is difficult for ordinary disjoint-set union.",
+    "Read all breakdowns first and reverse time.",
+    "In reverse, every breakdown becomes an edge addition."
+  ],
+  "analogy": "Repair the network backward, recording the component count before each repair.",
+  "example": "For path 1-2-3, removing 1-2 gives 2 components; removing 2-3 gives 3. Reverse repairs recover counts 3 then 2.",
+  "algorithm": "Mark all edges that will break. Initialize a disjoint-set union with the remaining edges and count components. Traverse breakdowns backward: record the current component count, add that edge, and decrement the count if it joins two components. Reverse the recorded answers.",
+  "correctness": "Before reversing each breakdown, the structure contains exactly the edges present after that forward breakdown. Union correctly updates connectivity when the edge is restored, so recorded counts match the requested states.",
+  "complexity": "For n vertices, m edges and k breakdowns, O((n+m+k) alpha(n)) time and O(n+m+k) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Network Breakdown: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For path 1-2-3, removing 1-2 gives 2 components; removing 2-3 gives 3. Reverse repairs recover counts 3 then 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Mark all edges that will break. Initialize a disjoint-set union with the remaining edges and count components. Traverse breakdowns backward: record the current component count, add that edge, and decrement the count if it joins two components. Reverse the recorded answers."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      }
+    ],
+    "caption": "Illustrative example - For path 1-2-3, removing 1-2 gives 2 components; removing 2-3 gives 3. Reverse repairs recover counts 3 then 2."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "If a stick of length a is split into p positive pieces, its smallest achievable maximum is ceil(a/p), and its largest achievable minimum is floor(a/p).",
+    "For a candidate interval [low, high], a stick permits between ceil(a/high) and floor(a/low) pieces.",
+    "Generate the extremal split frontiers with heaps, then combine their monotone ranges for every cut count."
+  ],
+  "analogy": "Each original stick is a bundle: splitting a bundle more reduces its largest possible piece, but eventually also lowers its smallest one.",
+  "example": "With sticks 7, 3, 2, the minimum differences for one, two, and three cuts are 2, 1, and 2.",
+  "algorithm": "Build arrays H and seg for cut counts 0..m. Start every stick with one piece. A max-heap keyed by ceil(a/p) repeatedly increases p for the stick with largest key; record H[k] as the maximum key and seg[k] as the current minimum floor(a/p) and maximum ceil(a/p). Separately build L[k], the greatest possible minimum after k cuts: a max-heap starts with floor(a/2) for each splittable stick; repeatedly take its largest value, update the running minimum, and insert floor(a/(p+1)) for its next split if positive. For each k maintain a multiset of seg[i].max-seg[i].min for indices with seg[i].max>=H[k] and seg[i].min<=L[k]. Since both seg coordinates and H,L are nonincreasing, maintain this index window with two pointers. The answer is the smaller of the multiset minimum and seg[j].max-L[k], where j is the last index before the window; omit either candidate when it does not exist.",
+  "correctness": "For bounds [low,high], each stick can be split into any integer number of pieces from ceil(a/high) through floor(a/low). Thus the bounds are feasible exactly when each range is nonempty and n+k lies between the sums of these limits. The first heap enumerates the breakpoints where a lower maximum becomes possible, and the second identifies the highest feasible minimum. Between consecutive breakpoints, the best feasible interval is represented by a window candidate or the boundary at L[k]; the two-pointer scan compares all such candidates.",
+  "complexity": "O((n+m) log(n+m)) time and O(n+m) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Stick Difference: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With sticks 7, 3, 2, the minimum differences for one, two, and three cuts are 2, 1, and 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build arrays H and seg for cut counts 0..m. Start every stick with one piece. A max-heap keyed by ceil(a/p) repeatedly increases p for the stick with largest key; record H[k] as the maximum key and seg[k] as the current minimum floor(a/p) and maximum ceil(a/p). Separately build L[k], the greatest possible minimum after k cuts: a max-heap starts with floor(a/2) for each splittable stick; repeatedly take its largest value, update the running minimum, and insert floor(a/(p+1)) for its next split if positive. For each k maintain a multiset of seg[i].max-seg[i].min for indices with seg[i].max>=H[k] and seg[i].min<=L[k]. Since both seg coordinates and H,L are nonincreasing, maintain this index window with two pointers. The answer is the smaller of the multiset minimum and seg[j].max-L[k], where j is the last index before the window; omit either candidate when it does not exist."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "7",
+      "3",
+      "2",
+      "1"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - With sticks 7, 3, 2, the minimum differences for one, two, and three cuts are 2, 1, and 2."
+  }
+}

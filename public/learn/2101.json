@@ -1,0 +1,71 @@
+{
+  "hints": [
+    "The first connection day is the smallest possible maximum edge day along a path.",
+    "Add roads in order, keeping only those that join different components.",
+    "In this spanning forest, answer the maximum edge day on the path with binary lifting."
+  ],
+  "analogy": "The earliest roads build a forest; the latest road on its unique path is the day the two cities first became connected.",
+  "example": "If road 1-2 appears on day 1 and 2-3 on day 2, cities 1 and 3 first connect on day 2.",
+  "algorithm": "Process roads in day order with disjoint-set union; retain an edge only when it joins two components, labeling it with its day. Preprocess each resulting tree for lowest common ancestor and maximum edge on binary-lifting jumps. For a query in different final components print -1; for the same city print 0; otherwise return the maximum edge label along its forest path.",
+  "correctness": "After every day, retained edges connect exactly the same components as all roads built so far. Thus two vertices first connect on the maximum day along their retained forest path, and binary lifting finds that maximum.",
+  "complexity": "For n cities, m roads and q queries, O(m alpha(n)+n log n+q log n) time and O(n log n+m) space.",
+  "visual": {
+    "kind": "flow",
+    "title": "New Roads Queries: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If road 1-2 appears on day 1 and 2-3 on day 2, cities 1 and 3 first connect on day 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Process roads in day order with disjoint-set union; retain an edge only when it joins two components, labeling it with its day. Preprocess each resulting tree for lowest common ancestor and maximum edge on binary-lifting jumps. For a query in different final components print -1; for the same city print 0; otherwise return the maximum edge label along its forest path."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2",
+        "label": "day 1"
+      },
+      {
+        "from": "2",
+        "to": "3",
+        "label": "day 2"
+      }
+    ],
+    "caption": "Illustrative example - Cities 1 and 3 first become connected on day 2."
+  }
+}

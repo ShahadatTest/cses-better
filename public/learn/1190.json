@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "For each array segment, store its total sum and best subarray sum.",
+    "The best subarray in a joined interval is either fully left, fully right, or crosses the split.",
+    "A crossing subarray is the best suffix of the left plus the best prefix of the right."
+  ],
+  "analogy": "When two halves join, the winning segment stays in one half or crosses their border.",
+  "example": "For [−2,3] and [−1,4], a crossing candidate is suffix 3 plus prefix 3, total 6.",
+  "algorithm": "Build a segment tree storing sum, bestPrefix, bestSuffix, and bestSubarray. Merge with best=max(left.best,right.best,left.suffix+right.prefix); after each point update print the root best.",
+  "correctness": "Every subarray lies wholly in one child or crosses the split; the stored suffix/prefix make the best crossing candidate available.",
+  "complexity": "O(n) build, O(log n) per update, O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Subarray Sum Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [−2,3] and [−1,4], a crossing candidate is suffix 3 plus prefix 3, total 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a segment tree storing sum, bestPrefix, bestSuffix, and bestSubarray. Merge with best=max(left.best,right.best,left.suffix+right.prefix); after each point update print the root best."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "3",
+      "1",
+      "4",
+      "6"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [−2,3] and [−1,4], a crossing candidate is suffix 3 plus prefix 3, total 6."
+  }
+}

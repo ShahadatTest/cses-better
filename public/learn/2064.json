@@ -1,0 +1,44 @@
+{
+  "hints": [
+    "A valid bracket string has equal numbers of opening and closing brackets and every prefix has at least as many opens as closes.",
+    "The total length must be even; choose which positions are opening brackets while preserving the prefix rule.",
+    "Use the ballot/Catalan count C(n,n/2)-C(n,n/2-1) modulo the prime."
+  ],
+  "analogy": "Count all balanced-count strings, then subtract those that dip below zero at some prefix.",
+  "example": "For length 4, valid strings are (()), ()(), so the answer is 2.",
+  "algorithm": "If n is odd answer 0; otherwise compute C(n,n/2)-C(n,n/2-1) modulo 1,000,000,007 using factorials and inverse factorials.",
+  "correctness": "The reflection principle pairs every prefix-invalid arrangement with a unique arrangement counted by the subtracted binomial term; the remainder is exactly the valid bracket sequences.",
+  "complexity": "O(n) preprocessing and O(1) per query; O(n) space.",
+  "visual": {
+    "kind": "math",
+    "title": "Bracket Sequences I: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For length 4, valid strings are (()), ()(), so the answer is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "If n is odd answer 0; otherwise compute C(n,n/2)-C(n,n/2-1) modulo 1,000,000,007 using factorials and inverse factorials."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "(())",
+      "()()"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - These are the two balanced parenthesis strings of length four."
+  }
+}

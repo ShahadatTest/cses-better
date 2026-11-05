@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "Count each bit position separately.",
+    "At bit b, zeros and ones alternate in blocks of length 2^b.",
+    "Count full cycles among 0 through n, then the remaining ones."
+  ],
+  "analogy": "Each bit follows a repeating schedule: off for a block, then on for an equally long block.",
+  "example": "From 1 through 3, binary values 1,10,11 contain 1+1+2=4 one bits.",
+  "algorithm": "For each bit b with 2^b <= n, let h=2^b and N=n+1. Add floor(N/(2h))*h + max(0,N%(2h)-h). Print the sum using a wide integer.",
+  "correctness": "Among numbers 0 through n, bit b has exactly h ones in each full cycle of length 2h, followed by the counted suffix of the partial cycle. Summing the independent bit counts counts every one bit once.",
+  "complexity": "For n, O(log n) time and O(1) space.",
+  "visual": {
+    "kind": "bitwise",
+    "title": "Counting Bits: follow one example",
+    "caption": "Track the binary state and the effect of each bit operation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "From 1 through 3, binary values 1,10,11 contain 1+1+2=4 one bits."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each bit b with 2^b <= n, let h=2^b and N=n+1. Add floor(N/(2h))*h + max(0,N%(2h)-h). Print the sum using a wide integer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1 (binary 1)",
+      "3 (binary 11)",
+      "10 (binary 1010)",
+      "11 (binary 1011)",
+      "2 (binary 10)",
+      "4 (binary 100)"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - From 1 through 3, binary values 1,10,11 contain 1+1+2=4 one bits."
+  }
+}

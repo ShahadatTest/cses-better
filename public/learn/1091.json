@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "For each customer, find the most expensive remaining ticket price no greater than their limit.",
+    "A sorted multiset can find that predecessor value while keeping duplicate ticket copies separate.",
+    "Remove exactly one ticket when sold; print -1 when no eligible ticket exists."
+  ],
+  "analogy": "Take the closest price from below the customer's budget, then remove that one ticket from the shelf.",
+  "example": "Tickets 3,5,7 and limit 6: sell 5; a later limit 4 can still buy 3.",
+  "algorithm": "Store ticket prices in a multiset. For each limit t, locate the greatest element <=t, print and erase one occurrence; if none exists print -1.",
+  "correctness": "The chosen ticket is the highest affordable available price by the predecessor search, and erasing one occurrence enforces that each ticket is sold at most once.",
+  "complexity": "O((n+m) log n) time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Concert Tickets: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5 3\n5 3 7 8 5\n4 8 3"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Tickets 3,5,7 and limit 6: sell 5; a later limit 4 can still buy 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Store ticket prices in a multiset. For each limit t, locate the greatest element <=t, print and erase one occurrence; if none exists print -1."
+      },
+      {
+        "label": "Result",
+        "detail": "3\n8\n-1"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5  3"
+      ],
+      [
+        "5  3  7  8  5"
+      ],
+      [
+        "4  8  3"
+      ]
+    ],
+    "caption": "Illustrative example - Tickets 3,5,7 and limit 6: sell 5; a later limit 4 can still buy 3."
+  }
+}

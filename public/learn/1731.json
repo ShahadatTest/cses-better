@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "A valid combination uses dictionary words that concatenate exactly to the target string.",
+    "Let dp[i] count ways to form the first i characters.",
+    "For each endpoint, check dictionary words that end there and add dp before each matching word."
+  ],
+  "analogy": "For each possible last word, count the ways to build everything before it.",
+  "example": "If target 'ab' has words 'a','b','ab', it can be formed as ['a','b'] or ['ab'], giving 2 ways.",
+  "algorithm": "Store dictionary words in a trie. Set dp[0]=1; from each reachable position i, walk trie along the target and add dp[i] to dp[j+1] whenever a word ends there, modulo 1e9+7.",
+  "correctness": "Every decomposition has one final word; removing it leaves a unique valid decomposition of a shorter prefix, so summing all matching final words counts every decomposition once.",
+  "complexity": "O(L*W) worst case for target length L and max word length W; O(total dictionary characters+L) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Word Combinations: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If target 'ab' has words 'a','b','ab', it can be formed as ['a','b'] or ['ab'], giving 2 ways."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Store dictionary words in a trie. Set dp[0]=1; from each reachable position i, walk trie along the target and add dp[i] to dp[j+1] whenever a word ends there, modulo 1e9+7."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Role",
+      "String"
+    ],
+    "rows": [
+      [
+        "Text / source",
+        "ab"
+      ],
+      [
+        "Pattern / candidate",
+        "a"
+      ],
+      [
+        "Pattern / candidate",
+        "b"
+      ],
+      [
+        "Pattern / candidate",
+        "ab"
+      ]
+    ],
+    "caption": "Illustrative example - If target 'ab' has words 'a','b','ab', it can be formed as ['a','b'] or ['ab'], giving 2 ways."
+  }
+}

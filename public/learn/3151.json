@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Equal elements never swap, so preserve their original order when sorting.",
+    "In a left-to-right round, an element can move left by at most one position.",
+    "The maximum stable leftward displacement determines the number of rounds."
+  ],
+  "analogy": "A small element can pass only one larger neighbor per round as the scan moves away from it.",
+  "example": "For [3,2,4,1,4], the 1 moves from position 4 to position 1, so three rounds are needed.",
+  "algorithm": "Stable-sort pairs (value,original index), breaking ties by original index. For each sorted position j, compute originalIndex-j. Output the largest such displacement, or zero if the array is already sorted.",
+  "correctness": "No element can move left more than one place in a single left-to-right scan, so its leftward displacement is a lower bound. In each round, every element that still has a larger element immediately before it moves left; equivalently stable inversions are eliminated at a rate sufficient to place every element after at most the maximum leftward displacement rounds. Thus the bound is attained.",
+  "complexity": "For n elements, sorting takes O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Bubble Sort Rounds I: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [3,2,4,1,4], the 1 moves from position 4 to position 1, so three rounds are needed."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Stable-sort pairs (value,original index), breaking ties by original index. For each sorted position j, compute originalIndex-j. Output the largest such displacement, or zero if the array is already sorted."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "2",
+      "4",
+      "1"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [3,2,4,1,4], the 1 moves from position 4 to position 1, so three rounds are needed."
+  }
+}

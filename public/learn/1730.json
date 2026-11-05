@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "In normal Nim, a player may remove any positive number of stones from one pile.",
+    "Compute the bitwise XOR of all pile sizes.",
+    "A zero XOR position is losing for the player to move; nonzero is winning."
+  ],
+  "analogy": "If pile sizes have a nonzero XOR, choose one pile to make the combined XOR zero.",
+  "example": "Piles 3,4,5 have XOR 3^4^5=2, so the first player can win.",
+  "algorithm": "XOR every pile. Print the winner according to whether the result is zero.",
+  "correctness": "When XOR is zero, every move changes it to nonzero; from nonzero, a move can reduce a pile to make XOR zero, so optimal play alternates into losing positions.",
+  "complexity": "O(n) time and O(1) extra space.",
+  "visual": {
+    "kind": "math",
+    "title": "Nim Game I: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Piles 3,4,5 have XOR 3^4^5=2, so the first player can win."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "XOR every pile. Print the winner according to whether the result is zero."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "4",
+      "5",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Piles 3,4,5 have XOR 3^4^5=2, so the first player can win."
+  }
+}

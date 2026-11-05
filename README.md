@@ -201,3 +201,9 @@ Contributions are welcome! Whether it's adding new language starters, optimizing
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 *Problem statements, test data, and CSES trademarks are copyright © [CSES / Antti Laaksonen](https://cses.fi/problemset/) and are used under fair educational practice.*
+
+### Problem lists and Learn
+
+Lists are saved locally and included in JSON backups. Signing in imports guest lists once and synchronizes account lists separately. Changes remain available offline; use Retry sync in Lists if a sync fails. When two devices edit the same list, the cloud version is kept and the local version is saved as a recovered list. Deleted lists use tombstones so an older device cannot restore them accidentally. Learn lessons are bundled static files; hints and explanations are revealed on demand.
+
+Deploy `supabase/migrations/20261104172357_user_problem_lists.sql` to the linked Supabase project using `supabase db push` before enabling cloud list sync. The migration grants authenticated users access only to their own rows and enforces revision increments. Existing local lists continue to work if the migration has not been deployed.

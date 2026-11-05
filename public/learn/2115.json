@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "Use prefix counts of ones.",
+    "A substring has k ones when two prefix counts differ by k.",
+    "All positive differences can be counted together by convolution."
+  ],
+  "analogy": "Count pairs of milestones whose labels differ by each possible amount.",
+  "example": "For 101, the counts for k=0,1,2,3 are 1,4,1,0.",
+  "algorithm": "Compute prefix sums of ones for all n+1 prefix positions and let f[v] count prefixes with sum v. For k=0, sum f[v]*(f[v]-1)/2. For positive k, the answer is sum over v of f[v]*f[v+k]. Obtain all these autocorrelation values by convolving f with its reverse using an NTT under two suitable primes and reconstructing exact integer coefficients by the Chinese remainder theorem. Print zeros beyond the total number of ones.",
+  "correctness": "Prefix sums never decrease. For k>0, every pair of prefix positions whose values differ by k has the smaller value earlier and defines exactly one substring with k ones. For k=0, choosing any two distinct positions of the same prefix value defines one nonempty zero-one substring. Convolution computes exactly these pair counts.",
+  "complexity": "For string length n, NTT convolution takes O(n log n) time and O(n) space; two moduli are needed to reconstruct counts up to n(n+1)/2 exactly.",
+  "visual": {
+    "kind": "trace",
+    "title": "Bit Substrings: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 101, the counts for k=0,1,2,3 are 1,4,1,0."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute prefix sums of ones for all n+1 prefix positions and let f[v] count prefixes with sum v. For k=0, sum f[v]*(f[v]-1)/2. For positive k, the answer is sum over v of f[v]*f[v+k]. Obtain all these autocorrelation values by convolving f with its reverse using an NTT under two suitable primes and reconstructing exact integer coefficients by the Chinese remainder theorem. Print zeros beyond the total number of ones."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "101",
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For 101, the counts for k=0,1,2,3 are 1,4,1,0."
+  }
+}

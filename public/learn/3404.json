@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Translate each value in one permutation to its position in the other.",
+    "A common subsequence then becomes an increasing sequence of positions.",
+    "Use the standard longest increasing subsequence algorithm with reconstruction."
+  ],
+  "analogy": "The first permutation gives each value a destination rank; keep a longest sequence whose ranks increase.",
+  "example": "For permutations [2,1,3] and [1,2,3], transformed positions are [2,1,3]; an LIS is [1,3], corresponding to common subsequence [1,3].",
+  "algorithm": "Build pos[value] from the second permutation, then replace each element of the first by its position. Compute a strictly increasing subsequence using a tails array and lower_bound. Keep the index ending each tail length and a predecessor for every position; follow predecessors from the final tail to reconstruct the actual values.",
+  "correctness": "A sequence appears in the second permutation in the same order exactly when its mapped positions strictly increase. Thus common subsequences correspond one-to-one to increasing subsequences of the mapped first permutation. The tails algorithm finds the maximum length and predecessor links reconstruct one such sequence.",
+  "complexity": "For n values, time is O(n log n) and space O(n).",
+  "visual": {
+    "kind": "trace",
+    "title": "Permutation Subsequence: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For permutations [2,1,3] and [1,2,3], transformed positions are [2,1,3]; an LIS is [1,3], corresponding to common subsequence [1,3]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build pos[value] from the second permutation, then replace each element of the first by its position. Compute a strictly increasing subsequence using a tails array and lower_bound. Keep the index ending each tail length and a predecessor for every position; follow predecessors from the final tail to reconstruct the actual values."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "1",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For permutations [2,1,3] and [1,2,3], transformed positions are [2,1,3]; an LIS is [1,3], corresponding to common subsequence [1,3]."
+  }
+}

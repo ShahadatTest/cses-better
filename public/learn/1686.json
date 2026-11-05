@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "The graph may contain cycles, but each strongly connected component can be condensed to one node.",
+    "Every coin in a component can be collected if that component is visited, because its planets are mutually reachable.",
+    "On the resulting DAG, compute the maximum collected coin total along any path."
+  ],
+  "analogy": "Collapse mutually reachable planets into one prize bundle, then find the richest directed route through bundles.",
+  "example": "If a component has coins 4 and 7, its bundle is worth 11; a path through it adds all 11.",
+  "algorithm": "Find SCCs, sum coins per component, build the condensation DAG, and use topological DP to maximize accumulated value.",
+  "correctness": "Within an SCC every member can be visited on a route between entry and exit; the condensation graph is acyclic, so a path's component weights are counted once in topological DP.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Coin Collector: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If a component has coins 4 and 7, its bundle is worth 11; a path through it adds all 11."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Find SCCs, sum coins per component, build the condensation DAG, and use topological DP to maximize accumulated value."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Component coins",
+      "Bundle value"
+    ],
+    "rows": [
+      [
+        "4 + 7",
+        "11"
+      ]
+    ],
+    "caption": "Illustrative example - Collecting along a path through the component adds all 11 coins."
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "hints": [
+    "For each row, count consecutive empty cells ending at that row in every column.",
+    "Those counts form a histogram.",
+    "Use a monotonic stack to find the largest rectangle in each histogram."
+  ],
+  "analogy": "Every empty rectangle has a bottom edge; at that edge its columns form bars at least as tall as the rectangle.",
+  "example": "In a 2 by 3 empty grid, the largest building covers all 6 cells.",
+  "algorithm": "Scan rows, updating each column height to zero at a tree or increasing it at an empty cell. For each histogram, use an increasing stack of bar indices; when a shorter bar arrives, pop taller bars and compute their maximal width. Flush the stack at the end of the row and retain the largest area.",
+  "correctness": "The height array records exactly the available empty cells above each position. The stack computes the widest interval for which each popped height is a valid minimum, so it considers an optimal rectangle at every possible bottom row.",
+  "complexity": "For n rows and m columns, O(nm) time and O(m) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Maximum Building I: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In a 2 by 3 empty grid, the largest building covers all 6 cells."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Scan rows, updating each column height to zero at a tree or increasing it at an empty cell. For each histogram, use an increasing stack of bar indices; when a shorter bar arrives, pop taller bars and compute their maximal width. Flush the stack at the end of the row and retain the largest area."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        ".",
+        ".",
+        "."
+      ],
+      [
+        ".",
+        ".",
+        "."
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - The largest empty building in a 2 by 3 grid covers all six cells."
+  }
+}

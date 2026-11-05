@@ -1,0 +1,68 @@
+{
+  "hints": [
+    "Place one queen in each row, so rows never conflict.",
+    "For the next row, try only free squares whose column and both diagonals are unused.",
+    "When a row has no legal square, undo the last choice and try another; count complete placements."
+  ],
+  "analogy": "Place queens row by row, crossing off attacked columns and diagonals before choosing the next.",
+  "example": "If the board is entirely free, the known count is 92; a reserved square removes only placements that use it.",
+  "algorithm": "Backtrack over the eight rows. Track occupied columns, row-column diagonals, and row+column diagonals; skip reserved cells and recurse only on safe cells.",
+  "correctness": "Every legal board has exactly one queen per row and is reached by its sequence of choices; the conflict checks exclude exactly attacking pairs.",
+  "complexity": "O(8!) candidate arrangements in the worst case and O(8) recursion/marker space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Chessboard and Queens: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "........\n........\n..*.....\n........\n........\n.....**.\n...*....\n........"
+      },
+      {
+        "label": "Work through it",
+        "detail": "If the board is entirely free, the known count is 92; a reserved square removes only placements that use it."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Backtrack over the eight rows. Track occupied columns, row-column diagonals, and row+column diagonals; skip reserved cells and recurse only on safe cells."
+      },
+      {
+        "label": "Result",
+        "detail": "65"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "........"
+      ],
+      [
+        "........"
+      ],
+      [
+        "..*....."
+      ],
+      [
+        "........"
+      ],
+      [
+        "........"
+      ],
+      [
+        ".....**."
+      ],
+      [
+        "...*...."
+      ],
+      [
+        "........"
+      ]
+    ],
+    "caption": "Illustrative example - If the board is entirely free, the known count is 92; a reserved square removes only placements that use it."
+  }
+}

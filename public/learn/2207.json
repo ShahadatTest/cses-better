@@ -1,0 +1,66 @@
+{
+  "hints": [
+    "A move splits a pile into two positive piles of different sizes.",
+    "For each total size, mark it winning if any allowed unequal split leaves two losing positions.",
+    "Both resulting piles are independent games, so their Grundy values combine by XOR."
+  ],
+  "analogy": "Try every legal unequal split; a move is winning when it leaves no winning continuation for the opponent.",
+  "example": "A pile of 1 has no legal split and is losing; pile 4 can split 1+3, but those states decide its outcome.",
+  "algorithm": "Precompute win[0..N]. For each s, test unequal splits a<s-a; s is winning if both win[a] and win[s-a] are false. Stop at the first such split. Use a bitset of losing positions to test partner s-a quickly; the input bound is N=1,000,000.",
+  "correctness": "A move is winning exactly when it leaves both resulting heaps in losing positions; all splits are tried, and equal splits are forbidden by the rules.",
+  "complexity": "O(N^2/wordSize) bitset work in the worst case and O(N) memory; practical precomputation checks losing positions in parallel.",
+  "visual": {
+    "kind": "math",
+    "title": "Grundy's Game: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A pile of 1 has no legal split and is losing; pile 4 can split 1+3, but those states decide its outcome."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Precompute win[0..N]. For each s, test unequal splits a<s-a; s is winning if both win[a] and win[s-a] are false. Stop at the first such split. Use a bitset of losing positions to test partner s-a quickly; the input bound is N=1,000,000."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "Pile 1",
+        "label": "Pile 1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "Pile 4",
+        "label": "Pile 4",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "Piles 1 + 3",
+        "label": "Piles 1 + 3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "Pile 4",
+        "to": "Piles 1 + 3",
+        "label": "split"
+      }
+    ],
+    "caption": "Illustrative example - Pile 1 has no legal split; pile 4 can split into 1 and 3."
+  }
+}

@@ -53,6 +53,12 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
   const [keyInput, setKeyInput] = useState<string>('');
   const [isEditingKey, setIsEditingKey] = useState<boolean>(false);
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
+  const deploymentWidgetKey =
+    (typeof process !== 'undefined'
+      ? process.env.NEXT_PUBLIC_ONLINECOMPILER_WIDGET_KEY
+      : '')?.trim() || '';
+  const deploymentKeyIsLocked =
+    process.env.NODE_ENV === 'production' && Boolean(deploymentWidgetKey);
 
   // Load widget key from prop or localStorage on mount
   useEffect(() => {
@@ -67,15 +73,14 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
     }
   }, [widgetKey]);
 
-  // Determine active widget key
   const activeWidgetKey = (
-    widgetKey ||
-    localWidgetKey ||
-    (typeof process !== 'undefined'
-      ? process.env.NEXT_PUBLIC_ONLINECOMPILER_WIDGET_KEY
-      : '') ||
-    DEFAULT_APP_SETTINGS.widgetKey ||
-    ''
+    deploymentKeyIsLocked
+      ? deploymentWidgetKey
+      : widgetKey ||
+        localWidgetKey ||
+        deploymentWidgetKey ||
+        DEFAULT_APP_SETTINGS.widgetKey ||
+        ''
   ).trim();
   const hasValidWidgetKey = activeWidgetKey.length > 0;
 
@@ -134,15 +139,17 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
         <div className="flex items-center gap-2 shrink-0">
           {hasValidWidgetKey && (
             <>
-              <button
-                type="button"
-                onClick={() => setIsEditingKey(!isEditingKey)}
-                title="Change or update your widget key"
-                className="flex items-center gap-1 px-2 py-1 text-xs text-slate-400 hover:text-slate-200 hover:bg-surface-2 rounded transition-colors"
-              >
-                <KeyRound className="w-3.5 h-3.5" />
-                <span className="hidden md:inline">Change Key</span>
-              </button>
+              {!deploymentKeyIsLocked && (
+                <button
+                  type="button"
+                  onClick={() => setIsEditingKey(!isEditingKey)}
+                  title="Change or update your widget key"
+                  className="flex items-center gap-1 px-2 py-1 text-xs text-slate-400 hover:text-slate-200 hover:bg-surface-2 rounded transition-colors"
+                >
+                  <KeyRound className="w-3.5 h-3.5" />
+                  <span className="hidden md:inline">Change Key</span>
+                </button>
+              )}
 
               <button
                 type="button"

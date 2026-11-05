@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Build any minimum spanning tree first.",
+    "Adding a non-tree edge creates one cycle.",
+    "Remove a maximum-weight edge on that tree path to keep the forced edge as cheaply as possible."
+  ],
+  "analogy": "Adding a road creates a loop; remove its most expensive old road to restore a tree.",
+  "example": "A triangle with weights 1,2,4 has MST cost 3; forcing weight 4 replaces weight 2, giving 5.",
+  "algorithm": "Run Kruskal to construct an MST and total cost T. Preprocess its tree using binary lifting with maximum edge weights on ancestor jumps. For each input edge (u,v,w), query the maximum weight M on the tree path and output T+w-M. Use wide sums.",
+  "correctness": "Adding the forced edge creates a cycle, and removing the heaviest edge on its old tree path gives the cheapest exchange. The MST exchange property proves no spanning tree containing that edge has lower cost.",
+  "complexity": "For n vertices and m edges, O(m log m+(n+m) log n) time and O(n log n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "MST Edge Cost: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A triangle with weights 1,2,4 has MST cost 3; forcing weight 4 replaces weight 2, giving 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run Kruskal to construct an MST and total cost T. Preprocess its tree using binary lifting with maximum edge weights on ancestor jumps. For each input edge (u,v,w), query the maximum weight M on the tree path and output T+w-M. Use wide sums."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "4",
+      "3",
+      "5"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - A triangle with weights 1,2,4 has MST cost 3; forcing weight 4 replaces weight 2, giving 5."
+  }
+}

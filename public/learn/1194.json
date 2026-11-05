@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "Monsters move one step per minute, so first compute each cell's earliest monster arrival time with multi-source BFS.",
+    "Then BFS from A, entering a cell only if your arrival time is strictly earlier than monsters' arrival there.",
+    "A boundary cell reached safely is an escape; store parent moves to output the path."
+  ],
+  "analogy": "Compute when danger reaches each square, then move through squares only while arriving first.",
+  "example": "If a monster reaches a corridor cell in 2 steps and A needs 2 steps too, that cell is unsafe because arrival must be strictly earlier.",
+  "algorithm": "Run BFS from all M cells to fill monsterTime. Run player BFS with time t+1 and require t+1<monsterTime[next]; on reaching a boundary reconstruct and print the path.",
+  "correctness": "Monster BFS gives the earliest possible threat time; the strict inequality guarantees the player never shares a cell with a monster, and BFS gives a valid shortest escape.",
+  "complexity": "O(nm) time and O(nm) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Monsters: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If a monster reaches a corridor cell in 2 steps and A needs 2 steps too, that cell is unsafe because arrival must be strictly earlier."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run BFS from all M cells to fill monsterTime. Run player BFS with time t+1 and require t+1<monsterTime[next]; on reaching a boundary reconstruct and print the path."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Arrival event",
+      "Time",
+      "Safe?"
+    ],
+    "rows": [
+      [
+        "Monster reaches cell",
+        "2",
+        ""
+      ],
+      [
+        "A reaches cell",
+        "2",
+        "No: must be strictly earlier"
+      ]
+    ],
+    "caption": "Illustrative example - Tied arrival times are unsafe."
+  }
+}

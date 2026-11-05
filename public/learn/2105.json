@@ -1,0 +1,62 @@
+{
+  "hints": [
+    "Sort all suffixes of the string.",
+    "A suffix contributes all its prefixes, except those already shared with the preceding suffix.",
+    "Compute the suffix array and adjacent longest common prefixes."
+  ],
+  "analogy": "Sorted suffixes put identical beginnings next to each other, so shared prefixes need to be counted only once.",
+  "example": "For aba, the distinct substrings are a, b, ab, ba, aba: five.",
+  "algorithm": "Construct the suffix array and LCP array. For each suffix of length len, add len minus its LCP with the preceding suffix; use zero for the first suffix.",
+  "correctness": "All prefixes of a suffix are substrings. In suffix order, any prefix already seen is shared with the immediately preceding suffix, and exactly the LCP-length prefixes are duplicates. Thus each distinct substring is counted once.",
+  "complexity": "For length n, O(n log n) time using a doubling suffix array and O(n) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Distinct Substrings: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For aba, the distinct substrings are a, b, ab, ba, aba: five."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Construct the suffix array and LCP array. For each suffix of length len, add len minus its LCP with the preceding suffix; use zero for the first suffix."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Distinct substring"
+    ],
+    "rows": [
+      [
+        "a"
+      ],
+      [
+        "b"
+      ],
+      [
+        "ab"
+      ],
+      [
+        "ba"
+      ],
+      [
+        "aba"
+      ],
+      [
+        "Count = 5"
+      ]
+    ],
+    "caption": "Illustrative example - All distinct substrings of aba."
+  }
+}

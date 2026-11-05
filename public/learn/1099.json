@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Players move coins from higher stairs toward lower stairs; only the parity pattern in the relevant stair positions affects the outcome.",
+    "Treat the game as a sum of independent piles after using the equivalent Nim representation.",
+    "XOR the coin counts on every second stair, starting with the stair specified by the game rules."
+  ],
+  "analogy": "Moves between stairs cancel paired positions, leaving only alternating stairs as Nim piles.",
+  "example": "For counts 1,2,3, the alternating relevant pile(s) determine the XOR and hence the winner.",
+  "algorithm": "For the standard Stair Game, XOR counts on even-indexed stairs (1-based stair 2,4,...) and declare first player winning iff nonzero.",
+  "correctness": "A move changes one Nim component in the equivalent game; zero xor is losing and nonzero xor can be moved to zero.",
+  "complexity": "O(n) time and O(1) space.",
+  "visual": {
+    "kind": "math",
+    "title": "Stair Game: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For counts 1,2,3, the alternating relevant pile(s) determine the XOR and hence the winner."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For the standard Stair Game, XOR counts on even-indexed stairs (1-based stair 2,4,...) and declare first player winning iff nonzero."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For counts 1,2,3, the alternating relevant pile(s) determine the XOR and hence the winner."
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "A knight move changes coordinates by 1 and 2, so the board graph is unweighted.",
+    "Run breadth-first search starting at the top-left square; first reaching a square gives its shortest distance.",
+    "Explore all eight legal knight jumps and do not revisit a square already assigned a distance."
+  ],
+  "analogy": "Treat each square as a room and each legal knight jump as a hallway; breadth-first search visits rooms by jump count.",
+  "example": "For n=4, square (2,3) is one knight jump from (1,1), so its printed distance is 1.",
+  "algorithm": "Initialize distance(1,1)=0 and push it into a queue. Repeatedly pop a square and assign distance+1 to each unvisited legal knight destination.",
+  "correctness": "BFS explores all paths with d jumps before paths with d+1 jumps, so the first assigned distance is minimal.",
+  "complexity": "O(n^2) time and O(n^2) space for the board.",
+  "visual": {
+    "kind": "trace",
+    "title": "Knight Moves Grid: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "8"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=4, square (2,3) is one knight jump from (1,1), so its printed distance is 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize distance(1,1)=0 and push it into a queue. Repeatedly pop a square and assign distance+1 to each unvisited legal knight destination."
+      },
+      {
+        "label": "Result",
+        "detail": "0 3 2 3 2 3 4 5 \n3 4 1 2 3 4 3 4 \n2 1 4 3 2 3 4 5 \n3 2 3 2 3 4 3 4 \n2 3 2 3 4 3 4 5 \n3 4 3 4 3 4 5 4 \n4 3 4 3 4 5 4 5 \n5 4 5 4 5 4 5 6"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "8"
+      ]
+    ],
+    "caption": "Illustrative example - For n=4, square (2,3) is one knight jump from (1,1), so its printed distance is 1."
+  }
+}

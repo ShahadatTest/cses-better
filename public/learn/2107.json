@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "For each position, measure a match with the whole string's prefix.",
+    "The Z-function starts its match at that position; the prefix function ends its match there.",
+    "Both arrays can reuse information from earlier positions to run in linear time."
+  ],
+  "analogy": "The Z-function asks how much a suffix resembles the start; the prefix function asks how much of the start appears at the end of a prefix.",
+  "example": "For ababa, the Z values are 0,0,3,0,1 and the prefix-function values are 0,0,1,2,3.",
+  "algorithm": "Compute Z using the rightmost interval matching a prefix: initialize from its mirror when inside the interval, then extend. Compute the prefix function by following earlier border lengths on mismatch and extending on a match. Print both arrays in the required order.",
+  "correctness": "The Z interval supplies only already-proved matching characters and extension finds the exact remaining length. The prefix-function fallback enumerates all possible shorter borders, so its first match is the longest border.",
+  "complexity": "For length n, O(n) time and O(n) space.",
+  "visual": {
+    "kind": "string",
+    "title": "String Functions: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For ababa, the Z values are 0,0,3,0,1 and the prefix-function values are 0,0,1,2,3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute Z using the rightmost interval matching a prefix: initialize from its mirror when inside the interval, then extend. Compute the prefix function by following earlier border lengths on mismatch and extending on a match. Print both arrays in the required order."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "0",
+      "3",
+      "1",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For ababa, the Z values are 0,0,3,0,1 and the prefix-function values are 0,0,1,2,3."
+  }
+}

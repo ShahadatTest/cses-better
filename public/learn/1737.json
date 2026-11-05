@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "Queries include creating a copy of the current array version, point updates, and range sums.",
+    "Use a persistent segment tree: each update creates new nodes only along one root-to-leaf path.",
+    "Keep one root per version; copying a version copies only its root pointer."
+  ],
+  "analogy": "A copied version shares unchanged tree branches and gets fresh nodes only where a value changes.",
+  "example": "Copy version 1 to version 2; changing position 3 in version 2 leaves version 1's value unchanged.",
+  "algorithm": "Build an initial persistent sum tree. Copy operations append the same root; point updates path-copy nodes and assign the new root to that version; range queries use the selected root.",
+  "correctness": "Every root describes its own full array because changed paths are copied while all unchanged intervals remain shared and identical.",
+  "complexity": "O(log n) new nodes per update, O(log n) per query, O(n+u log n) memory for u updates.",
+  "visual": {
+    "kind": "range",
+    "title": "Range Queries and Copies: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Copy version 1 to version 2; changing position 3 in version 2 leaves version 1's value unchanged."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build an initial persistent sum tree. Copy operations append the same root; point updates path-copy nodes and assign the new root to that version; range queries use the selected root."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Version",
+      "State after edit"
+    ],
+    "rows": [
+      [
+        "1",
+        "Original value at position 3"
+      ],
+      [
+        "2",
+        "Copied version with position 3 changed"
+      ]
+    ],
+    "caption": "Illustrative example - An edit to a copied version leaves its source version unchanged."
+  }
+}

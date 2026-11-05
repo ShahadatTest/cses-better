@@ -1,0 +1,81 @@
+{
+  "hints": [
+    "Represent the amounts in the two containers as a state.",
+    "Each legal move has a cost equal to the amount of water moved.",
+    "Find a least-cost route from (0,0) to any state whose first amount is x."
+  ],
+  "analogy": "Treat every pair of water levels as a room and each fill, empty or pour as a door with a water cost.",
+  "example": "With capacities 5 and 3, fill A, pour A to B, empty B, pour A to B, fill A, then pour A to B. A contains 4 and the moved amounts total 19.",
+  "algorithm": "Run Dijkstra from state (0,0). For each state generate the nonzero fill A/B, empty A/B, and pour A to B or B to A operations. A pour transfers min(source amount, free capacity in destination); its edge cost is that transfer amount, and fill/empty cost the amount added or removed. Store predecessor state and operation on each improvement. Stop when a state with A=x is extracted, then reconstruct and print moves and their total cost. If no such state is reachable, print -1.",
+  "correctness": "Each graph edge corresponds to exactly one allowed move and has exactly its moved-water cost; every legal sequence corresponds to a path. Dijkstra returns a minimum-cost path because all edge costs are positive. Its predecessor links recover a sequence attaining that cost.",
+  "complexity": "With capacities a and b, at every reachable state at least one container is empty or full, so there are O(a+b) states and O(a+b) edges. Dijkstra takes O((a+b) log(a+b)) time and O(a+b) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Water Containers Moves: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With capacities 5 and 3, fill A, pour A to B, empty B, pour A to B, fill A, then pour A to B. A contains 4 and the moved amounts total 19."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run Dijkstra from state (0,0). For each state generate the nonzero fill A/B, empty A/B, and pour A to B or B to A operations. A pour transfers min(source amount, free capacity in destination); its edge cost is that transfer amount, and fill/empty cost the amount added or removed. Store predecessor state and operation on each improvement. Stop when a state with A=x is extracted, then reconstruct and print moves and their total cost. If no such state is reachable, print -1."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Operation",
+      "Container A",
+      "Container B"
+    ],
+    "rows": [
+      [
+        "Start",
+        "0",
+        "0"
+      ],
+      [
+        "Fill A",
+        "5",
+        "0"
+      ],
+      [
+        "Pour A to B",
+        "2",
+        "3"
+      ],
+      [
+        "Empty B",
+        "2",
+        "0"
+      ],
+      [
+        "Pour A to B",
+        "0",
+        "2"
+      ],
+      [
+        "Fill A",
+        "5",
+        "2"
+      ],
+      [
+        "Pour A to B",
+        "4",
+        "3"
+      ]
+    ],
+    "caption": "Illustrative example - The sequence ends with 4 units in A; no movement-cost total is asserted."
+  }
+}

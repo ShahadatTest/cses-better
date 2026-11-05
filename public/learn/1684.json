@@ -1,0 +1,75 @@
+{
+  "hints": [
+    "Represent each pizza topping choice as a boolean variable: + means true and - means false.",
+    "A condition requiring at least one of two literals becomes an OR clause.",
+    "Build the implication graph for each clause and use SCCs; a variable and its negation in the same SCC make the choices impossible."
+  ],
+  "analogy": "Each two-choice preference forbids only the assignment where both requested literals are false.",
+  "example": "Clause (A or not B) becomes implications not A->not B and B->A.",
+  "algorithm": "For clause (x or y), add implications not-x->y and not-y->x. Compute SCCs; reject if x and not-x share an SCC; otherwise assign by SCC topological order.",
+  "correctness": "The implications encode exactly the assignments satisfying each OR clause; SCC conflict is the standard contradiction criterion, and the resulting component order gives a consistent truth assignment.",
+  "complexity": "O((n+m)) time and space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Giant Pizza: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Clause (A or not B) becomes implications not A->not B and B->A."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For clause (x or y), add implications not-x->y and not-y->x. Compute SCCs; reject if x and not-x share an SCC; otherwise assign by SCC topological order."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "not A",
+        "label": "not A",
+        "x": 36.66666666666667,
+        "y": 50
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "x": 63.333333333333336,
+        "y": 50
+      },
+      {
+        "id": "not B",
+        "label": "not B",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "not A",
+        "to": "not B"
+      },
+      {
+        "from": "B",
+        "to": "A"
+      }
+    ],
+    "caption": "Illustrative example - The example clause (A or not B) creates implications not A to not B, and B to A."
+  }
+}

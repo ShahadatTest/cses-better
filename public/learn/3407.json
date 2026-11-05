@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Kruskal processes edges in increasing weight.",
+    "An edge is excluded from every MST if its endpoints are already joined by strictly lighter edges.",
+    "Test all equal-weight edges before merging any of them."
+  ],
+  "analogy": "At each weight, see which endpoints are already connected by cheaper roads before considering ties.",
+  "example": "In a triangle with weights 1,2,3, the weight-3 edge cannot occur in an MST; the other two can.",
+  "algorithm": "Sort edges by weight. For each equal-weight group, first mark an edge YES exactly when its endpoints are in different disjoint-set components formed by lighter edges. Then union all edges of the group. Print answers in input order.",
+  "correctness": "If lighter edges already connect the endpoints, the edge is uniquely heavier on a cycle and cannot appear in an MST. Otherwise it can be chosen first among equal-weight edges in Kruskal's algorithm and extended to an MST.",
+  "complexity": "For n vertices and m edges, O(m log m+m alpha(n)) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "MST Edge Check: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In a triangle with weights 1,2,3, the weight-3 edge cannot occur in an MST; the other two can."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort edges by weight. For each equal-weight group, first mark an edge YES exactly when its endpoints are in different disjoint-set components formed by lighter edges. Then union all edges of the group. Print answers in input order."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - In a triangle with weights 1,2,3, the weight-3 edge cannot occur in an MST; the other two can."
+  }
+}

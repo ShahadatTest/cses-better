@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "There are n! arrangements if all letters had unique labels.",
+    "Swapping equal letters does not create a new visible string.",
+    "Divide by count(letter)! for every letter's frequency."
+  ],
+  "analogy": "Pretend repeated letters have labels, count arrangements, then remove the label-only reorderings.",
+  "example": "For aab, 3!/2!=3 distinct strings: aab, aba, baa.",
+  "algorithm": "Compute n! times the modular inverse factorial of every character frequency modulo 1,000,000,007.",
+  "correctness": "Each visible string is counted exactly as many times as the product of factorials of repeated-letter counts among labeled permutations.",
+  "complexity": "O(n+alphabet) time and O(n) factorial storage, or O(alphabet) with modular exponentiation.",
+  "visual": {
+    "kind": "math",
+    "title": "Creating Strings II: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For aab, 3!/2!=3 distinct strings: aab, aba, baa."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute n! times the modular inverse factorial of every character frequency modulo 1,000,000,007."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Distinct permutation"
+    ],
+    "rows": [
+      [
+        "aab"
+      ],
+      [
+        "aba"
+      ],
+      [
+        "baa"
+      ]
+    ],
+    "caption": "Illustrative example - Repeated a symbols reduce 3! arrangements to three distinct strings."
+  }
+}

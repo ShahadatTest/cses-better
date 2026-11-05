@@ -1,0 +1,71 @@
+{
+  "hints": [
+    "A company connects all of its cities, but creating every pair of connections is too expensive.",
+    "Introduce one extra node per company.",
+    "Pay the ticket cost when entering that company node and zero when leaving it."
+  ],
+  "analogy": "Each company is a hub: buying its ticket lets you exit at any city it serves.",
+  "example": "If company A serves cities 1 and 3 for 4, and company B serves 3 and 2 for 2, the cheapest cost from 1 to 2 is 6.",
+  "algorithm": "Create a directed graph with a node for each city and each company. For every city served by company i, add city->company with weight c[i] and company->city with weight 0. Run Dijkstra from city 1 and output distances of the city nodes.",
+  "correctness": "A city-company-city step costs exactly one ticket and can reach any city served by that company. Every actual itinerary maps to an equal-cost path in the expanded graph, and every expanded path describes valid ticket purchases. Dijkstra finds the cheapest path because all costs are nonnegative.",
+  "complexity": "With n cities, m companies and K total city memberships, the graph has n+m vertices and 2K edges. Dijkstra takes O((n+m+K) log(n+m)) time and O(n+m+K) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Bus Companies: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If company A serves cities 1 and 3 for 4, and company B serves 3 and 2 for 2, the cheapest cost from 1 to 2 is 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Create a directed graph with a node for each city and each company. For every city served by company i, add city->company with weight c[i] and company->city with weight 0. Run Dijkstra from city 1 and output distances of the city nodes."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "3",
+        "label": "company A cost 4"
+      },
+      {
+        "from": "3",
+        "to": "2",
+        "label": "company B cost 2"
+      }
+    ],
+    "caption": "Illustrative example - The route 1 to 3 to 2 costs 4+2=6."
+  }
+}

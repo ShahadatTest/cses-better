@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "For every prime dividing k, look at the exponent in each array element.",
+    "In each adjacent pair, at least one exponent must equal its exponent in k.",
+    "Count these independent exponent choices with a two-state recurrence."
+  ],
+  "analogy": "For each prime, a fully powered position must cover every neighboring pair.",
+  "example": "For n=3 and k=4, exponents 0,1,2 are allowed and no two neighboring exponents can both be below 2; there are 11 valid arrays.",
+  "algorithm": "Factor k into prime powers p^e. For one prime, let F be the number of exponent sequences ending at e and L the number ending below e. Start at length 1 with F=1 and L=e. Extend by F_new=F+L and L_new=e*F. Compute the length-n state using 2 by 2 matrix exponentiation modulo 1000000007. Multiply F+L over all prime factors; if k=1, the answer is 1.",
+  "correctness": "Each element must divide k. For a prime power p^e, the LCM condition holds on an edge exactly when at least one endpoint has exponent e. A below-e exponent has e choices and can only follow a full exponent; a full exponent can follow either state. Prime choices are independent, and unique factorization makes their product the number of arrays.",
+  "complexity": "Trial division factors each k in O(sqrt(k)); if it has r distinct prime factors, matrix exponentiation takes O(r log n) time and O(1) extra space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Counting LCM Arrays: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3 and k=4, exponents 0,1,2 are allowed and no two neighboring exponents can both be below 2; there are 11 valid arrays."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Factor k into prime powers p^e. For one prime, let F be the number of exponent sequences ending at e and L the number ending below e. Start at length 1 with F=1 and L=e. Extend by F_new=F+L and L_new=e*F. Compute the length-n state using 2 by 2 matrix exponentiation modulo 1000000007. Multiply F+L over all prime factors; if k=1, the answer is 1."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "4",
+      "0",
+      "1",
+      "2",
+      "11"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=3 and k=4, exponents 0,1,2 are allowed and no two neighboring exponents can both be below 2; there are 11 valid arrays."
+  }
+}

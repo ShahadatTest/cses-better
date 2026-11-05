@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Represent rows and columns as the two sides of a bipartite graph.",
+    "Each coin is an edge; selecting a row or column must cover every edge.",
+    "A minimum vertex cover in a bipartite graph has the size of a maximum matching."
+  ],
+  "analogy": "Cover every coin by choosing one of its two labels: its row or its column.",
+  "example": "Coins at (1,1), (1,2), and (2,2) require 2 moves: remove rows 1 and 2.",
+  "algorithm": "Build a bipartite graph with one vertex per row and column and an edge for every coin. Compute a maximum matching with a bipartite matching algorithm and print its size.",
+  "correctness": "Moves correspond exactly to vertices covering every coin edge. By Konig's theorem the minimum vertex-cover size equals the maximum matching size, so the matching gives the optimum.",
+  "complexity": "For n rows and columns and E coins, Hopcroft-Karp takes O(E*sqrt(n)+n) time and O(n+E) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Coin Grid: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Coins at (1,1), (1,2), and (2,2) require 2 moves: remove rows 1 and 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a bipartite graph with one vertex per row and column and an edge for every coin. Compute a maximum matching with a bipartite matching algorithm and print its size."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "coin",
+        "coin"
+      ],
+      [
+        ".",
+        "coin"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - Two row removals collect the three coins from the first two rows."
+  }
+}

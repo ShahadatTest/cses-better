@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "The goal prioritizes the position of course 1, then course 2, and so on.",
+    "Construct the schedule backward, choosing a course with no unfinished successors.",
+    "Among those courses choose the largest label to place last."
+  ],
+  "analogy": "Reserve the latest available slot for the largest course that no remaining course depends on.",
+  "example": "With requirement 2 before 1 and independent 3, place 3 last, then 1, then 2, producing [2,1,3].",
+  "algorithm": "Track each course's remaining outgoing edges and keep all zero-outdegree courses in a max-heap. Repeatedly remove the largest, append it to a reverse schedule, and decrease the outgoing counts of its predecessors. Reverse the resulting list.",
+  "correctness": "A sink can always be placed last. Choosing the largest available sink leaves every smaller competing course earlier whenever possible; applying the same exchange argument recursively minimizes course positions in label order.",
+  "complexity": "For n courses and m requirements, O((n+m) log n) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Course Schedule II: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With requirement 2 before 1 and independent 3, place 3 last, then 1, then 2, producing [2,1,3]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Track each course's remaining outgoing edges and keep all zero-outdegree courses in a max-heap. Repeatedly remove the largest, append it to a reverse schedule, and decrease the outgoing counts of its predecessors. Reverse the resulting list."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "1",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - With requirement 2 before 1 and independent 3, place 3 last, then 1, then 2, producing [2,1,3]."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "The permutation splits into disjoint cycles.",
+    "A sorted array needs zero rounds; disjoint transpositions need only one.",
+    "Every longer cycle can be split into transpositions by one round of pairwise swaps."
+  ],
+  "analogy": "Reflect each cycle once to turn its remaining disorder into independent swaps.",
+  "example": "For [2,3,1], swap positions 1 and 3 to get [1,3,2], then swap positions 2 and 3 to sort in two rounds.",
+  "algorithm": "Decompose the permutation mapping into cycles. If every cycle has length 1, print zero rounds. If every cycle has length at most 2, print one round containing the swaps of its 2-cycles. Otherwise, for each cycle c[0],...,c[L-1] in permutation order, add swaps (c[i],c[L-1-i]) for i<L/2 to round one. Apply these swaps to the permutation. The remaining permutation consists only of fixed points and 2-cycles; output those 2-cycles as round two.",
+  "correctness": "A one-round solution must itself be a product of disjoint transpositions, so a longer cycle requires at least two rounds. Reversing the positions in each cycle is an involution; composing it with the cyclic rotation yields another involution, whose nontrivial cycles are disjoint swaps. Thus two rounds always suffice and are minimal when a longer cycle exists.",
+  "complexity": "For n elements, cycle decomposition, applying swaps, and output take O(n) time and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Swap Round Sorting: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [2,3,1], swap positions 1 and 3 to get [1,3,2], then swap positions 2 and 3 to sort in two rounds."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Decompose the permutation mapping into cycles. If every cycle has length 1, print zero rounds. If every cycle has length at most 2, print one round containing the swaps of its 2-cycles. Otherwise, for each cycle c[0],...,c[L-1] in permutation order, add swaps (c[i],c[L-1-i]) for i<L/2 to round one. Apply these swaps to the permutation. The remaining permutation consists only of fixed points and 2-cycles; output those 2-cycles as round two."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "[2,3,1]",
+      "[1,3,2]",
+      "[1,2,3]"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Two round swaps sort the permutation."
+  }
+}

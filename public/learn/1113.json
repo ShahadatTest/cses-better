@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "The transformed string is the last column of sorted rotations.",
+    "Its sorted characters form the first column of those same rotations.",
+    "Match equal characters by occurrence order to move between columns."
+  ],
+  "analogy": "The first and last columns contain the same letters; numbering equal letters links each rotation to the rotation shifted by one character.",
+  "example": "For transformed cb#ab, the original is babc.",
+  "algorithm": "Compute each character's occurrence rank in the transformed last column and its starting offset in the sorted first column. This gives the LF mapping from a last-column row to its matching first-column row. Start at the row containing #, repeatedly apply the mapping while collecting last-column characters, and reverse the collected letters, excluding #.",
+  "correctness": "Stable occurrence matching pairs the same rotations under a one-character cyclic shift. Following LF walks backward through the unique original string, and the sentinel identifies the starting row and where to stop.",
+  "complexity": "For transformed length n+1 and fixed alphabet, O(n) time and O(n) space.",
+  "visual": {
+    "kind": "string",
+    "title": "String Transform: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For transformed cb#ab, the original is babc."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute each character's occurrence rank in the transformed last column and its starting offset in the sorted first column. This gives the LF mapping from a last-column row to its matching first-column row. Start at the row containing #, repeatedly apply the mapping while collecting last-column characters, and reverse the collected letters, excluding #."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Transform",
+      "Original"
+    ],
+    "rows": [
+      [
+        "cb#ab",
+        "babc"
+      ]
+    ],
+    "caption": "Illustrative example - The transformed string reconstructs to babc."
+  }
+}

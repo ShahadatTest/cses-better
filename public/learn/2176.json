@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Bishops on different square colors never attack each other.",
+    "Within one color, place at most one bishop on each diagonal of one orientation.",
+    "Process those diagonals in increasing length and count available crossing diagonals."
+  ],
+  "analogy": "The black and white squares are independent boards whose answers can be combined.",
+  "example": "On a 2 by 2 board, the two bishops on opposite corners share a diagonal, so 4 of the 6 pairs are nonattacking.",
+  "algorithm": "For each square color, list the lengths of all diagonals of one orientation, ordered nondecreasingly. Use dp[0]=1; for each diagonal of length L, update descending j with dp[j] += dp[j-1]*(L-(j-1)) when the factor is positive, modulo 1000000007. This counts placements of j bishops on that color. Sum black[i]*white[k-i] over all valid i. If k exceeds the maximum possible number, return 0.",
+  "correctness": "A bishop uses one diagonal in each direction. For diagonals of one color ordered by length, the crossing-diagonal sets are nested, so every previously placed bishop blocks exactly one of the L crossing diagonals of the current diagonal. The recurrence either skips that diagonal or chooses one unblocked crossing. Black and white bishops cannot attack each other, so multiplying and summing combines all possibilities.",
+  "complexity": "For board size n and target k, there are O(n) diagonals. Time is O(n*min(k,n)) and space O(min(k,n)), modulo arithmetic.",
+  "visual": {
+    "kind": "dp",
+    "title": "Counting Bishops: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "On a 2 by 2 board, the two bishops on opposite corners share a diagonal, so 4 of the 6 pairs are nonattacking."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each square color, list the lengths of all diagonals of one orientation, ordered nondecreasingly. Use dp[0]=1; for each diagonal of length L, update descending j with dp[j] += dp[j-1]*(L-(j-1)) when the factor is positive, modulo 1000000007. This counts placements of j bishops on that color. Sum black[i]*white[k-i] over all valid i. If k exceeds the maximum possible number, return 0."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "B",
+        "."
+      ],
+      [
+        ".",
+        "B"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - Opposite-corner bishops share a diagonal; count nonattacking pairs among all six."
+  }
+}

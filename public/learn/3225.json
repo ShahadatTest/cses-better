@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Adjacent suffixes either start with different letters or compare by the ranks of their remaining tails.",
+    "For each suffix use the given rank of its next-position suffix, with the empty tail ranked first.",
+    "Increase the assigned letter whenever those tail ranks fail to increase."
+  ],
+  "analogy": "Adjacent suffixes can share a first letter only if their remaining tails already appear in the required order.",
+  "example": "Suffix order [3,1,2] is realized by aba: suffixes a, aba, ba are sorted.",
+  "algorithm": "Build the inverse rank of the supplied suffix array, assigning the empty suffix rank -1. Traverse suffixes in the given order, starting with letter a. For consecutive starts u,v, increase the letter if rank[u+1] > rank[v+1], treating position n+1 as the empty suffix. Assign that letter to position v. If more than 26 letters are needed print -1; otherwise print the assigned string.",
+  "correctness": "Within one letter group suffix order must match the strict order of tail ranks, so every descent forces a letter increase. Increasing exactly at those descents uses the fewest letters and makes every adjacent suffix pair ordered; hence the whole suffix array is correct.",
+  "complexity": "For n suffixes, O(n) time and O(n) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Inverse Suffix Array: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Suffix order [3,1,2] is realized by aba: suffixes a, aba, ba are sorted."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build the inverse rank of the supplied suffix array, assigning the empty suffix rank -1. Traverse suffixes in the given order, starting with letter a. For consecutive starts u,v, increase the letter if rank[u+1] > rank[v+1], treating position n+1 as the empty suffix. Assign that letter to position v. If more than 26 letters are needed print -1; otherwise print the assigned string."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Suffix order [3,1,2] is realized by aba: suffixes a, aba, ba are sorted."
+  }
+}

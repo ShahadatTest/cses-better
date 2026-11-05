@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "Two distinct subsets with the same sum can be made disjoint by removing their common elements.",
+    "Split the numbers in half and sort each half's subset sums, keeping their masks.",
+    "Count pairs of half sums below a threshold; a boundary where this count overtakes the threshold reveals a repeated sum."
+  ],
+  "analogy": "Imagine placing all subset sums into numbered boxes: more subsets than available sum values forces some box to contain two.",
+  "example": "For 1, 2, 3, 5, 7, 8, the disjoint subsets {2,3} and {5} both sum to 5.",
+  "algorithm": "Enumerate and sort the subset sums of each half with their masks. For a threshold t, count pairs with sum less than t in linear time using two pointers. Set lo=0 and hi=2^n-1; countLess(lo)<=lo and countLess(hi)>hi. While hi-lo>1, test mid: replace lo with mid if countLess(mid)<=mid, otherwise replace hi with mid. Find two distinct pairs of half masks summing to lo, combine each pair into a full subset, remove their common elements, and print the two remainders.",
+  "correctness": "There are 2^n subsets but every sum is at most 2^n-2. The boundary search maintains one threshold where countLess(t)<=t and another where it is greater; this invariant works even though the predicate is not monotone. When the thresholds are adjacent, the number of subsets with sum lo is at least two. Removing the intersection preserves equal sums, and positivity ensures both remainders are nonempty.",
+  "complexity": "O(n * 2^ceil(n/2)) time and O(2^ceil(n/2)) space, using merge-based subset-sum generation and O(n) threshold counts.",
+  "visual": {
+    "kind": "trace",
+    "title": "Same Sum Subsets: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 1, 2, 3, 5, 7, 8, the disjoint subsets {2,3} and {5} both sum to 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Enumerate and sort the subset sums of each half with their masks. For a threshold t, count pairs with sum less than t in linear time using two pointers. Set lo=0 and hi=2^n-1; countLess(lo)<=lo and countLess(hi)>hi. While hi-lo>1, test mid: replace lo with mid if countLess(mid)<=mid, otherwise replace hi with mid. Find two distinct pairs of half masks summing to lo, combine each pair into a full subset, remove their common elements, and print the two remainders."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3",
+      "5",
+      "7",
+      "8"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For 1, 2, 3, 5, 7, 8, the disjoint subsets {2,3} and {5} both sum to 5."
+  }
+}

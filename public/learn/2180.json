@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "For each column boundary, the net number of coins crossing it is fixed by the total surplus to its left.",
+    "Only the split of this flow between the two rows remains to be chosen.",
+    "A convex dynamic program over the top-row flow can be maintained with the slope-trick heaps."
+  ],
+  "analogy": "At each boundary, the total traffic is fixed, but coins can switch lanes vertically to choose how much travels in each row.",
+  "example": "In the sample 2 by 4 grid, an optimal arrangement needs 5 single-cell moves.",
+  "algorithm": "Let p_i be the top-cell surplus in column i, and S_i the total surplus of both rows through column i. Define f_i(x) as the minimum cost through column i when x coins cross its right boundary in the top row (negative means leftward). Set f_0(0)=0 and f_0(x)=infinity otherwise. Then f_i(x)=|x|+|S_i-x|+min_y(f_(i-1)(y)+|p_i+y-x|). Maintain this convex piecewise-linear function with slope-trick heaps: shift it by p_i, apply min-convolution with |x| by clipping slopes to [-1,1], and add the two absolute-value terms. Evaluate f_n(0).",
+  "correctness": "Conservation forces bottom flow S_i-x and vertical flow p_i+y-x, so the three absolute values are exactly the moves across the two horizontal edges and the vertical edge. Every feasible flow is represented, and any feasible integral flow can be realized by moves; minimizing the recurrence therefore gives the optimum.",
+  "complexity": "O(n log n) time and O(n) space using a standard two-heap slope-trick representation.",
+  "visual": {
+    "kind": "trace",
+    "title": "Coin Arrangement: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In the sample 2 by 4 grid, an optimal arrangement needs 5 single-cell moves."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let p_i be the top-cell surplus in column i, and S_i the total surplus of both rows through column i. Define f_i(x) as the minimum cost through column i when x coins cross its right boundary in the top row (negative means leftward). Set f_0(0)=0 and f_0(x)=infinity otherwise. Then f_i(x)=|x|+|S_i-x|+min_y(f_(i-1)(y)+|p_i+y-x|). Maintain this convex piecewise-linear function with slope-trick heaps: shift it by p_i, apply min-convolution with |x| by clipping slopes to [-1,1], and add the two absolute-value terms. Evaluate f_n(0)."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Grid",
+      "Minimum single-cell moves"
+    ],
+    "rows": [
+      [
+        "2 by 4",
+        "5"
+      ]
+    ],
+    "caption": "Illustrative example - The worked example reports five moves for a 2 by 4 arrangement."
+  }
+}

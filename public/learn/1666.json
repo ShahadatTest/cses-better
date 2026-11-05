@@ -1,0 +1,91 @@
+{
+  "hints": [
+    "A connected component is a group of cities already mutually reachable.",
+    "Find one representative city from each component.",
+    "Connect the representatives in a chain; c components need c-1 new roads."
+  ],
+  "analogy": "Join one representative from every disconnected island into a chain.",
+  "example": "If components are {1,2}, {3}, and {4,5}, roads 2-3 and 3-4 connect all cities using two roads.",
+  "algorithm": "Run DFS/DSU to collect component representatives; output edges rep[i]-rep[i+1] for consecutive representatives.",
+  "correctness": "At least c-1 edges are needed to connect c separate components, and a chain uses exactly c-1 while joining all of them.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Building Roads: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If components are {1,2}, {3}, and {4,5}, roads 2-3 and 3-4 connect all cities using two roads."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run DFS/DSU to collect component representatives; output edges rep[i]-rep[i+1] for consecutive representatives."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 30,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "4",
+        "label": "4",
+        "x": 70,
+        "y": 50
+      },
+      {
+        "id": "5",
+        "label": "5",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "4",
+        "to": "5"
+      },
+      {
+        "from": "2",
+        "to": "3",
+        "label": "add road"
+      },
+      {
+        "from": "3",
+        "to": "4",
+        "label": "add road"
+      }
+    ],
+    "caption": "Illustrative example - If components are {1,2}, {3}, and {4,5}, roads 2-3 and 3-4 connect all cities using two roads."
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "hints": [
+    "Count unordered node pairs whose distance is exactly k.",
+    "At a node, combine nodes in different child subtrees whose depths sum to k.",
+    "Process children one at a time, querying depths against previously processed children before adding the current child's counts."
+  ],
+  "analogy": "At each node, pair each child's depth counts only with children already visited, so no pair is counted twice.",
+  "example": "For k=2, two child nodes of the same center form one pair at distance 2.",
+  "algorithm": "Use small-to-large map merging or a depth-frequency array per DFS. For each child depth d, add countSeen[k-d] to answer, then merge that child's counts upward.",
+  "correctness": "Every pair has one LCA; its endpoints are in different child subtrees or one endpoint is the LCA, and the query-before-merge rule counts that pair at exactly that node once.",
+  "complexity": "O(n log n) typical with small-to-large merging; O(n) auxiliary space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Fixed-Length Paths I: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For k=2, two child nodes of the same center form one pair at distance 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use small-to-large map merging or a depth-frequency array per DFS. For each child depth d, add countSeen[k-d] to answer, then merge that child's counts upward."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "Child A",
+        "label": "Child A",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "Center",
+        "label": "Center",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "Child B",
+        "label": "Child B",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "Child A",
+        "to": "Center",
+        "label": "1 edge"
+      },
+      {
+        "from": "Center",
+        "to": "Child B",
+        "label": "1 edge"
+      }
+    ],
+    "caption": "Illustrative example - The two children form one pair at distance 2 through their shared center."
+  }
+}

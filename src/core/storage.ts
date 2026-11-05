@@ -6,15 +6,57 @@ import {
   SubmissionRecord,
   UserDataExport,
   UserProfile,
+  ProblemList,
 } from './types';
 
 const DRAFT_PREFIX = 'cses_draft_';
 const NOTE_PREFIX = 'cses_notes_';
 const SUBMISSIONS_KEY = 'cses_submissions';
 const SOLVED_PROBLEMS_KEY = 'cses_solved_problem_ids';
+const UNSOLVED_PROBLEMS_KEY = 'cses_unsolved_problem_ids';
 export const STARRED_PROBLEMS_KEY = 'cses_starred_problem_ids';
 const SETTINGS_KEY = 'cses_settings';
 const USER_PROFILE_KEY = 'cses_user_profile';
+const LISTS_PREFIX = 'cses_lists_';
+
+export function getProblemLists(owner = 'guest'): ProblemList[] {
+  try {
+    const value = JSON.parse(getItem(LISTS_PREFIX + owner) || '[]');
+    return validateProblemLists(value);
+  } catch { return []; }
+}
+
+export function validateProblemLists(value: unknown): ProblemList[] {
+  if (!Array.isArray(value)) throw new Error('Lists must be an array');
+  return value.map((list) => {
+    if (!list || typeof list.id !== 'string' || !list.id ||
+      typeof list.name !== 'string' || !list.name.trim() || list.name.length > 120 ||
+      !Array.isArray(list.problemIds) || list.problemIds.some((id: unknown) => typeof id !== 'string' || !(/^(?:\d+|(?:zio|zco|inoi|usaco)-\d{4}-[a-z0-9]+(?:-[a-z0-9]+)*)$/.test(id)))) {
+      throw new Error('Invalid problem list');
+    }
+    return { id: list.id, name: list.name.trim(), problemIds: [...new Set<string>(list.problemIds)],
+      revision: Number.isSafeInteger(list.revision) && list.revision >= 0 ? list.revision : 0,
+      dirty: list.dirty === true, deleted: list.deleted === true };
+  });
+}
+
+export function saveProblemLists(lists: ProblemList[], owner = 'guest', notify = true): void {
+  const value = JSON.stringify(validateProblemLists(lists));
+  if (getItem(LISTS_PREFIX + owner) === value) return;
+  setItem(LISTS_PREFIX + owner, value);
+  if (notify && typeof window !== 'undefined') window.dispatchEvent(new Event('cses-lists-changed'));
+}
+
+export function importGuestLists(owner: string): void {
+  const guests = getProblemLists();
+  if (!guests.length) return;
+  const current = getProblemLists(owner);
+  saveProblemLists([...current, ...guests.filter(g => !current.some(l => l.id === g.id))], owner);
+  // Keep the source if browser persistence failed; memory fallback cannot survive a reload.
+  try {
+    if (typeof window === 'undefined' || (isLocalStorageAvailable() && window.localStorage.getItem(LISTS_PREFIX + owner) === JSON.stringify(getProblemLists(owner)))) removeItem(LISTS_PREFIX + 'guest');
+  } catch { /* Keep guest lists when storage is unavailable. */ }
+}
 
 // In-memory fallback for SSR and non-browser test environments
 const memoryStorage = new Map<string, string>();
@@ -32,9 +74,10 @@ function isLocalStorageAvailable(): boolean {
 }
 
 function getItem(key: string): string | null {
+  if (memoryStorage.has(key)) return memoryStorage.get(key)!;
   if (isLocalStorageAvailable()) {
     try {
-      return window.localStorage.getItem(key);
+      return window.localStorage.getItem(key) ?? memoryStorage.get(key) ?? null;
     } catch {
       return memoryStorage.get(key) ?? null;
     }
@@ -46,6 +89,7 @@ function setItem(key: string, value: string): void {
   if (isLocalStorageAvailable()) {
     try {
       window.localStorage.setItem(key, value);
+      memoryStorage.delete(key);
       return;
     } catch {
       // Fallback to memoryStorage on quota exceeded or permission denied
@@ -73,7 +117,7 @@ function getAllKeys(): string[] {
         const k = window.localStorage.key(i);
         if (k) keys.push(k);
       }
-      return keys;
+      return Array.from(new Set([...keys, ...memoryStorage.keys()]));
     } catch {
       return Array.from(memoryStorage.keys());
     }
@@ -278,7 +322,13 @@ export function getSolvedProblems(): Set<string> {
     }
   }
 
+  for (const id of getExplicitlyUnsolved()) solved.delete(id);
   return solved;
+}
+
+function getExplicitlyUnsolved(): Set<string> {
+  try { const value = JSON.parse(getItem(UNSOLVED_PROBLEMS_KEY) || '[]'); return new Set(Array.isArray(value) ? value.filter((id: unknown) => typeof id === 'string') : []); }
+  catch { return new Set(); }
 }
 
 /**
@@ -297,6 +347,9 @@ export function saveSolvedProblem(
   language: LanguageId = 'cpp',
   code: string = ''
 ): void {
+  const unsolved = getExplicitlyUnsolved();
+  unsolved.delete(problemId);
+  setItem(UNSOLVED_PROBLEMS_KEY, JSON.stringify([...unsolved]));
   // Add to solved IDs set
   const current = getSolvedProblems();
   current.add(problemId);
@@ -327,6 +380,9 @@ export function removeSolvedProblem(problemId: string): void {
   const current = getSolvedProblems();
   current.delete(problemId);
   persistSolvedProblems(current);
+  const unsolved = getExplicitlyUnsolved();
+  unsolved.add(problemId);
+  setItem(UNSOLVED_PROBLEMS_KEY, JSON.stringify([...unsolved]));
 }
 
 /**
@@ -432,6 +488,7 @@ export function exportUserData(): string {
   }
 
   const exportPayload: UserDataExport = {
+    lists: getProblemLists(getStoredUser()?.id),
     version: 1,
     drafts,
     submissions: getSubmissions(),
@@ -452,6 +509,13 @@ export function importUserData(jsonStr: string): boolean {
     const data: Partial<UserDataExport> = JSON.parse(jsonStr);
     if (!data || typeof data !== 'object') {
       return false;
+    }
+    const lists = data.lists === undefined ? undefined : validateProblemLists(data.lists);
+    if (lists) {
+      const owner = getStoredUser()?.id;
+      const current = getProblemLists(owner);
+      // Backups create independent lists so importing never overwrites a newer device edit.
+      saveProblemLists([...current, ...lists.filter(l => !l.deleted).map(l => ({ ...l, id: crypto.randomUUID(), revision: 0, dirty: true }))], owner);
     }
 
     // Restore drafts
@@ -513,12 +577,14 @@ export function clearAllStorage(): void {
   for (const k of keys) {
     if (
       k.startsWith(DRAFT_PREFIX) ||
+      k.startsWith(LISTS_PREFIX) ||
       k.startsWith(NOTE_PREFIX) ||
       k.startsWith('cses_note_') ||
       k.startsWith('cses_notemeta_') ||
       k === SUBMISSIONS_KEY ||
       k === SETTINGS_KEY ||
       k === SOLVED_PROBLEMS_KEY ||
+      k === UNSOLVED_PROBLEMS_KEY ||
       k === STARRED_PROBLEMS_KEY ||
       k === USER_PROFILE_KEY
     ) {

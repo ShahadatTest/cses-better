@@ -1,0 +1,65 @@
+{
+  "hints": [
+    "A suffix automaton compactly represents all substrings.",
+    "Each transition appends a character; paths from the initial state represent distinct substrings.",
+    "Count paths from each state, then skip whole lexicographic groups when selecting k."
+  ],
+  "analogy": "At each letter, a branch contains all substrings beginning with that choice; count the branch before deciding whether to enter it.",
+  "example": "For aba the sorted distinct substrings are a, ab, aba, b, ba; k=3 gives aba.",
+  "algorithm": "Build a suffix automaton. In decreasing state length compute ways[v]=sum over transitions v->u of (1+ways[u]), using wide integers. From the initial state examine transitions in character order; skip a branch if k exceeds 1+ways[u], otherwise append its character, decrement k for the substring ending there, and continue until k=0.",
+  "correctness": "Every distinct substring labels exactly one path from the initial state. Each branch consists of its one-character extension followed by all longer paths, in lexicographic order, so subtracting branch sizes locates exactly the kth string.",
+  "complexity": "For n characters over a fixed 26-letter alphabet, O(26n) time and O(26n) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Substring Order I: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For aba the sorted distinct substrings are a, ab, aba, b, ba; k=3 gives aba."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a suffix automaton. In decreasing state length compute ways[v]=sum over transitions v->u of (1+ways[u]), using wide integers. From the initial state examine transitions in character order; skip a branch if k exceeds 1+ways[u], otherwise append its character, decrement k for the substring ending there, and continue until k=0."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Rank",
+      "Substring"
+    ],
+    "rows": [
+      [
+        "1",
+        "a"
+      ],
+      [
+        "2",
+        "ab"
+      ],
+      [
+        "3",
+        "aba"
+      ],
+      [
+        "4",
+        "b"
+      ],
+      [
+        "5",
+        "ba"
+      ]
+    ],
+    "caption": "Illustrative example - The third lexicographically sorted distinct substring of aba is aba."
+  }
+}

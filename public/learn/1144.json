@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Salary updates change one employee's current salary; range queries count salaries in an inclusive interval.",
+    "Compress all salary values that can appear, including update replacements and query boundaries if useful.",
+    "A Fenwick tree stores how many employees currently have each compressed salary."
+  ],
+  "analogy": "Keep a frequency counter over ordered salary coordinates; updates move one count and queries sum a coordinate range.",
+  "example": "If salaries 30,50,50 and query [40,60], the frequency sum is 2.",
+  "algorithm": "Read operations offline to collect salaries, coordinate-compress them, initialize Fenwick frequencies. For update, remove old salary count and add new; for query [a,b], subtract prefix(<a) from prefix(<=b).",
+  "correctness": "The Fenwick prefix sum equals the number of employees up to that salary coordinate; subtracting two prefixes isolates the requested interval.",
+  "complexity": "O((n+q) log(n+q)) time and O(n+q) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Salary Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If salaries 30,50,50 and query [40,60], the frequency sum is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Read operations offline to collect salaries, coordinate-compress them, initialize Fenwick frequencies. For update, remove old salary count and add new; for query [a,b], subtract prefix(<a) from prefix(<=b)."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "30",
+      "50",
+      "40",
+      "60",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - If salaries 30,50,50 and query [40,60], the frequency sum is 2."
+  }
+}

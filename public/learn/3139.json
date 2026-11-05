@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "The answers compare hidden values at two indices.",
+    "Sort indices with an interactive comparison-based sort.",
+    "The position of an index in sorted order is its hidden value."
+  ],
+  "analogy": "Sort labeled boxes by their hidden contents; because contents are 1 through n, each box's rank reveals its number.",
+  "example": "If sorted indices are [2,3,1], their values are 1,2,3, so the permutation is [3,1,2].",
+  "algorithm": "Read n and merge-sort indices using queries ? i j to compare hidden values. Flush every question and read YES or NO before continuing. Assign value r to the index at sorted rank r; print the completed permutation after !, flush, and terminate.",
+  "correctness": "The judge supplies the true strict order and all hidden values are distinct. Sorting recovers their exact order, and the value at rank r must be r because the values form a permutation of 1 through n.",
+  "complexity": "For n<=1000, merge sort uses at most n*ceil(log2 n)-2^ceil(log2 n)+1 <= 8977 queries, within 10000, and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Hidden Permutation: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If sorted indices are [2,3,1], their values are 1,2,3, so the permutation is [3,1,2]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Read n and merge-sort indices using queries ? i j to compare hidden values. Flush every question and read YES or NO before continuing. Assign value r to the index at sorted rank r; print the completed permutation after !, flush, and terminate."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "3",
+      "1"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - If sorted indices are [2,3,1], their values are 1,2,3, so the permutation is [3,1,2]."
+  }
+}

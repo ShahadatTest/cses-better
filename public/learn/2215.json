@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "A permutation with no increasing or decreasing subsequence longer than k has at most k^2 elements.",
+    "Use decreasing blocks of consecutive increasing value ranges.",
+    "Make every block size at most k and use at most k blocks."
+  ],
+  "analogy": "Within a block values fall, while moving between blocks values rise.",
+  "example": "For n=5,k=3, blocks [3,2,1] and [5,4] give longest decreasing length 3 and longest increasing length 2.",
+  "algorithm": "If n>k*k print IMPOSSIBLE. Otherwise partition 1 through n into consecutive blocks of size at most k, making the first block size k, and output each block in descending order while blocks appear in increasing value order.",
+  "correctness": "An increasing subsequence uses at most one value per block; a decreasing subsequence stays within one block. There are at most k blocks and each has at most k elements, while the first block gives a decreasing subsequence of exactly k. The Erdos-Szekeres theorem rules out n>k^2.",
+  "complexity": "For n and k, O(n) time and O(1) extra space excluding output.",
+  "visual": {
+    "kind": "grid",
+    "title": "Monotone Subsequences: follow one example",
+    "caption": "Follow the construction or state across rows and columns.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=5,k=3, blocks [3,2,1] and [5,4] give longest decreasing length 3 and longest increasing length 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "If n>k*k print IMPOSSIBLE. Otherwise partition 1 through n into consecutive blocks of size at most k, making the first block size k, and output each block in descending order while blocks appear in increasing value order."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "5",
+      "3",
+      "2",
+      "1",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=5,k=3, blocks [3,2,1] and [5,4] give longest decreasing length 3 and longest increasing length 2."
+  }
+}

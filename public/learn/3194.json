@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Each leftmost value is the peak of a prefix of the bottom row.",
+    "Its coefficients modulo two are binomial coefficients.",
+    "Apply a subset XOR transform to the bottom row indexed from zero."
+  ],
+  "analogy": "The transform combines values from every bit-subset of an index, matching the odd positions in Pascal's triangle.",
+  "example": "For [1,2,3], the left edge from bottom to top is 1, 3, 2.",
+  "algorithm": "Pad the array with zeros to the next power of two. For each bit and each index having that bit set, XOR the value at the index with that at the index with the bit cleared. Print the first n transformed values.",
+  "correctness": "After all bit passes, transformed index t is the XOR of original values at every submask of t. These are exactly the odd binomial coefficients C(t,i), which produce the leftmost value after t levels.",
+  "complexity": "For n values and P the next power of two, O(P log P) time and O(P) space.",
+  "visual": {
+    "kind": "bitwise",
+    "title": "Xor Pyramid Diagonal: follow one example",
+    "caption": "Track the binary state and the effect of each bit operation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,3], the left edge from bottom to top is 1, 3, 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Pad the array with zeros to the next power of two. For each bit and each index having that bit set, XOR the value at the index with that at the index with the bit cleared. Print the first n transformed values."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1 (binary 1)",
+      "2 (binary 10)",
+      "3 (binary 11)"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,3], the left edge from bottom to top is 1, 3, 2."
+  }
+}

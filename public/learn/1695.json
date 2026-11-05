@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "A minimum set of roads whose removal disconnects 1 from n has size equal to the maximum number of edge-disjoint 1-to-n routes.",
+    "Model each road as capacity 1 and compute maximum flow.",
+    "After max flow, the residual reachable set identifies the roads crossing the minimum cut."
+  ],
+  "analogy": "Find how many independent routes can carry traffic; those many roads form a smallest cut separating the endpoints.",
+  "example": "If two edge-disjoint routes connect 1 to n, at least two roads must be removed to block every route.",
+  "algorithm": "Build unit-capacity edges, run max-flow, then BFS the residual graph from 1. Output each original road from reachable to unreachable endpoints.",
+  "correctness": "Max-flow/min-cut gives equality between the maximum edge-disjoint route count and minimum cut capacity; the residual boundary is such a minimum cut.",
+  "complexity": "O(V^2 E) time using Edmonds-Karp; O(V+E) memory.",
+  "visual": {
+    "kind": "graph",
+    "title": "Police Chase: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If two edge-disjoint routes connect 1 to n, at least two roads must be removed to block every route."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build unit-capacity edges, run max-flow, then BFS the residual graph from 1. Output each original road from reachable to unreachable endpoints."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Available route",
+      "Edge sharing",
+      "Cut lower bound"
+    ],
+    "rows": [
+      [
+        "1 to n",
+        "Disjoint",
+        "2 roads"
+      ]
+    ],
+    "caption": "Illustrative example - Two edge-disjoint routes require removing at least two roads to block all travel."
+  }
+}

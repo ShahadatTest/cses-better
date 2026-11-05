@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "Choose a new letter that differs from the original cell's letter.",
+    "For each cell, also avoid letters already assigned to its up and left neighbors; these are the earlier adjacent cells in row-major order.",
+    "There are four letters and at most three forbidden choices, so one always remains."
+  ],
+  "analogy": "Color cells in reading order, avoiding the old color and the two neighbors already painted.",
+  "example": "If a cell originally has A and its up and left neighbors are B and C, choose D; it differs from all three constraints.",
+  "algorithm": "Scan row-major and try A through D until finding one unequal to the original character and the final characters above and left; output it.",
+  "correctness": "Every edge joins a cell to an earlier or later neighbor; the later endpoint checks the earlier endpoint, so all adjacent cells differ and each changed cell differs from its input.",
+  "complexity": "O(nm) time and O(nm) space if storing the result.",
+  "visual": {
+    "kind": "trace",
+    "title": "Grid Coloring I: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3 4\nAAAA\nBBBB\nCCDD"
+      },
+      {
+        "label": "Work through it",
+        "detail": "If a cell originally has A and its up and left neighbors are B and C, choose D; it differs from all three constraints."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Scan row-major and try A through D until finding one unequal to the original character and the final characters above and left; output it."
+      },
+      {
+        "label": "Result",
+        "detail": "CDCD\nDCDC\nABAB"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3  4"
+      ],
+      [
+        "AAAA"
+      ],
+      [
+        "BBBB"
+      ],
+      [
+        "CCDD"
+      ]
+    ],
+    "caption": "Illustrative example - If a cell originally has A and its up and left neighbors are B and C, choose D; it differs from all three constraints."
+  }
+}

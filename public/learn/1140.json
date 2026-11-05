@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "A project can follow another only when its end time is no later than the next start.",
+    "Sort projects by end time and find the last compatible project for each one.",
+    "Dynamic programming compares skipping a project with taking its reward plus the best compatible prefix."
+  ],
+  "analogy": "For each project, either ignore it or add it after the best schedule that finished before it starts.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "algorithm": "Sort projects by end time. For project i, binary-search p(i), the last earlier project with end<start[i]; set dp[i]=max(dp[i-1],reward[i]+dp[p(i)]).",
+  "correctness": "An optimal schedule either excludes project i or includes it; in the latter case all earlier chosen projects must end strictly before i starts, exactly the prefix represented by p(i).",
+  "example": "Projects ending at time 4 and starting at time 4 cannot both be selected; compatibility requires the earlier project to finish strictly before the next starts.",
+  "visual": {
+    "kind": "dp",
+    "title": "Projects: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Projects ending at time 4 and starting at time 4 cannot both be selected; compatibility requires the earlier project to finish strictly before the next starts."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort projects by end time. For project i, binary-search p(i), the last earlier project with end<start[i]; set dp[i]=max(dp[i-1],reward[i]+dp[p(i)])."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Project A ends",
+        "start": 4,
+        "end": 4
+      },
+      {
+        "label": "Project B starts",
+        "start": 4,
+        "end": 4
+      }
+    ],
+    "caption": "Illustrative example - Equal boundary time 4 is not compatible because the earlier project must finish strictly before the next starts."
+  }
+}

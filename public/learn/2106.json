@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "Repeated occurrences correspond to suffixes with a common prefix.",
+    "In suffix order, suffixes sharing a prefix appear consecutively.",
+    "Find the largest value in the adjacent LCP array."
+  ],
+  "analogy": "Two suffixes starting at different positions share a beginning exactly when that beginning repeats.",
+  "example": "In banana, ana occurs at positions 2 and 4, so it is a longest repeated substring.",
+  "algorithm": "Build the suffix array and its LCP array. Find the maximum LCP and output that many characters from either adjacent suffix. If the maximum is zero, report -1. Overlapping occurrences are allowed.",
+  "correctness": "All occurrences of any repeated substring form a consecutive block in suffix order, so some adjacent pair shares it. Therefore the maximum adjacent LCP is at least as long as every repeated substring and itself is repeated.",
+  "complexity": "For length n, O(n log n) time with a doubling suffix array and O(n) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Repeating Substring: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In banana, ana occurs at positions 2 and 4, so it is a longest repeated substring."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build the suffix array and its LCP array. Find the maximum LCP and output that many characters from either adjacent suffix. If the maximum is zero, report -1. Overlapping occurrences are allowed."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "ana at position 2",
+        "start": 2,
+        "end": 4
+      },
+      {
+        "label": "ana at position 4",
+        "start": 4,
+        "end": 6
+      }
+    ],
+    "caption": "Illustrative example - banana contains ana at positions 2 and 4."
+  }
+}

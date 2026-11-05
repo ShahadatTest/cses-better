@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "First count all sequences without the requirement.",
+    "Subtract sequences missing at least one value, while correcting overlaps.",
+    "Use inclusion-exclusion over the set of missing values."
+  ],
+  "analogy": "Mark forbidden labels and alternate subtraction and addition as overlapping restrictions are counted.",
+  "example": "For n=3 and k=2, there are 2^3 sequences; subtract the two constant sequences to get 6.",
+  "algorithm": "Compute the sum over j=0..k of (-1)^j * C(k,j) * (k-j)^n modulo 1000000007. Precompute factorials and inverse factorials to obtain binomial coefficients, and compute each power by binary exponentiation. Normalize negative results modulo the prime.",
+  "correctness": "For any sequence missing r labels, its total coefficient is the alternating sum of C(r,j), which is zero if r>0 and one if r=0. Therefore only sequences containing every label remain.",
+  "complexity": "For length n and alphabet size k, time is O(k log n+k) and space O(k).",
+  "visual": {
+    "kind": "dp",
+    "title": "Counting Sequences: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3 and k=2, there are 2^3 sequences; subtract the two constant sequences to get 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute the sum over j=0..k of (-1)^j * C(k,j) * (k-j)^n modulo 1000000007. Precompute factorials and inverse factorials to obtain binomial coefficients, and compute each power by binary exponentiation. Normalize negative results modulo the prime."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "All sequences",
+      "Constant sequences removed",
+      "Answer"
+    ],
+    "rows": [
+      [
+        "2^3 = 8",
+        "2",
+        "6"
+      ]
+    ],
+    "caption": "Illustrative example - Subtract the two constant sequences."
+  }
+}

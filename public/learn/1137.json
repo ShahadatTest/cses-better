@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A subtree rooted at u is a contiguous region in a DFS preorder numbering.",
+    "Store each node's value at its preorder position; subtree u occupies [tin[u],tout[u]].",
+    "A Fenwick tree supports point updates and subtree sum queries."
+  ],
+  "analogy": "Flatten the tree so all descendants of a node occupy one continuous slice of an array.",
+  "example": "If node 2's DFS interval is positions 3..6, its subtree sum is the Fenwick range sum over that interval.",
+  "algorithm": "Euler-tour DFS assigns tin and tout. Put values at tin positions; update a node's position and query prefix(tout)-prefix(tin-1).",
+  "correctness": "DFS enters a node before all its descendants and leaves only after them, so the subtree maps to exactly that preorder interval.",
+  "complexity": "O((n+q) log n) time and O(n) space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Subtree Queries: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If node 2's DFS interval is positions 3..6, its subtree sum is the Fenwick range sum over that interval."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Euler-tour DFS assigns tin and tout. Put values at tin positions; update a node's position and query prefix(tout)-prefix(tin-1)."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Subtree of node 2",
+        "start": 3,
+        "end": 6
+      }
+    ],
+    "caption": "Illustrative example - A DFS subtree becomes the contiguous interval 3..6."
+  }
+}

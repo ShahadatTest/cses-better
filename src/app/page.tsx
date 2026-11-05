@@ -67,6 +67,9 @@ import { CsesUserProfileModal } from '../components/CsesUserProfileModal';
 import { ArchiveExplorerModal } from '../components/ArchiveExplorerModal';
 import { CsesAccountModal } from '../components/CsesAccountModal';
 import { AllNotesModal } from '../components/AllNotesModal';
+import { ListsModal } from '../components/ListsModal';
+import { ContestBankModal } from '../components/ContestBankModal';
+import type { ContestProblem } from '../core/contest-types';
 
 const allProblems = problemsData as Problem[];
 
@@ -75,11 +78,13 @@ export default function CSESBetterApp() {
   const [currentProblemId, setCurrentProblemId] = useState<string>('1068');
   const [activeLanguage, setActiveLanguage] = useState<LanguageId>('cpp');
   const [code, setCode] = useState<string>('');
+  const [mobilePane, setMobilePane] = useState<'problem' | 'editor'>('problem');
   const [zenMode, setZenMode] = useState<boolean>(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
 
   // Public User & Auth State
+  const [listOwner, setListOwner] = useState<string | undefined>();
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [isCsesSubmitModalOpen, setIsCsesSubmitModalOpen] = useState<boolean>(false);
@@ -87,7 +92,30 @@ export default function CSESBetterApp() {
   const [inspectedCsesNick, setInspectedCsesNick] = useState<string>('');
   const [isArchiveModalOpen, setIsArchiveModalOpen] = useState<boolean>(false);
   const [isCsesAccountModalOpen, setIsCsesAccountModalOpen] = useState<boolean>(false);
+  const [listsOpen, setListsOpen] = useState(false);
+  const [contestBankOpen, setContestBankOpen] = useState(false);
+  const [contestProblems, setContestProblems] = useState<ContestProblem[]>([]);
+  const [contestCatalogLoading, setContestCatalogLoading] = useState(false);
+  const [listProblem, setListProblem] = useState<string | undefined>();
   const [isAllNotesOpen, setIsAllNotesOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if ((!contestBankOpen && !listsOpen) || contestProblems.length) return;
+    const controller = new AbortController();
+    setContestCatalogLoading(true);
+    fetch('/api/olympiad', { signal: controller.signal }).then(response => {
+      if (!response.ok) throw new Error('Contest catalog is unavailable');
+      return response.json();
+    }).then((records: unknown) => {
+      if (!Array.isArray(records)) throw new Error('Contest catalog has an invalid format');
+      setContestProblems(records as ContestProblem[]);
+    }).catch(() => {
+      if (!controller.signal.aborted) setContestCatalogLoading(false);
+    }).finally(() => {
+      if (!controller.signal.aborted) setContestCatalogLoading(false);
+    });
+    return () => controller.abort();
+  }, [contestBankOpen, listsOpen, contestProblems.length]);
 
   // Settings & Storage State
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_APP_SETTINGS);
@@ -257,6 +285,7 @@ export default function CSESBetterApp() {
         if (data.session?.user) {
           const user = mapSupabaseUser(data.session.user);
           setCurrentUser(user);
+          setListOwner(user.id);
           saveStoredUser(user);
           // Sync once on initial mount if a valid session exists
           syncAllLocalProgressToCloud(user.id).then(() => {
@@ -270,6 +299,7 @@ export default function CSESBetterApp() {
         if (session?.user) {
           const user = mapSupabaseUser(session.user);
           setCurrentUser(user);
+          setListOwner(user.id);
           saveStoredUser(user);
           // Only sync on explicit SIGNED_IN event, never on TOKEN_REFRESHED or repeatedly on mount
           if (event === 'SIGNED_IN') {
@@ -280,6 +310,7 @@ export default function CSESBetterApp() {
           }
         } else {
           setCurrentUser(null);
+          setListOwner(undefined);
           clearStoredUser();
         }
       });
@@ -350,7 +381,7 @@ export default function CSESBetterApp() {
           removeSolvedProblem(pId);
         } else {
           updated.add(pId);
-          saveSolvedProblem(pId, activeLanguage, code);
+          saveSolvedProblem(pId);
           try {
             confetti({
               particleCount: 75,
@@ -1023,10 +1054,13 @@ export default function CSESBetterApp() {
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onOpenArchive={() => setIsArchiveModalOpen(true)}
         onOpenAllNotes={() => setIsAllNotesOpen(true)}
+        onOpenLists={() => { setListProblem(undefined); setListsOpen(true); }}
+        onOpenContestBank={() => setContestBankOpen(true)}
         onOpenCsesProfile={handleOpenCsesProfile}
         onOpenCsesAccount={() => setIsCsesAccountModalOpen(true)}
       />
 
+      <div className="lg:hidden flex border-b border-border-subtle bg-surface-1" aria-label="Workspace view"><button className={`flex-1 py-2 text-sm ${mobilePane === 'problem' ? 'text-sky-400' : 'text-slate-400'}`} onClick={() => setMobilePane('problem')}>Problem</button><button className={`flex-1 py-2 text-sm ${mobilePane === 'editor' ? 'text-sky-400' : 'text-slate-400'}`} onClick={() => setMobilePane('editor')}>Editor &amp; tests</button></div>
       {/* Main Workspace Body */}
       <main className="flex-1 min-h-0 relative overflow-hidden">
         <SplitPane
@@ -1035,7 +1069,7 @@ export default function CSESBetterApp() {
           minSize={25}
           maxSize={70}
           firstCollapsed={zenMode}
-          className="h-full w-full"
+          className={`h-full w-full mobile-${mobilePane}`}
         >
           {/* Left Pane: Problem Statement, Leaderboard, Submissions, Notes */}
           <div className="h-full w-full overflow-hidden bg-surface-1">
@@ -1057,6 +1091,7 @@ export default function CSESBetterApp() {
               onOpenCsesAccount={() => setIsCsesAccountModalOpen(true)}
               onSelectProblem={handleSelectProblem}
               onOpenAllNotes={() => setIsAllNotesOpen(true)}
+              onAddToList={() => { setListProblem(currentProblem.id); setListsOpen(true); }}
               className="h-full w-full"
             />
           </div>
@@ -1127,6 +1162,8 @@ export default function CSESBetterApp() {
         </SplitPane>
       </main>
 
+      <ListsModal open={listsOpen} onClose={() => setListsOpen(false)} owner={listOwner} problems={allProblems} contestProblems={contestProblems} solved={solvedIds} onSelect={(id) => { if (/^(zio|zco|inoi|usaco)-\d{4}-/.test(id)) { window.location.assign(`/olympiad/${encodeURIComponent(id)}`); return; } handleSelectProblem(id); }} onToggleSolved={handleToggleSolved} currentProblemId={listProblem} />
+      <ContestBankModal open={contestBankOpen} onClose={() => setContestBankOpen(false)} problems={contestProblems} loading={contestCatalogLoading} onSelect={(id) => { window.location.assign(`/olympiad/${encodeURIComponent(id)}`); }} />
       {/* Accessible Modals */}
       <CommandPalette
         isOpen={isCommandPaletteOpen}

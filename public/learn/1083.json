@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "The complete set should contain exactly one copy of each number from 1 through n.",
+    "Compare the sum of 1..n with the sum of the n-1 provided values.",
+    "Subtract the provided sum; distinctness and range guarantees identify the missing value."
+  ],
+  "analogy": "It is like totaling a complete numbered ticket roll and subtracting the tickets you still have.",
+  "example": "For n=5, 1+2+3+4+5=15; given 2,3,1,5 totals 11, so 15-11=4 is missing.",
+  "algorithm": "Use the arithmetic-series sum n(n+1)/2, subtract the input sum, and print the difference. Use a wide integer for the total.",
+  "correctness": "The input contains every required number except one exactly once, so the difference between the full and observed sums is exactly that number.",
+  "complexity": "O(n) time to read values and O(1) extra space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Missing Number: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5\n2 3 1 5"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=5, 1+2+3+4+5=15; given 2,3,1,5 totals 11, so 15-11=4 is missing."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use the arithmetic-series sum n(n+1)/2, subtract the input sum, and print the difference. Use a wide integer for the total."
+      },
+      {
+        "label": "Result",
+        "detail": "4"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5"
+      ],
+      [
+        "2  3  1  5"
+      ]
+    ],
+    "caption": "Illustrative example - For n=5, 1+2+3+4+5=15; given 2,3,1,5 totals 11, so 15-11=4 is missing."
+  }
+}

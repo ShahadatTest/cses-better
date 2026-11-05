@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Start with a rotation of the first permutation, so every position differs from its first forbidden value.",
+    "If a position still matches its second forbidden value, swap its entry with a carefully chosen other position.",
+    "At most four positions are unsuitable as swap partners, so checking five positions is enough when n>=5."
+  ],
+  "analogy": "A misplaced value can be exchanged with another position as long as both values remain allowed after the exchange.",
+  "example": "For a=[1,2,3] and b=[2,3,1], c=[3,1,2] differs from both arrays at every position.",
+  "algorithm": "For n<=4 try every permutation and print a valid one or IMPOSSIBLE. For n>=5 initialize c[i]=a[(i+1) mod n]. Scan positions; whenever c[i] equals a[i] or b[i], find a position j among the first five such that c[j] differs from both a[i],b[i] and c[i] differs from both a[j],b[j]. Swap c[i] and c[j]. Output c.",
+  "correctness": "Initially c is a permutation, and swaps preserve that. For a bad position i, at most two positions contain its forbidden values and at most two positions forbid c[i], since each forbidden array is a permutation. Thus among five positions at least one partner works. The swap fixes i and leaves j valid, so all processed positions stay valid. Exhaustive search handles the smaller cases.",
+  "complexity": "For n elements, O(n) time and O(n) space; brute force uses at most 4! permutations.",
+  "visual": {
+    "kind": "grid",
+    "title": "Third Permutation: follow one example",
+    "caption": "Follow the construction or state across rows and columns.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For a=[1,2,3] and b=[2,3,1], c=[3,1,2] differs from both arrays at every position."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For n<=4 try every permutation and print a valid one or IMPOSSIBLE. For n>=5 initialize c[i]=a[(i+1) mod n]. Scan positions; whenever c[i] equals a[i] or b[i], find a position j among the first five such that c[j] differs from both a[i],b[i] and c[i] differs from both a[j],b[j]. Swap c[i] and c[j]. Output c."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For a=[1,2,3] and b=[2,3,1], c=[3,1,2] differs from both arrays at every position."
+  }
+}

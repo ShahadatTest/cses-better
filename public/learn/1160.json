@@ -1,0 +1,93 @@
+{
+  "hints": [
+    "Following outgoing links eventually reaches a directed cycle.",
+    "For two planets in different trees or different positions on a cycle, the answer can be impossible; precompute cycle/component information.",
+    "If they are in the same tree, use depths and binary lifting; if on the same cycle, move forward around it."
+  ],
+  "analogy": "Each planet has one conveyor-belt path into a loop; travel time depends on whether the target lies on your path or loop.",
+  "example": "If both are on a cycle of length 5 and the target is two steps ahead, the answer is 2; if the target is in a different component, it is -1.",
+  "algorithm": "Decompose the functional graph into cycles and reverse trees. Label each node's cycle, depth, and cycle position; use binary lifting to test tree reachability and calculate tree or cycle distance.",
+  "correctness": "A node's successors are uniquely determined: before the cycle, only an ancestor on its forward chain is reachable; after entry, exactly the nodes on that cycle are reachable.",
+  "complexity": "O(n log n+q log n) time and O(n log n) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Planets Queries II: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If both are on a cycle of length 5 and the target is two steps ahead, the answer is 2; if the target is in a different component, it is -1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Decompose the functional graph into cycles and reverse trees. Label each node's cycle, depth, and cycle position; use binary lifting to test tree reachability and calculate tree or cycle distance."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 30,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "4",
+        "label": "4",
+        "x": 70,
+        "y": 50
+      },
+      {
+        "id": "5",
+        "label": "5",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "4"
+      },
+      {
+        "from": "4",
+        "to": "5"
+      },
+      {
+        "from": "5",
+        "to": "1"
+      }
+    ],
+    "caption": "Illustrative example - On a five-planet cycle, moving two steps ahead takes two jumps; another component is unreachable."
+  }
+}

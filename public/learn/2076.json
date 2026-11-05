@@ -1,0 +1,84 @@
+{
+  "hints": [
+    "A necessary road is a bridge: removing it disconnects the graph.",
+    "A DFS subtree can escape without its parent edge only through a back edge to an ancestor.",
+    "Track discovery time and the earliest ancestor reachable from each subtree."
+  ],
+  "analogy": "A bridge is a branch with no alternate rope connecting its far side back to the trunk.",
+  "example": "In a triangle with an extra edge from one vertex to a leaf, only the leaf edge is necessary.",
+  "algorithm": "Run depth-first search, recording discovery times and low values. The low value of a vertex is the smallest discovery time reachable from its subtree using tree edges and at most one back edge. A DFS tree edge from v to child u is a bridge exactly when low[u] > discovery[v]. Output all such edges.",
+  "correctness": "If low[u] exceeds discovery[v], the subtree has no alternate edge to v or an ancestor, so removing the tree edge disconnects it. Otherwise an alternate path bypasses the edge. Non-tree edges lie on cycles and cannot be bridges.",
+  "complexity": "For n cities and m roads, O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "flow",
+    "title": "Necessary Roads: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In a triangle with an extra edge from one vertex to a leaf, only the leaf edge is necessary."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run depth-first search, recording discovery times and low values. The low value of a vertex is the smallest discovery time reachable from its subtree using tree edges and at most one back edge. A DFS tree edge from v to child u is a bridge exactly when low[u] > discovery[v]. Output all such edges."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 36.66666666666667,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 63.333333333333336,
+        "y": 50
+      },
+      {
+        "id": "4",
+        "label": "4",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "1"
+      },
+      {
+        "from": "1",
+        "to": "4",
+        "label": "necessary"
+      }
+    ],
+    "caption": "Illustrative example - In a triangle with one leaf edge, only the leaf connection is necessary."
+  }
+}

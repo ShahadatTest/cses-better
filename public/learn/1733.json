@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "A period is a prefix that repeats to form the string; the last repetition is allowed to be partial.",
+    "For a candidate length p, the characters after the first p must match the corresponding prefix characters.",
+    "The prefix-function value pi[n-1] is the longest matching border; p is a period exactly when pi[n-1] >= n-p."
+  ],
+  "analogy": "A repeating block may run out before the end, so compare the remaining suffix with the same-length beginning of the string.",
+  "example": "For abcabca, lengths 3, 6, and 7 are periods: abc repeats twice and then partially, abcabc is followed by a, and the whole string is itself a period.",
+  "complexity": "O(n) time for the prefix function and the scan over lengths, and O(n) space for the prefix-function array, where n is the string length.",
+  "correctness": "A length p is a period exactly when the suffix starting at p matches the prefix of length n-p. The prefix-function value pi[n-1] is the longest prefix that is also a suffix, so this match exists exactly when pi[n-1] is at least n-p. Checking every p therefore prints exactly all periods.",
+  "algorithm": "Compute the prefix function pi for the string. For each length p from 1 through n, print p if pi[n-1] >= n-p. The full length n always passes; the condition allows the final repetition to be partial.",
+  "visual": {
+    "kind": "string",
+    "title": "Finding Periods: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For abcabca, lengths 3, 6, and 7 are periods: abc repeats twice and then partially, abcabc is followed by a, and the whole string is itself a period."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute the prefix function pi for the string. For each length p from 1 through n, print p if pi[n-1] >= n-p. The full length n always passes; the condition allows the final repetition to be partial."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "6",
+      "7"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For abcabca, lengths 3, 6, and 7 are periods: abc repeats twice and then partially, abcabc is followed by a, and the whole string is itself a period."
+  }
+}

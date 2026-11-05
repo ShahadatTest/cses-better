@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "First find the nearest reserved campsite for each free campsite.",
+    "In a fixed coordinate quadrant, Manhattan distance is a linear expression.",
+    "Use four reflected-coordinate sweeps and take the largest nearest distance at the end."
+  ],
+  "analogy": "For each free site, find its closest site in each of four compass quadrants, then compare the nearest distances.",
+  "example": "If the only reserved site is (1,1) and free sites are (2,1) and (3,3), their nearest distances are 1 and 4, so the answer is 4.",
+  "algorithm": "For each sign pair sx,sy in {+1,-1}, transform X=sx*x and Y=sy*y. Sort reserved and free points by X, with reserved points first on ties. In a Fenwick tree keyed by compressed Y, store the maximum X+Y of inserted reserved points. For each free point query the maximum for Y<=its Y and minimize its current nearest distance with X+Y-maxValue. After all four sweeps, print the maximum nearest distance among free points.",
+  "correctness": "The prefix query finds the best reserved point in one transformed southwest quadrant, where distance is query X+query Y-(point X+point Y). Reflecting both axes independently covers every point. Thus each free point gets its exact nearest reserved distance, and their maximum is the requested value.",
+  "complexity": "For n reserved and m free points, time is O((n+m) log(n+m)) and space O(n+m).",
+  "visual": {
+    "kind": "trace",
+    "title": "Nearest Campsites I: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If the only reserved site is (1,1) and free sites are (2,1) and (3,3), their nearest distances are 1 and 4, so the answer is 4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each sign pair sx,sy in {+1,-1}, transform X=sx*x and Y=sy*y. Sort reserved and free points by X, with reserved points first on ties. In a Fenwick tree keyed by compressed Y, store the maximum X+Y of inserted reserved points. For each free point query the maximum for Y<=its Y and minimize its current nearest distance with X+Y-maxValue. After all four sweeps, print the maximum nearest distance among free points."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - If the only reserved site is (1,1) and free sites are (2,1) and (3,3), their nearest distances are 1 and 4, so the answer is 4."
+  }
+}

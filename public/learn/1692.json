@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "A de Bruijn sequence must contain every length-n bit string exactly once as a cyclic window.",
+    "Make each length-(n-1) bit string a graph vertex; each length-n string is an edge from its prefix to suffix.",
+    "Find an Euler cycle through all edges and read edge labels to form the sequence."
+  ],
+  "analogy": "Turn each n-bit window into a directed edge; traversing each edge once lines up all windows in one cyclic string.",
+  "example": "For n=2, the cyclic sequence 0011 has windows 00,01,11,10, all four bit strings.",
+  "algorithm": "Build the binary de Bruijn graph and find an Eulerian circuit with Hierholzer. Output the starting n-1 bits followed by each traversed edge's final bit.",
+  "correctness": "Each graph edge represents one distinct n-bit string; an Euler tour uses each edge once, and consecutive edge endpoints overlap in n-1 bits, yielding the required windows.",
+  "complexity": "O(2^n) time and O(2^n) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "De Bruijn Sequence: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=2, the cyclic sequence 0011 has windows 00,01,11,10, all four bit strings."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build the binary de Bruijn graph and find an Eulerian circuit with Hierholzer. Output the starting n-1 bits followed by each traversed edge's final bit."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "0011",
+      "00",
+      "01",
+      "11",
+      "10"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=2, the cyclic sequence 0011 has windows 00,01,11,10, all four bit strings."
+  }
+}

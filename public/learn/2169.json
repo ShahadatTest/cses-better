@@ -1,0 +1,59 @@
+{
+  "hints": [
+    "For each interval, count earlier intervals whose right endpoint reaches at least its right endpoint.",
+    "In a start-ascending, end-descending order, process equal left endpoints together so equal intervals count each other correctly.",
+    "A Fenwick tree over compressed right endpoints counts previous endpoints on either side."
+  ],
+  "analogy": "For each range, count how many range endpoints lie far enough to contain it or be contained by it.",
+  "example": "Among [1,6],[2,4],[3,5], the first contains two, while [2,4] is contained by one.",
+  "algorithm": "Sort intervals and coordinate-compress right endpoints. Use Fenwick prefix counts while scanning groups to count contained intervals; reverse the order for containing counts, accounting for duplicate intervals as a group.",
+  "correctness": "Each prior interval has a start no greater than the current one; comparing right endpoints then decides containment, and grouped duplicates ensure identical ranges include one another.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Nested Ranges Count: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "4\n1 6\n2 4\n4 8\n3 6"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Among [1,6],[2,4],[3,5], the first contains two, while [2,4] is contained by one."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort intervals and coordinate-compress right endpoints. Use Fenwick prefix counts while scanning groups to count contained intervals; reverse the order for containing counts, accounting for duplicate intervals as a group."
+      },
+      {
+        "label": "Result",
+        "detail": "2 0 0 0\n0 1 0 1"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "4"
+      ],
+      [
+        "1  6"
+      ],
+      [
+        "2  4"
+      ],
+      [
+        "4  8"
+      ],
+      [
+        "3  6"
+      ]
+    ],
+    "caption": "Illustrative example - Among [1,6],[2,4],[3,5], the first contains two, while [2,4] is contained by one."
+  }
+}

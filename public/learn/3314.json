@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "You can move from mountain a to mountain b only when a is taller than b and every mountain between them is lower than a.",
+    "For each mountain, find the nearest mountain of equal or greater height on its left and right; these are barriers.",
+    "Process mountains by increasing height; a valid jump lands on a strictly lower mountain inside the barrier interval, so query the best route there."
+  ],
+  "analogy": "A tall mountain can see across a valley until an equally tall or taller mountain blocks the view.",
+  "correctness": "The barrier interval contains exactly mountains visible from i; only lower heights have already been inserted, enforcing the strict taller-than condition. The range maximum chooses the best next mountain route.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "algorithm": "Find nearest mountains of height >=h[i] on both sides with monotonic stacks. These are visibility barriers. Process mountains in increasing height batches; for i query the segment-tree maximum dp among indices strictly between its barriers, set dp[i]=1+max(0,that maximum), then insert all dp values in the batch. Equal heights cannot transition to one another.",
+  "example": "For heights [3,1,2], the route 3->2->1 is valid: each move goes to a shorter mountain with every intervening mountain lower than the current one. The longest route has length 3.",
+  "visual": {
+    "kind": "dp",
+    "title": "Mountain Range: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For heights [3,1,2], the route 3->2->1 is valid: each move goes to a shorter mountain with every intervening mountain lower than the current one. The longest route has length 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Find nearest mountains of height >=h[i] on both sides with monotonic stacks. These are visibility barriers. Process mountains in increasing height batches; for i query the segment-tree maximum dp among indices strictly between its barriers, set dp[i]=1+max(0,that maximum), then insert all dp values in the batch. Equal heights cannot transition to one another."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For heights [3,1,2], the route 3->2->1 is valid: each move goes to a shorter mountain with every intervening mountain lower than the current one. The longest route has length 3."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "XOR has the cancellation rule x XOR x=0.",
+    "Build prefix XORs; a range XOR is the XOR of the prefix ending at b and the prefix before a.",
+    "No ordering or numeric magnitude assumptions are needed."
+  ],
+  "analogy": "XORing the same prefix twice cancels all values before the requested range.",
+  "example": "For [5,2,7], XOR of positions 2..3 is 2 XOR 7=5.",
+  "algorithm": "Build px[0]=0 and px[i]=px[i-1] XOR a[i]. Answer query [a,b] with px[b] XOR px[a-1].",
+  "correctness": "Each value before a appears in both prefixes and cancels; each value in the range appears once and remains.",
+  "complexity": "O(n+q) time and O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Range Xor Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [5,2,7], XOR of positions 2..3 is 2 XOR 7=5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build px[0]=0 and px[i]=px[i-1] XOR a[i]. Answer query [a,b] with px[b] XOR px[a-1]."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Range 1",
+        "start": 2,
+        "end": 3
+      }
+    ],
+    "caption": "Illustrative example - For [5,2,7], XOR of positions 2..3 is 2 XOR 7=5."
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "A common subsequence preserves character order in both strings but can skip characters.",
+    "Let dp[i][j] be the longest common subsequence length for the two prefixes.",
+    "Matching final characters extend the diagonal; otherwise discard one final character and take the better result."
+  ],
+  "analogy": "For two text strips, keep a shared character only if it appears in order in both.",
+  "example": "For 'ABC' and 'AC', the longest common subsequence is 'AC' of length 2.",
+  "algorithm": "Fill an (n+1) by (m+1) table: if characters match, dp[i][j]=dp[i-1][j-1]+1; else max(dp[i-1][j],dp[i][j-1]). Store choices or backtrack to output the sequence if required.",
+  "correctness": "Any common subsequence either uses matching final characters together or omits at least one of them; the recurrence considers those exhaustive possibilities.",
+  "complexity": "O(nm) time and O(nm) space for reconstruction.",
+  "visual": {
+    "kind": "dp",
+    "title": "Longest Common Subsequence: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 'ABC' and 'AC', the longest common subsequence is 'AC' of length 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Fill an (n+1) by (m+1) table: if characters match, dp[i][j]=dp[i-1][j-1]+1; else max(dp[i-1][j],dp[i][j-1]). Store choices or backtrack to output the sequence if required."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Role",
+      "String"
+    ],
+    "rows": [
+      [
+        "Text / source",
+        "ABC"
+      ],
+      [
+        "Pattern / candidate",
+        "AC"
+      ],
+      [
+        "Pattern / candidate",
+        "AC"
+      ]
+    ],
+    "caption": "Illustrative example - For 'ABC' and 'AC', the longest common subsequence is 'AC' of length 2."
+  }
+}

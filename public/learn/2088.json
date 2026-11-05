@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "The first split of interval [l,r] costs its sum.",
+    "The interval DP adds optimal costs of the two resulting pieces.",
+    "Knuth optimization bounds each best split between the best splits of two neighboring intervals."
+  ],
+  "analogy": "A whole piece pays once to split, then each child piece is solved independently.",
+  "example": "For [1,2,3], split [1,2] from [3] for cost 6, then split [1,2] for 3: total 9.",
+  "algorithm": "Let dp[l][r]=sum(l..r)+min over l<=p<r of dp[l][p]+dp[p+1][r], with zero for singletons. Use prefix sums and Knuth optimization: search p only from opt[l][r-1] through opt[l+1][r], clipped to valid splits. Fill by increasing interval length and use wide arithmetic.",
+  "correctness": "The recurrence enumerates every possible first split. Nonnegative interval sums satisfy the quadrangle and monotonicity conditions for Knuth optimization, so an optimal split lies in the stated range; induction then gives optimal interval costs.",
+  "complexity": "For n values, O(n^2) time and O(n^2) space.",
+  "visual": {
+    "kind": "flow",
+    "title": "Knuth Division: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,3], split [1,2] from [3] for cost 6, then split [1,2] for 3: total 9."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let dp[l][r]=sum(l..r)+min over l<=p<r of dp[l][p]+dp[p+1][r], with zero for singletons. Use prefix sums and Knuth optimization: search p only from opt[l][r-1] through opt[l+1][r], clipped to valid splits. Fill by increasing interval length and use wide arithmetic."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3",
+      "6",
+      "9"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,3], split [1,2] from [3] for cost 6, then split [1,2] for 3: total 9."
+  }
+}

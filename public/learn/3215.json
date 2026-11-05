@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "The row and column motions are independent reflections.",
+    "Unfold each reflection into straight-line motion and fold its coordinate back.",
+    "Direction changes occur at multiples of n-1 or m-1, counting simultaneous hits once."
+  ],
+  "analogy": "Imagine reflecting the board at every border so the ball always travels straight in the unfolded plane.",
+  "example": "On a 3 by 4 board after 3 steps, the ball is at (2,4) and has changed direction twice.",
+  "algorithm": "Let H=n-1 and W=m-1. For either dimension with extent L, set z=k mod (2L), and its one-based coordinate is 1+min(z,2L-z). Count direction changes as floor(k/H)+floor(k/W)-floor(k/lcm(H,W)), where a corner hit changes direction only once. Compute lcm with gcd and sufficiently wide integer arithmetic.",
+  "correctness": "In the unfolded plane each coordinate increases by one per step; folding a period of 2L gives its reflected position. Hits on horizontal and vertical borders occur at positive multiples of H and W respectively. Inclusion-exclusion counts their union, including a hit exactly at step k and counting corner hits once.",
+  "complexity": "Each test takes O(log(min(n,m))) time for gcd and O(1) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Bouncing Ball Steps: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "On a 3 by 4 board after 3 steps, the ball is at (2,4) and has changed direction twice."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let H=n-1 and W=m-1. For either dimension with extent L, set z=k mod (2L), and its one-based coordinate is 1+min(z,2L-z). Count direction changes as floor(k/H)+floor(k/W)-floor(k/lcm(H,W)), where a corner hit changes direction only once. Compute lcm with gcd and sufficiently wide integer arithmetic."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "State",
+      "Value"
+    ],
+    "rows": [
+      [
+        "Board",
+        "3 by 4"
+      ],
+      [
+        "After 3 steps",
+        "position (2,4)"
+      ],
+      [
+        "Direction changes",
+        "2"
+      ]
+    ],
+    "caption": "Illustrative example - This records the described endpoint and turn count without assuming a starting direction."
+  }
+}

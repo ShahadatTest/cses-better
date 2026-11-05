@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Kotivalo and Justiina cannot read the same book simultaneously, so each book's time contributes to one person's work.",
+    "The total time must be at least the sum of all reading times.",
+    "If the longest book exceeds the time spent on all other books, it forces that book to finish after the others; otherwise both can keep busy until the total sum."
+  ],
+  "analogy": "Two readers can work in parallel, except one especially long book may dominate the schedule.",
+  "example": "Times 2,8,3 sum to 13; the longest is 8, so the minimum is max(13,2*8)=16.",
+  "algorithm": "Compute total S and maximum M. Print max(S,2*M).",
+  "correctness": "No schedule can finish before total work S or before the reader of the longest book completes it after the other reader's workload; this lower bound is attainable by dividing the remaining books between the two readers.",
+  "complexity": "O(n) time and O(1) extra space.",
+  "visual": {
+    "kind": "array",
+    "title": "Reading Books: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3\n2 8 3"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Times 2,8,3 sum to 13; the longest is 8, so the minimum is max(13,2*8)=16."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute total S and maximum M. Print max(S,2*M)."
+      },
+      {
+        "label": "Result",
+        "detail": "16"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3"
+      ],
+      [
+        "2  8  3"
+      ]
+    ],
+    "caption": "Illustrative example - Times 2,8,3 sum to 13; the longest is 8, so the minimum is max(13,2*8)=16."
+  }
+}

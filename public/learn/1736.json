@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "A polynomial update adds a sequence 1,2,3,... across its target interval.",
+    "Represent the update as a linear function of position: at index i, add i-start+1.",
+    "Use a lazy segment tree storing sum and pending linear coefficients."
+  ],
+  "analogy": "A ramp can be described by a slope plus a starting offset, so its total over a segment is computed from index sums.",
+  "example": "Adding 1,2,3 to positions 4,5,6 increases their total by 6.",
+  "correctness": "The linear expression gives the exact added value at every position; summing it over a segment and composing tags preserves all past updates.",
+  "complexity": "O(log n) per update/query and O(n) space.",
+  "algorithm": "For an update [a,b], position i receives i-a+1. Store pending additions as slope and offset, so a segment's added sum is slope*sum(indices)+offset*length. Push adjusted coefficients to children; query sums from the segment tree.",
+  "visual": {
+    "kind": "range",
+    "title": "Polynomial Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Adding 1,2,3 to positions 4,5,6 increases their total by 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For an update [a,b], position i receives i-a+1. Store pending additions as slope and offset, so a segment's added sum is slope*sum(indices)+offset*length. Push adjusted coefficients to children; query sums from the segment tree."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Adding 1,2,3 to positions 4,5,6 increases their total by 6."
+  }
+}

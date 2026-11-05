@@ -1,0 +1,60 @@
+{
+  "hints": [
+    "Comparing squared distances avoids square roots.",
+    "Sort points by x and consider only nearby points in an active vertical strip.",
+    "Keep active points ordered by y and remove those farther than the current best distance in x."
+  ],
+  "analogy": "A moving window forgets points too far left to improve the best pair.",
+  "example": "For (0,0), (1,1), and (5,0), the minimum squared distance is 2.",
+  "algorithm": "Sort points by x. Maintain a balanced set ordered by y of prior points whose squared x difference is at most the best squared distance. For each point, inspect candidates whose squared y difference is at most the best; update the best squared distance and insert the point. Remove obsolete points as the sweep advances. Use wide integers.",
+  "correctness": "Any pair improving the current best must be close enough in both coordinates, so its earlier point remains in the queried strip. Geometric packing bounds the number of candidates inspected, while every possible improving pair is checked.",
+  "complexity": "For n points, O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Minimum Euclidean Distance: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For (0,0), (1,1), and (5,0), the minimum squared distance is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort points by x. Maintain a balanced set ordered by y of prior points whose squared x difference is at most the best squared distance. For each point, inspect candidates whose squared y difference is at most the best; update the best squared distance and insert the point. Remove obsolete points as the sweep advances. Use wide integers."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "(0,0)",
+        "x": 10,
+        "y": 90
+      },
+      {
+        "id": "2",
+        "label": "(1,1)",
+        "x": 26,
+        "y": 10
+      },
+      {
+        "id": "3",
+        "label": "(5,0)",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "edges": [],
+    "caption": "Illustrative example - For (0,0), (1,1), and (5,0), the minimum squared distance is 2."
+  }
+}

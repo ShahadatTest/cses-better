@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Each segment describes a line on the whole integer domain.",
+    "Find the maximum among all lines at every x.",
+    "A Li Chao tree can insert each line and answer each integer position efficiently."
+  ],
+  "analogy": "At every position, compare the heights of the competing straight tracks.",
+  "example": "The lines y=x and y=4-x give maxima 4,3,2,3,4 at x=0 through 4.",
+  "algorithm": "For each segment form y=ax+b with b=y1 and integer slope a=(y2-y1)/m. Insert each line into a maximum Li Chao tree over integer x from 0 through m. Query every x in order and print the maxima. Use wide integer arithmetic.",
+  "correctness": "Every input line is active at every queried coordinate. A Li Chao tree retains a line that can win at a position on its root-to-leaf path, so querying that path returns the maximum.",
+  "complexity": "For n lines and m+1 query positions, O((n+m) log(m+1)) time and O(m) space with a fixed tree.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Line Segments Trace I: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "The lines y=x and y=4-x give maxima 4,3,2,3,4 at x=0 through 4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each segment form y=ax+b with b=y1 and integer slope a=(y2-y1)/m. Insert each line into a maximum Li Chao tree over integer x from 0 through m. Query every x in order and print the maxima. Use wide integer arithmetic."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "4",
+      "3",
+      "2",
+      "0"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - The lines y=x and y=4-x give maxima 4,3,2,3,4 at x=0 through 4."
+  }
+}

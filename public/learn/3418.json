@@ -1,0 +1,65 @@
+{
+  "hints": [
+    "Fix the top and bottom edges of a rectangle.",
+    "A valid rectangle requires matching top and bottom letters across its entire width.",
+    "Within each such run, count pairs of columns whose vertical sides are also filled."
+  ],
+  "analogy": "Choose two vertical posts inside a horizontal run of matching top and bottom edges.",
+  "example": "In a 2 by 2 grid of A, all 9 rectangles have an A border.",
+  "algorithm": "Precompute up[r,c], the length of the vertical run of equal letters ending at each cell. For each top row t and bottom row b>=t, scan columns. Reset a counter whenever the top and bottom letters differ or the current matching letter differs from the preceding column?s matching letter. Otherwise, within this horizontal run, a column is an eligible side if up[b,c]>=b-t+1. On an eligible column increment the counter and add it to that letter?s answer; this includes width-one rectangles. Use 64-bit counts.",
+  "correctness": "Inside a matching-letter run, the top and bottom horizontal borders are valid for every interval. An interval has valid vertical borders exactly when both endpoint columns are eligible. The counter counts all earlier eligible left sides plus the current column for width one, so each rectangle is counted at its unique top, bottom and right side.",
+  "complexity": "For an n by n grid, precomputing vertical runs takes O(n^2); all row pairs and columns take O(n^3) time and O(n^2) space.",
+  "visual": {
+    "kind": "dp",
+    "title": "Border Subgrid Count II: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In a 2 by 2 grid of A, all 9 rectangles have an A border."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Precompute up[r,c], the length of the vertical run of equal letters ending at each cell. For each top row t and bottom row b>=t, scan columns. Reset a counter whenever the top and bottom letters differ or the current matching letter differs from the preceding column?s matching letter. Otherwise, within this horizontal run, a column is an eligible side if up[b,c]>=b-t+1. On an eligible column increment the counter and add it to that letter?s answer; this includes width-one rectangles. Use 64-bit counts."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Rectangle sizes",
+      "Count"
+    ],
+    "rows": [
+      [
+        "1 by 1",
+        "4"
+      ],
+      [
+        "1 by 2",
+        "2"
+      ],
+      [
+        "2 by 1",
+        "2"
+      ],
+      [
+        "2 by 2",
+        "1"
+      ],
+      [
+        "Total",
+        "9"
+      ]
+    ],
+    "caption": "Illustrative example - All nine rectangles in the 2 by 2 grid have an A border."
+  }
+}

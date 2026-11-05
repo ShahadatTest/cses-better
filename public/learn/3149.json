@@ -1,0 +1,59 @@
+{
+  "hints": [
+    "The edges needed to visit all coins form a minimal connecting subtree.",
+    "In a tree, edges outside the direct start-to-end path must be traversed twice.",
+    "Add both endpoints to the coin subtree, accounting for any shared part of their branches."
+  ],
+  "analogy": "Draw the smallest connected network containing every coin and both endpoints. Every side branch needs an out-and-back trip.",
+  "example": "If the required subtree has 3 edges and the start-to-end path has 1 edge, the shortest walk has length 2*3-1=5.",
+  "algorithm": "Prune coin-free leaves to find the minimal coin subtree S and its edge count E. Multi-source BFS from S gives d(v), distance to S. Preprocess LCA for tree distances. For query a,b let overlap=max(0,(d(a)+d(b)-dist(a,b))/2). The union of S and the two paths from a and b to S has E+d(a)+d(b)-overlap edges. Return twice this number minus dist(a,b).",
+  "correctness": "The two paths to S overlap exactly when the endpoints join the same branch before reaching S, and the distance identity gives the shared length. Every edge of the resulting minimal subtree is needed; its start-to-end path is traversed once and all other edges twice. A depth-first walk attains this bound.",
+  "complexity": "For n vertices and q queries, preprocessing takes O(n log n) time and space; each query takes O(log n).",
+  "visual": {
+    "kind": "graph",
+    "title": "Tree Coin Collecting II: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If the required subtree has 3 edges and the start-to-end path has 1 edge, the shortest walk has length 2*3-1=5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Prune coin-free leaves to find the minimal coin subtree S and its edge count E. Multi-source BFS from S gives d(v), distance to S. Preprocess LCA for tree distances. For query a,b let overlap=max(0,(d(a)+d(b)-dist(a,b))/2). The union of S and the two paths from a and b to S has E+d(a)+d(b)-overlap edges. Return twice this number minus dist(a,b)."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "3",
+        "label": "3",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "1",
+        "label": "1",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "3",
+        "to": "1"
+      }
+    ],
+    "caption": "Illustrative example - If the required subtree has 3 edges and the start-to-end path has 1 edge, the shortest walk has length 2*3-1=5."
+  }
+}

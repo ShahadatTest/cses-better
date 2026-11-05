@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Keep track of the frequency of each value in the current window.",
+    "A value becomes distinct when its count rises from zero, and stops being distinct when it falls to zero.",
+    "Update only the outgoing and incoming elements as the window slides."
+  ],
+  "analogy": "A shelf label exists while at least one copy of its value is on the shelf.",
+  "example": "For [1,2,1,3] and k=2, distinct counts are 2, 2, 2.",
+  "algorithm": "Maintain a frequency map and a distinct counter. Add each incoming value, increasing the counter if its previous frequency was zero. Remove the outgoing value after the window exceeds k, decreasing the counter if its frequency becomes zero. Output the counter for each full window.",
+  "correctness": "The counter changes exactly when a value enters or leaves the set of values with positive frequency. Thus it always equals the number of distinct window values.",
+  "complexity": "For n elements and window size k, expected O(n) time and O(k) space with a hash map; an ordered map gives O(n log k) time.",
+  "visual": {
+    "kind": "window",
+    "title": "Sliding Window Distinct Values: follow one example",
+    "caption": "Slide the active window and update its maintained state.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,1,3] and k=2, distinct counts are 2, 2, 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain a frequency map and a distinct counter. Add each incoming value, increasing the counter if its previous frequency was zero. Remove the outgoing value after the window exceeds k, decreasing the counter if its frequency becomes zero. Output the counter for each full window."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,1,3] and k=2, distinct counts are 2, 2, 2."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Two numbers are coprime when their greatest common divisor is 1.",
+    "For each possible divisor d, count how many array values are divisible by d.",
+    "Pairs divisible by d are choose(count[d],2); MÃ¶bius inversion adds or subtracts these counts according to d."
+  ],
+  "analogy": "Start with pairs sharing each divisor, then use alternating signs to remove pairs whose gcd is larger than one.",
+  "example": "Among 2,3,4, pair (2,3) is coprime while (2,4) is not; divisor counts identify and subtract shared-factor pairs.",
+  "algorithm": "Sieve the MÃ¶bius function mu[d]. Count multiples[d], then answer sum over d of mu[d]*choose(multiples[d],2).",
+  "complexity": "O(M log M+n log M) time and O(M) space.",
+  "correctness": "For a pair with gcd g, its coefficient in the sum is sum_{d|g} mu[d], which equals 1 when g=1 and 0 otherwise; therefore exactly coprime pairs remain.",
+  "visual": {
+    "kind": "math",
+    "title": "Counting Coprime Pairs: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Among 2,3,4, pair (2,3) is coprime while (2,4) is not; divisor counts identify and subtract shared-factor pairs."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sieve the MÃ¶bius function mu[d]. Count multiples[d], then answer sum over d of mu[d]*choose(multiples[d],2)."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "3",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Among 2,3,4, pair (2,3) is coprime while (2,4) is not; divisor counts identify and subtract shared-factor pairs."
+  }
+}

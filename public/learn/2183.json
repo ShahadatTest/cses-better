@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Sort the coin values from smallest to largest.",
+    "Suppose all sums from 1 through x-1 are reachable; a coin no larger than x extends this to x+coin.",
+    "The first coin larger than x leaves x itself impossible."
+  ],
+  "analogy": "Build a consecutive covered range of sums, extending its right edge with each usable coin.",
+  "example": "Coins 1,2,5 cover 1..3, then 5 starts a gap at 4, so 4 is the smallest impossible sum.",
+  "algorithm": "Sort coins and set x=1. For each coin c, if c>x stop; otherwise set x+=c. Print x.",
+  "correctness": "By induction the currently reachable sums include every value below x; a coin c<=x extends that interval continuously, while c>x cannot form x.",
+  "complexity": "O(n log n) time and O(1) extra space beyond sorting.",
+  "visual": {
+    "kind": "array",
+    "title": "Missing Coin Sum: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5\n2 9 1 2 7"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Coins 1,2,5 cover 1..3, then 5 starts a gap at 4, so 4 is the smallest impossible sum."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort coins and set x=1. For each coin c, if c>x stop; otherwise set x+=c. Print x."
+      },
+      {
+        "label": "Result",
+        "detail": "6"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5"
+      ],
+      [
+        "2  9  1  2  7"
+      ]
+    ],
+    "caption": "Illustrative example - Coins 1,2,5 cover 1..3, then 5 starts a gap at 4, so 4 is the smallest impossible sum."
+  }
+}

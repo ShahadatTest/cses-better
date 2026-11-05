@@ -141,12 +141,22 @@ export interface NoteEntry {
 }
 
 export interface UserDataExport {
+  lists?: ProblemList[];
   version: number;
   drafts: Record<string, string>;
   submissions: SubmissionRecord[];
   notes?: Record<string, string>;
   starredIds?: string[];
   exportedAt: number;
+}
+
+export interface ProblemList {
+  id: string;
+  name: string;
+  problemIds: string[];
+  revision: number;
+  dirty: boolean;
+  deleted: boolean;
 }
 
 export interface AppSettings {

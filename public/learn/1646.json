@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Define prefix[i] as the sum of the first i values.",
+    "A range [a,b] is prefix[b]-prefix[a-1].",
+    "Build all prefixes once, then answer each query directly."
+  ],
+  "analogy": "Store a running total at every position; a range is the difference between two totals.",
+  "example": "For values 3,2,4, prefix through 3 is 9; sum of positions 2..3 is 9-3=6.",
+  "algorithm": "Build a 64-bit prefix array with prefix[0]=0. For each one-based query [a,b], output prefix[b]-prefix[a-1].",
+  "correctness": "All values before a cancel when subtracting the prefix before the range, leaving exactly a through b.",
+  "complexity": "O(n+q) time and O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Static Range Sum Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For values 3,2,4, prefix through 3 is 9; sum of positions 2..3 is 9-3=6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a 64-bit prefix array with prefix[0]=0. For each one-based query [a,b], output prefix[b]-prefix[a-1]."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Range 1",
+        "start": 2,
+        "end": 3
+      }
+    ],
+    "caption": "Illustrative example - For values 3,2,4, prefix through 3 is 9; sum of positions 2..3 is 9-3=6."
+  }
+}

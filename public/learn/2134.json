@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "A path can cross many heavy-light chains, but each chain segment is contiguous in the flattened order.",
+    "Decompose the tree into heavy paths so each root-to-node route crosses only logarithmically many chains.",
+    "Use a segment tree for each flattened path range and climb the deeper chain head until both nodes share one chain."
+  ],
+  "analogy": "Split a tree path into a small number of straight array intervals, then query each interval.",
+  "example": "If u and v lie on different chains, query the deeper chain head to its node, move to its parent, and repeat.",
+  "algorithm": "Build heavy-light decomposition and a max segment tree over base positions. For path query, repeatedly query the deeper head-to-node segment, climb above that head, then query the final same-chain interval; point updates change one base position.",
+  "correctness": "Heavy-light decomposition partitions the unique u-v path into disjoint chain intervals; taking their maximum yields exactly the path maximum.",
+  "complexity": "O(log^2 n) per query/update and O(n) space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Path Queries II: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If u and v lie on different chains, query the deeper chain head to its node, move to its parent, and repeat."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build heavy-light decomposition and a max segment tree over base positions. For path query, repeatedly query the deeper head-to-node segment, climb above that head, then query the final same-chain interval; point updates change one base position."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Step",
+      "Path segment"
+    ],
+    "rows": [
+      [
+        "1",
+        "Query the deeper chain head to its node"
+      ],
+      [
+        "2",
+        "Move to its parent"
+      ],
+      [
+        "3",
+        "Repeat until both nodes share a chain"
+      ]
+    ],
+    "caption": "Illustrative example - A heavy path query is split into chain segments."
+  }
+}

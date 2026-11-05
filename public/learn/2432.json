@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Choosing cells with given row and column totals is a bipartite matching problem.",
+    "Each row-column pair can be chosen at most once.",
+    "Capacities from the source and to the sink enforce the required totals."
+  ],
+  "analogy": "Each chosen square sends one unit from its row through that column.",
+  "example": "For two rows and columns each requiring one square, choosing the two diagonal cells is valid.",
+  "algorithm": "Build a flow network with source, one node per row, one per column, and sink. Add source->row capacity equal to that row?s required count, every row->column edge capacity 1, and column->sink capacity equal to that column?s required count. Run max flow. If the flow is smaller than the sum of required row counts or the row and column totals differ, output -1. Otherwise mark exactly the row-column edges carrying one unit.",
+  "correctness": "Integral max flow sends at most one unit through each square. Saturating all row and column capacities makes their selected-cell counts exactly the requirements. Conversely, any valid grid defines a flow of that value, so max flow finds a solution whenever one exists.",
+  "complexity": "For grid size n, the network has O(n) vertices and O(n^2) edges; Dinic uses O(n^2) space and has a general O(n^4) worst-case time bound on this network.",
+  "visual": {
+    "kind": "trace",
+    "title": "Grid Puzzle I: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For two rows and columns each requiring one square, choosing the two diagonal cells is valid."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a flow network with source, one node per row, one per column, and sink. Add source->row capacity equal to that row?s required count, every row->column edge capacity 1, and column->sink capacity equal to that column?s required count. Run max flow. If the flow is smaller than the sum of required row counts or the row and column totals differ, output -1. Otherwise mark exactly the row-column edges carrying one unit."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "X",
+        "."
+      ],
+      [
+        ".",
+        "X"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - Two rows and columns each require one square; the diagonal selection satisfies them."
+  }
+}

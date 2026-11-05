@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "The elevator may carry at most x total weight, and each person boards once.",
+    "Process subsets of people; for each subset, remember the fewest rides and the load in its last ride.",
+    "Try adding each not-yet-included person to the current last ride if they fit; otherwise start another ride."
+  ],
+  "analogy": "For every group of people already considered, keep the best packing that leaves the lightest final elevator.",
+  "example": "With capacity 10 and weights 7,2,3, the optimal packing is {7,3} and {2}, so two rides.",
+  "correctness": "For a fixed subset, fewer rides is always better; with equal rides a lighter last ride leaves at least as much room for future people. Trying each possible next person covers every ordering and therefore an optimal packing.",
+  "complexity": "O(n*2^n) time and O(2^n) space, where n<=20.",
+  "algorithm": "Use subset DP storing (rides,lastRideWeight), minimized lexicographically. Start dp[0]=(1,0). For each subset and each person not in it, append that person to the last ride if the weight fits; otherwise start a new ride. The answer is the ride count for the full mask.",
+  "visual": {
+    "kind": "dp",
+    "title": "Elevator Rides: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With capacity 10 and weights 7,2,3, the optimal packing is {7,3} and {2}, so two rides."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use subset DP storing (rides,lastRideWeight), minimized lexicographically. Start dp[0]=(1,0). For each subset and each person not in it, append that person to the last ride if the weight fits; otherwise start a new ride. The answer is the ride count for the full mask."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "10",
+      "7",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - With capacity 10 and weights 7,2,3, the optimal packing is {7,3} and {2}, so two rides."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "Each new road merges two components or leaves connectivity unchanged.",
+    "DSU reports whether endpoints were in different components and the new component size after a merge.",
+    "Track the number of components and the largest component size after every road."
+  ],
+  "analogy": "A road either joins two groups into a larger group or connects cities already in the same group.",
+  "example": "Joining components of sizes 3 and 2 changes the component count by -1 and creates size 5.",
+  "algorithm": "Initialize each city as a DSU component. For each edge, union its endpoints if distinct, update component count and maximum size, then print both.",
+  "correctness": "DSU represents exactly the connected components after each insertion; merging only distinct roots changes the count once and sums their sizes.",
+  "complexity": "O((n+m) alpha(n)) time and O(n) space, where alpha is the inverse Ackermann function.",
+  "visual": {
+    "kind": "graph",
+    "title": "Road Construction: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Joining components of sizes 3 and 2 changes the component count by -1 and creates size 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize each city as a DSU component. For each edge, union its endpoints if distinct, update component count and maximum size, then print both."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Before merge",
+      "After merge"
+    ],
+    "rows": [
+      [
+        "Components: 2; largest: 3",
+        "Components: 1; largest: 5"
+      ]
+    ],
+    "caption": "Illustrative example - Merging components of sizes 3 and 2 reduces the component count by one."
+  }
+}

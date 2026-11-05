@@ -1,0 +1,73 @@
+{
+  "hints": [
+    "In a directed graph, an edge to a vertex currently in the DFS recursion stack closes a directed cycle.",
+    "Track states unvisited, active, and finished, plus the parent vertex.",
+    "When an active neighbor is found, follow parents to reconstruct the cycle."
+  ],
+  "analogy": "An edge back into the current chain closes a loop with the directed edges already followed.",
+  "example": "Edges 1->2, 2->3, 3->1 produce cycle 1,2,3,1.",
+  "algorithm": "Run color-state DFS. On edge u->v with v active, collect u,parent[u],... until v, reverse, and append v; otherwise report IMPOSSIBLE.",
+  "correctness": "The parent chain consists of directed DFS-tree edges from v to u, and the back edge u->v closes that valid directed cycle.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Round Trip II: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Edges 1->2, 2->3, 3->1 produce cycle 1,2,3,1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run color-state DFS. On edge u->v with v active, collect u,parent[u],... until v, reverse, and append v; otherwise report IMPOSSIBLE."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "1"
+      }
+    ],
+    "caption": "Illustrative example - Edges 1->2, 2->3, 3->1 produce cycle 1,2,3,1."
+  }
+}

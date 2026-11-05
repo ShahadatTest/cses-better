@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Negative numbers mean a window sum can rise or fall, so a two-pointer rule is unsafe.",
+    "Let prefix[i] be the sum before index i; a subarray ending here has sum x when an earlier prefix equals currentPrefix-x.",
+    "Store how often each prefix sum has appeared, including prefix 0 once."
+  ],
+  "analogy": "For each stopping point, look for an earlier balance that is exactly x less.",
+  "algorithm": "At each element update prefix, add frequency[prefix-x] to the count, then increment frequency[prefix]. Use a wide integer for counts and sums.",
+  "correctness": "A subarray sum is the difference of its ending and preceding prefix sums; frequency counts every valid preceding boundary exactly once.",
+  "complexity": "O(n) expected time and O(n) space.",
+  "example": "For [2,-1,3,5,-2] and x=7, the whole array sums to 7, so it contributes one subarray. The other contiguous ranges do not sum to 7.",
+  "visual": {
+    "kind": "array",
+    "title": "Subarray Sums II: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5 7\n2 -1 3 5 -2"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [2,-1,3,5,-2] and x=7, the whole array sums to 7, so it contributes one subarray. The other contiguous ranges do not sum to 7."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "At each element update prefix, add frequency[prefix-x] to the count, then increment frequency[prefix]. Use a wide integer for counts and sums."
+      },
+      {
+        "label": "Result",
+        "detail": "2"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5  7"
+      ],
+      [
+        "2  -1  3  5  -2"
+      ]
+    ],
+    "caption": "Illustrative example - For [2,-1,3,5,-2] and x=7, the whole array sums to 7, so it contributes one subarray. The other contiguous ranges do not sum to 7."
+  }
+}

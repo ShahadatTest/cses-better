@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "The route takes exactly 48 moves, so each step must match its character or use any direction for ?.",
+    "Mark visited squares and reject a move outside the board or into a visited square.",
+    "Stop a branch early if it splits the remaining unvisited cells into disconnected regions; this avoids counting paths that cannot finish."
+  ],
+  "analogy": "Explore the maze one move at a time, crossing off visited cells and abandoning a route when it seals off an area.",
+  "example": "A fixed first move up from the upper-left corner is invalid immediately because it leaves the grid.",
+  "algorithm": "Depth-first search from (0,0), following the specified direction when fixed and all four when ?. Count only paths reaching (6,0) on move 48; prune boundaries, revisits, premature target arrival, and corridor splits.",
+  "correctness": "Each valid route has one unique sequence of 48 choices explored by DFS; each prune detects a condition that makes completion impossible, so no valid route is removed.",
+  "complexity": "Worst-case search is exponential, but pruning makes this fixed 7x7 task practical; O(48) recursion and O(49) visited-grid space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Grid Path Description: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "??????R??????U??????????????????????????LD????D?"
+      },
+      {
+        "label": "Work through it",
+        "detail": "A fixed first move up from the upper-left corner is invalid immediately because it leaves the grid."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Depth-first search from (0,0), following the specified direction when fixed and all four when ?. Count only paths reaching (6,0) on move 48; prune boundaries, revisits, premature target arrival, and corridor splits."
+      },
+      {
+        "label": "Result",
+        "detail": "201"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "??????R??????U??????????????????????????LD????D?"
+      ]
+    ],
+    "caption": "Illustrative example - A fixed first move up from the upper-left corner is invalid immediately because it leaves the grid."
+  }
+}

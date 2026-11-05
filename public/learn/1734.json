@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "For each query [l,r], count distinct values in that range.",
+    "Sweep r from left to right and keep a marker only at each value's latest occurrence.",
+    "When a new occurrence appears, remove the old marker; a Fenwick range sum then counts latest occurrences inside [l,r]."
+  ],
+  "analogy": "At the current right boundary, each value leaves one token at its newest position; a query sees exactly the values represented in its interval.",
+  "example": "For array 1,2,1 at right=3, markers are at positions 2 and 3; query [2,3] sees two distinct values.",
+  "algorithm": "Sort queries by right endpoint. Advance a sweep, update Fenwick latest-position markers, and answer each query by sum(l..r).",
+  "correctness": "A value has a marker in [l,r] exactly when its latest occurrence up to r is in that range, which is equivalent to occurring somewhere in [l,r].",
+  "complexity": "O((n+q) log n) time and O(n+q) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Distinct Values Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For array 1,2,1 at right=3, markers are at positions 2 and 3; query [2,3] sees two distinct values."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort queries by right endpoint. Advance a sweep, update Fenwick latest-position markers, and answer each query by sum(l..r)."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For array 1,2,1 at right=3, markers are at positions 2 and 3; query [2,3] sees two distinct values."
+  }
+}

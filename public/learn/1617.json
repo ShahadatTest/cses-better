@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Every one of the n positions independently has two choices: 0 or 1.",
+    "Multiply the number of choices per position rather than listing bit strings.",
+    "The result grows quickly, so reduce modulo 1,000,000,007."
+  ],
+  "analogy": "Each bit position is a separate two-choice switch.",
+  "example": "For n=3, the choices are 2*2*2=8 bit strings.",
+  "correctness": "Independent choices multiply, yielding exactly 2^n strings; modular reduction preserves the requested remainder.",
+  "complexity": "O(log n) time with repeated squaring, or O(n) with repeated multiplication; O(1) extra space.",
+  "algorithm": "Compute 2^n modulo 1,000,000,007 by repeated squaring, or multiply by 2 n times while reducing modulo the modulus.",
+  "visual": {
+    "kind": "trace",
+    "title": "Bit Strings: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3, the choices are 2*2*2=8 bit strings."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute 2^n modulo 1,000,000,007 by repeated squaring, or multiply by 2 n times while reducing modulo the modulus."
+      },
+      {
+        "label": "Result",
+        "detail": "8"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3"
+      ]
+    ],
+    "caption": "Illustrative example - For n=3, the choices are 2*2*2=8 bit strings."
+  }
+}

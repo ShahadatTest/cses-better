@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Each update adds x to every element in [a,b], but queries ask for one point only.",
+    "Use a difference array: add x at a and subtract x just after b.",
+    "A prefix sum of differences gives the current value at a position."
+  ],
+  "analogy": "Record where a range addition starts and where its effect stops; summing changes gives the point's current value.",
+  "example": "Adding 4 to positions 2..4 records +4 at 2 and -4 at 5; positions 3 and 4 gain 4.",
+  "algorithm": "Initialize differences from the original array. For range add [a,b] by u, diff[a]+=u and diff[b+1]-=u; for point query k, output the prefix sum through k.",
+  "correctness": "The two boundary changes make the cumulative added amount increase at a and decrease after b, exactly affecting the requested interval.",
+  "complexity": "O(n+q) time and O(n+q) space if storing all operations; streaming queries is possible with O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Range Update Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Adding 4 to positions 2..4 records +4 at 2 and -4 at 5; positions 3 and 4 gain 4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize differences from the original array. For range add [a,b] by u, diff[a]+=u and diff[b+1]-=u; for point query k, output the prefix sum through k."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Range 1",
+        "start": 2,
+        "end": 4
+      }
+    ],
+    "caption": "Illustrative example - Adding 4 to positions 2..4 records +4 at 2 and -4 at 5; positions 3 and 4 gain 4."
+  }
+}

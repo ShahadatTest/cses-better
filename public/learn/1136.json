@@ -1,0 +1,59 @@
+{
+  "hints": [
+    "Each query asks how many times a path uses each node.",
+    "For path u-v with l=LCA(u,v), add +1 at u and v, subtract 1 at l, and subtract 1 at parent(l).",
+    "After all queries, accumulate counts from children to parents."
+  ],
+  "analogy": "Path endpoints add flow upward until their routes meet at the LCA; the two subtractions prevent counting the meeting point twice.",
+  "example": "For path 4-5 with LCA 2, marks at 4,5 and -1 at 2 and parent(2) make the final count 1 on 4,2,5.",
+  "algorithm": "Apply the four difference updates per path using LCA, then postorder-sum each node's value into its parent. The resulting node total is the number of queried paths passing through it.",
+  "correctness": "For each path, the endpoint contributions cancel above the LCA and leave one unit on exactly the nodes along u-v; summing queries combines their counts.",
+  "complexity": "O((n+q) log n) time and O(n+q) space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Counting Paths: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For path 4-5 with LCA 2, marks at 4,5 and -1 at 2 and parent(2) make the final count 1 on 4,2,5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Apply the four difference updates per path using LCA, then postorder-sum each node's value into its parent. The resulting node total is the number of queried paths passing through it."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "4",
+        "label": "4",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "5",
+        "label": "5",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "4",
+        "to": "5"
+      }
+    ],
+    "caption": "Illustrative example - For path 4-5 with LCA 2, marks at 4,5 and -1 at 2 and parent(2) make the final count 1 on 4,2,5."
+  }
+}

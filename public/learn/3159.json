@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "The parity of the sum never changes when a and b become |a-b|.",
+    "A solution corresponds to dividing the original values into two groups with the same sum.",
+    "Recover an equal-sum partition with subset-sum DP, then repeatedly cancel one value from each group."
+  ],
+  "analogy": "Treat one group as positive and the other as negative; subtracting across groups cancels their values.",
+  "example": "For 2, 7, 4, 12, 1, the groups {12,2} and {7,4,1,2} would reuse a 2, so instead use {12,1} and {7,4,2}, both summing to 13.",
+  "algorithm": "If the total is odd, print -1. Otherwise use a bitset for reachable subset sums up to total/2, shifting and OR-ing once per number. For every newly reached sum, record the number that first reached it so an equal-sum subset can be reconstructed. If the target is unreachable, print -1. Put its elements in one group and the others in the other group. While both groups are nonempty, remove one value from each, output them, and put their absolute difference into the group that held the larger value; a zero can go in either group. If one group becomes empty, all remaining values are zero, so combine zeroes until one remains.",
+  "correctness": "Any sequence of differences represents a signed sum of the original values, so a final zero implies an equal partition. Each cancellation preserves equality of group sums and reduces the number of values by one, ending at zero.",
+  "complexity": "O(nS/w + S + n) time with w-bit bitset words, and O(S+n) space, where S is the total sum.",
+  "visual": {
+    "kind": "trace",
+    "title": "Replace with Difference: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 2, 7, 4, 12, 1, the groups {12,2} and {7,4,1,2} would reuse a 2, so instead use {12,1} and {7,4,2}, both summing to 13."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "If the total is odd, print -1. Otherwise use a bitset for reachable subset sums up to total/2, shifting and OR-ing once per number. For every newly reached sum, record the number that first reached it so an equal-sum subset can be reconstructed. If the target is unreachable, print -1. Put its elements in one group and the others in the other group. While both groups are nonempty, remove one value from each, output them, and put their absolute difference into the group that held the larger value; a zero can go in either group. If one group becomes empty, all remaining values are zero, so combine zeroes until one remains."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "7",
+      "4",
+      "12",
+      "1",
+      "13"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For 2, 7, 4, 12, 1, the groups {12,2} and {7,4,1,2} would reuse a 2, so instead use {12,1} and {7,4,2}, both summing to 13."
+  }
+}

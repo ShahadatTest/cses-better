@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "A playlist window must contain no repeated song.",
+    "Move the left edge forward until the new song is unique in the current window.",
+    "Update the longest window after each right edge."
+  ],
+  "analogy": "Keep a sliding shelf of songs with no duplicate; when one repeats, discard from the left until unique again.",
+  "example": "For 1,2,1,3, the longest unique interval is 1,2 or 2,1,3; answer 3.",
+  "algorithm": "Use two pointers and a last-seen position map. For each right index, set left=max(left,last[song]+1), then update last and the maximum length.",
+  "correctness": "The maintained window is the longest duplicate-free interval ending at the current position; taking its maximum considers every valid playlist segment.",
+  "complexity": "O(n) expected time with a hash map and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Playlist: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "8\n1 2 1 3 2 7 4 2"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 1,2,1,3, the longest unique interval is 1,2 or 2,1,3; answer 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use two pointers and a last-seen position map. For each right index, set left=max(left,last[song]+1), then update last and the maximum length."
+      },
+      {
+        "label": "Result",
+        "detail": "5"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "8"
+      ],
+      [
+        "1  2  1  3  2  7  4  2"
+      ]
+    ],
+    "caption": "Illustrative example - For 1,2,1,3, the longest unique interval is 1,2 or 2,1,3; answer 3."
+  }
+}

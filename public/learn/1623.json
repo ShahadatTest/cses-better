@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "There are at most 2^20 ways to choose one group, which is small enough to examine.",
+    "For each subset, add its apple weights and compare its sum with the remaining total.",
+    "Track the smallest absolute difference; choosing a subset automatically leaves the other apples in the second group."
+  ],
+  "analogy": "Try every possible assignment of each apple to the first group; the rest form the second group.",
+  "example": "For weights 3,2,7,4,1, choosing 2,3,4 gives 9 and the remainder 8, so the difference is 1.",
+  "algorithm": "Enumerate every subset (for example, bit masks), sum its weights, and minimize abs(total-2*subsetSum).",
+  "correctness": "Every division corresponds to a subset and its complement; evaluating all subsets therefore includes an optimal division.",
+  "complexity": "O(n*2^n) time with direct summation (or O(2^n) incremental subset sums) and O(1) extra space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Apple Division: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5\n3 2 7 4 1"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For weights 3,2,7,4,1, choosing 2,3,4 gives 9 and the remainder 8, so the difference is 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Enumerate every subset (for example, bit masks), sum its weights, and minimize abs(total-2*subsetSum)."
+      },
+      {
+        "label": "Result",
+        "detail": "1"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5"
+      ],
+      [
+        "3  2  7  4  1"
+      ]
+    ],
+    "caption": "Illustrative example - For weights 3,2,7,4,1, choosing 2,3,4 gives 9 and the remainder 8, so the difference is 1."
+  }
+}

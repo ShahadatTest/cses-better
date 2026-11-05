@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A product is a square exactly when every prime exponent is even.",
+    "Represent each number by the parity of its prime exponents.",
+    "Count subsets whose parity vectors XOR to zero using a linear basis."
+  ],
+  "analogy": "Even numbers of every prime factor cancel like pairs of switches.",
+  "example": "For [2,2,3,6], the square-product subsets are the empty set, the two 2s, [2,3,6] using either 2: 4 in total.",
+  "algorithm": "Sieve primes up to 5000 and factor every number. Build a bit vector with a 1 for primes occurring an odd number of times. Insert all vectors into a Gaussian-elimination XOR basis over GF(2), counting the rank r. Output 2^(n-r) modulo 1000000007, including the empty subset.",
+  "correctness": "The product is a square exactly when the XOR of the chosen parity vectors is zero. Choosing a subset is a binary vector mapped linearly to its parity sum. A rank-r linear map on n binary choices has a kernel of dimension n-r and therefore exactly 2^(n-r) zero-sum subsets.",
+  "complexity": "For n values at most 5000 and p primes up to 5000, bitset Gaussian elimination uses O(n*p^2/w) word operations in a simple implementation, O(p^2/w) words of space, plus factoring; w is the machine word size.",
+  "visual": {
+    "kind": "trace",
+    "title": "Square Subsets: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [2,2,3,6], the square-product subsets are the empty set, the two 2s, [2,3,6] using either 2: 4 in total."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sieve primes up to 5000 and factor every number. Build a bit vector with a 1 for primes occurring an odd number of times. Insert all vectors into a Gaussian-elimination XOR basis over GF(2), counting the rank r. Output 2^(n-r) modulo 1000000007, including the empty subset."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "3",
+      "6",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [2,2,3,6], the square-product subsets are the empty set, the two 2s, [2,3,6] using either 2: 4 in total."
+  }
+}

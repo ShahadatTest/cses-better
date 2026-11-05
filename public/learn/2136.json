@@ -1,0 +1,71 @@
+{
+  "hints": [
+    "The XOR of two bit strings has ones exactly where they differ.",
+    "Count those one bits with a population-count operation.",
+    "Compare every pair, using a machine word because k is at most 30."
+  ],
+  "analogy": "XOR marks the disagreements between two answer sheets.",
+  "example": "The strings 1010 and 1110 differ only in their second bit, so their Hamming distance is 1.",
+  "algorithm": "Convert each binary string to an integer. For each unordered pair, compute XOR and count its set bits; keep the minimum. A zero result is optimal and allows an immediate stop.",
+  "correctness": "Each XOR bit is one exactly when the corresponding input bits differ, so its population count is the Hamming distance. Inspecting all pairs finds the minimum.",
+  "complexity": "For n strings of k bits fitting one machine word, O(n^2+nk) time with constant-time population count and O(n) space.",
+  "visual": {
+    "kind": "flow",
+    "title": "Hamming Distance: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "The strings 1010 and 1110 differ only in their second bit, so their Hamming distance is 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Convert each binary string to an integer. For each unordered pair, compute XOR and count its set bits; keep the minimum. A zero result is optimal and allows an immediate stop."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Bit position",
+      "1010",
+      "1110",
+      "Different?"
+    ],
+    "rows": [
+      [
+        "1",
+        "1",
+        "1",
+        "No"
+      ],
+      [
+        "2",
+        "0",
+        "1",
+        "Yes"
+      ],
+      [
+        "3",
+        "1",
+        "1",
+        "No"
+      ],
+      [
+        "4",
+        "0",
+        "0",
+        "No"
+      ]
+    ],
+    "caption": "Illustrative example - The strings differ only at the second bit."
+  }
+}

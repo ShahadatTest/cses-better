@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "A range may receive an assignment or an addition, and queries ask for its sum.",
+    "Use a lazy segment tree that stores each segment sum and pending transformations.",
+    "Compose pending tags in order: assignment replaces old values; addition adjusts an assignment if one is pending, otherwise accumulates."
+  ],
+  "analogy": "Delay updates on a whole interval until a later operation needs its children.",
+  "example": "Assign [2,4] to 5 then add 3 there: all three values become 8, sum 24.",
+  "algorithm": "Build a lazy segment tree with sum plus optional assignment and addition tags. Push tags before partial descent; apply range set/add in O(log n), and combine child sums.",
+  "correctness": "Each lazy tag records exactly the transformation owed to every leaf in its interval; correct composition preserves the result of applying updates in order.",
+  "complexity": "O(log n) per update/query and O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Range Updates and Sums: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Assign [2,4] to 5 then add 3 there: all three values become 8, sum 24."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a lazy segment tree with sum plus optional assignment and addition tags. Push tags before partial descent; apply range set/add in O(log n), and combine child sums."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "4",
+      "5",
+      "3",
+      "8",
+      "24"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Assign [2,4] to 5 then add 3 there: all three values become 8, sum 24."
+  }
+}

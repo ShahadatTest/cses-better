@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "The order of coin values in the sum matters: 2+3 and 3+2 are distinct ways.",
+    "Let dp[s] count ordered sequences that total s.",
+    "Choose the last coin value and add dp[s-c] for each possible coin."
+  ],
+  "analogy": "Count ordered recipes by the final ingredient choice; a different last coin order is a different recipe.",
+  "example": "With coins 2,3,5 and target 9, sequences include 2+2+5, 2+5+2, and 5+2+2 separately.",
+  "algorithm": "Set dp[0]=1. For each sum s from 1 to x, sum dp[s-c] over every coin c<=s modulo 1,000,000,007.",
+  "correctness": "Every ordered sequence has exactly one last coin; removing it yields a unique smaller ordered sequence, so this recurrence counts each ordering once.",
+  "complexity": "O(nx) time and O(x) space.",
+  "visual": {
+    "kind": "dp",
+    "title": "Coin Combinations I: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With coins 2,3,5 and target 9, sequences include 2+2+5, 2+5+2, and 5+2+2 separately."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Set dp[0]=1. For each sum s from 1 to x, sum dp[s-c] over every coin c<=s modulo 1,000,000,007."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "3",
+      "5",
+      "9"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - With coins 2,3,5 and target 9, sequences include 2+2+5, 2+5+2, and 5+2+2 separately."
+  }
+}

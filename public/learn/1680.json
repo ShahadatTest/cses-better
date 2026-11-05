@@ -1,0 +1,59 @@
+{
+  "hints": [
+    "A route from 1 to n may be impossible if n is not reachable.",
+    "A DAG has a topological order, so longest-path values can be computed from earlier vertices to later ones.",
+    "Store a predecessor whenever a longer path to a vertex is found."
+  ],
+  "analogy": "Process a flight network in dependency order; each city keeps the longest route reaching it so far.",
+  "example": "In a chain 1->2->4, the longest route has three cities and is reconstructed via parents.",
+  "algorithm": "Topologically sort the graph. Set best[1]=1; for each reachable u, relax best[v]=best[u]+1 on each edge. Reconstruct from n; output IMPOSSIBLE if unset.",
+  "correctness": "Every directed path in a DAG follows topological order; when u is processed, all possible predecessor paths to u are known, so relaxation finds the longest path.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Longest Flight Route: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In a chain 1->2->4, the longest route has three cities and is reconstructed via parents."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Topologically sort the graph. Set best[1]=1; for each reachable u, relax best[v]=best[u]+1 on each edge. Reconstruct from n; output IMPOSSIBLE if unset."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      }
+    ],
+    "caption": "Illustrative example - In a chain 1->2->4, the longest route has three cities and is reconstructed via parents."
+  }
+}

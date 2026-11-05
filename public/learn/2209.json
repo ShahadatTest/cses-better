@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "Rotations identify necklaces that differ only by where the first bead is chosen.",
+    "Burnside's lemma averages the number of colorings fixed by each rotation.",
+    "Group rotations by gcd with n; a rotation with d cycles fixes m^d colorings."
+  ],
+  "analogy": "Count colorings unchanged by each rotation, then average those counts.",
+  "example": "For 3 beads and 2 colors, the identity fixes 8 colorings and each nontrivial rotation fixes 2; the average is 4 necklaces.",
+  "algorithm": "Use Burnside: answer=(1/n)*sum over divisors d of n of phi(n/d)*m^d modulo MOD. Compute phi and factorization of n, modular powers, and inverse n.",
+  "correctness": "There are phi(n/d) rotations with gcd(n,k)=d, each having d cycles and therefore m^d fixed colorings. Burnside's average counts each rotation-equivalence class once.",
+  "complexity": "O(sqrt n+tau(n) log MOD) time and O(tau(n)) space, where tau(n) is the divisor count.",
+  "visual": {
+    "kind": "math",
+    "title": "Counting Necklaces: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 3 beads and 2 colors, the identity fixes 8 colorings and each nontrivial rotation fixes 2; the average is 4 necklaces."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use Burnside: answer=(1/n)*sum over divisors d of n of phi(n/d)*m^d modulo MOD. Compute phi and factorization of n, modular powers, and inverse n."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Rotation",
+      "Fixed colorings"
+    ],
+    "rows": [
+      [
+        "Identity",
+        "8"
+      ],
+      [
+        "Each nontrivial rotation",
+        "2"
+      ],
+      [
+        "Average",
+        "4"
+      ]
+    ],
+    "caption": "Illustrative example - Burnside averaging counts colorings up to rotation."
+  }
+}

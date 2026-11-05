@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "The final throw can be 1 through 6, so a way to make sum s can come from sums s-1 through s-6.",
+    "Let dp[0]=1 for the one way to make zero with no throws.",
+    "For each sum, add the counts for legal last-face values and reduce modulo 1,000,000,007."
+  ],
+  "analogy": "Choose the last die face; the earlier throws must make exactly what remains.",
+  "example": "For n=3: ways are 1+1+1, 1+2, 2+1, and 3, so dp[3]=4.",
+  "correctness": "Every nonempty sequence of throws has one unique last face, and removing it leaves one sequence for a smaller sum; this partitions all solutions.",
+  "complexity": "O(6n)=O(n) time and O(n) space, where n is the target sum.",
+  "algorithm": "Set dp[0]=1. For each sum s=1..n, add dp[s-d] for die faces d=1..6 with s>=d, modulo 1,000,000,007. dp[s] counts ordered sequences of throws that total s.",
+  "visual": {
+    "kind": "dp",
+    "title": "Dice Combinations: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3: ways are 1+1+1, 1+2, 2+1, and 3, so dp[3]=4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Set dp[0]=1. For each sum s=1..n, add dp[s-d] for die faces d=1..6 with s>=d, modulo 1,000,000,007. dp[s] counts ordered sequences of throws that total s."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "State",
+      "Ways / value"
+    ],
+    "rows": [
+      [
+        "3",
+        "4"
+      ]
+    ],
+    "caption": "Illustrative example - For n=3: ways are 1+1+1, 1+2, 2+1, and 3, so dp[3]=4."
+  }
+}

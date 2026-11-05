@@ -1,0 +1,44 @@
+{
+  "hints": [
+    "An optimal school serves a consecutive interval of houses.",
+    "The best school position for one interval is a weighted median of its children.",
+    "Use interval-cost DP with divide-and-conquer optimization of monotone best split points."
+  ],
+  "analogy": "A school placed at the weighted middle balances the walking distance of children on either side.",
+  "example": "For child counts [1,1,1] and one school, place it at house 2 for total distance 2.",
+  "algorithm": "Precompute interval costs cost(l,r) using weighted medians and prefix sums of child counts and weighted positions. Let dp[g][i] be the minimum cost to serve the first i houses with g schools; transition over j<i using dp[g-1][j]+cost(j+1,i). Compute each DP layer by divide-and-conquer optimization, searching monotone ranges of optimal split indices. Use wide integers.",
+  "correctness": "One-dimensional nearest-school assignments form consecutive intervals, and their optimal single school is a weighted median. The recurrence covers every partition; its interval costs have the Monge property, giving nondecreasing optimal split points and validating the restricted searches.",
+  "complexity": "For n houses and k schools, O(n^2+kn log n) time and O(n^2+n) space after precomputing interval costs.",
+  "visual": {
+    "kind": "flow",
+    "title": "Houses and Schools: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For child counts [1,1,1] and one school, place it at house 2 for total distance 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Precompute interval costs cost(l,r) using weighted medians and prefix sums of child counts and weighted positions. Let dp[g][i] be the minimum cost to serve the first i houses with g schools; transition over j<i using dp[g-1][j]+cost(j+1,i). Compute each DP layer by divide-and-conquer optimization, searching monotone ranges of optimal split indices. Use wide integers."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For child counts [1,1,1] and one school, place it at house 2 for total distance 2."
+  }
+}

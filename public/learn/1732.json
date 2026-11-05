@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "A border is a proper prefix that is also a suffix.",
+    "The prefix-function value at the final character gives the longest border length.",
+    "Follow prefix-function links repeatedly to find every shorter border."
+  ],
+  "analogy": "The longest matching end-cap contains all smaller border lengths in its own prefix chain.",
+  "example": "For 'abcab', border length 2 is 'ab'; length 5 is excluded because a border must be proper.",
+  "algorithm": "Compute KMP prefix function. Start with pi[n-1], output that length, then repeatedly replace it with pi[length-1] until zero; sort lengths ascending if required.",
+  "correctness": "Every border of the full string is a border of its longest border, so following the prefix-function chain visits all proper borders.",
+  "complexity": "O(n) time and O(n) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Finding Borders: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 'abcab', border length 2 is 'ab'; length 5 is excluded because a border must be proper."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute KMP prefix function. Start with pi[n-1], output that length, then repeatedly replace it with pi[length-1] until zero; sort lengths ascending if required."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Role",
+      "String"
+    ],
+    "rows": [
+      [
+        "Text / source",
+        "abcab"
+      ],
+      [
+        "Pattern / candidate",
+        "ab"
+      ]
+    ],
+    "caption": "Illustrative example - For 'abcab', border length 2 is 'ab'; length 5 is excluded because a border must be proper."
+  }
+}

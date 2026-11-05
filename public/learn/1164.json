@@ -1,0 +1,56 @@
+{
+  "analogy": "Assign each new meeting to the room that becomes free first.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "hints": [
+    "Sort bookings by arrival time and keep end times of currently occupied rooms.",
+    "A room can be reused only if its previous customer has left strictly before this customer arrives.",
+    "If no room is free, allocate a new one; remember each original customer's assigned room."
+  ],
+  "algorithm": "Sort bookings by arrival. Reuse a room whose end time is strictly less than the new arrival; otherwise create one. Store the chosen room ID by original booking index and print the maximum ID plus assignments.",
+  "correctness": "If the earliest-ending room has end>=arrival, every occupied room is still in use, so a new room is necessary. If its end<arrival, reusing it is valid and does not increase the room count.",
+  "example": "Bookings [1,4) and [4,5) still need different rooms under the problem's strict rule, since the first customer leaves at the exact arrival time of the next.",
+  "visual": {
+    "kind": "array",
+    "title": "Room Allocation: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3\n1 2\n2 4\n4 4"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Bookings [1,4) and [4,5) still need different rooms under the problem's strict rule, since the first customer leaves at the exact arrival time of the next."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort bookings by arrival. Reuse a room whose end time is strictly less than the new arrival; otherwise create one. Store the chosen room ID by original booking index and print the maximum ID plus assignments."
+      },
+      {
+        "label": "Result",
+        "detail": "2\n1 2 1"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3"
+      ],
+      [
+        "1  2"
+      ],
+      [
+        "2  4"
+      ],
+      [
+        "4  4"
+      ]
+    ],
+    "caption": "Illustrative example - Bookings [1,4) and [4,5) still need different rooms under the problem's strict rule, since the first customer leaves at the exact arrival time of the next."
+  }
+}

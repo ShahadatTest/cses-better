@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "For each value, earlier values that are not smaller cannot be the answer.",
+    "Use a stack of candidate positions in increasing value order.",
+    "Pop while the stack top is greater than or equal to the current value; the remaining top is the nearest smaller one."
+  ],
+  "analogy": "Keep a stack of nearby candidates, removing any value that is too large to help future positions.",
+  "example": "For 2,5,1,4: 5's nearest smaller is position 1; when 1 arrives it removes both, so 4's answer is position 3.",
+  "algorithm": "Scan left to right, popping while value[top]>=x. Output top index or 0, then push current position.",
+  "complexity": "O(n) time because each index is pushed and popped once; O(n) stack space.",
+  "correctness": "When a value is popped, it is not smaller than the current value and is farther left, so it cannot be the nearest smaller for the current or future positions. The stack remains increasing; its top is the nearest smaller position.",
+  "visual": {
+    "kind": "array",
+    "title": "Nearest Smaller Values: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "8\n2 5 1 4 8 3 2 5"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 2,5,1,4: 5's nearest smaller is position 1; when 1 arrives it removes both, so 4's answer is position 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Scan left to right, popping while value[top]>=x. Output top index or 0, then push current position."
+      },
+      {
+        "label": "Result",
+        "detail": "0 1 0 3 4 3 3 7"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "8"
+      ],
+      [
+        "2  5  1  4  8  3  2  5"
+      ]
+    ],
+    "caption": "Illustrative example - For 2,5,1,4: 5's nearest smaller is position 1; when 1 arrives it removes both, so 4's answer is position 3."
+  }
+}

@@ -267,14 +267,14 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
         {/* Left: Mode Switcher & Language Selector */}
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
           {/* Mode Switcher Button Group */}
-          <div className="inline-flex items-center rounded-lg bg-surface-0 p-1 border border-surface-2/80">
+          <div className="inline-flex items-center gap-1">
             <button
               type="button"
               onClick={() => setEditorMode('monaco')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60 ${
                 editorMode === 'monaco'
-                  ? 'bg-surface-2 text-sky-400 font-semibold shadow-sm border border-surface-3/50'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-surface-2/50'
+                  ? 'bg-surface-2 text-sky-400 font-semibold'
+                  : 'text-slate-400 hover:text-slate-100 hover:bg-surface-2/60'
               }`}
               title="Monaco Code Editor Pro (with VS Code features & shortcuts)"
             >
@@ -285,10 +285,10 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
             <button
               type="button"
               onClick={() => setEditorMode('embed')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60 ${
                 editorMode === 'embed'
-                  ? 'bg-surface-2 text-amber-400 font-semibold shadow-sm border border-surface-3/50'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-surface-2/50'
+                  ? 'bg-surface-2 text-amber-400 font-semibold'
+                  : 'text-slate-400 hover:text-slate-100 hover:bg-surface-2/60'
               }`}
               title="OnlineCompiler.io Embedded Sandbox Widget"
             >
@@ -478,7 +478,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
           {isZenMode && (
             <>
               <span className="text-surface-3 hidden sm:inline">|</span>
-              <span className="text-[10px] font-mono text-amber-400/90 hidden sm:inline">
+              <span className="text-[11px] font-mono text-amber-400/90 hidden sm:inline">
                 Zen Mode (Esc to exit)
               </span>
             </>
@@ -531,7 +531,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
                   <Play className="w-3.5 h-3.5 fill-current text-sky-400" />
                 )}
                 <span>{isRunning ? 'Running...' : 'Run'}</span>
-                <kbd className="hidden sm:inline-block ml-1 px-1 py-0.5 text-[10px] text-slate-400 bg-surface-0/60 rounded border border-surface-3 font-mono">
+                <kbd className="hidden sm:inline-block ml-1 px-1 py-0.5 text-[11px] text-slate-400 bg-surface-0/60 rounded border border-surface-3 font-mono">
                   Ctrl+↵
                 </kbd>
               </button>
@@ -585,7 +585,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
                 >
                   <Check className="w-3.5 h-3.5" />
                   <span>Test Cases</span>
-                  <kbd className="hidden sm:inline-block ml-1 px-1 py-0.5 text-[10px] text-emerald-300/80 bg-emerald-950/60 rounded border border-emerald-800/60 font-mono">
+                  <kbd className="hidden sm:inline-block ml-1 px-1 py-0.5 text-[11px] text-emerald-300/80 bg-emerald-950/60 rounded border border-emerald-800/60 font-mono">
                     Ctrl+Shift+↵
                   </kbd>
                 </button>
@@ -597,7 +597,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
                   type="button"
                   onClick={onSubmitCses}
                   disabled={isRunning || isSubmitting}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-sm shadow-emerald-950/40 border border-emerald-500/50 transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold bg-sky-700 hover:bg-sky-600 text-white shadow-sm shadow-emerald-950/40 border border-emerald-500/50 transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
                   title="Submit Solution directly to official CSES.fi Judge"
                 >
                   <Send className="w-3.5 h-3.5" />

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Vertices in the same strongly connected component reach one another.",
+    "Compress these components into a directed acyclic graph.",
+    "Propagate bitsets of reachable components backward in topological order."
+  ],
+  "analogy": "Collapse each mutually reachable cluster to one station, then collect all destinations reachable from each station.",
+  "example": "For edges 1->2, 2->1, 2->3, node 1 reaches 3 but node 3 cannot reach 1.",
+  "algorithm": "Find strongly connected components and build their condensation DAG. In reverse topological order set each component's own bit and OR in every outgoing neighbor's reachability bitset. Answer each query by testing the target component bit in the source component's set.",
+  "correctness": "A component reaches itself, and every other path starts with an outgoing condensation edge. Reverse topological propagation therefore builds exactly each reachable set; compression preserves reachability between original vertices.",
+  "complexity": "For C components, E condensation edges, q queries and word size w, O(n+m+(C+E)*ceil(C/w)+q) word operations and O(C*ceil(C/w)+n+m) space.",
+  "visual": {
+    "kind": "flow",
+    "title": "Reachability Queries: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For edges 1->2, 2->1, 2->3, node 1 reaches 3 but node 3 cannot reach 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Find strongly connected components and build their condensation DAG. In reverse topological order set each component's own bit and OR in every outgoing neighbor's reachability bitset. Answer each query by testing the target component bit in the source component's set."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For edges 1->2, 2->1, 2->3, node 1 reaches 3 but node 3 cannot reach 1."
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "A city needs the nearest shop with a different city label.",
+    "Propagate shop origins through the graph in increasing distance.",
+    "Keep the two nearest distinct shop origins at each city."
+  ],
+  "analogy": "Each shop sends a wave labeled with its city; each vertex keeps the first two differently labeled waves.",
+  "example": "On path 1-2-3 with shops at 1 and 3, answers are 2,1,2.",
+  "algorithm": "Run multi-source BFS, initializing each shop with distance zero and its own origin label. At each vertex accept and propagate at most two arrivals with different origin labels, in BFS order. For a non-shop use its first arrival; for a shop use the first arrival whose origin is not itself. Print -1 if none exists.",
+  "correctness": "The first two distinct origins arriving at a vertex are its two closest shops. A discarded third origin cannot become one of the two closest after passing through that vertex, because the first two can follow the same remaining path no later. Therefore propagation preserves all needed answers.",
+  "complexity": "For n cities and m roads, O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Nearest Shops: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "On path 1-2-3 with shops at 1 and 3, answers are 2,1,2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run multi-source BFS, initializing each shop with distance zero and its own origin label. At each vertex accept and propagate at most two arrivals with different origin labels, in BFS order. For a non-shop use its first arrival; for a shop use the first arrival whose origin is not itself. Print -1 if none exists."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      }
+    ],
+    "caption": "Illustrative example - On path 1-2-3 with shops at 1 and 3, answers are 2,1,2."
+  }
+}

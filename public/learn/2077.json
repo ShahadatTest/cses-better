@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "A necessary city is an articulation point.",
+    "For a non-root DFS vertex, ask whether a child subtree can reach an ancestor without it.",
+    "The DFS root is special: it is necessary exactly when it has at least two DFS children."
+  ],
+  "analogy": "A junction is essential if at least one branch has no alternate route around it.",
+  "example": "In the path 1-2-3, city 2 is necessary; in a triangle no city is necessary.",
+  "algorithm": "Run DFS and compute discovery and low values. A non-root vertex v is necessary if some DFS child u has low[u] >= discovery[v]. A DFS root is necessary if it has at least two DFS children. Output all marked vertices.",
+  "correctness": "For a non-root, the inequality says the child subtree cannot reach an ancestor of v without passing through v. Separate root children have no connecting edge bypassing the root, so the root rule handles its lack of a parent.",
+  "complexity": "For n cities and m roads, O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "flow",
+    "title": "Necessary Cities: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In the path 1-2-3, city 2 is necessary; in a triangle no city is necessary."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run DFS and compute discovery and low values. A non-root vertex v is necessary if some DFS child u has low[u] >= discovery[v]. A DFS root is necessary if it has at least two DFS children. Output all marked vertices."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Graph",
+      "Necessary cities"
+    ],
+    "rows": [
+      [
+        "Path 1-2-3",
+        "2"
+      ],
+      [
+        "Triangle",
+        "None"
+      ]
+    ],
+    "caption": "Illustrative example - A path middle is an articulation point; a triangle has no articulation point."
+  }
+}

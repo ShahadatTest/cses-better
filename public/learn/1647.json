@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A segment tree can store the minimum for each covered interval.",
+    "Build leaves from array values and each parent as the smaller of its children.",
+    "A range query combines only tree nodes fully inside the requested interval."
+  ],
+  "analogy": "Store the smallest value in nested intervals so each query can use a few precomputed pieces.",
+  "example": "For [5,2,7,1], the minimum on positions 2..4 is min(2,7,1)=1.",
+  "algorithm": "Build a segment tree for range minimum. Query [a,b] recursively: use a node fully covered, skip disjoint nodes, and combine overlapping children.",
+  "correctness": "The tree partitions the requested interval into disjoint covered nodes; taking their minimum equals the minimum of every array element in the interval.",
+  "complexity": "O(n) build, O(log n) per query, and O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Static Range Minimum Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [5,2,7,1], the minimum on positions 2..4 is min(2,7,1)=1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a segment tree for range minimum. Query [a,b] recursively: use a node fully covered, skip disjoint nodes, and combine overlapping children."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Range 1",
+        "start": 2,
+        "end": 4
+      }
+    ],
+    "caption": "Illustrative example - For [5,2,7,1], the minimum on positions 2..4 is min(2,7,1)=1."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Sort coders by skill before forming groups.",
+    "Track teams that have started but whose maximum skill has not yet been chosen.",
+    "Each open team accrues the gap between consecutive skill values."
+  ],
+  "analogy": "An open team accumulates one unit of penalty for every unit the scan moves past its smallest member.",
+  "example": "For skills [2,3,5] and penalty limit 2, the valid partitions are all singletons, {2,3} with {5}, and {3,5} with {2}: 3.",
+  "algorithm": "Sort skills. Let dp[o][c] count partial assignments with o open teams and accumulated penalty c. Before processing each coder, add o*(currentSkill-previousSkill) to c. Then place the coder in one of o open teams and leave it open, form a singleton, start a new open team, or join and close one of o open teams. These give multipliers o, 1, 1 and o respectively. Discard costs above x and work modulo 1000000007. Sum dp[0][c] for c<=x after all coders.",
+  "correctness": "For every open team, each skill gap between its first and last member contributes once to its final max-minus-min penalty. The four transitions cover exactly the possible roles of the next coder, including the choice of which labeled-by-members open team to join. Only states with no open teams are complete partitions.",
+  "complexity": "For n coders and penalty limit x, there are O(n^2*x) state transitions and O(n*x) rolling space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Coding Company: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For skills [2,3,5] and penalty limit 2, the valid partitions are all singletons, {2,3} with {5}, and {3,5} with {2}: 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort skills. Let dp[o][c] count partial assignments with o open teams and accumulated penalty c. Before processing each coder, add o*(currentSkill-previousSkill) to c. Then place the coder in one of o open teams and leave it open, form a singleton, start a new open team, or join and close one of o open teams. These give multipliers o, 1, 1 and o respectively. Discard costs above x and work modulo 1000000007. Sum dp[0][c] for c<=x after all coders."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "3",
+      "5"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For skills [2,3,5] and penalty limit 2, the valid partitions are all singletons, {2,3} with {5}, and {3,5} with {2}: 3."
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "A rooted tree is determined by the multiset of its rooted child subtrees.",
+    "Assign equal IDs to identical sorted lists of child IDs.",
+    "Compare the IDs of the two roots, using the same ID dictionary for both trees."
+  ],
+  "analogy": "Describe each branch by a label derived from the sorted labels of its smaller branches.",
+  "example": "A root with two leaf children is isomorphic to another root with two leaves, regardless of vertex labels.",
+  "algorithm": "Process each rooted tree bottom-up. For each vertex sort the IDs of its children and intern that list in a shared dictionary, obtaining the same ID for equal lists. Compare the IDs at the two roots. Use iterative traversal if needed for deep trees.",
+  "correctness": "Leaves share the empty-list ID. Inductively, two rooted subtrees receive the same ID exactly when their child-subtree multisets match, which is precisely rooted tree isomorphism.",
+  "complexity": "For n vertices per pair, O(n log n) time with ordered interning and O(n) space, apart from representation overhead.",
+  "visual": {
+    "kind": "graph",
+    "title": "Tree Isomorphism I: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A root with two leaf children is isomorphic to another root with two leaves, regardless of vertex labels."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Process each rooted tree bottom-up. For each vertex sort the IDs of its children and intern that list in a shared dictionary, obtaining the same ID for equal lists. Compare the IDs at the two roots. Use iterative traversal if needed for deep trees."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Tree",
+      "Shape"
+    ],
+    "rows": [
+      [
+        "A",
+        "root with two leaf children"
+      ],
+      [
+        "B",
+        "root with two leaf children"
+      ]
+    ],
+    "caption": "Illustrative example - Relabeling vertices does not change this tree shape."
+  }
+}

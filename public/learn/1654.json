@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "x OR y = x means y is a bit-subset of x.",
+    "x AND y = x means y is a bit-superset of x.",
+    "Use subset and superset sum-over-subsets transforms; subtract disjoint values for the third count."
+  ],
+  "analogy": "Each bitmask is a set of bit positions, turning bit operations into subset questions.",
+  "example": "For values [1,2,3] and x=1, there is 1 subset-mask value, 2 superset-mask values, and 2 values sharing a bit.",
+  "algorithm": "Create frequency arrays over all B-bit masks. Apply the subset-sum transform to get counts of submasks and the superset-sum transform to get counts of supermasks. For each x print subset[x], superset[x], and n-subset[fullMask XOR x]. Count duplicates through frequencies.",
+  "correctness": "The first two transformed sums count exactly the masks contained in x and containing x. A mask has zero intersection with x exactly when it is a submask of the B-bit complement, so subtracting those gives the third count.",
+  "complexity": "For n values and B bits, O(n+B*2^B) time and O(2^B) space.",
+  "visual": {
+    "kind": "bitwise",
+    "title": "SOS Bit Problem: follow one example",
+    "caption": "Track the binary state and the effect of each bit operation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For values [1,2,3] and x=1, there is 1 subset-mask value, 2 superset-mask values, and 2 values sharing a bit."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Create frequency arrays over all B-bit masks. Apply the subset-sum transform to get counts of submasks and the superset-sum transform to get counts of supermasks. For each x print subset[x], superset[x], and n-subset[fullMask XOR x]. Count duplicates through frequencies."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1 (binary 1)",
+      "2 (binary 10)",
+      "3 (binary 11)"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For values [1,2,3] and x=1, there is 1 subset-mask value, 2 superset-mask values, and 2 values sharing a bit."
+  }
+}

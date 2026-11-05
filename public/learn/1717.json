@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "A derangement is a permutation with no fixed position.",
+    "After choosing a wrong destination for item 1, consider whether that destination points back to 1.",
+    "That split gives a recurrence using derangements of n-1 and n-2 items."
+  ],
+  "analogy": "Assign the first person's item to someone else, then either close a two-person swap or continue a longer cycle.",
+  "example": "For n=3, the derangements are [2,3,1] and [3,1,2], so the count is 2.",
+  "algorithm": "Use D[1]=0,D[2]=1 and D[n]=(n-1)(D[n-1]+D[n-2]) modulo 1,000,000,007.",
+  "correctness": "There are n-1 choices for item 1's recipient; the remaining structure is either a smaller derangement or a derangement with one fewer participant in the displacement chain.",
+  "complexity": "O(n) time and O(1) rolling space.",
+  "visual": {
+    "kind": "math",
+    "title": "Christmas Party: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3, the derangements are [2,3,1] and [3,1,2], so the count is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use D[1]=0,D[2]=1 and D[n]=(n-1)(D[n-1]+D[n-2]) modulo 1,000,000,007."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "2",
+      "1"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=3, the derangements are [2,3,1] and [3,1,2], so the count is 2."
+  }
+}

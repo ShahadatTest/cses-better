@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "Translate the destination to (0,0) and use symmetry.",
+    "One move changes the sum of coordinates by an odd number.",
+    "Combine lower bounds from coordinate distance and total distance, then fix parity."
+  ],
+  "analogy": "Each move reaches at most two squares along one axis and changes board color.",
+  "example": "From (4,1) to (1,1), the displacement is (3,0); three knight moves suffice, and fewer cannot.",
+  "algorithm": "Set a=max(x-1,y-1), b=min(x-1,y-1). Handle (a,b)=(1,0) with answer 3 and (2,2) with answer 4. Otherwise let d=max(ceil(a/2),ceil((a+b)/3)). Increase d until d and a+b have the same parity, then print d.",
+  "correctness": "Each move changes the larger coordinate by at most 2 and the coordinate sum by at most 3, giving the two lower bounds. Every move flips square color, forcing the parity. Except for the two small exceptional positions, knight-move constructions attain the smallest value satisfying these bounds and parity; the exceptions are checked directly.",
+  "complexity": "Each query takes O(1) time and O(1) extra space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Knight Moves Queries: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "From (4,1) to (1,1), the displacement is (3,0); three knight moves suffice, and fewer cannot."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Set a=max(x-1,y-1), b=min(x-1,y-1). Handle (a,b)=(1,0) with answer 3 and (2,2) with answer 4. Otherwise let d=max(ceil(a/2),ceil((a+b)/3)). Increase d until d and a+b have the same parity, then print d."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Start",
+      "End",
+      "Displacement",
+      "Minimum moves"
+    ],
+    "rows": [
+      [
+        "(4,1)",
+        "(1,1)",
+        "(-3,0)",
+        "3"
+      ]
+    ],
+    "caption": "Illustrative example - The worked example gives a three-move lower bound and matching route length."
+  }
+}

@@ -1,0 +1,4448 @@
+[
+  {
+    "id": "inoi-2004-legacy-1",
+    "contestId": "inoi",
+    "year": 2004,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0401",
+    "title": "The Nilgiri Tahr",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2004/inoi2004/inoi2004-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "bfs",
+      "shortest-path"
+    ],
+    "visual": {
+      "kind": "grid-path",
+      "title": "Visualize The Nilgiri Tahr",
+      "caption": "Reachable rocks form a grid graph; connect orthogonal neighbors only when their heights differ by at most one. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Reachable rocks form a grid graph; connect orthogonal neighbors only when their heights differ by at most one."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Mark legal one-foot moves as edges, then trace a path from the top-left to the grass."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "start",
+            "rock",
+            "rock"
+          ],
+          [
+            "rock",
+            "rock",
+            "rock"
+          ],
+          [
+            "rock",
+            "rock",
+            "grass"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2004-legacy-2",
+    "contestId": "inoi",
+    "year": 2004,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0402",
+    "title": "The Rajah's Wrestlers",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2004/inoi2004/inoi2004-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "tournament",
+      "ordering",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "tournament-ordering",
+      "title": "Minimize coins by choosing the presentation order",
+      "caption": "Every pair fights once. A wins when sA + rA*sB exceeds sB + rB*sA. A wrestler earns one coin per win, plus one for each defeated wrestler presented earlier.",
+      "steps": [
+        {
+          "label": "Resolve each match",
+          "detail": "For wrestlers A and B, compare sA + rA*sB with sB + rB*sA."
+        },
+        {
+          "label": "Count awards for an order",
+          "detail": "Each win earns one coin; an earlier presentation of a defeated wrestler adds one more coin."
+        },
+        {
+          "label": "Minimize the total",
+          "detail": "Choose a presentation sequence that minimizes the total coins awarded."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Matchup",
+          "A index",
+          "B index"
+        ],
+        "rows": [
+          [
+            "A vs B",
+            "sA + rA * sB",
+            "sB + rB * sA"
+          ],
+          [
+            "presentation order",
+            "wins + earlier defeated wrestlers",
+            "maximize/compute coin awards"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2005-legacy-1",
+    "contestId": "inoi",
+    "year": 2005,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0501",
+    "title": "Frog jumping",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2005/inoi2005/inoi2005-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "shortest-path",
+      "dynamic-programming"
+    ],
+    "visual": {
+      "kind": "launcher-grid",
+      "title": "Find the fewest launcher jumps across the board",
+      "caption": "Each cell gives maximum rightward and downward jump lengths. The diagram is symbolic, not a sample board.",
+      "steps": [
+        {
+          "label": "Read each launcher",
+          "detail": "A cell (i,j) allows a right jump of 1..R[i,j] cells or a down jump of 1..D[i,j] cells."
+        },
+        {
+          "label": "Move between cells",
+          "detail": "Treat every legal jump as one edge from the current cell to its landing cell."
+        },
+        {
+          "label": "Minimize jumps",
+          "detail": "Find the fewest jumps from the top-left cell to the bottom-right; report unreachable when no route exists."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "start: (R1,D1)",
+            "right <= R1",
+            "..."
+          ],
+          [
+            "down <= D1",
+            "(Rij,Dij)",
+            "..."
+          ],
+          [
+            "...",
+            "...",
+            "goal"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2005-legacy-2",
+    "contestId": "inoi",
+    "year": 2005,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0502",
+    "title": "The Gangster's Authentication Protocol",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2005/inoi2005/inoi2005-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sets",
+      "decoding",
+      "counting"
+    ],
+    "visual": {
+      "kind": "set-decoding",
+      "title": "Reconstruct the collections from encoded values",
+      "caption": "Each encoded element is the number of elements in the other collections that are smaller than its original value.",
+      "steps": [
+        {
+          "label": "Interpret the encoding",
+          "detail": "For each collection, every listed number counts smaller elements outside that collection."
+        },
+        {
+          "label": "Recover the original sets",
+          "detail": "Use all encoded collections to reconstruct which original values belong to each gangster."
+        },
+        {
+          "label": "Verify the partition",
+          "detail": "The decoded collections partition {1,...,N}: every number appears exactly once."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Encoded element m",
+          "Count in other sets < m",
+          "Decode"
+        ],
+        "rows": [
+          [
+            "m",
+            "c(m)",
+            "recover original collection"
+          ],
+          [
+            "all K collections",
+            "partition of {1..N}",
+            "check no missing/repeated elements"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2006-legacy-1",
+    "contestId": "inoi",
+    "year": 2006,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0601",
+    "title": "Gift Coupons",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2006/inoi2006/inoi2006-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "arrays",
+      "three-sum",
+      "distinctness"
+    ],
+    "visual": {
+      "kind": "three-book-sum",
+      "title": "Find three distinct books matching the coupon value",
+      "caption": "Choose three different catalogue entries whose prices sum exactly to the coupon value.",
+      "steps": [
+        {
+          "label": "Choose distinct entries",
+          "detail": "Select three different book indices i, j, and k."
+        },
+        {
+          "label": "Match the coupon",
+          "detail": "Their three prices must sum exactly to M."
+        },
+        {
+          "label": "Return a valid triple",
+          "detail": "Report any matching triple, or the no-solution result when none exists."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Book indices",
+          "Distinctness",
+          "Coupon condition"
+        ],
+        "rows": [
+          [
+            "i < j < k",
+            "three different books",
+            "price_i + price_j + price_k = coupon value"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2006-legacy-2",
+    "contestId": "inoi",
+    "year": 2006,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0602",
+    "title": "Train ride",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2006/inoi2006/inoi2006-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "intervals",
+      "ordering",
+      "longest-chain"
+    ],
+    "visual": {
+      "kind": "compatible-routes",
+      "title": "Chain the largest number of train routes",
+      "caption": "Routes are intervals on the ordered stations. Transfers stay in the same direction, overlap at a station, and move to a route with a later start. Interval positions below are schematic.",
+      "steps": [
+        {
+          "label": "Model each route",
+          "detail": "A route (i,j) serves stations from i through j, where i < j."
+        },
+        {
+          "label": "Transfer legally",
+          "detail": "Continue in the same direction and switch only to a route whose start is later than the current route start."
+        },
+        {
+          "label": "Maximize route count",
+          "detail": "Find the longest valid route chain beginning with a route from station 1."
+        }
+      ],
+      "diagram": {
+        "type": "intervals",
+        "items": [
+          {
+            "label": "route a: [s_a,e_a]",
+            "start": 0,
+            "end": 4
+          },
+          {
+            "label": "route b: [s_b,e_b]",
+            "start": 2,
+            "end": 6
+          },
+          {
+            "label": "route c: [s_c,e_c]",
+            "start": 5,
+            "end": 8
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2007-legacy-1",
+    "contestId": "inoi",
+    "year": 2007,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0701",
+    "title": "SMS Dictionary",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2007/inoi2007/inoi2007-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "strings",
+      "grouping",
+      "frequency-counting"
+    ],
+    "visual": {
+      "kind": "phone-key-groups",
+      "title": "Find the key sequence matching the most dictionary words",
+      "caption": "Map each dictionary word to its phone-key sequence, group equal sequences, and choose a largest group.",
+      "steps": [
+        {
+          "label": "Map each word to keys",
+          "detail": "Replace each letter by the number key assigned to its letter group."
+        },
+        {
+          "label": "Group equal sequences",
+          "detail": "Words that map to the same digit string form one group."
+        },
+        {
+          "label": "Choose the largest group",
+          "detail": "Output a digit string whose group contains the most dictionary words."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Dictionary word",
+          "Phone key sequence",
+          "Group count"
+        ],
+        "rows": [
+          [
+            "word w",
+            "key(w)",
+            "count matching words"
+          ],
+          [
+            "all w",
+            "group by key(w)",
+            "choose maximum group"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2007-legacy-2",
+    "contestId": "inoi",
+    "year": 2007,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0702",
+    "title": "The Middleman",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2007/inoi2007/inoi2007-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "subgrid",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "max-profit-square",
+      "title": "Find the available square subgrid with maximum profit",
+      "caption": "Grid entries are field profits or losses; zero marks a field not for sale. The cells shown are symbolic, not a sample farm.",
+      "steps": [
+        {
+          "label": "Read the farm grid",
+          "detail": "Each nonzero cell has a profit or loss; zero marks a reserved field."
+        },
+        {
+          "label": "Choose a square",
+          "detail": "The purchased fields must form a square subgrid containing no reserved cell."
+        },
+        {
+          "label": "Maximize profit",
+          "detail": "Find the allowed square whose cell values have the greatest total."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "p11",
+            "p12",
+            "X"
+          ],
+          [
+            "p21",
+            "p22",
+            "p23"
+          ],
+          [
+            "p31",
+            "p32",
+            "p33"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2008-legacy-1",
+    "contestId": "inoi",
+    "year": 2008,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0801",
+    "title": "Cultural Programme",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2008/inoi2008/inoi2008-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "intervals",
+      "sweep-line",
+      "overlap-count"
+    ],
+    "visual": {
+      "kind": "audience-overlap",
+      "title": "Find the largest audience from entry and exit intervals",
+      "caption": "Each record is one interval during which a person is in the hall. The number of overlapping intervals is the audience size.",
+      "steps": [
+        {
+          "label": "Represent each record",
+          "detail": "An entry time and exit time define one person?s interval in the hall."
+        },
+        {
+          "label": "Track overlap over time",
+          "detail": "At each distinct event time, update the number of people inside."
+        },
+        {
+          "label": "Take the maximum",
+          "detail": "Return the greatest audience count reached during the programme."
+        }
+      ],
+      "diagram": {
+        "type": "intervals",
+        "items": [
+          {
+            "label": "audience entry/exit 1",
+            "start": 0,
+            "end": 3
+          },
+          {
+            "label": "audience entry/exit 2",
+            "start": 1,
+            "end": 4
+          },
+          {
+            "label": "audience entry/exit 3",
+            "start": 2,
+            "end": 5
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2008-legacy-2",
+    "contestId": "inoi",
+    "year": 2008,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0802",
+    "title": "Domino Solitaire",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2008/inoi2008/inoi2008-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "tiling",
+      "dynamic-programming",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "domino-tiling",
+      "title": "Tile the two-row grid for maximum score",
+      "caption": "Cover every cell of the 2-by-N grid exactly once with 2-by-1 tiles. A tile scores the difference between its two covered values.",
+      "steps": [
+        {
+          "label": "Place legal tiles",
+          "detail": "Each tile covers two adjacent cells; tiles cannot overlap and every cell must be covered."
+        },
+        {
+          "label": "Score each tile",
+          "detail": "A tile contributes the larger covered value minus the smaller covered value."
+        },
+        {
+          "label": "Maximize the total",
+          "detail": "Choose a complete tiling with the greatest sum of tile scores."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "top: a1",
+            "a2",
+            "..."
+          ],
+          [
+            "bottom: b1",
+            "b2",
+            "..."
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2009-legacy-1",
+    "contestId": "inoi",
+    "year": 2009,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0901",
+    "title": "Rearranging cartons",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2009/inoi2009/inoi2009-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "inversions",
+      "fenwick-tree"
+    ],
+    "visual": {
+      "kind": "inversion-crossings",
+      "title": "Visualize Rearranging cartons",
+      "caption": "Adjacent swaps needed to transform one order into another equal the inversion count after mapping cartons to target ranks.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Adjacent swaps needed to transform one order into another equal the inversion count after mapping cartons to target ranks."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Map each carton to its destination rank; every reversed rank pair must cross once."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "current order -> destination ranks",
+          "inversion (i,j): rank[i] > rank[j]",
+          "swap count = inversion count"
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2009-legacy-2",
+    "contestId": "inoi",
+    "year": 2009,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0902",
+    "title": "Glass Bead Game",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2009/inoi2009/inoi2009-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "game-theory",
+      "dynamic-programming",
+      "minimax"
+    ],
+    "visual": {
+      "kind": "two-pile-minimax",
+      "title": "Analyze the two-pile game with alternating max and min turns",
+      "caption": "State (x,y) gives the bead counts. The turn depends on x+y parity, and each visited state contributes f(x,y) to the score.",
+      "steps": [
+        {
+          "label": "Read state and turn",
+          "detail": "At state (x,y), it is your turn when x+y is even; otherwise it is the opponent's turn."
+        },
+        {
+          "label": "Apply one legal move",
+          "detail": "Move one bead from the first bowl to the second, or remove one bead from the second bowl."
+        },
+        {
+          "label": "Evaluate the game",
+          "detail": "Add f(x,y) at each visited state; you maximize the total and the opponent minimizes it."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "State",
+          "Player to move",
+          "Choice"
+        ],
+        "rows": [
+          [
+            "(x,y)",
+            "x+y even: you",
+            "move (x-1,y+1) or (x,y-1)"
+          ],
+          [
+            "(x,y)",
+            "x+y odd: opponent",
+            "minimize your eventual score"
+          ],
+          [
+            "position payoff",
+            "",
+            "f(x,y)=A*x^2 + B*y^2 + C*x*y"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2010-legacy-1",
+    "contestId": "inoi",
+    "year": 2010,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1001",
+    "title": "Vogon zoo",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2010/inoi2010/inoi2010-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "greedy",
+      "selection"
+    ],
+    "visual": {
+      "kind": "number-line",
+      "title": "Visualize Vogon zoo",
+      "caption": "A safe cage requires pairwise blood-type separation of at least K; sort types and select a maximum compatible subset.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "A safe cage requires pairwise blood-type separation of at least K; sort types and select a maximum compatible subset."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Place blood types on a number line and mark selected values at least K apart."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "sorted x1 <= x2 <= ...",
+          "select xi",
+          "next selected xj: xj - xi >= K"
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2010-legacy-2",
+    "contestId": "inoi",
+    "year": 2010,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1002",
+    "title": "Twin robots",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2010/inoi2010/inoi2010-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "grid",
+      "state-transition"
+    ],
+    "visual": {
+      "kind": "two-agent-grid",
+      "title": "Visualize Twin robots",
+      "caption": "Track the two robot positions together as one state; transitions advance both under the movement constraints. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Track the two robot positions together as one state; transitions advance both under the movement constraints."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Plot both robots on the same grid; each DP layer represents their positions after one move."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "R start",
+            "...",
+            "C start"
+          ],
+          [
+            "...",
+            "...",
+            "..."
+          ],
+          [
+            "C goal",
+            "...",
+            "R goal"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2011-legacy-1",
+    "contestId": "inoi",
+    "year": 2011,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1101",
+    "title": "Counting triangles",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2011/inoi2011/inoi2011-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "geometry",
+      "hashing",
+      "counting"
+    ],
+    "visual": {
+      "kind": "coordinate-cross",
+      "title": "Visualize Counting triangles",
+      "caption": "For each point as a right-angle corner, pair other points sharing its x and y coordinates. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "For each point as a right-angle corner, pair other points sharing its x and y coordinates."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "At corner (x,y), combine every other point on its vertical ray with every point on its horizontal ray."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            ".",
+            "vertical point",
+            "."
+          ],
+          [
+            "horizontal point",
+            "corner",
+            "."
+          ],
+          [
+            ".",
+            ".",
+            "."
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2011-legacy-2",
+    "contestId": "inoi",
+    "year": 2011,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1102",
+    "title": "IOI Training Camp 20xx",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2011/inoi2011/inoi2011-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "arrays",
+      "dynamic-programming",
+      "maximum-subarray"
+    ],
+    "visual": {
+      "kind": "segment-with-drops",
+      "title": "Maximize a contiguous test segment with up to K drops",
+      "caption": "Choose one contiguous segment of test marks and discard at most K entries inside it; maximize the sum of the remaining marks.",
+      "steps": [
+        {
+          "label": "Choose a segment",
+          "detail": "The retained tests come from one contiguous range of the original sequence."
+        },
+        {
+          "label": "Drop at most K marks",
+          "detail": "Within that range, discard up to K test marks before summing."
+        },
+        {
+          "label": "Maximize the score",
+          "detail": "Find the segment and drops producing the largest retained total."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Segment",
+          "Dropped tests",
+          "Score"
+        ],
+        "rows": [
+          [
+            "[l,r]",
+            "at most K",
+            "sum of retained marks"
+          ],
+          [
+            "all segments",
+            "choose best",
+            "maximum segment score"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2012-inoi1201",
+    "contestId": "inoi",
+    "year": 2012,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1201",
+    "title": "Triathlon",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1201",
+    "statementAvailability": "official-link",
+    "tags": [
+      "scheduling",
+      "dynamic-programming",
+      "ordering"
+    ],
+    "visual": {
+      "kind": "pipeline",
+      "title": "Order the first stage, then overlap later stages",
+      "caption": "Only the first activity is serialized; each personâ€™s later stages proceed after their own previous stage.",
+      "steps": [
+        {
+          "label": "Order the first stage",
+          "detail": "For a proposed order, compute each personâ€™s ready time after the shared computer."
+        },
+        {
+          "label": "Overlap later stages",
+          "detail": "Carry the finish frontier through the two parallel activities."
+        },
+        {
+          "label": "Compare finish times",
+          "detail": "Choose the computer order that minimizes the final completion time."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "person i: computer -> pole vault -> donuts",
+          "shared computer order",
+          "parallel finish frontier"
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2012-inoi1202",
+    "contestId": "inoi",
+    "year": 2012,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1202",
+    "title": "Table Sum",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1202",
+    "statementAvailability": "official-link",
+    "tags": [
+      "arrays",
+      "cyclic",
+      "sliding-window"
+    ],
+    "visual": {
+      "kind": "cyclic-table",
+      "title": "Rotate one row against a fixed row",
+      "caption": "Each shift pairs fixed column values with a cyclically shifted sequence and reports the largest column sum. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Rotate the row",
+          "detail": "Treat the second row as circular so every shift is one alignment."
+        },
+        {
+          "label": "Score each shift",
+          "detail": "For each alignment, add paired cells and take the maximum column total."
+        },
+        {
+          "label": "Slide the alignment",
+          "detail": "Slide the alignment by one position and update the affected pairs."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Row A",
+          "Row B (cyclic shift)",
+          "Column total"
+        ],
+        "rows": [
+          [
+            "a_i",
+            "b_(i+s)",
+            "a_i+b_(i+s)"
+          ],
+          [
+            "fixed",
+            "rotate s",
+            "maximize total"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2012-zco12001",
+    "contestId": "zco",
+    "year": 2012,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO12001",
+    "title": "Matched Brackets",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO12001",
+    "statementAvailability": "official-link",
+    "tags": [
+      "brackets",
+      "stack",
+      "sequence"
+    ],
+    "visual": {
+      "kind": "stack-depth",
+      "title": "Track nesting as a walk",
+      "caption": "An opening bracket steps inward; its matching close returns to the prior depth.",
+      "steps": [
+        {
+          "label": "Scan openers",
+          "detail": "Scan left to right; push each opening position and increase depth."
+        },
+        {
+          "label": "Match closers",
+          "detail": "On a closing bracket, pop its matching opening and measure the enclosed span."
+        },
+        {
+          "label": "Record maxima",
+          "detail": "Keep the greatest depth and span with their first starting positions."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "open -> depth + 1",
+          "close -> depth - 1",
+          "stack top -> matching opener"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2012-zco12002",
+    "contestId": "zco",
+    "year": 2012,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO12002",
+    "title": "Wormholes",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO12002",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "intervals",
+      "greedy"
+    ],
+    "visual": {
+      "kind": "timeline",
+      "title": "Match a contest to teleport times",
+      "caption": "A feasible trip uses one inbound time no later than its start and one outbound time no earlier than its finish. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "steps": [
+        {
+          "label": "Find feasible times",
+          "detail": "Sort each time list once so the nearest feasible V and W times are easy to locate."
+        },
+        {
+          "label": "Pair the contest",
+          "detail": "For every contest, pair its start with the latest inbound time that can reach it and its end with the earliest outbound time after it."
+        },
+        {
+          "label": "Minimize duration",
+          "detail": "Compare trip durations and retain the shortest feasible choice."
+        }
+      ],
+      "diagram": {
+        "type": "intervals",
+        "items": [
+          {
+            "label": "arrival V",
+            "start": 0,
+            "end": 3
+          },
+          {
+            "label": "contest [S,E]",
+            "start": 1,
+            "end": 4
+          },
+          {
+            "label": "departure W",
+            "start": 2,
+            "end": 5
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2012-zco12003",
+    "contestId": "zco",
+    "year": 2012,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO12003",
+    "title": "Matched Brackets 2",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO12003",
+    "statementAvailability": "official-link",
+    "tags": [
+      "brackets",
+      "stack",
+      "sequence"
+    ],
+    "visual": {
+      "kind": "nested-intervals",
+      "title": "Keep bracket types nested",
+      "caption": "Each opening bracket starts an interval; only the matching type can close the top interval.",
+      "steps": [
+        {
+          "label": "Push opener",
+          "detail": "Push each opening bracket together with its type and position."
+        },
+        {
+          "label": "Match type",
+          "detail": "A closing bracket must match the stack top, so crossing spans are rejected."
+        },
+        {
+          "label": "Measure spans",
+          "detail": "Track nesting and each matched intervalâ€™s length while scanning."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "( [ ] ) -> nested",
+          "( [ ) ] -> crossing",
+          "stack enforces nesting"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2012-zco12004",
+    "contestId": "zco",
+    "year": 2012,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO12004",
+    "title": "Round Table",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO12004",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "cycle",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "cycle-cover",
+      "title": "Cover every edge of the round table",
+      "caption": "Choosing a knight covers the two neighboring table edges; minimize the selected dessert costs around a cycle. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "steps": [
+        {
+          "label": "Cover each edge",
+          "detail": "View each adjacent pair as an edge that must touch a chosen endpoint."
+        },
+        {
+          "label": "Handle cycle boundary",
+          "detail": "Fix whether the first knight is selected, then use a two-state DP for the remaining cycle."
+        },
+        {
+          "label": "Minimize cost",
+          "detail": "Check the wraparound edge and choose the cheaper valid case."
+        }
+      ],
+      "diagram": {
+        "type": "graph",
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Knight 1",
+            "x": 15,
+            "y": 50
+          },
+          {
+            "id": "B",
+            "label": "Knight 2",
+            "x": 50,
+            "y": 20
+          },
+          {
+            "id": "C",
+            "label": "Knight 3",
+            "x": 85,
+            "y": 50
+          },
+          {
+            "id": "D",
+            "label": "Knight 4",
+            "x": 50,
+            "y": 80
+          }
+        ],
+        "edges": [
+          {
+            "from": "A",
+            "to": "B"
+          },
+          {
+            "from": "B",
+            "to": "C"
+          },
+          {
+            "from": "C",
+            "to": "D"
+          },
+          {
+            "from": "D",
+            "to": "A"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2013-inoi1301",
+    "contestId": "inoi",
+    "year": 2013,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1301",
+    "title": "Calvins Game",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1301",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "sequence"
+    ],
+    "visual": {
+      "kind": "two-phase-path",
+      "title": "Split the route at the phase change",
+      "caption": "The route first moves forward by one or two positions, then backward by one or two, ending at square 1.",
+      "steps": [
+        {
+          "label": "Score forward moves",
+          "detail": "Compute best forward scores for each reachable square."
+        },
+        {
+          "label": "Choose the turn",
+          "detail": "Treat each square as a possible end of the forward phase, then continue with the backward transitions."
+        },
+        {
+          "label": "Finish backward",
+          "detail": "Keep the maximum score that finishes at square 1."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "start k",
+          "increasing-index phase",
+          "turning point -> return to 1"
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2013-inoi1302",
+    "contestId": "inoi",
+    "year": 2013,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1302",
+    "title": "Sequence Land",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1302",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sets",
+      "graph",
+      "connected-components"
+    ],
+    "visual": {
+      "kind": "overlap-graph",
+      "title": "Build the Presidentâ€™s extended family as a graph",
+      "caption": "Two residents connect when their ID sets share at least K values; relatives of relatives form a connected component. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "steps": [
+        {
+          "label": "Connect related IDs",
+          "detail": "Represent each resident by a set of ID values."
+        },
+        {
+          "label": "Traverse from President",
+          "detail": "Connect two vertices when their intersection meets the threshold."
+        },
+        {
+          "label": "Count the component",
+          "detail": "Traverse from the President and count every reached resident."
+        }
+      ],
+      "diagram": {
+        "type": "graph",
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Resident A",
+            "x": 15,
+            "y": 50
+          },
+          {
+            "id": "B",
+            "label": "Resident B",
+            "x": 50,
+            "y": 20
+          },
+          {
+            "id": "C",
+            "label": "Resident C",
+            "x": 85,
+            "y": 50
+          }
+        ],
+        "edges": [
+          {
+            "from": "A",
+            "to": "B",
+            "label": "shared >= K"
+          },
+          {
+            "from": "B",
+            "to": "C",
+            "label": "shared >= K"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2013-zco13001",
+    "contestId": "zco",
+    "year": 2013,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO13001",
+    "title": "Tournament",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO13001",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "math",
+      "pair-counting"
+    ],
+    "visual": {
+      "kind": "sorted-pairs",
+      "title": "Count pair differences after sorting",
+      "caption": "Sorting places strengths in order, letting each valueâ€™s total distance to earlier teams be accumulated without listing every match. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Sort values",
+          "detail": "Sort the strengths."
+        },
+        {
+          "label": "Use prefix sums",
+          "detail": "For each position, compute its distance from all previous values with a prefix sum."
+        },
+        {
+          "label": "Add pair totals",
+          "detail": "Add the contributions to get the revenue across all pairs."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Sorted item",
+          "Contribution"
+        ],
+        "rows": [
+          [
+            "x_j",
+            "j*x_j - sum(x_i for i<j)"
+          ],
+          [
+            "all j",
+            "sum contributions"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2013-zco13002",
+    "contestId": "zco",
+    "year": 2013,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO13002",
+    "title": "Little Red Riding Hood",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO13002",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "dynamic-programming",
+      "manhattan-distance"
+    ],
+    "visual": {
+      "kind": "grid-path",
+      "title": "Build a safe monotone path",
+      "caption": "A charm protects cells in a Manhattan-radius diamond; legal paths move only right or down and collect cell berries. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Mark safe cells",
+          "detail": "Mark every cell covered by at least one charmâ€™s Manhattan radius."
+        },
+        {
+          "label": "Propagate best paths",
+          "detail": "Use a grid DP over safe cells, entering only from above or the left."
+        },
+        {
+          "label": "Maximize berries",
+          "detail": "Carry the best berry total to the bottom-right destination."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "S",
+            "path",
+            "."
+          ],
+          [
+            "path",
+            "charm",
+            "."
+          ],
+          [
+            ".",
+            ".",
+            "G"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2013-zco13003",
+    "contestId": "zco",
+    "year": 2013,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO13003",
+    "title": "Chewing",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO13003",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "two-pointers",
+      "pair-counting"
+    ],
+    "visual": {
+      "kind": "threshold-pairs",
+      "title": "Count gum pairs below the limit",
+      "caption": "A valid pair has two distinct types whose hardness sum is strictly smaller than K.",
+      "steps": [
+        {
+          "label": "Sort hardness",
+          "detail": "Sort hardness values."
+        },
+        {
+          "label": "Move two pointers",
+          "detail": "For the smallest remaining value, move the right pointer until the sum is below K."
+        },
+        {
+          "label": "Count valid pairs",
+          "detail": "Count the valid partners, then advance the left boundary without double-counting pairs."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "sorted x_i <= x_j",
+          "x_i + x_j < K",
+          "count valid partner range"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2013-zco13004",
+    "contestId": "zco",
+    "year": 2013,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO13004",
+    "title": "Save Spaceman Spiff",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO13004",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "dynamic-programming",
+      "simulation"
+    ],
+    "visual": {
+      "kind": "time-grid",
+      "title": "Treat time as part of each grid state",
+      "caption": "Find the least time to reach the ship while moving right/down and avoiding blasters, their cells, and time-dependent pulses. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Track time and position",
+          "detail": "A legal move advances one second; blaster pulses move one cell per second and fire periodically."
+        },
+        {
+          "label": "Reject collisions",
+          "detail": "A move is unsafe if Spaceman and a pulse share a cell at the same time, or the destination is a blaster cell."
+        },
+        {
+          "label": "Minimize arrival time",
+          "detail": "Search the time-expanded grid for the earliest safe arrival at the ship."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "(r,c,t)",
+            "->",
+            "(r,c+1,t+1)"
+          ],
+          [
+            "|",
+            "",
+            "|"
+          ],
+          [
+            "(r+1,c,t+1)",
+            "->",
+            "next state"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2014-inoi1401",
+    "contestId": "inoi",
+    "year": 2014,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1401",
+    "title": "Highway Bypass",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1401",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "dynamic-programming",
+      "path-counting"
+    ],
+    "visual": {
+      "kind": "direction-run-grid",
+      "title": "Add direction and run length to each intersection",
+      "caption": "A move continues straight only until the run limit; obstacles remove intersections from the route. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Track direction",
+          "detail": "Start at the north-west intersection with no previous direction."
+        },
+        {
+          "label": "Limit straight runs",
+          "detail": "Transition right/down while resetting or increasing the consecutive-run count."
+        },
+        {
+          "label": "Sum valid paths",
+          "detail": "Sum route counts reaching the south-east exit across all valid states."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "intersection",
+            "->",
+            "run d"
+          ],
+          [
+            "^",
+            "",
+            "v"
+          ],
+          [
+            "run 1",
+            "<-",
+            "intersection"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2014-inoi1402",
+    "contestId": "inoi",
+    "year": 2014,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1402",
+    "title": "Free ticket",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1402",
+    "statementAvailability": "official-link",
+    "tags": [
+      "graphs",
+      "shortest-paths",
+      "all-pairs"
+    ],
+    "visual": {
+      "kind": "distance-matrix",
+      "title": "Find the most expensive cheapest route",
+      "caption": "For every city pair, compare the cost of its cheapest route; choose the pair whose shortest distance is largest. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Compute shortest routes",
+          "detail": "Compute shortest-path distances across the connected flight network."
+        },
+        {
+          "label": "Compare city pairs",
+          "detail": "Ignore direct-route cost when a cheaper connection exists."
+        },
+        {
+          "label": "Choose the widest pair",
+          "detail": "Select the city pair with the greatest resulting shortest-path distance."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "From / to",
+          "u",
+          "v"
+        ],
+        "rows": [
+          [
+            "u",
+            "0",
+            "dist(u,v)"
+          ],
+          [
+            "v",
+            "dist(v,u)",
+            "0"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2014-zco14001",
+    "contestId": "zco",
+    "year": 2014,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO14001",
+    "title": "Video Game",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO14001",
+    "statementAvailability": "official-link",
+    "tags": [
+      "simulation",
+      "state-machine",
+      "arrays"
+    ],
+    "visual": {
+      "kind": "crane-state",
+      "title": "Simulate the crane state one command at a time",
+      "caption": "The crane has a current stack position and carries either zero or one box; ignored commands leave state unchanged. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Initialize crane",
+          "detail": "Initialize stack heights, crane position, and empty hand."
+        },
+        {
+          "label": "Apply commands",
+          "detail": "Apply each command with the boundary, empty-stack, and capacity rules."
+        },
+        {
+          "label": "Read final stacks",
+          "detail": "Report the final stack heights after the command stream."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Command",
+          "Position",
+          "Holding",
+          "Stack"
+        ],
+        "rows": [
+          [
+            "move",
+            "p",
+            "h",
+            "s"
+          ],
+          [
+            "pick/drop",
+            "p_next",
+            "h_next",
+            "s_next"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2014-zco14002",
+    "contestId": "zco",
+    "year": 2014,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO14002",
+    "title": "SUPW",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO14002",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "scheduling"
+    ],
+    "visual": {
+      "kind": "duty-schedule",
+      "title": "Never leave three consecutive days unassigned",
+      "caption": "Choose the minimum-cost duty days while every run of skipped days has length at most two.",
+      "steps": [
+        {
+          "label": "Track skipped days",
+          "detail": "Let the state record how many consecutive days have been skipped."
+        },
+        {
+          "label": "Choose duty or skip",
+          "detail": "For each day, either pay its activity cost and reset the skip count, or skip if fewer than two days have been skipped."
+        },
+        {
+          "label": "Minimize total time",
+          "detail": "Take the least-cost state after the final day."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "duty",
+          "skip",
+          "skip",
+          "duty"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2014-zco14003",
+    "contestId": "zco",
+    "year": 2014,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO14003",
+    "title": "Smart Phone",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO14003",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "greedy",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "price-sweep",
+      "title": "Revenue changes only at customer budgets",
+      "caption": "At price p, every customer with budget at least p buys, so revenue is p times the number of eligible budgets. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Sort budgets",
+          "detail": "Sort the budgets from low to high."
+        },
+        {
+          "label": "Try candidate prices",
+          "detail": "For each distinct candidate price, count customers whose budgets still cover it."
+        },
+        {
+          "label": "Maximize revenue",
+          "detail": "Keep the largest price-times-count revenue."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Sorted budget",
+          "Candidate price",
+          "Revenue"
+        ],
+        "rows": [
+          [
+            "b_i",
+            "p = b_i",
+            "p * (N-i)"
+          ],
+          [
+            "all i",
+            "arg max p",
+            "maximum"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2014-zco14004",
+    "contestId": "zco",
+    "year": 2014,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO14004",
+    "title": "IPL",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO14004",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "sequence"
+    ],
+    "visual": {
+      "kind": "no-three-consecutive",
+      "title": "Track the last two match choices",
+      "caption": "The player may skip a match, but a valid schedule cannot include three consecutive matches.",
+      "steps": [
+        {
+          "label": "Track recent choices",
+          "detail": "At each match, compare skipping with playing after zero or one immediately previous plays."
+        },
+        {
+          "label": "Compare play or skip",
+          "detail": "Carry the best earned fees for these recent-choice states."
+        },
+        {
+          "label": "Maximize fees",
+          "detail": "The best final state is the maximum valid total."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "play",
+          "play",
+          "skip",
+          "play"
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2015-inoi1501",
+    "contestId": "inoi",
+    "year": 2015,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1501",
+    "title": "Special Sums",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1501",
+    "statementAvailability": "official-link",
+    "tags": [
+      "arrays",
+      "circular",
+      "prefix-sums"
+    ],
+    "visual": {
+      "kind": "circular-segment",
+      "title": "Represent each circular segment in a doubled array",
+      "caption": "The segment endpoints contribute a-values; interior positions contribute b-values, including wraparound.",
+      "steps": [
+        {
+          "label": "Unwrap the circle",
+          "detail": "Duplicate the circular arrays so wraparound intervals become linear ranges."
+        },
+        {
+          "label": "Use prefix totals",
+          "detail": "Use prefix sums for interior b-values and add the two endpoint a-values."
+        },
+        {
+          "label": "Choose the best segment",
+          "detail": "Check every valid start/end pair and retain the maximum special sum."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "circular start i",
+          "a_i + sum of interior b_k + a_j",
+          "wrap from N to 1"
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2015-inoi1502",
+    "contestId": "inoi",
+    "year": 2015,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1502",
+    "title": "Periodic Strings",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1502",
+    "statementAvailability": "official-link",
+    "tags": [
+      "strings",
+      "number-theory",
+      "counting"
+    ],
+    "visual": {
+      "kind": "periodic-word",
+      "title": "A periodic word repeats a shorter root",
+      "caption": "A length-N binary string is periodic if it is formed by repeating a proper divisor-length block at least twice.",
+      "steps": [
+        {
+          "label": "List root lengths",
+          "detail": "List proper divisors of N as possible root lengths."
+        },
+        {
+          "label": "Remove repeated words",
+          "detail": "Count words whose minimal repeating root is each divisor rather than counting the same word repeatedly."
+        },
+        {
+          "label": "Count primitive strings",
+          "detail": "Use divisor/MÃ¶bius-style inclusion-exclusion and reduce modulo M."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "root word length d | N",
+          "repeat root",
+          "string length N"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2015-zco15001",
+    "contestId": "zco",
+    "year": 2015,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO15001",
+    "title": "Break Up",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO15001",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "palindromes",
+      "partitioning"
+    ],
+    "visual": {
+      "kind": "palindrome-partition",
+      "title": "Cut the sequence only at palindrome boundaries",
+      "caption": "Every prefix can end with a final palindromic piece; the DP chooses the fewest pieces.",
+      "steps": [
+        {
+          "label": "Find palindromic ranges",
+          "detail": "Precompute or expand around centers to identify palindromic intervals."
+        },
+        {
+          "label": "Try each final piece",
+          "detail": "For each prefix endpoint, try a final palindrome beginning at every valid earlier cut."
+        },
+        {
+          "label": "Minimize piece count",
+          "detail": "Store the minimum number of pieces for each prefix."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "substring [l,r]",
+          "palindrome test",
+          "extend partition boundary"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2015-zco15002",
+    "contestId": "zco",
+    "year": 2015,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO15002",
+    "title": "Variation",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO15002",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "two-pointers",
+      "pair-counting"
+    ],
+    "visual": {
+      "kind": "difference-threshold",
+      "title": "Count pairs outside a value band",
+      "caption": "A pair qualifies when the sorted values differ by at least K, on either side.",
+      "steps": [
+        {
+          "label": "Sort values",
+          "detail": "Sort the sequence."
+        },
+        {
+          "label": "Find threshold boundary",
+          "detail": "For each smaller endpoint, locate the first value at least K larger."
+        },
+        {
+          "label": "Count qualifying pairs",
+          "detail": "Count all values from that boundary to the end and avoid counting each pair twice."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "sorted x_i <= x_j",
+          "difference = x_j - x_i",
+          "qualifies when difference >= K"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2015-zco15003",
+    "contestId": "zco",
+    "year": 2015,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO15003",
+    "title": "Covering",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO15003",
+    "statementAvailability": "official-link",
+    "tags": [
+      "intervals",
+      "greedy",
+      "covering"
+    ],
+    "visual": {
+      "kind": "interval-hitting",
+      "title": "Place a point at the earliest finishing interval",
+      "caption": "A chosen integer covers an interval when it lies inside it; choosing the right endpoint covers as many upcoming intervals as possible. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "steps": [
+        {
+          "label": "Sort by right edge",
+          "detail": "Sort intervals by their right endpoints."
+        },
+        {
+          "label": "Place the next point",
+          "detail": "When the next interval is not hit by the last chosen point, place a new point at its right endpoint."
+        },
+        {
+          "label": "Cover all intervals",
+          "detail": "Continue until every interval has a selected point."
+        }
+      ],
+      "diagram": {
+        "type": "intervals",
+        "items": [
+          {
+            "label": "input interval 1",
+            "start": 0,
+            "end": 3
+          },
+          {
+            "label": "input interval 2",
+            "start": 1,
+            "end": 4
+          },
+          {
+            "label": "chosen cover point",
+            "start": 2,
+            "end": 5
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2015-zco15004",
+    "contestId": "zco",
+    "year": 2015,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO15004",
+    "title": "Rectangle",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO15004",
+    "statementAvailability": "official-link",
+    "tags": [
+      "geometry",
+      "sweep-line",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "histogram-rectangle",
+      "title": "Each point caps the rectangle height to its left",
+      "caption": "For a fixed horizontal span, the rectangleâ€™s height is limited by the lowest point inside that span. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Sweep point barriers",
+          "detail": "Sort points by horizontal coordinate."
+        },
+        {
+          "label": "Choose span and height",
+          "detail": "Sweep candidate left/right boundaries while maintaining the lowest point that would enter the interior."
+        },
+        {
+          "label": "Maximize area",
+          "detail": "Compare each feasible width-times-height area, allowing boundary points."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Span",
+          "Limiting height",
+          "Area"
+        ],
+        "rows": [
+          [
+            "[L,R]",
+            "min y inside span",
+            "(R-L) * height"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2016-inoi1601",
+    "contestId": "inoi",
+    "year": 2016,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1601",
+    "title": "Wealth Disparity",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1601",
+    "statementAvailability": "official-link",
+    "tags": [
+      "trees",
+      "dfs",
+      "dynamic-programming"
+    ],
+    "visual": {
+      "kind": "ancestor-path",
+      "title": "Compare an ancestorâ€™s wealth with a descendantâ€™s",
+      "caption": "Every candidate pair lies on one root-to-leaf path, so retain the greatest ancestor value seen above each employee. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "steps": [
+        {
+          "label": "Traverse the hierarchy",
+          "detail": "Traverse the management tree from its root."
+        },
+        {
+          "label": "Track path maximum",
+          "detail": "At each node, compare its wealth with the highest wealth among strict ancestors."
+        },
+        {
+          "label": "Update disparity",
+          "detail": "Update the best disparity and pass the path maximum to its children."
+        }
+      ],
+      "diagram": {
+        "type": "graph",
+        "nodes": [
+          {
+            "id": "A",
+            "label": "root",
+            "x": 50,
+            "y": 12
+          },
+          {
+            "id": "B",
+            "label": "manager",
+            "x": 25,
+            "y": 42
+          },
+          {
+            "id": "C",
+            "label": "employee",
+            "x": 75,
+            "y": 42
+          }
+        ],
+        "edges": [
+          {
+            "from": "A",
+            "to": "B"
+          },
+          {
+            "from": "B",
+            "to": "C"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2016-inoi1602",
+    "contestId": "inoi",
+    "year": 2016,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1602",
+    "title": "Brackets",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1602",
+    "statementAvailability": "official-link",
+    "tags": [
+      "brackets",
+      "stack",
+      "parsing"
+    ],
+    "visual": {
+      "kind": "typed-bracket-stack",
+      "title": "A closing token must match the most recent opener",
+      "caption": "Choose a subsequence of values whose corresponding typed brackets form a well-bracketed sequence, maximizing the sum.",
+      "steps": [
+        {
+          "label": "Choose or skip positions",
+          "detail": "A selected bracket position contributes its value; unselected positions disappear."
+        },
+        {
+          "label": "Maintain valid nesting",
+          "detail": "Opening and closing bracket types must match in properly nested order."
+        },
+        {
+          "label": "Maximize selected values",
+          "detail": "Among all well-bracketed subsequences, keep the greatest sum, including negative values correctly."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "open type t -> push",
+          "close type t -> match top",
+          "empty stack -> balanced"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2016-zco16001",
+    "contestId": "zco",
+    "year": 2016,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO16001",
+    "title": "Bookshelves",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO16001",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "optimization",
+      "exchange"
+    ],
+    "visual": {
+      "kind": "two-shelves",
+      "title": "Only the largest books determine the skew",
+      "caption": "After up to K exchanges, minimize the sum of the two shelf maximum heights while keeping N books on each shelf. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Locate controlling books",
+          "detail": "Sort book heights and identify which large books control each shelf maximum."
+        },
+        {
+          "label": "Evaluate exchanges",
+          "detail": "Evaluate exchanges that move those controlling books while preserving shelf sizes."
+        },
+        {
+          "label": "Minimize shelf maxima",
+          "detail": "Choose the reachable exchange plan with the smallest combined maxima."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Shelf A",
+          "Shelf B",
+          "Skew"
+        ],
+        "rows": [
+          [
+            "max A",
+            "max B",
+            "max A + max B"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2016-zco16002",
+    "contestId": "zco",
+    "year": 2016,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO16002",
+    "title": "Bamboo Art",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO16002",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "arithmetic-progression",
+      "frequency-counting"
+    ],
+    "visual": {
+      "kind": "arithmetic-progression",
+      "title": "Pick a longest equally spaced set of lengths",
+      "caption": "The installation uses a subset whose sorted lengths have a constant difference. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Count lengths",
+          "detail": "Count available shoots at each length."
+        },
+        {
+          "label": "Extend each step",
+          "detail": "For each start length and positive step, extend while the next length exists."
+        },
+        {
+          "label": "Keep the longest run",
+          "detail": "Keep the longest progression, accounting for repeated values only when allowed by the set."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Progression",
+          "Common difference",
+          "Count"
+        ],
+        "rows": [
+          [
+            "x1, x2, ..., xn",
+            "x(i+1) - x(i)",
+            "frequency by difference"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2017-tinoi17a",
+    "contestId": "inoi",
+    "year": 2017,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "TINOI17A",
+    "title": "Fence - INOI 2017",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/TINOI17A",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "connected-components",
+      "geometry"
+    ],
+    "visual": {
+      "kind": "component-perimeter",
+      "title": "Fence only the exposed sides of potato patches",
+      "caption": "Cultivated four-neighbor components are patches; report the perimeter of the largest patch. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Find each patch",
+          "detail": "Flood-fill cultivated fields using shared-edge adjacency."
+        },
+        {
+          "label": "Count exposed sides",
+          "detail": "A side contributes when its neighbor is uncultivated or outside the farm."
+        },
+        {
+          "label": "Keep the largest perimeter",
+          "detail": "Sum exposed sides per patch and report the maximum, not the total over all patches."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            ".",
+            "field",
+            "."
+          ],
+          [
+            "field",
+            "field",
+            "."
+          ],
+          [
+            ".",
+            "field",
+            "."
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2017-tinoi17b",
+    "contestId": "inoi",
+    "year": 2017,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "TINOI17B",
+    "title": "Training - INOI 2017",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/TINOI17B",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "state-transition"
+    ],
+    "visual": {
+      "kind": "training-states",
+      "title": "Each city offers training or a battle",
+      "caption": "Training changes strength; battle converts current strength into experience using that cityâ€™s value.",
+      "steps": [
+        {
+          "label": "Track strength",
+          "detail": "Maintain the best experience reachable for each relevant strength."
+        },
+        {
+          "label": "Choose train or battle",
+          "detail": "At a city, branch into the training transition or the battle transition."
+        },
+        {
+          "label": "Maximize experience",
+          "detail": "After all cities, take the greatest experience value."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "city i, strength s",
+          "train: f(s)",
+          "work: experience + s * E_i"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2017-zco17001",
+    "contestId": "zco",
+    "year": 2017,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO17001",
+    "title": "Four Sum",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO17001",
+    "statementAvailability": "official-link",
+    "tags": [
+      "arrays",
+      "meet-in-the-middle",
+      "counting"
+    ],
+    "visual": {
+      "kind": "four-sum-pairs",
+      "title": "Pair sums reduce four choices to two lookups",
+      "caption": "Group two indices into a left pair sum and the other two into a complementary right pair sum. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Build pair sums",
+          "detail": "Generate valid pair sums for the first two indices."
+        },
+        {
+          "label": "Find complements",
+          "detail": "For each pair on the remaining indices, look up the complementary sum."
+        },
+        {
+          "label": "Count index quadruples",
+          "detail": "Enforce the taskâ€™s distinct-index/order constraints when counting matching quadruples."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Pair one",
+          "Pair two",
+          "Target"
+        ],
+        "rows": [
+          [
+            "S_i + S_j",
+            "S_k + S_l",
+            "T"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2017-zco17002",
+    "contestId": "zco",
+    "year": 2017,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO17002",
+    "title": "Rays",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO17002",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "simulation",
+      "prefix-sums"
+    ],
+    "visual": {
+      "kind": "ray-grid",
+      "title": "A row scan needs only the next stopping wall",
+      "caption": "A ray crosses empty cells, stops at a black cell, or stops on its second white cell. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Scan each row",
+          "detail": "Process each row from right to left while tracking the nearest black cell and the second white cell."
+        },
+        {
+          "label": "Find first blocker",
+          "detail": "For every empty cell, the closest applicable blocker determines its stopping column."
+        },
+        {
+          "label": "Sum ray lengths",
+          "detail": "Add the inclusive travel length; non-empty cells launch no ray."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            ".",
+            ".",
+            "W",
+            ".",
+            ".",
+            "W"
+          ],
+          [
+            "ray ->",
+            "",
+            "",
+            "",
+            "",
+            "stop at W"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2018-roadtrip",
+    "contestId": "inoi",
+    "year": 2018,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "ROADTRIP",
+    "title": "1 Road Trips and Museums - INOI 2018",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/ROADTRIP",
+    "statementAvailability": "official-link",
+    "tags": [
+      "graphs",
+      "connected-components",
+      "game"
+    ],
+    "visual": {
+      "kind": "component-selection",
+      "title": "A road trip consumes an entire connected component",
+      "caption": "Each trip visits one whole connected component; maximize museums over exactly K months, returning âˆ’1 if fewer than K components exist. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "steps": [
+        {
+          "label": "Find road components",
+          "detail": "Compute each connected component and sum its city museum counts."
+        },
+        {
+          "label": "Choose one new component per month",
+          "detail": "A trip visits all cities in its component, which cannot be selected again."
+        },
+        {
+          "label": "Maximize K-month total",
+          "detail": "Choose K component totals with the greatest sum; if fewer than K components exist, output âˆ’1."
+        }
+      ],
+      "diagram": {
+        "type": "graph",
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Road component A",
+            "x": 15,
+            "y": 50
+          },
+          {
+            "id": "B",
+            "label": "Road component B",
+            "x": 50,
+            "y": 20
+          },
+          {
+            "id": "C",
+            "label": "Road component C",
+            "x": 85,
+            "y": 50
+          }
+        ],
+        "edges": [
+          {
+            "from": "A",
+            "to": "B",
+            "label": "road"
+          },
+          {
+            "from": "B",
+            "to": "C",
+            "label": "road"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2018-twopaths",
+    "contestId": "inoi",
+    "year": 2018,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "TWOPATHS",
+    "title": "2 Two Paths - INOI 2018",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/TWOPATHS",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "dynamic-programming",
+      "paths"
+    ],
+    "visual": {
+      "kind": "two-grid-paths",
+      "title": "Keep two nonintersecting paths around the scored region",
+      "caption": "Each path moves upward and at most K times diagonally left; the score is the cells between the paths. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Track both paths",
+          "detail": "Track both pathsâ€™ columns and diagonal-move budgets as they rise one row at a time."
+        },
+        {
+          "label": "Reject intersections",
+          "detail": "Reject states where paths intersect or violate the starting separation."
+        },
+        {
+          "label": "Maximize enclosed sum",
+          "detail": "Add the rowâ€™s cells between the paths and maximize the accumulated score."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "path A",
+            "separate",
+            "."
+          ],
+          [
+            ".",
+            "separate",
+            "."
+          ],
+          [
+            ".",
+            "separate",
+            "path B"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2018-movintrl",
+    "contestId": "zco",
+    "year": 2018,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "MOVINTRL",
+    "title": "Moving Intervals - ZCO 2018",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/MOVINTRL",
+    "statementAvailability": "official-link",
+    "tags": [
+      "intervals",
+      "sweep-line",
+      "overlap"
+    ],
+    "visual": {
+      "kind": "interval-overlap",
+      "title": "Shared cakes are interval overlaps",
+      "caption": "Two children conflict exactly when their closed intervals share a cake; one allowed edit may relocate one equal-length interval. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "steps": [
+        {
+          "label": "Detect conflicts",
+          "detail": "Sort interval endpoints and identify every overlapping pair."
+        },
+        {
+          "label": "Try one relocation",
+          "detail": "With no edit, any overlap means conflict."
+        },
+        {
+          "label": "Check all intervals",
+          "detail": "For one edit, test whether an interval of the same length can be placed in a free span without creating overlap."
+        }
+      ],
+      "diagram": {
+        "type": "intervals",
+        "items": [
+          {
+            "label": "interval 1",
+            "start": 0,
+            "end": 3
+          },
+          {
+            "label": "interval 2",
+            "start": 1,
+            "end": 4
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2018-strimpor",
+    "contestId": "zco",
+    "year": 2018,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "STRIMPOR",
+    "title": "Substring Importance - ZCO 2018",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/STRIMPOR",
+    "statementAvailability": "official-link",
+    "tags": [
+      "strings",
+      "sliding-window",
+      "prefix-sums"
+    ],
+    "visual": {
+      "kind": "substring-window",
+      "title": "Charge each good substring to the windows it touches",
+      "caption": "Good substrings start at X, end at Z, and have length divisible by three; a K-windowâ€™s importance counts those intersecting it. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "steps": [
+        {
+          "label": "Find good substrings",
+          "detail": "Enumerate good-substring endpoints using the X/Z conditions and length residue."
+        },
+        {
+          "label": "Map affected windows",
+          "detail": "Convert each good interval into the range of K-window starts it intersects."
+        },
+        {
+          "label": "Minimize importance",
+          "detail": "Use a difference array to find the minimum total importance."
+        }
+      ],
+      "diagram": {
+        "type": "intervals",
+        "items": [
+          {
+            "label": "substring [l,r]",
+            "start": 0,
+            "end": 3
+          },
+          {
+            "label": "window starts [l-K+1,r]",
+            "start": 1,
+            "end": 4
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2019-inoi1901",
+    "contestId": "inoi",
+    "year": 2019,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1901",
+    "title": "Processor Scheduling",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1901",
+    "statementAvailability": "official-link",
+    "tags": [
+      "scheduling",
+      "greedy",
+      "deadlines"
+    ],
+    "visual": {
+      "kind": "job-timeline",
+      "title": "Public jobs must cover their interrupt instants",
+      "caption": "Each public job occupies one continuous interval containing its assigned signal time; classified jobs must retain their order. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "steps": [
+        {
+          "label": "Place signal jobs",
+          "detail": "Place public jobs around their required interrupt instants, respecting their processing lengths."
+        },
+        {
+          "label": "Schedule ordered jobs",
+          "detail": "Insert the ordered classified chain into the remaining timeline without overlap."
+        },
+        {
+          "label": "Minimize completion time",
+          "detail": "Minimize the finish time while checking every signal falls during its matching public job."
+        }
+      ],
+      "diagram": {
+        "type": "intervals",
+        "items": [
+          {
+            "label": "classified job C_i",
+            "start": 0,
+            "end": 3
+          },
+          {
+            "label": "public job P_j",
+            "start": 1,
+            "end": 4
+          },
+          {
+            "label": "required time t_j",
+            "start": 2,
+            "end": 5
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2019-inoi1902",
+    "contestId": "inoi",
+    "year": 2019,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1902",
+    "title": "Interesting Sequences",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI1902",
+    "statementAvailability": "official-link",
+    "tags": [
+      "arrays",
+      "binary-search",
+      "subsequence"
+    ],
+    "visual": {
+      "kind": "spaced-subsequence",
+      "title": "Test whether L values can stay far apart and nonincreasing",
+      "caption": "A valid index sequence has nonincreasing values; its cost is the smallest adjacent index gap.",
+      "steps": [
+        {
+          "label": "Test a candidate gap",
+          "detail": "Binary-search a candidate minimum gap d."
+        },
+        {
+          "label": "Extend a value chain",
+          "detail": "Check whether a length-L nonincreasing value chain can be chosen with consecutive indices at least d apart."
+        },
+        {
+          "label": "Maximize the gap",
+          "detail": "The largest feasible d is the answer."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "indices i1 < ... < iL",
+          "A[i1] >= ... >= A[iL]",
+          "|i_j-i_(j+1)| >= d"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2019-updowseq",
+    "contestId": "zco",
+    "year": 2019,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "UPDOWSEQ",
+    "title": "ZCO 2019 - 2 UpDown Sequences",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/UPDOWSEQ",
+    "statementAvailability": "official-link",
+    "tags": [
+      "arrays",
+      "greedy",
+      "sequence"
+    ],
+    "visual": {
+      "kind": "alternating-peaks",
+      "title": "The target pattern alternates valleys and peaks",
+      "caption": "An UpDown segment has low positions between high positions; one inserted value may bridge a broken comparison pattern.",
+      "steps": [
+        {
+          "label": "Track zigzag runs",
+          "detail": "Scan the sequence while tracking the longest alternating run ending in each comparison direction."
+        },
+        {
+          "label": "Bridge one insertion",
+          "detail": "At the one insertion point, test how neighboring values can satisfy both sides of the zigzag."
+        },
+        {
+          "label": "Keep the longest run",
+          "detail": "Keep the longest valid resulting subsegment."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "a1 <= a2",
+          "a2 >= a3",
+          "a3 <= a4"
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2020-inoi2001",
+    "contestId": "inoi",
+    "year": 2020,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI2001",
+    "title": "Department Strengths",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI2001",
+    "statementAvailability": "official-link",
+    "tags": [
+      "trees",
+      "combinatorics",
+      "subtree-sizes"
+    ],
+    "visual": {
+      "kind": "department-tree",
+      "title": "Department parity constrains the head ID",
+      "caption": "A department is a rooted employee tree; size parity determines whether its head has the smallest or largest ID, and its strength is the sum of employee levels. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "steps": [
+        {
+          "label": "Build departments",
+          "detail": "Each connected component is one department; choose its head using the component-size parity rule."
+        },
+        {
+          "label": "Assign employee levels",
+          "detail": "The head is level 1 and each subordinate is one level below the manager."
+        },
+        {
+          "label": "Add parity totals",
+          "detail": "Sum all employee levels into the even-size or odd-size department total."
+        }
+      ],
+      "diagram": {
+        "type": "graph",
+        "nodes": [
+          {
+            "id": "A",
+            "label": "department",
+            "x": 50,
+            "y": 12
+          },
+          {
+            "id": "B",
+            "label": "child unit",
+            "x": 25,
+            "y": 42
+          },
+          {
+            "id": "C",
+            "label": "subtree",
+            "x": 75,
+            "y": 42
+          }
+        ],
+        "edges": [
+          {
+            "from": "A",
+            "to": "B"
+          },
+          {
+            "from": "A",
+            "to": "C"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2020-inoi2002",
+    "contestId": "inoi",
+    "year": 2020,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI2002",
+    "title": "3xN Tiling",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/INOI2002",
+    "statementAvailability": "official-link",
+    "tags": [
+      "tiling",
+      "dynamic-programming",
+      "profile-dp"
+    ],
+    "visual": {
+      "kind": "tiling-frontier",
+      "title": "Only the unfinished frontier affects the next column",
+      "caption": "Tiles span up to three columns, so a column mask records cells already occupied by tiles extending from the left. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Track the open cells",
+          "detail": "Process the floor column by column with a mask of incoming occupied cells."
+        },
+        {
+          "label": "Place a legal tile",
+          "detail": "Try every legal tile placement that covers the first uncovered cell without overlap or leaving the floor."
+        },
+        {
+          "label": "Count completed floors",
+          "detail": "Sum ways reaching the final empty frontier modulo 1,000,000,007."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "A",
+            "A",
+            "B"
+          ],
+          [
+            "A",
+            "A",
+            "B"
+          ],
+          [
+            "C",
+            "C",
+            "B"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2020-zco20002",
+    "contestId": "zco",
+    "year": 2020,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "ZCO20002",
+    "title": "Interleavings and Blocks",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/ZCOPRAC/problems/ZCO20002",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "arrays",
+      "interleavings"
+    ],
+    "visual": {
+      "kind": "interleaving-blocks",
+      "title": "A block starts whenever the interleaved value changes",
+      "caption": "An interleaving chooses the next unused item from A or B; adjacent equal values merge into one block.",
+      "steps": [
+        {
+          "label": "Track consumed prefixes",
+          "detail": "Represent a partial merge by positions consumed from A and B plus the last emitted value."
+        },
+        {
+          "label": "Extend or start a block",
+          "detail": "Each next choice either extends the current block or starts another."
+        },
+        {
+          "label": "Count exact K",
+          "detail": "Count paths to the end with exactly K blocks."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "take A_i or B_j",
+          "append next value",
+          "new block iff value changes"
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2021-amongus2",
+    "contestId": "inoi",
+    "year": 2021,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "AMONGUS2",
+    "title": "Among Us - INOI 2021",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/AMONGUS2",
+    "statementAvailability": "official-link",
+    "tags": [
+      "graphs",
+      "parity",
+      "bipartite"
+    ],
+    "visual": {
+      "kind": "truth-parity-graph",
+      "title": "Statements become same/different constraints",
+      "caption": "An accusation requires opposite roles; a vouch requires equal roles, independent of whether the speaker is truthful or lying. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "steps": [
+        {
+          "label": "Add parity edges",
+          "detail": "Create a graph edge for each statement, tagged equal or opposite."
+        },
+        {
+          "label": "Propagate roles",
+          "detail": "Propagate role parity through each connected component and detect contradictions."
+        },
+        {
+          "label": "Maximize parasites",
+          "detail": "Count or report role assignments according to the taskâ€™s requested output."
+        }
+      ],
+      "diagram": {
+        "type": "graph",
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Person A",
+            "x": 15,
+            "y": 50
+          },
+          {
+            "id": "B",
+            "label": "Person B",
+            "x": 50,
+            "y": 20
+          },
+          {
+            "id": "C",
+            "label": "Person C",
+            "x": 85,
+            "y": 50
+          }
+        ],
+        "edges": [
+          {
+            "from": "A",
+            "to": "B",
+            "label": "same / different"
+          },
+          {
+            "from": "B",
+            "to": "C",
+            "label": "same / different"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2021-breakstr",
+    "contestId": "inoi",
+    "year": 2021,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "BREAKSTR",
+    "title": "Break the string - INOI 2021",
+    "sourceUrl": "https://www.codechef.com/practice/course/zco-inoi-problems/INOIPRAC/problems/BREAKSTR",
+    "statementAvailability": "official-link",
+    "tags": [
+      "strings",
+      "prefix-sums",
+      "dynamic-programming"
+    ],
+    "visual": {
+      "kind": "balanced-segments",
+      "title": "Prefix balance reveals segment imbalance",
+      "caption": "A segment is valid when the change in the zero-minus-one prefix count has magnitude at most K. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Track prefix balance",
+          "detail": "Map each 0/1 character to a +1/âˆ’1 balance change."
+        },
+        {
+          "label": "Find valid boundaries",
+          "detail": "For each endpoint, find earlier prefix balances within K of the current balance and extend the minimum-segment DP."
+        },
+        {
+          "label": "Minimize segment count",
+          "detail": "Mark the chosen segment starts in the output."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Prefix",
+          "Balance"
+        ],
+        "rows": [
+          [
+            "p0",
+            "0"
+          ],
+          [
+            "pi",
+            "p(i-1) + (+1 for 0, -1 for 1)"
+          ],
+          [
+            "segment i..j",
+            "p_j - p_(i-1) in [-K,K]"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2022-p1",
+    "contestId": "zio",
+    "year": 2022,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P1",
+    "title": "Rearrange Students into an Alternating Line",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2022/zio2022/zio2022-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "strings",
+      "greedy",
+      "rearrangement"
+    ],
+    "visual": {
+      "kind": "alternating-sequence",
+      "title": "Compare both alternating targets",
+      "caption": "Minimize moved positions while maximizing adjacent unlike genders.",
+      "steps": [
+        {
+          "label": "Build both targets",
+          "detail": "Build both alternating patterns for the same length."
+        },
+        {
+          "label": "Count fixed positions",
+          "detail": "Count original positions that already match each pattern."
+        },
+        {
+          "label": "Minimize moved students",
+          "detail": "Subtract fixed positions from N and choose the lower move count."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "B G B G ...",
+          "G B G B ...",
+          "min moves = N ... matches"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2022-p2",
+    "contestId": "zio",
+    "year": 2022,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P2",
+    "title": "Count Non-Crossing Set Partitions",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2022/zio2022/zio2022-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "combinatorics",
+      "partitions",
+      "non-crossing"
+    ],
+    "visual": {
+      "kind": "noncrossing-partition",
+      "title": "Partition blocks cannot cross in index order",
+      "caption": "Different blocks may not interleave as a<c in one block and b<d in another with a<b<c<d.",
+      "steps": [
+        {
+          "label": "Place elements in order",
+          "detail": "Place 1â€¦n in order and assign every element to exactly one block."
+        },
+        {
+          "label": "Reject crossing blocks",
+          "detail": "Check that no two blocks have alternating members."
+        },
+        {
+          "label": "Count valid partitions",
+          "detail": "Count distinct valid partitions with at most k blocks."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "A---D contains B-C",
+          "A--C crosses B--D",
+          "valid: no crossing blocks"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2022-p3",
+    "contestId": "zio",
+    "year": 2022,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P3",
+    "title": "Pair Cities to Minimize Tree Travel",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2022/zio2022/zio2022-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "trees",
+      "matching",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "tree-matching",
+      "title": "Pair every city once along unique routes",
+      "caption": "Each pairing contributes the weighted distance on its unique tree path; find the minimum total over perfect pairings. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "steps": [
+        {
+          "label": "Pair all cities",
+          "detail": "Pair all 2n cities exactly once."
+        },
+        {
+          "label": "Trace unique routes",
+          "detail": "Trace each pairâ€™s unique path and sum its edge lengths."
+        },
+        {
+          "label": "Minimize distance",
+          "detail": "Choose the perfect pairing with the smallest combined route cost."
+        }
+      ],
+      "diagram": {
+        "type": "graph",
+        "nodes": [
+          {
+            "id": "A",
+            "label": "city A",
+            "x": 50,
+            "y": 12
+          },
+          {
+            "id": "B",
+            "label": "city B",
+            "x": 25,
+            "y": 42
+          },
+          {
+            "id": "C",
+            "label": "city C",
+            "x": 75,
+            "y": 42
+          },
+          {
+            "id": "D",
+            "label": "city D",
+            "x": 12,
+            "y": 75
+          }
+        ],
+        "edges": [
+          {
+            "from": "A",
+            "to": "B",
+            "label": "road"
+          },
+          {
+            "from": "B",
+            "to": "C",
+            "label": "road"
+          },
+          {
+            "from": "B",
+            "to": "D",
+            "label": "road"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2022-p4",
+    "contestId": "zio",
+    "year": 2022,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P4",
+    "title": "Unrank a Lexicographic List of Integer Compositions",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2022/zio2022/zio2022-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "combinatorics",
+      "compositions",
+      "lexicographic-order"
+    ],
+    "visual": {
+      "kind": "ordered-groups",
+      "title": "Lists are grouped by their sum",
+      "caption": "Enumerate positive-integer lists by increasing total, then lexicographically within each total. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Skip earlier groups",
+          "detail": "A k-list is an ordered list of positive integers summing to k."
+        },
+        {
+          "label": "Unrank lexicographically",
+          "detail": "Count each sum-group and skip whole groups before the target position."
+        },
+        {
+          "label": "Compute requested value",
+          "detail": "Unrank within the matching group, then compute the requested sum or product."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "sum k",
+          "lexicographic composition"
+        ],
+        "rows": [
+          [
+            "k",
+            "(1,...,1)"
+          ],
+          [
+            "k",
+            "(1,...,2,...)"
+          ],
+          [
+            "k",
+            "(k)"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2023-p1",
+    "contestId": "zio",
+    "year": 2023,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P1",
+    "title": "Count Distinct Possible Exam Scores",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2023/zio2023/zio2023-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "sets",
+      "counting"
+    ],
+    "visual": {
+      "kind": "score-state",
+      "title": "Each problem adds one of three score changes",
+      "caption": "A correct answer adds X, an incorrect answer subtracts one, and skipping adds zero; equal final scores count once.",
+      "steps": [
+        {
+          "label": "Start at zero",
+          "detail": "Start with reachable score set {0}."
+        },
+        {
+          "label": "Extend score choices",
+          "detail": "For each problem, extend every score by âˆ’1, 0, or X."
+        },
+        {
+          "label": "Deduplicate totals",
+          "detail": "Deduplicate totals and count the distinct reachable scores."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "s",
+          "s-1 | s | s+X",
+          "deduplicate reachable totals"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2023-p2",
+    "contestId": "zio",
+    "year": 2023,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P2",
+    "title": "Count Student Subsets with Exactly K Badge Types",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2023/zio2023/zio2023-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "combinatorics",
+      "subsets",
+      "frequency-counting"
+    ],
+    "visual": {
+      "kind": "frequency-groups",
+      "title": "Choose exactly K represented badge groups",
+      "caption": "Students are distinct positions; selected students must contain exactly K different badge numbers. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Group by badge",
+          "detail": "Group student positions by badge value."
+        },
+        {
+          "label": "Choose K groups",
+          "detail": "Choose exactly K badge groups to represent."
+        },
+        {
+          "label": "Count student subsets",
+          "detail": "For each chosen group, select a nonempty subset of its positions and combine the counts."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Badge group",
+          "Choose positions",
+          "Contribution"
+        ],
+        "rows": [
+          [
+            "group i",
+            "none / nonempty subset",
+            "2^n_i - 1"
+          ],
+          [
+            "exactly K groups",
+            "combine",
+            "count"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2023-p3",
+    "contestId": "zio",
+    "year": 2023,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P3",
+    "title": "Count Permutations Matching a Range-Minimum Table",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2023/zio2023/zio2023-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "permutations",
+      "range-minimum",
+      "combinatorics"
+    ],
+    "visual": {
+      "kind": "interval-minimum-tree",
+      "title": "Every interval specifies its minimum index",
+      "caption": "The supplied table names the index of the minimum value in every contiguous range; count consistent permutations. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Read interval minima",
+          "detail": "Read each intervalâ€™s required minimum position."
+        },
+        {
+          "label": "Constrain the Cartesian tree",
+          "detail": "Use nested interval constraints to define the compatible Cartesian-tree order."
+        },
+        {
+          "label": "Count compatible orders",
+          "detail": "Count permutations that satisfy every interval entry."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Interval [l,r]",
+          "Required minimum",
+          "Structure"
+        ],
+        "rows": [
+          [
+            "[l,r]",
+            "argmin(l,r)",
+            "nested Cartesian tree"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2023-p4",
+    "contestId": "zio",
+    "year": 2023,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P4",
+    "title": "Accumulate Minimum Stone Weights as Relations Arrive",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2023/zio2023/zio2023-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "graphs",
+      "constraints",
+      "incremental-processing"
+    ],
+    "visual": {
+      "kind": "difference-constraints",
+      "title": "Add one weight relation at a time",
+      "caption": "Each new relation constrains a positive integer weight difference, while all earlier relations stay active. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "steps": [
+        {
+          "label": "Add a relation",
+          "detail": "Add the next signed relation to the growing constraint graph."
+        },
+        {
+          "label": "Minimize positive weights",
+          "detail": "Find a positive assignment satisfying the full prefix with minimum total weight."
+        },
+        {
+          "label": "Accumulate prefix totals",
+          "detail": "Sum those minimum totals over every prefix of added relations."
+        }
+      ],
+      "diagram": {
+        "type": "graph",
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Stone A",
+            "x": 15,
+            "y": 50
+          },
+          {
+            "id": "B",
+            "label": "Stone B",
+            "x": 50,
+            "y": 20
+          },
+          {
+            "id": "C",
+            "label": "Stone C",
+            "x": 85,
+            "y": 50
+          }
+        ],
+        "edges": [
+          {
+            "from": "A",
+            "to": "B",
+            "label": "wA-wB = X"
+          },
+          {
+            "from": "B",
+            "to": "C",
+            "label": "relation"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2024-monsters",
+    "contestId": "inoi",
+    "year": 2024,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "Problem 1",
+    "title": "Monsters",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2024/inoi2024/inoi2024-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "interval-dp",
+      "game-theory",
+      "range-queries"
+    ],
+    "visual": {
+      "kind": "interval-game",
+      "title": "A survivor must win both sides of an interval",
+      "caption": "Adjacent monsters battle by Fire/Water/Grass dominance; count indices that can survive each queried subrange. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Track survivor types",
+          "detail": "For each interval, track which monster types can be its final survivor."
+        },
+        {
+          "label": "Combine subranges",
+          "detail": "Split a range into two surviving subranges, then apply the dominance rule at their boundary."
+        },
+        {
+          "label": "Answer each interval",
+          "detail": "Count feasible survivor indices for each query interval."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Left interval",
+          "Right interval",
+          "Combine"
+        ],
+        "rows": [
+          [
+            "survivor set L",
+            "survivor set R",
+            "cyclic-dominance rule"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2024-fertilizer",
+    "contestId": "inoi",
+    "year": 2024,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "Problem 2",
+    "title": "Fertilizer",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2024/inoi2024/inoi2024-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "intervals",
+      "range-union",
+      "offline-queries"
+    ],
+    "visual": {
+      "kind": "interval-union",
+      "title": "Union trips in a consecutive trip range",
+      "caption": "A crop-duster trip fertilizes an interval of fields; each query selects consecutive trip IDs and asks how many fields are covered. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "steps": [
+        {
+          "label": "Select trip range",
+          "detail": "Select trip indices X through Y."
+        },
+        {
+          "label": "Merge field intervals",
+          "detail": "Overlay their field intervals and merge overlaps."
+        },
+        {
+          "label": "Count covered fields",
+          "detail": "Return the number of distinct fields in the union."
+        }
+      ],
+      "diagram": {
+        "type": "intervals",
+        "items": [
+          {
+            "label": "trip field range 1",
+            "start": 0,
+            "end": 3
+          },
+          {
+            "label": "trip field range 2",
+            "start": 1,
+            "end": 4
+          },
+          {
+            "label": "merged union",
+            "start": 2,
+            "end": 5
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inoi-2024-trees",
+    "contestId": "inoi",
+    "year": 2024,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "Problem 3",
+    "title": "Trees",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2024/inoi2024/inoi2024-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "trees",
+      "path-queries",
+      "counting"
+    ],
+    "visual": {
+      "kind": "tree-pair-comparison",
+      "title": "Compare the maximum edge on two unique paths",
+      "caption": "For each node pair, compare the maximum edge weight on its path in tree X with the corresponding maximum in tree Y using the relation specified in the official paper. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Choose node pair",
+          "detail": "Choose one unordered node pair."
+        },
+        {
+          "label": "Compare path maxima",
+          "detail": "Find the maximum edge weight on its unique path in each weighted tree."
+        },
+        {
+          "label": "Count matching pairs",
+          "detail": "Count the pair when its two path maxima satisfy the official comparison relation."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Tree X path",
+          "Tree Y path",
+          "Pair test"
+        ],
+        "rows": [
+          [
+            "max edge X(p,q)",
+            "max edge Y(p,q)",
+            "compare as stated"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2024-vegetables",
+    "contestId": "zco",
+    "year": 2024,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "Problem 1",
+    "title": "Vegetables",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2024/zco2024/zco2024-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "optimization",
+      "greedy",
+      "queries"
+    ],
+    "visual": {
+      "kind": "upgrade-cost",
+      "title": "Spend upgrades where water use drops most",
+      "caption": "Vegetable i needs Ai units at Bi water per unit; an upgrade lowers either factor by one, and each query limits upgrades. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Compare marginal savings",
+          "detail": "Start with total water equal to the sum of AiÃ—Bi."
+        },
+        {
+          "label": "Spend within budget",
+          "detail": "Compare each possible one-step reduction, whose benefit depends on the current other factor."
+        },
+        {
+          "label": "Minimize water use",
+          "detail": "For every budget X, minimize total water using at most X upgrades."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Plot i",
+          "Water",
+          "One-step saving"
+        ],
+        "rows": [
+          [
+            "i",
+            "A_i * B_i",
+            "reduce A_i -> save B_i"
+          ],
+          [
+            "i",
+            "A_i * B_i",
+            "reduce B_i -> save A_i"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zco-2024-fruits",
+    "contestId": "zco",
+    "year": 2024,
+    "round": "Zonal Computing Olympiad",
+    "taskId": "Problem 2",
+    "title": "Fruits",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2024/zco2024/zco2024-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "manhattan-distance",
+      "dynamic-updates"
+    ],
+    "visual": {
+      "kind": "grid-distance",
+      "title": "Find the farthest pair across two fruit classes",
+      "caption": "A query asks the largest shortest bee travel time between any U cell and any V cell; another operation changes one fieldâ€™s fruit. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Group cells by fruit",
+          "detail": "Maintain the grid locations grouped by fruit type."
+        },
+        {
+          "label": "Measure Manhattan distance",
+          "detail": "Four-neighbor shortest travel equals Manhattan distance."
+        },
+        {
+          "label": "Query the farthest pair",
+          "detail": "For a query, maximize that distance across the two fruit groups; updates move one cell between groups."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "fruit A",
+            ".",
+            "fruit B"
+          ],
+          [
+            ".",
+            ".",
+            "."
+          ],
+          [
+            "fruit A",
+            ".",
+            "fruit B"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2024-p1",
+    "contestId": "zio",
+    "year": 2024,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P1",
+    "title": "Recover a Sum from All Subset Sums",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2024/zio2024/zio2024-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "math",
+      "subsets",
+      "invariants"
+    ],
+    "visual": {
+      "kind": "flow",
+      "title": "Every element appears in half the subsets",
+      "caption": "Across the complete list of subset sums, each array value contributes exactly 2^(N-1) times. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Enumerate subsets",
+          "detail": "The empty subset and all 2^N element subsets contribute one sum each."
+        },
+        {
+          "label": "Count each value",
+          "detail": "Fix Ai: every choice of the other Nâˆ’1 elements creates one subset containing Ai."
+        },
+        {
+          "label": "Divide the aggregate",
+          "detail": "The sum of all listed subset sums is 2^(Nâˆ’1) Ã— (A1 + â€¦ + AN)."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Aggregate",
+          "Coefficient",
+          "Unknown"
+        ],
+        "rows": [
+          [
+            "all subset sums",
+            "2^(N-1)",
+            "sum(A_i)"
+          ],
+          [
+            "S",
+            "2^(N-1)",
+            "S / 2^(N-1)"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2024-p2",
+    "contestId": "zio",
+    "year": 2024,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P2",
+    "title": "Adjust Pillars into a Consecutive Sequence",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2024/zio2024/zio2024-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "arrays",
+      "optimization",
+      "dynamic-programming"
+    ],
+    "visual": {
+      "kind": "sequence",
+      "title": "Choose a consecutive target band",
+      "caption": "A beautiful sequence has one shared starting height; each next target rises by one. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Pick a start",
+          "detail": "For a target beginning at x, position i must become x + i."
+        },
+        {
+          "label": "Compare costs",
+          "detail": "For each position, count additions or legal removals needed to reach its target; heights cannot fall below one."
+        },
+        {
+          "label": "Take the least",
+          "detail": "The answer is the minimum total adjustment cost over valid starting heights."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Index",
+          "Original height",
+          "Target height"
+        ],
+        "rows": [
+          [
+            "i",
+            "H_i",
+            "x+i"
+          ],
+          [
+            "all i",
+            "H_i >= 1",
+            "min sum |H_i-(x+i)|"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2024-p3",
+    "contestId": "zio",
+    "year": 2024,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P3",
+    "title": "Assign Weights to Maximize Tree Distance",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2024/zio2024/zio2024-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "trees",
+      "greedy",
+      "pairwise-distances"
+    ],
+    "visual": {
+      "kind": "tree-cut",
+      "title": "An edge contributes across its cut",
+      "caption": "Removing one tree edge splits the vertices into two groups; every cross-group pair uses that edge. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "steps": [
+        {
+          "label": "Cut an edge",
+          "detail": "Let the two component sizes be s and Nâˆ’s."
+        },
+        {
+          "label": "Count paths",
+          "detail": "Exactly s Ã— (Nâˆ’s) unordered vertex pairs have a path through this edge."
+        },
+        {
+          "label": "Match weights",
+          "detail": "Each edge weight is multiplied by its crossing-pair count, so assign larger weights to larger counts."
+        }
+      ],
+      "diagram": {
+        "type": "graph",
+        "nodes": [
+          {
+            "id": "A",
+            "label": "s vertices",
+            "x": 20,
+            "y": 50
+          },
+          {
+            "id": "B",
+            "label": "edge weight w",
+            "x": 50,
+            "y": 50
+          },
+          {
+            "id": "C",
+            "label": "N-s vertices",
+            "x": 80,
+            "y": 50
+          }
+        ],
+        "edges": [
+          {
+            "from": "A",
+            "to": "C",
+            "label": "cut by edge"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2024-p4",
+    "contestId": "zio",
+    "year": 2024,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P4",
+    "title": "Count Subsets That Can Avoid Equal Neighbors",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2024/zio2024/zio2024-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "combinatorics",
+      "subsets",
+      "frequency-counting"
+    ],
+    "visual": {
+      "kind": "frequency-bars",
+      "title": "The most common color controls feasibility",
+      "caption": "A chosen multiset can be arranged with no equal adjacent colors exactly when its largest color group fits between the others. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Count selected colors",
+          "detail": "For a candidate subset, let m be the largest color frequency and r the number of all remaining balls."
+        },
+        {
+          "label": "Reserve separators",
+          "detail": "The r other balls create r+1 slots around them for the most frequent color."
+        },
+        {
+          "label": "Check capacity",
+          "detail": "A valid arrangement exists when m â‰¤ r+1; size-zero and size-one subsets are valid as stated."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Most common color",
+          "Other balls",
+          "Available slots"
+        ],
+        "rows": [
+          [
+            "m",
+            "r",
+            "r+1"
+          ],
+          [
+            "valid",
+            "m <= r+1",
+            "no equal neighbors"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2025-p1",
+    "contestId": "zio",
+    "year": 2025,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P1",
+    "title": "Minimize Light Changes to Display a Larger Number",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2025/zio2025/zio2025-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "digits",
+      "dynamic-programming",
+      "greedy"
+    ],
+    "visual": {
+      "kind": "state-transition",
+      "title": "Track whether the prefix is already larger",
+      "caption": "At each display, choose a digit and pay the number of lights that change; the final fixed-width number must exceed X. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Compare one position",
+          "detail": "A chosen digit smaller than X is allowed only after an earlier position made the output larger."
+        },
+        {
+          "label": "Pay the light cost",
+          "detail": "For each digit pair, the cost is the count of differing light positions in their seven-segment patterns."
+        },
+        {
+          "label": "Keep two states",
+          "detail": "Dynamic programming stores the minimum cost for an equal prefix and for a prefix already greater; accept only the greater state at the end."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Prefix state",
+          "Next digit d",
+          "Cost / next state"
+        ],
+        "rows": [
+          [
+            "equal",
+            "d >= input_i",
+            "segmentDiff(input_i,d)"
+          ],
+          [
+            "greater",
+            "any d",
+            "segmentDiff(input_i,d)"
+          ],
+          [
+            "end",
+            "greater only",
+            "minimum total cost"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2025-p2",
+    "contestId": "zio",
+    "year": 2025,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P2",
+    "title": "Count Digit Strings with Alternating Trends",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2025/zio2025/zio2025-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "strings",
+      "dynamic-programming",
+      "counting"
+    ],
+    "visual": {
+      "kind": "sequence",
+      "title": "Adjacent comparisons cannot keep turning the same way",
+      "caption": "With equal neighbors forbidden, every triple must avoid being strictly increasing or strictly decreasing.",
+      "steps": [
+        {
+          "label": "Record each step",
+          "detail": "Each neighboring pair contributes an up or down direction because equal digits are disallowed."
+        },
+        {
+          "label": "Reject repeated direction",
+          "detail": "Two consecutive ups make an increasing triple; two consecutive downs make a decreasing triple."
+        },
+        {
+          "label": "Count valid extensions",
+          "detail": "Build strings by last digit and previous direction, summing counts modulo 997."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "digit_i < digit_(i+1) -> up",
+          "up -> down",
+          "down -> up"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2025-p3",
+    "contestId": "zio",
+    "year": 2025,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P3",
+    "title": "Lower Towers Until the Sequence Has No Valley",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2025/zio2025/zio2025-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "arrays",
+      "dynamic-programming",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "sequence-shape",
+      "title": "A valid profile rises to a peak, then falls",
+      "caption": "The forbidden pattern is a decrease followed later by an increase, which creates a valley.",
+      "steps": [
+        {
+          "label": "Read the trend",
+          "detail": "A valley occurs when some earlier height is larger than a middle height that is smaller than a later height."
+        },
+        {
+          "label": "Keep the peak boundary",
+          "detail": "A no-valley sequence can be represented by a nondecreasing prefix followed by a nonincreasing suffix."
+        },
+        {
+          "label": "Only lower values",
+          "detail": "Choose adjusted heights no greater than the originals, and minimize the total amount removed."
+        }
+      ],
+      "diagram": {
+        "type": "sequence",
+        "items": [
+          "nondecreasing prefix",
+          "peak / plateau",
+          "nonincreasing suffix"
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2025-p4",
+    "contestId": "zio",
+    "year": 2025,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P4",
+    "title": "Count Ordered Path Decompositions of a Tree",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2025/zio2025/zio2025-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "trees",
+      "paths",
+      "combinatorics",
+      "dynamic-programming"
+    ],
+    "visual": {
+      "kind": "tree-paths",
+      "title": "Every road belongs to exactly one chosen path",
+      "caption": "Each array element is a simple path between two cities; together, the paths partition the tree edges. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "steps": [
+        {
+          "label": "Choose endpoints",
+          "detail": "Each pair (A,B) names the unique simple path between two tree vertices."
+        },
+        {
+          "label": "Cover each edge once",
+          "detail": "The selected paths must be edge-disjoint and cover every road exactly once."
+        },
+        {
+          "label": "Canonicalize order",
+          "detail": "Sort the endpoint pairs lexicographically to form the required array; count distinct resulting arrays modulo 997."
+        }
+      ],
+      "diagram": {
+        "type": "graph",
+        "nodes": [
+          {
+            "id": "A",
+            "label": "path endpoint A",
+            "x": 50,
+            "y": 12
+          },
+          {
+            "id": "B",
+            "label": "shared tree",
+            "x": 25,
+            "y": 42
+          },
+          {
+            "id": "C",
+            "label": "path endpoint B",
+            "x": 75,
+            "y": 42
+          }
+        ],
+        "edges": [
+          {
+            "from": "A",
+            "to": "B",
+            "label": "unique path"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2026-p1",
+    "contestId": "zio",
+    "year": 2026,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P1",
+    "title": "Bound the Number of Unique Stars",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2026/zio2026/zio2026-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "intervals",
+      "sweep-line",
+      "extremal-counting"
+    ],
+    "visual": {
+      "kind": "interval-coverage",
+      "title": "Stars persist across consecutive nights",
+      "caption": "Each star contributes to a continuous interval of nights; nightly totals constrain but do not uniquely determine the star intervals. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "steps": [
+        {
+          "label": "Plot nightly totals",
+          "detail": "Plot each observed count as the number of active intervals that night."
+        },
+        {
+          "label": "Construct interval models",
+          "detail": "Consider interval collections that realize the same coverage while minimizing or maximizing the number of distinct stars."
+        },
+        {
+          "label": "Add extreme counts",
+          "detail": "Add the two extreme feasible counts."
+        }
+      ],
+      "diagram": {
+        "type": "intervals",
+        "items": [
+          {
+            "label": "star interval 1",
+            "start": 0,
+            "end": 3
+          },
+          {
+            "label": "star interval 2",
+            "start": 1,
+            "end": 4
+          },
+          {
+            "label": "night coverage",
+            "start": 2,
+            "end": 5
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2026-p2",
+    "contestId": "zio",
+    "year": 2026,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P2",
+    "title": "Count Good Subsequences of a Sorted Array",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2026/zio2026/zio2026-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "subsequences",
+      "dynamic-programming",
+      "counting"
+    ],
+    "visual": {
+      "kind": "subsequence-dag",
+      "title": "Keep each adjacent value jump within K",
+      "caption": "The input is nondecreasing; count nonempty index subsequences whose consecutive selected values differ by at most K. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "steps": [
+        {
+          "label": "Create position nodes",
+          "detail": "Treat array positions as separate nodes, including equal-valued positions."
+        },
+        {
+          "label": "Connect valid jumps",
+          "detail": "Connect compatible later positions when their value gap is at most K."
+        },
+        {
+          "label": "Count index paths",
+          "detail": "Count nonempty paths ending at every node."
+        }
+      ],
+      "diagram": {
+        "type": "graph",
+        "nodes": [
+          {
+            "id": "A",
+            "label": "index i",
+            "x": 15,
+            "y": 50
+          },
+          {
+            "id": "B",
+            "label": "index j",
+            "x": 50,
+            "y": 20
+          },
+          {
+            "id": "C",
+            "label": "index k",
+            "x": 85,
+            "y": 50
+          }
+        ],
+        "edges": [
+          {
+            "from": "A",
+            "to": "B",
+            "label": "i<j; <= K"
+          },
+          {
+            "from": "B",
+            "to": "C",
+            "label": "j<k; <= K"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2026-p3",
+    "contestId": "zio",
+    "year": 2026,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P3",
+    "title": "Sum Prime-Reachable Residues",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2026/zio2026/zio2026-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "prime-factorization"
+    ],
+    "visual": {
+      "kind": "residue-wheel",
+      "title": "Mark residues that contain a prime",
+      "caption": "A residue m is good when some prime p has p mod N=m; sum each good residue once. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "Make residue buckets",
+          "detail": "Make one bucket for each remainder 0â€¦Nâˆ’1."
+        },
+        {
+          "label": "Identify prime classes",
+          "detail": "Use Nâ€™s supplied prime factorization to characterize prime-possible remainders."
+        },
+        {
+          "label": "Sum valid remainders",
+          "detail": "Sum the marked remainder values."
+        }
+      ],
+      "diagram": {
+        "type": "table",
+        "columns": [
+          "Prime p",
+          "Residue",
+          "Decision"
+        ],
+        "rows": [
+          [
+            "p",
+            "p mod N",
+            "mark reachable residue"
+          ],
+          [
+            "all residues",
+            "prime possible",
+            "sum marked values"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "id": "zio-2026-p4",
+    "contestId": "zio",
+    "year": 2026,
+    "round": "Zonal Informatics Olympiad",
+    "taskId": "P4",
+    "title": "Sum Range-Max Operation Scores over Subarrays",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2026/zio2026/zio2026-question-paper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "arrays",
+      "range-operations",
+      "subarrays"
+    ],
+    "visual": {
+      "kind": "range-overlays",
+      "title": "Build a profile with interval maximum overlays",
+      "caption": "An operation sets each value in [L,R] to at least v; score each array by the fewest operations, then sum scores over subarrays. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "steps": [
+        {
+          "label": "View interval layers",
+          "detail": "View each operation as a horizontal interval layer at height v."
+        },
+        {
+          "label": "Rebuild each subarray",
+          "detail": "Layers combine pointwise by maximum to form the target subarray."
+        },
+        {
+          "label": "Sum minimum operation counts",
+          "detail": "Find the minimum layer count per subarray and sum all scores."
+        }
+      ],
+      "diagram": {
+        "type": "grid",
+        "rows": [
+          [
+            "L",
+            "->",
+            "R"
+          ],
+          [
+            "v",
+            "v",
+            "v"
+          ],
+          [
+            "C[i] = max(C[i], v)",
+            "",
+            ""
+          ]
+        ]
+      }
+    }
+  }
+]

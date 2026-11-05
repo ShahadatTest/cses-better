@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Each heap is an independent game where a move removes 1, 2, or 3 sticks.",
+    "For one heap, losing sizes repeat every four: sizes divisible by 4 are losing.",
+    "Replace each heap by its remainder modulo 4 and XOR the remainders."
+  ],
+  "analogy": "A heap's strategic size is its remainder after removing groups of four.",
+  "example": "A single heap of 4 is losing because every move leaves 1, 2, or 3 sticks, all winning positions.",
+  "algorithm": "For each test case, XOR x_i mod 4 across all heaps. Print first if the XOR is nonzero and second otherwise.",
+  "correctness": "A single heap has Grundy value x mod 4 because each move can reach the preceding one, two, or three residues. Independent heaps combine by XOR, so zero is losing and nonzero is winning.",
+  "complexity": "O(n) time and O(1) extra space per test case.",
+  "visual": {
+    "kind": "math",
+    "title": "Nim Game II: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A single heap of 4 is losing because every move leaves 1, 2, or 3 sticks, all winning positions."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each test case, XOR x_i mod 4 across all heaps. Print first if the XOR is nonzero and second otherwise."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "4",
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - A single heap of 4 is losing because every move leaves 1, 2, or 3 sticks, all winning positions."
+  }
+}

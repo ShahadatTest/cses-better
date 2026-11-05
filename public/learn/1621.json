@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Sorting puts equal values next to each other.",
+    "Count the first value, then add one whenever the value differs from the preceding sorted value.",
+    "An input with one item has one distinct value."
+  ],
+  "analogy": "Sort the numbers into piles; each new pile is a new distinct value.",
+  "example": "For 2,3,2,2,3, sorting gives 2,2,2,3,3, which has two runs and thus two distinct values.",
+  "algorithm": "Sort the array and count adjacent changes, starting the count at one.",
+  "correctness": "Each distinct value forms exactly one contiguous block after sorting, so the number of blocks is the distinct count.",
+  "complexity": "O(n log n) time and O(n) space if sorting copies the input.",
+  "visual": {
+    "kind": "array",
+    "title": "Distinct Numbers: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5\n2 3 2 2 3"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 2,3,2,2,3, sorting gives 2,2,2,3,3, which has two runs and thus two distinct values."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort the array and count adjacent changes, starting the count at one."
+      },
+      {
+        "label": "Result",
+        "detail": "2"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5"
+      ],
+      [
+        "2  3  2  2  3"
+      ]
+    ],
+    "caption": "Illustrative example - For 2,3,2,2,3, sorting gives 2,2,2,3,3, which has two runs and thus two distinct values."
+  }
+}

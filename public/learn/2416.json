@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Making the array nondecreasing raises each value to the maximum previously seen.",
+    "For a query range, each position's required increase depends on the prefix maximum before it.",
+    "Group positions by the next greater-or-equal value and use prefix sums to sum the repeated target-minus-value costs."
+  ],
+  "analogy": "As you scan a range, each low item is lifted to the tallest earlier item.",
+  "example": "For [3,1,2], adjusted values are [3,3,3], so increases total 3.",
+  "algorithm": "Build next-greater links and prefix sums; for each range, jump between blocks sharing the same prefix maximum and compute their total increments from prefix sums.",
+  "correctness": "The monotone transformation sets each position to the maximum of the range prefix through that position, which is exactly the least nondecreasing value sequence dominating the input.",
+  "complexity": "O((n+q) log n) time with binary lifting and prefix sums; O(n log n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Increasing Array Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [3,1,2], adjusted values are [3,3,3], so increases total 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build next-greater links and prefix sums; for each range, jump between blocks sharing the same prefix maximum and compute their total increments from prefix sums."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [3,1,2], adjusted values are [3,3,3], so increases total 3."
+  }
+}

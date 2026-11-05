@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A building is visible from a viewpoint when no taller building blocks the line of sight, according to the problem's height rule.",
+    "For each query interval, the buildings' relative height records determine visibility.",
+    "Use a range maximum structure to skip groups that cannot contribute a visible building."
+  ],
+  "analogy": "From the chosen viewpoint, a building stays visible only while it sets a new height record.",
+  "example": "Looking across heights 2,5,3,7, the visible record heights are 2,5,7.",
+  "complexity": "O((n+q) log n) if each visible building is found by a tree search; O(n) tree space.",
+  "algorithm": "Precompute a next-greater index for every position with a monotonic stack. For each query [a,b], repeatedly jump to the next index after the current record height whose height is strictly larger, stopping at b. Binary-lifting jump pointers let each query skip many visible-record transitions.",
+  "correctness": "A building is visible exactly when its height exceeds every earlier height in the queried interval; the next-greater chain lists precisely these successive record highs.",
+  "visual": {
+    "kind": "range",
+    "title": "Visible Buildings Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Looking across heights 2,5,3,7, the visible record heights are 2,5,7."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Precompute a next-greater index for every position with a monotonic stack. For each query [a,b], repeatedly jump to the next index after the current record height whose height is strictly larger, stopping at b. Binary-lifting jump pointers let each query skip many visible-record transitions."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "5",
+      "3",
+      "7"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Looking across heights 2,5,3,7, the visible record heights are 2,5,7."
+  }
+}

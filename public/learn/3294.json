@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Introduce prefix sums p[i] for the unknown array.",
+    "Each segment constraint becomes a difference between two prefix sums.",
+    "Treat these differences as weighted graph edges and check consistency."
+  ],
+  "analogy": "Each constraint is a fixed height difference between two points; following different paths must give the same height.",
+  "example": "Constraints sum(1,2)=3 and sum(2,2)=1 allow prefix values [0,2,3] and array [2,1].",
+  "algorithm": "For every constraint (l,r,s), add directed weighted edges from l-1 to r with weight s and from r to l-1 with weight -s. Traverse each connected component, assigning an arbitrary starting prefix value 0 and setting p[v]=p[u]+weight along edges. If an already assigned vertex gets a different required value, print IMPOSSIBLE. Otherwise output x[i]=p[i]-p[i-1]. Use 64-bit integers.",
+  "correctness": "Every constraint is exactly p[r]-p[l-1]=s. Traversal enforces all such equations; a conflicting assignment proves no solution exists. If no conflict occurs, the constructed differences satisfy every edge and hence every original constraint. Separate components may choose independent offsets.",
+  "complexity": "For n array elements and m constraints, time and space are O(n+m).",
+  "visual": {
+    "kind": "trace",
+    "title": "Subarray Sum Constraints: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Constraints sum(1,2)=3 and sum(2,2)=1 allow prefix values [0,2,3] and array [2,1]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For every constraint (l,r,s), add directed weighted edges from l-1 to r with weight s and from r to l-1 with weight -s. Traverse each connected component, assigning an arbitrary starting prefix value 0 and setting p[v]=p[u]+weight along edges. If an already assigned vertex gets a different required value, print IMPOSSIBLE. Otherwise output x[i]=p[i]-p[i-1]. Use 64-bit integers."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3",
+      "0"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Constraints sum(1,2)=3 and sum(2,2)=1 allow prefix values [0,2,3] and array [2,1]."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "The order changes how long each task waits, but not the total sum of durations.",
+    "Sort tasks by duration, since short tasks finishing early keep later tasks' penalties smaller.",
+    "The reward is the sum of each deadline minus its completion time."
+  ],
+  "analogy": "Do short errands first so they stop delaying every later errand.",
+  "example": "Tasks (duration,deadline) (6,10),(8,15),(5,12): order 5,6,8 finishes at 5,11,19 for rewards 7, -1, -4, total 2.",
+  "algorithm": "Sort by duration ascending. Accumulate elapsed duration and add deadline-elapsed after each task.",
+  "correctness": "For any adjacent pair, doing the shorter task first cannot increase either completion-time sum; swapping every inverted pair yields nondecreasing duration and maximum total reward.",
+  "complexity": "O(n log n) time and O(1) extra space beyond sorting.",
+  "visual": {
+    "kind": "array",
+    "title": "Tasks and Deadlines: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3\n6 10\n8 15\n5 12"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Tasks (duration,deadline) (6,10),(8,15),(5,12): order 5,6,8 finishes at 5,11,19 for rewards 7, -1, -4, total 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort by duration ascending. Accumulate elapsed duration and add deadline-elapsed after each task."
+      },
+      {
+        "label": "Result",
+        "detail": "2"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3"
+      ],
+      [
+        "6  10"
+      ],
+      [
+        "8  15"
+      ],
+      [
+        "5  12"
+      ]
+    ],
+    "caption": "Illustrative example - Tasks (duration,deadline) (6,10),(8,15),(5,12): order 5,6,8 finishes at 5,11,19 for rewards 7, -1, -4, total 2."
+  }
+}

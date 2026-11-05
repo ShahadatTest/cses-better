@@ -1,0 +1,73 @@
+{
+  "hints": [
+    "A minimum spanning tree chooses edges in increasing order of weight.",
+    "Contract all edges with strictly smaller weight before examining a group.",
+    "Within each query and weight, the requested edges must not form a cycle among contracted components."
+  ],
+  "analogy": "Before choosing equal-cost bridges, merge everything already connected by cheaper bridges and check whether the requested bridges form a loop.",
+  "example": "If three requested equal-weight edges form a triangle after cheaper edges are contracted, at most two can belong to a tree, so the answer is NO.",
+  "algorithm": "Sort graph edges and query-edge occurrences by weight. Maintain a global disjoint-set union (DSU) containing all edges of smaller weight. For each query within the current weight group, temporarily union its requested endpoints starting from the global DSU; if any union joins an already connected pair, mark that query NO. Roll back these temporary unions before checking the next query. After all checks at the weight, permanently union all graph edges of that weight. Implement temporary unions with a rollback DSU without path compression, recording parent and size changes.",
+  "correctness": "Kruskal must connect every component possible using cheaper edges first. At one weight, any acyclic chosen set on those contracted components can be extended to a maximal forest, so it can occur in some minimum spanning tree. A cycle cannot occur in any tree. Weight groups are independent under these contractions.",
+  "complexity": "For n vertices, m edges and k total query-edge occurrences, sorting costs O((m+k) log(m+k)); rollback DSU operations take O(log n) each, using O(n+m+k) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "MST Edge Set Check: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If three requested equal-weight edges form a triangle after cheaper edges are contracted, at most two can belong to a tree, so the answer is NO."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort graph edges and query-edge occurrences by weight. Maintain a global disjoint-set union (DSU) containing all edges of smaller weight. For each query within the current weight group, temporarily union its requested endpoints starting from the global DSU; if any union joins an already connected pair, mark that query NO. Roll back these temporary unions before checking the next query. After all checks at the weight, permanently union all graph edges of that weight. Implement temporary unions with a rollback DSU without path compression, recording parent and size changes."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "1"
+      }
+    ],
+    "caption": "Illustrative example - After cheaper edges are contracted, three equal-weight edges form a cycle; at most two fit in a spanning tree."
+  }
+}

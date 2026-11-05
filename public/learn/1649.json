@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "The array starts with one value at each position; each query either changes a point or asks for a range minimum.",
+    "Store minima in a segment tree, as in a static minimum query structure.",
+    "Only update the path from the changed leaf to the root."
+  ],
+  "analogy": "The range minimum tree can be repaired by recomputing only the changed value's ancestors.",
+  "example": "If values are 8,3,6 and position 2 changes to 9, the minimum on 1..3 becomes 6.",
+  "algorithm": "Build a min segment tree. Type 1 sets position k to u; type 2 queries the minimum over [a,b].",
+  "correctness": "Every query decomposes into fully covered tree intervals whose stored minima together give the requested minimum; each point change updates all and only affected ancestors.",
+  "complexity": "O(n) build, O(log n) per operation and O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Dynamic Range Minimum Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If values are 8,3,6 and position 2 changes to 9, the minimum on 1..3 becomes 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a min segment tree. Type 1 sets position k to u; type 2 queries the minimum over [a,b]."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Range 1",
+        "start": 1,
+        "end": 3
+      }
+    ],
+    "caption": "Illustrative example - If values are 8,3,6 and position 2 changes to 9, the minimum on 1..3 becomes 6."
+  }
+}

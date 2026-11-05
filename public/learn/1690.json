@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "A valid flight route visits every city exactly once, so fix city 1 as the start and city n as the finish.",
+    "Use a bitmask for the set of intermediate cities already visited and the current endpoint.",
+    "When all intermediate cities are used, count a route only if the final edge reaches n."
+  ],
+  "analogy": "Track which cities have already been visited; from each state, try an unvisited next city.",
+  "example": "For n=3 with flights 1->2 and 2->3, exactly one route visits all cities from 1 to 3.",
+  "algorithm": "Let dp[mask][u] count paths from 1 that visit mask and end at u. Extend over unvisited outgoing neighbors; when mask contains 1..n-1, add edges to n. Use modulo 1e9+7.",
+  "correctness": "Every Hamiltonian route has a unique visited-set and endpoint at each step; the transitions enumerate all such prefixes once and only complete them with a final edge to n.",
+  "complexity": "O(2^n*m) time and O(2^n*n) space; exploit n<=20 and store only masks that include start.",
+  "visual": {
+    "kind": "graph",
+    "title": "Hamiltonian Flights: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3 with flights 1->2 and 2->3, exactly one route visits all cities from 1 to 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let dp[mask][u] count paths from 1 that visit mask and end at u. Extend over unvisited outgoing neighbors; when mask contains 1..n-1, add edges to n. Use modulo 1e9+7."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      }
+    ],
+    "caption": "Illustrative example - For n=3 with flights 1->2 and 2->3, exactly one route visits all cities from 1 to 3."
+  }
+}

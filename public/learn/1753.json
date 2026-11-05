@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "A match starts wherever the pattern appears as a contiguous substring of the text.",
+    "The KMP prefix function tells how much of the pattern can be retained after a mismatch.",
+    "Scan text once, falling back through prefix links instead of restarting at each position."
+  ],
+  "analogy": "When a character fails to match, reuse the longest pattern prefix that still matches the text suffix.",
+  "example": "Pattern 'aba' occurs twice in text 'ababa', starting at positions 1 and 3.",
+  "algorithm": "Compute the prefix-function for the pattern. Scan text with matched length j, fall back while characters differ, advance on match, count and reset to pi[j-1] after each full match.",
+  "correctness": "KMP's fallback preserves exactly the longest viable prefix, so each occurrence is found and no possible start is skipped.",
+  "complexity": "O(n+m) time and O(m) space.",
+  "visual": {
+    "kind": "string",
+    "title": "String Matching: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Pattern 'aba' occurs twice in text 'ababa', starting at positions 1 and 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute the prefix-function for the pattern. Scan text with matched length j, fall back while characters differ, advance on match, count and reset to pi[j-1] after each full match."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Role",
+      "String"
+    ],
+    "rows": [
+      [
+        "Text / source",
+        "aba"
+      ],
+      [
+        "Pattern / candidate",
+        "ababa"
+      ]
+    ],
+    "caption": "Illustrative example - Pattern 'aba' occurs twice in text 'ababa', starting at positions 1 and 3."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "Children connected by wishes must make the same choice.",
+    "Each connected component contributes either all its children or none.",
+    "Use a bitset subset-sum, grouping equal component sizes."
+  ],
+  "analogy": "Treat every connected group as one indivisible package whose weight is its number of children.",
+  "example": "With component sizes 4 and 1, possible positive zoo counts are 1, 4 and 5, so the output is 10011.",
+  "algorithm": "Find connected components using DFS or DSU, and count how many have each size. Maintain a bitset with bit 0 set. For each size s with frequency f, split f into binary-sized groups; for each group of g components, update bits |= bits << (g*s), truncating beyond n. Print bits 1 through n.",
+  "correctness": "Every wish forces its endpoints, and therefore their entire connected component, to choose the same attraction. Conversely, each component can choose independently. Binary groups represent every number from 0 through f of equal-sized components, and the shifted bitset adds precisely the new attainable totals.",
+  "complexity": "For n children and m wishes, components take O(n+m) time. If B grouped sizes are processed using machine words of w bits, subset-sum takes O(B*n/w) word operations and O(n) bits; B is O(sqrt(n) log n).",
+  "visual": {
+    "kind": "trace",
+    "title": "School Excursion: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With component sizes 4 and 1, possible positive zoo counts are 1, 4 and 5, so the output is 10011."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Find connected components using DFS or DSU, and count how many have each size. Maintain a bitset with bit 0 set. For each size s with frequency f, split f into binary-sized groups; for each group of g components, update bits |= bits << (g*s), truncating beyond n. Print bits 1 through n."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Component sizes",
+      "Possible selected total"
+    ],
+    "rows": [
+      [
+        "4, 1",
+        "1, 4, 5"
+      ]
+    ],
+    "caption": "Illustrative example - A subset of connected-component sizes gives each reachable zoo count."
+  }
+}

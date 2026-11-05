@@ -107,7 +107,7 @@ export function SplitPane({
       {/* First Pane */}
       <div
         style={firstPaneStyle}
-        className={`relative overflow-hidden ${
+        className={`split-first relative overflow-hidden ${
           isDragging ? 'pointer-events-none' : ''
         }`}
       >
@@ -119,9 +119,11 @@ export function SplitPane({
         role="separator"
         aria-orientation={isHorizontal ? 'vertical' : 'horizontal'}
         tabIndex={0}
+        onKeyDown={e => { const delta = e.key === (isHorizontal ? 'ArrowRight' : 'ArrowDown') ? 2 : e.key === (isHorizontal ? 'ArrowLeft' : 'ArrowUp') ? -2 : 0; if (delta) { e.preventDefault(); setSize(value => Math.max(minSize, Math.min(maxSize, value + delta))); } }}
+        aria-valuenow={Math.round(size)} aria-valuemin={minSize} aria-valuemax={maxSize}
         onPointerDown={handlePointerDown}
         onDoubleClick={handleDoubleClick}
-        className={`group relative z-20 flex flex-shrink-0 items-center justify-center transition-colors select-none ${
+        className={`split-gutter group relative z-20 flex flex-shrink-0 items-center justify-center transition-colors select-none ${
           isHorizontal
             ? 'w-2 cursor-col-resize hover:bg-sky-500/20 active:bg-sky-500/30'
             : 'h-2 cursor-row-resize hover:bg-sky-500/20 active:bg-sky-500/30'
@@ -147,7 +149,7 @@ export function SplitPane({
       {/* Second Pane */}
       <div
         style={secondPaneStyle}
-        className={`relative overflow-hidden flex-1 ${
+        className={`split-second relative overflow-hidden flex-1 ${
           isDragging ? 'pointer-events-none' : ''
         }`}
       >

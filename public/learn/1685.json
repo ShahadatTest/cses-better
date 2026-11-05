@@ -1,0 +1,59 @@
+{
+  "hints": [
+    "Collapse each strongly connected component into one node; the resulting graph is a DAG.",
+    "Every source needs a new incoming edge and every sink needs a new outgoing edge.",
+    "Pair sources and sinks according to reachability; arbitrary cyclic pairing can leave separate groups disconnected."
+  ],
+  "analogy": "Each component is already a neighborhood with two-way travel; the new flights must join all neighborhoods into one loop.",
+  "example": "In the sample, {1,2,3} is one component and {4} is another. Adding 4->2 makes every city reachable from every other city, using one flight.",
+  "algorithm": "Find strongly connected components (SCCs), replace each by one node, and build the resulting DAG with forward and reverse adjacency lists plus mutable indegrees and outdegrees. If there is one SCC, print 0. Each time an edge is added below, record it, update both degrees, and add it to the appropriate adjacency list. First pass: clear visited marks and set pivotOut to empty. Scan nodes in a fixed order; when a node t currently has outdegree zero, run DFS from t on reverse edges if it is unvisited. During this DFS collect the newly visited nodes whose current indegree is zero. If pivotOut is empty, set it to t. Otherwise, if the DFS collected at least one source s, add pivotOut->s and set pivotOut=t. Keep visited marks between these DFS calls. Second pass: build forward adjacency including the edges added so far, clear visited marks, and set pivotIn to empty. Scan nodes in the same fixed order; when a node s currently has indegree zero, run DFS from s on forward edges if it is unvisited. Collect newly visited nodes whose current outdegree is zero. If pivotIn is empty, set it to s. Otherwise, if the DFS collected at least one sink t, add t->pivotIn and set pivotIn=s. Keep visited marks between calls and include new edges in forward adjacency. Add pivotOut->pivotIn. Now pair any remaining zero-outdegree nodes with zero-indegree nodes, adding each sink->source edge and updating degrees. For every remaining zero-indegree node s add pivotOut->s; for every remaining zero-outdegree node t add t->pivotIn. Print the recorded edges using one representative original city from each SCC.",
+  "correctness": "Every source SCC needs a new incoming edge and every sink SCC needs a new outgoing edge, so at least max(sources,sinks) flights are needed. In the first pass, reverse DFS identifies which sources already lead to each sink; each new link joins a newly discovered reachability group to the chain ending at pivotOut. The second pass symmetrically joins remaining groups into the chain beginning at pivotIn. Closing the chain gives a strongly connected core. Any still-unmatched source reaches this core, and any still-unmatched sink is reachable from it; pairing or attaching them gives each a return route as well. Each added flight consumes a previously unserved source or sink, and the final pairing handles both at once, so the number of flights is exactly the lower bound.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "New Flight Routes: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In the sample, {1,2,3} is one component and {4} is another. Adding 4->2 makes every city reachable from every other city, using one flight."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Find strongly connected components (SCCs), replace each by one node, and build the resulting DAG with forward and reverse adjacency lists plus mutable indegrees and outdegrees. If there is one SCC, print 0. Each time an edge is added below, record it, update both degrees, and add it to the appropriate adjacency list. First pass: clear visited marks and set pivotOut to empty. Scan nodes in a fixed order; when a node t currently has outdegree zero, run DFS from t on reverse edges if it is unvisited. During this DFS collect the newly visited nodes whose current indegree is zero. If pivotOut is empty, set it to t. Otherwise, if the DFS collected at least one source s, add pivotOut->s and set pivotOut=t. Keep visited marks between these DFS calls. Second pass: build forward adjacency including the edges added so far, clear visited marks, and set pivotIn to empty. Scan nodes in the same fixed order; when a node s currently has indegree zero, run DFS from s on forward edges if it is unvisited. Collect newly visited nodes whose current outdegree is zero. If pivotIn is empty, set it to s. Otherwise, if the DFS collected at least one sink t, add t->pivotIn and set pivotIn=s. Keep visited marks between calls and include new edges in forward adjacency. Add pivotOut->pivotIn. Now pair any remaining zero-outdegree nodes with zero-indegree nodes, adding each sink->source edge and updating degrees. For every remaining zero-indegree node s add pivotOut->s; for every remaining zero-outdegree node t add t->pivotIn. Print the recorded edges using one representative original city from each SCC."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "4",
+        "label": "4",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "4",
+        "to": "2"
+      }
+    ],
+    "caption": "Illustrative example - In the sample, {1,2,3} is one component and {4} is another. Adding 4->2 makes every city reachable from every other city, using one flight."
+  }
+}

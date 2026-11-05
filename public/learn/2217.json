@@ -1,0 +1,59 @@
+{
+  "hints": [
+    "Only the swaps' two values change positions, but round boundaries depend on adjacent value order.",
+    "Before swapping, identify the position comparisons for values x-1,x,x+1,y-1,y,y+1.",
+    "Subtract their old break contributions, swap positions, then add the new contributions; avoid counting the same comparison twice."
+  ],
+  "analogy": "A swap only changes the local links in the chain of values being collected.",
+  "example": "If 2 and 5 swap places, only comparisons around 1,2,3,4,5,6 can change; other position orderings stay identical.",
+  "algorithm": "Store the array and inverse positions. For each swap, gather distinct adjacent-value pairs affected by the two values, remove their descent indicators, swap array positions, then add updated indicators and report rounds.",
+  "correctness": "A round count is determined solely by each neighboring value pair's relative position; unaffected pairs keep their contribution, and the updated pairs are recomputed exactly.",
+  "complexity": "O(q) time for a fixed number of affected pairs per query and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Collecting Numbers II: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5 3\n4 2 1 5 3\n2 3\n1 5\n2 3"
+      },
+      {
+        "label": "Work through it",
+        "detail": "If 2 and 5 swap places, only comparisons around 1,2,3,4,5,6 can change; other position orderings stay identical."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Store the array and inverse positions. For each swap, gather distinct adjacent-value pairs affected by the two values, remove their descent indicators, swap array positions, then add updated indicators and report rounds."
+      },
+      {
+        "label": "Result",
+        "detail": "2\n3\n4"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5  3"
+      ],
+      [
+        "4  2  1  5  3"
+      ],
+      [
+        "2  3"
+      ],
+      [
+        "1  5"
+      ],
+      [
+        "2  3"
+      ]
+    ],
+    "caption": "Illustrative example - If 2 and 5 swap places, only comparisons around 1,2,3,4,5,6 can change; other position orderings stay identical."
+  }
+}

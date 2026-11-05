@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "Fill the board one column at a time and describe which cells of the current column are already occupied by a tile crossing into it.",
+    "The occupancy pattern is a bitmask with only 2^n possibilities for height n.",
+    "For each mask, place vertical tiles in the current column or horizontal tiles extending into the next, then transfer the resulting mask."
+  ],
+  "analogy": "A column mask records tile halves that arrived from the previous column; fill the remaining holes before moving on.",
+  "example": "For a 2-by-2 board, the two tilings are two vertical dominoes or two horizontal dominoes.",
+  "algorithm": "Use profile DP over columns. Recursively fill the first empty row in the current mask: place a vertical domino if the next row is free, or a horizontal domino and set its bit in nextMask. Sum counts modulo 1,000,000,007.",
+  "correctness": "Every tiling has a unique placement choice at the first uncovered cell in each column; the transitions enumerate exactly the legal possibilities without overlap.",
+  "complexity": "O(m*2^n*n) time and O(2^n) memory for an n-by-m board.",
+  "visual": {
+    "kind": "dp",
+    "title": "Counting Tilings: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For a 2-by-2 board, the two tilings are two vertical dominoes or two horizontal dominoes."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use profile DP over columns. Recursively fill the first empty row in the current mask: place a vertical domino if the next row is free, or a horizontal domino and set its bit in nextMask. Sum counts modulo 1,000,000,007."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Tiling A",
+      "Tiling B"
+    ],
+    "rows": [
+      [
+        "Two vertical dominoes",
+        "Two horizontal dominoes"
+      ],
+      [
+        "2 x 2 board",
+        "2 x 2 board"
+      ]
+    ],
+    "caption": "Illustrative example - A 2 x 2 board has two domino tilings."
+  }
+}

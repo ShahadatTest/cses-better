@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "At each step, subtract one digit that appears in the current number.",
+    "Let dp[x] be the fewest steps to reach zero from x; the chosen digit leads to a smaller state.",
+    "Ignore digit 0 because subtracting it makes no progress."
+  ],
+  "analogy": "At each number, choose one of its nonzero digits and ask how many steps remain afterward.",
+  "example": "For 27, subtract 7 to reach 20, subtract 2 to 18, then 8 to 10, 1 to 9, and 9 to zero: five steps.",
+  "algorithm": "For x=1..n, set dp[x]=1+min(dp[x-d]) over nonzero decimal digits d of x.",
+  "correctness": "Every legal first move subtracts one of the available nonzero digits; taking the best resulting state considers every possible first move.",
+  "complexity": "O(n log n) time for digit extraction and O(n) space.",
+  "visual": {
+    "kind": "dp",
+    "title": "Removing Digits: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 27, subtract 7 to reach 20, subtract 2 to 18, then 8 to 10, 1 to 9, and 9 to zero: five steps."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For x=1..n, set dp[x]=1+min(dp[x-d]) over nonzero decimal digits d of x."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "27",
+      "7",
+      "20",
+      "2",
+      "18",
+      "8",
+      "10",
+      "1",
+      "9"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For 27, subtract 7 to reach 20, subtract 2 to 18, then 8 to 10, 1 to 9, and 9 to zero: five steps."
+  }
+}

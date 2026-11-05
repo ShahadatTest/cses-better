@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "The speed between two nodes is the smallest edge on their tree path.",
+    "Process edges from largest speed down.",
+    "When components of sizes a and b join at speed w, exactly a*b new pairs have bottleneck w."
+  ],
+  "analogy": "As the speed threshold falls, newly connected pairs acquire the threshold as their route speed.",
+  "example": "For a path with edge speeds 5 and 2, the three pair speeds are 5,2,2, summing to 9.",
+  "algorithm": "Sort tree edges by decreasing speed. Maintain components and their sizes with disjoint-set union. Before joining an edge of speed w connecting components of sizes a and b, add w*a*b to the answer, then merge them. Use wide integer arithmetic.",
+  "correctness": "When an edge of speed w is processed, all edges already used have speed at least w. Every newly joined pair has a path containing this edge and no smaller edge, so its bottleneck is w; each pair is counted exactly once.",
+  "complexity": "For n nodes, O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Transfer Speeds Sum: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For a path with edge speeds 5 and 2, the three pair speeds are 5,2,2, summing to 9."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort tree edges by decreasing speed. Maintain components and their sizes with disjoint-set union. Before joining an edge of speed w connecting components of sizes a and b, add w*a*b to the answer, then merge them. Use wide integer arithmetic."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "5",
+      "2",
+      "9"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For a path with edge speeds 5 and 2, the three pair speeds are 5,2,2, summing to 9."
+  }
+}

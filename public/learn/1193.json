@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Every move has equal cost, so breadth-first search finds a shortest route.",
+    "Save the previous cell and the move used whenever a cell is first visited.",
+    "If B is unreachable, print NO; otherwise follow parents backward and reverse the moves."
+  ],
+  "analogy": "Explore all cells by distance from A, saving the doorway used to reach each new cell.",
+  "example": "From A, if the first shortest route uses left, down, then right, the reconstructed moves are LDR.",
+  "algorithm": "Run BFS through non-wall cells. Store parent direction per cell; after reaching B, walk parents back to A, reverse the collected moves, and print length and path.",
+  "correctness": "BFS first reaches each cell using the fewest moves; parent links therefore reconstruct a shortest path to B.",
+  "complexity": "O(nm) time and O(nm) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Labyrinth: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "From A, if the first shortest route uses left, down, then right, the reconstructed moves are LDR."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run BFS through non-wall cells. Store parent direction per cell; after reaching B, walk parents back to A, reverse the collected moves, and print length and path."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "A",
+      "L",
+      "D",
+      "R"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - A shortest route can be reconstructed as L, D, R."
+  }
+}

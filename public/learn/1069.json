@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Scan the DNA string from left to right and keep the current run length.",
+    "If a letter matches the previous one, extend the run; otherwise begin a run of length one.",
+    "Record the largest run seen, including the first character."
+  ],
+  "analogy": "Count the longest unbroken streak of the same color beads.",
+  "example": "In ATTCGGGA, the G run has length 3 and is longer than the TT run, so the answer is 3.",
+  "algorithm": "Maintain a current streak and a maximum while scanning each character once.",
+  "correctness": "Every same-letter substring is contained in one maximal consecutive run, so the largest run is the longest repetition.",
+  "complexity": "O(n) time and O(1) extra space, where n is the string length.",
+  "visual": {
+    "kind": "trace",
+    "title": "Repetitions: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "ATTCGGGA"
+      },
+      {
+        "label": "Work through it",
+        "detail": "In ATTCGGGA, the G run has length 3 and is longer than the TT run, so the answer is 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain a current streak and a maximum while scanning each character once."
+      },
+      {
+        "label": "Result",
+        "detail": "3"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "ATTCGGGA"
+      ]
+    ],
+    "caption": "Illustrative example - In ATTCGGGA, the G run has length 3 and is longer than the TT run, so the answer is 3."
+  }
+}

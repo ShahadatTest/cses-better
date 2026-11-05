@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "The total value of all cards never changes, so maximizing your own total is equivalent to controlling the score difference.",
+    "Let dp[l][r] be the best score difference current player can secure from the remaining interval.",
+    "Choose left or right; subtract the opponent's best difference on the remaining interval."
+  ],
+  "analogy": "A player chooses one end, then the opponent gets the same choice on the smaller remaining line.",
+  "example": "For cards [4,5], take 5 and gain difference 1; taking 4 would give -1.",
+  "algorithm": "Use interval DP: dp[i][j]=max(a[i]-dp[i+1][j],a[j]-dp[i][j-1]); fill increasing interval length. First player's score is (sum+dp[0][n-1])/2.",
+  "correctness": "After choosing an end, the opponent becomes the chooser on exactly the remaining interval; maximizing current-minus-opponent gives the optimal minimax result.",
+  "complexity": "O(n^2) time and O(n^2) space.",
+  "visual": {
+    "kind": "dp",
+    "title": "Removal Game: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For cards [4,5], take 5 and gain difference 1; taking 4 would give -1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use interval DP: dp[i][j]=max(a[i]-dp[i+1][j],a[j]-dp[i][j-1]); fill increasing interval length. First player's score is (sum+dp[0][n-1])/2."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "4",
+      "5",
+      "1",
+      "-1"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For cards [4,5], take 5 and gain difference 1; taking 4 would give -1."
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "hints": [
+    "Every path moves down-right by one step and collects one character from each visited cell.",
+    "At each diagonal position, choices determine which character can be the next character of a lexicographically smallest path.",
+    "Keep only frontier cells that share the smallest prefix found so far; discard larger-prefix routes."
+  ],
+  "analogy": "At each step, keep the currently earliest alphabetic next letter and forget paths that already have a worse prefix.",
+  "example": "On a 2x2 grid with top row A,B and bottom row A,C, the two paths spell AAC and ABC; choose AAC.",
+  "algorithm": "Process cells by anti-diagonal. From the current optimal frontier, inspect right/down successors, retain only those with the minimum character on that diagonal, and build the answer.",
+  "correctness": "All candidate paths have equal length and advance one diagonal at a time; a larger next character can never be repaired by later letters, so removing it preserves the lexicographic minimum.",
+  "complexity": "O(n^2) time and O(n) frontier space for an n-by-n grid.",
+  "visual": {
+    "kind": "dp",
+    "title": "Minimal Grid Path: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "On a 2x2 grid with top row A,B and bottom row A,C, the two paths spell AAC and ABC; choose AAC."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Process cells by anti-diagonal. From the current optimal frontier, inspect right/down successors, retain only those with the minimum character on that diagonal, and build the answer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "A",
+        "C"
+      ]
+    ],
+    "path": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "caption": "Illustrative example - Compare the two monotone paths: AAC and ABC. The worked example chooses AAC."
+  }
+}

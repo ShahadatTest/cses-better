@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "A move removes one coin from any nonempty selection of heaps.",
+    "Look only at heap parities: removing from every odd heap makes all heaps even.",
+    "If all heaps are even, any move creates at least one odd heap."
+  ],
+  "analogy": "The first player can make every heap even; after that, mirror the opponent's parity changes.",
+  "example": "For heaps [2,2], all are even, so the first player must make at least one odd; the second can restore evenness and win.",
+  "algorithm": "If every heap has even size, print second; if any heap is odd, print first. A winning first move removes one from each odd heap.",
+  "correctness": "From an all-even state every move makes some heaps odd. From a state with odd heaps, removing one coin from all odd heaps creates an all-even state. Thus the second player can mirror this response until the first player has no move.",
+  "complexity": "O(n) time and O(1) extra space per test case.",
+  "visual": {
+    "kind": "math",
+    "title": "Another Game: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For heaps [2,2], all are even, so the first player must make at least one odd; the second can restore evenness and win."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "If every heap has even size, print second; if any heap is odd, print first. A winning first move removes one from each odd heap."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Heap",
+      "Size",
+      "Parity"
+    ],
+    "rows": [
+      [
+        "A",
+        "2",
+        "Even"
+      ],
+      [
+        "B",
+        "2",
+        "Even"
+      ]
+    ],
+    "caption": "Illustrative example - Both heaps begin even; the first move must make at least one heap odd."
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "A line is valid only inside its given interval.",
+    "Use a segment tree over x to isolate the interval where it is active.",
+    "Combine range insertion with Li Chao line comparisons, and query the root-to-leaf path."
+  ],
+  "analogy": "A line is a track with gates at l and r; a query considers only tracks whose gates include its position.",
+  "example": "Add y=x+2 on [1,3]: at x=3 the answer is 5, while at x=4 there is no active line.",
+  "algorithm": "Use a segment-capable Li Chao tree on integer coordinates 0 through 100000. Decompose each inclusive insertion interval into segment-tree nodes and insert the line into each fully covered node using midpoint comparisons. For a query, take the maximum line value along its root-to-leaf path; if no line is present print NO. Use wide integer arithmetic.",
+  "correctness": "A query path meets exactly the interval nodes covering its coordinate. Li Chao insertion preserves the maximum of lines stored in each covered domain, so their maximum is the best active line.",
+  "complexity": "For q operations and domain size X=100001, O(q log^2 X) time and O(X) space with a fixed tree.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Lines and Queries II: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Add y=x+2 on [1,3]: at x=3 the answer is 5, while at x=4 there is no active line."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use a segment-capable Li Chao tree on integer coordinates 0 through 100000. Decompose each inclusive insertion interval into segment-tree nodes and insert the line into each fully covered node using midpoint comparisons. For a query, take the maximum line value along its root-to-leaf path; if no line is present print NO. Use wide integer arithmetic."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "1",
+      "3",
+      "5",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Add y=x+2 on [1,3]: at x=3 the answer is 5, while at x=4 there is no active line."
+  }
+}

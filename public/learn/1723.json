@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "A path of exactly k flights is a walk, so cities may repeat.",
+    "An adjacency matrix entry counts direct flights from i to j.",
+    "Matrix multiplication combines one path segment with another; exponentiating the matrix to k gives counts for exactly k edges."
+  ],
+  "analogy": "Compose one-flight route counts repeatedly until the walk has exactly k steps.",
+  "example": "If 1->2 and 2->3 are the only flights, there is one length-2 route from 1 to 3.",
+  "algorithm": "Build adjacency matrix A with edge multiplicities. Compute A^k by binary exponentiation under modulo 1e9+7; output entry [1][n].",
+  "correctness": "By induction, (A^k)[i][j] counts walks of exactly k edges from i to j: matrix multiplication chooses the intermediate city after the first segment.",
+  "complexity": "O(n^3 log k) time and O(n^2) space for dense matrices.",
+  "visual": {
+    "kind": "math",
+    "title": "Graph Paths I: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If 1->2 and 2->3 are the only flights, there is one length-2 route from 1 to 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build adjacency matrix A with edge multiplicities. Compute A^k by binary exponentiation under modulo 1e9+7; output entry [1][n]."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      }
+    ],
+    "caption": "Illustrative example - The only route from 1 to 3 has length two."
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "Sort applicants by desired size and apartments by actual size.",
+    "Compare the smallest unmatched applicant with the smallest apartment: if too small for the applicant, discard the apartment; if too large, discard the applicant.",
+    "If their sizes differ by at most k, match them and advance both."
+  ],
+  "analogy": "Line up both sides by size and resolve the smallest waiting request with the smallest available apartment that could fit.",
+  "example": "Desired sizes 45,60,80 and apartments 30,60,75 with k=5: only 60 matches 60, so the answer is 1.",
+  "algorithm": "Sort both lists and use two pointers. Match when abs(a-b)<=k; otherwise advance the side whose current value is too small to match the other.",
+  "correctness": "The smallest apartment can only match applicants whose acceptable interval includes it; when it is below the smallest applicant's interval, it cannot help anyone later, and the symmetric argument applies.",
+  "complexity": "O(n log n + m log m) time and O(1) extra pointer space beyond sorting.",
+  "visual": {
+    "kind": "array",
+    "title": "Apartments: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "4 3 5\n60 45 80 60\n30 60 75"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Desired sizes 45,60,80 and apartments 30,60,75 with k=5: only 60 matches 60, so the answer is 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort both lists and use two pointers. Match when abs(a-b)<=k; otherwise advance the side whose current value is too small to match the other."
+      },
+      {
+        "label": "Result",
+        "detail": "2"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "4  3  5"
+      ],
+      [
+        "60  45  80  60"
+      ],
+      [
+        "30  60  75"
+      ]
+    ],
+    "caption": "Illustrative example - Desired sizes 45,60,80 and apartments 30,60,75 with k=5: only 60 matches 60, so the answer is 1."
+  }
+}

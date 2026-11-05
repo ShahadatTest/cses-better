@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "Each desired route is a unit of flow, but the output must list the actual edge-disjoint routes.",
+    "Compute maximum flow with unit edge capacities while storing residual edges.",
+    "For each unit of flow, extract one path using edges with positive flow, then remove that unit from the extracted flow."
+  ],
+  "analogy": "First find how many nonoverlapping routes fit, then peel those routes out of the flow assignment.",
+  "example": "If the flow is 2, output two paths that share no directed edge, even if they share cities.",
+  "algorithm": "Run max-flow with capacity 1 on each directed connection. Decompose the resulting integral flow into source-to-sink paths by DFS over edges carrying flow, subtracting one unit after each extraction.",
+  "correctness": "Integral max flow decomposes into unit source-to-sink paths plus cycles; extracting the source-sink paths yields the reported edge-disjoint routes.",
+  "complexity": "O(V^2E) with Edmonds-Karp plus path extraction; O(V+E) storage.",
+  "visual": {
+    "kind": "graph",
+    "title": "Distinct Routes: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If the flow is 2, output two paths that share no directed edge, even if they share cities."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run max-flow with capacity 1 on each directed connection. Decompose the resulting integral flow into source-to-sink paths by DFS over edges carrying flow, subtracting one unit after each extraction."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Path",
+      "Directed edges shared"
+    ],
+    "rows": [
+      [
+        "Path 1",
+        "0"
+      ],
+      [
+        "Path 2",
+        "0"
+      ]
+    ],
+    "caption": "Illustrative example - Two routes may share cities, but their directed edges must be disjoint."
+  }
+}

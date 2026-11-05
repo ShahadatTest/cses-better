@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "A palindrome reads identically in both directions.",
+    "Treat each position and each gap as a possible center.",
+    "Manacher's algorithm reuses mirrored palindrome radii to avoid repeated scans."
+  ],
+  "analogy": "A palindrome is a mirror: a known wide mirror tells you how far smaller mirrors inside it already match.",
+  "example": "In babad, bab and aba both have length 3, so either is a longest answer.",
+  "algorithm": "Compute the longest odd and even palindrome radius at every center using Manacher's algorithm. Maintain the rightmost known palindrome and use the mirrored center to initialize a radius before extending it. Return the substring with greatest length.",
+  "correctness": "Every radius starts from characters known to match by symmetry and is then extended until a mismatch or boundary, so it is maximal. Every palindrome has an odd or even center, hence the largest radius gives a longest one.",
+  "complexity": "For string length n, O(n) time and O(n) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Longest Palindrome: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In babad, bab and aba both have length 3, so either is a longest answer."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compute the longest odd and even palindrome radius at every center using Manacher's algorithm. Maintain the rightmost known palindrome and use the mirrored center to initialize a radius before extending it. Return the substring with greatest length."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Text",
+      "Candidate palindrome",
+      "Length"
+    ],
+    "rows": [
+      [
+        "babad",
+        "bab",
+        "3"
+      ],
+      [
+        "babad",
+        "aba",
+        "3"
+      ]
+    ],
+    "caption": "Illustrative example - Both candidates are longest palindromes of equal length."
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "Choose two rows; a rectangle needs two columns black in both rows.",
+    "If c columns are black in both rows, they form c*(c-1)/2 rectangles.",
+    "Pack each row into machine-word bitsets and count bits in pairwise ANDs."
+  ],
+  "analogy": "Each shared black column is a possible side; choose any two sides for a rectangle.",
+  "example": "Two rows 1101 and 1110 share black columns 1 and 2, producing one rectangle.",
+  "algorithm": "Represent each row as a bitset. For every pair of rows, AND their bitsets and count the set bits c, then add c*(c-1)/2 to the answer. Use a wide integer for the total.",
+  "correctness": "Every valid rectangle has a unique pair of rows and a unique pair of columns black in both. The binomial count enumerates exactly those column pairs for each row pair.",
+  "complexity": "For n rows and machine word size w, O(n^3/w+n^2) word operations and O(n^2/w) words of space.",
+  "visual": {
+    "kind": "flow",
+    "title": "Corner Subgrid Count: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Two rows 1101 and 1110 share black columns 1 and 2, producing one rectangle."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Represent each row as a bitset. For every pair of rows, AND their bitsets and count the set bits c, then add c*(c-1)/2 to the answer. Use a wide integer for the total."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Row",
+      "Black columns"
+    ],
+    "rows": [
+      [
+        "1",
+        "1, 2, 4"
+      ],
+      [
+        "2",
+        "1, 2, 3"
+      ],
+      [
+        "Shared pair",
+        "1 and 2"
+      ]
+    ],
+    "caption": "Illustrative example - Two rows sharing columns 1 and 2 form one rectangle."
+  }
+}

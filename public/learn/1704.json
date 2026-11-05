@@ -1,0 +1,99 @@
+{
+  "hints": [
+    "Each original tree edge must belong to a cycle after adding connections.",
+    "Every leaf needs at least one new incident edge.",
+    "Pair leaves from opposite halves of their DFS order."
+  ],
+  "analogy": "A new connection between two leaves reinforces the entire tree path between them.",
+  "example": "A star with four leaves needs two connections: pair the first leaf with the third and the second with the fourth.",
+  "algorithm": "Root the tree at any non-leaf vertex and collect its L leaves in DFS order. Let h=ceil(L/2). Add edges between leaf i and leaf i+h for i from 0 to floor(L/2)-1. If L is odd, also connect leaf h-1 to leaf 0. Print the ceil(L/2) added edges.",
+  "correctness": "Each new edge can cover at most two leaf endpoints, so at least ceil(L/2) edges are necessary. Leaves of any rooted subtree form a contiguous interval in DFS order. Pairing opposite halves ensures every proper such interval has a pair crossing its boundary; hence every original tree edge lies on a cycle and cannot disconnect the graph alone.",
+  "complexity": "For n vertices, DFS and output take O(n) time and O(n) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Network Renovation: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A star with four leaves needs two connections: pair the first leaf with the third and the second with the fourth."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Root the tree at any non-leaf vertex and collect its L leaves in DFS order. Let h=ceil(L/2). Add edges between leaf i and leaf i+h for i from 0 to floor(L/2)-1. If L is odd, also connect leaf h-1 to leaf 0. Print the ceil(L/2) added edges."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "C",
+        "label": "Center",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "1",
+        "label": "Leaf 1",
+        "x": 10,
+        "y": 20
+      },
+      {
+        "id": "2",
+        "label": "Leaf 2",
+        "x": 90,
+        "y": 20
+      },
+      {
+        "id": "3",
+        "label": "Leaf 3",
+        "x": 10,
+        "y": 80
+      },
+      {
+        "id": "4",
+        "label": "Leaf 4",
+        "x": 90,
+        "y": 80
+      }
+    ],
+    "edges": [
+      {
+        "from": "C",
+        "to": "1"
+      },
+      {
+        "from": "C",
+        "to": "2"
+      },
+      {
+        "from": "C",
+        "to": "3"
+      },
+      {
+        "from": "C",
+        "to": "4"
+      },
+      {
+        "from": "1",
+        "to": "3",
+        "label": "new"
+      },
+      {
+        "from": "2",
+        "to": "4",
+        "label": "new"
+      }
+    ],
+    "caption": "Illustrative example - Pairing opposite leaves in the four-leaf star adds two connections."
+  }
+}

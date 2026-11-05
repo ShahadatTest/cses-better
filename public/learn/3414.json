@@ -1,0 +1,65 @@
+{
+  "hints": [
+    "For a fixed bottom row, each column has a vertical run of its current letter.",
+    "A rectangle ending at that row is limited by the smallest run in its horizontal interval.",
+    "A monotonic stack maintains the sum of those minima for intervals ending at each column."
+  ],
+  "analogy": "For each letter, imagine a histogram of consecutive equal letters rising above the current row.",
+  "example": "A 2 by 2 grid of A has 4 single cells, 2 horizontal pairs, 2 vertical pairs and 1 whole rectangle: 9.",
+  "algorithm": "Scan each row left to right, maintaining each column?s height of consecutive identical letters ending at this row. Whenever the letter differs from the previous column, clear the stack and running sum. Within a same-letter segment, keep an increasing stack of pairs (height,count). For a new height h, pop entries with height >= h, subtracting height*count from the running sum and accumulating their counts. Push (h, accumulated count+1), add h times that count to the running sum, and add the running sum to the answer for the current letter.",
+  "correctness": "For each horizontal interval ending at the current column, its minimum height is the number of same-letter rectangles with this bottom edge and interval. The stack groups intervals by their minimum and maintains their total; resetting prevents crossing into another letter. Each rectangle has a unique bottom row and right edge.",
+  "complexity": "For an n by n grid, time is O(n^2) and space O(n) beyond the grid and output counters.",
+  "visual": {
+    "kind": "dp",
+    "title": "Filled Subgrid Count II: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A 2 by 2 grid of A has 4 single cells, 2 horizontal pairs, 2 vertical pairs and 1 whole rectangle: 9."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Scan each row left to right, maintaining each column?s height of consecutive identical letters ending at this row. Whenever the letter differs from the previous column, clear the stack and running sum. Within a same-letter segment, keep an increasing stack of pairs (height,count). For a new height h, pop entries with height >= h, subtracting height*count from the running sum and accumulating their counts. Push (h, accumulated count+1), add h times that count to the running sum, and add the running sum to the answer for the current letter."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Rectangle type",
+      "Count"
+    ],
+    "rows": [
+      [
+        "Single cells",
+        "4"
+      ],
+      [
+        "Horizontal pairs",
+        "2"
+      ],
+      [
+        "Vertical pairs",
+        "2"
+      ],
+      [
+        "Whole grid",
+        "1"
+      ],
+      [
+        "Total",
+        "9"
+      ]
+    ],
+    "caption": "Illustrative example - Count all filled subrectangles of a 2 by 2 grid."
+  }
+}

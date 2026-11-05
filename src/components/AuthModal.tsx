@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { syncProblemLists } from '@/core/list-sync';
 import {
   X,
   LogIn,
@@ -80,9 +81,9 @@ export function AuthModal({
     setSyncMessage(null);
     setError(null);
     try {
-      const res = await syncAllLocalProgressToCloud(currentUser.id, true);
-      if (res.success) {
-        setSyncMessage(`Synced ${res.syncedSolves} solves & ${res.syncedNotes} notes across devices`);
+      const [res, listsSynced] = await Promise.all([syncAllLocalProgressToCloud(currentUser.id, true), syncProblemLists(currentUser.id)]);
+      if (res.success && listsSynced) {
+        setSyncMessage(`Synced ${res.syncedSolves} solves, ${res.syncedNotes} notes & lists across devices`);
       } else {
         setError('Partial sync encountered. Local progress preserved.');
       }
@@ -166,7 +167,7 @@ export function AuthModal({
                   <p className="text-xs text-zinc-400 truncate mt-0.5">{currentUser.email || 'GitHub Authenticated'}</p>
                   <div className="mt-2 flex items-center gap-1.5 text-[11px] text-emerald-400 font-medium">
                     <CheckCircle className="w-3.5 h-3.5" />
-                    <span>Cloud Sync Active (PostgreSQL + RLS)</span>
+                    <span>Account connected</span>
                   </div>
                 </div>
               </div>

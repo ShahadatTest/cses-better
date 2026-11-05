@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "A vertex appears in the code once for each incident edge beyond its last.",
+    "Its degree is one plus its number of appearances.",
+    "Repeatedly connect the smallest current leaf to the next code value."
+  ],
+  "analogy": "The code tells which neighbor receives each smallest leaf as that leaf is removed.",
+  "example": "For code [2,2,4] on five vertices, remove leaves 1,3,2 in order, then connect 4 and 5.",
+  "algorithm": "Initialize each degree to one plus its frequency in the code. Put degree-one vertices in a min-heap. For each code value v, pop the smallest leaf u, output edge u-v, and decrement both degrees; if v becomes a leaf insert it. Finally connect the two remaining leaves.",
+  "correctness": "A vertex is a leaf exactly when it has no remaining code occurrences. The original encoding removes the smallest such leaf at each step, so the algorithm reverses every removal and then restores the last edge.",
+  "complexity": "For n vertices, O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Prüfer Code: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For code [2,2,4] on five vertices, remove leaves 1,3,2 in order, then connect 4 and 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize each degree to one plus its frequency in the code. Put degree-one vertices in a min-heap. For each code value v, pop the smallest leaf u, output edge u-v, and decrement both degrees; if v becomes a leaf insert it. Finally connect the two remaining leaves."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "4",
+      "1",
+      "3",
+      "5"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For code [2,2,4] on five vertices, remove leaves 1,3,2 in order, then connect 4 and 5."
+  }
+}

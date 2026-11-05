@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "An inversion is a pair i<j with value at i greater than value at j.",
+    "For each pair of positions, count how many choices from their two integer intervals produce an inversion.",
+    "Divide the total inversion probability by the number of pairs."
+  ],
+  "analogy": "For each pair, compare every possible roll from the earlier interval with every possible roll from the later one.",
+  "example": "If both intervals are [1,2], only (2,1) is an inversion among four equally likely pairs, probability 1/4.",
+  "algorithm": "For each i<j, count pairs x in [a_i,b_i], y in [a_j,b_j] with x>y by summing max(0,min(b_j,x-1)-a_j+1) over x; divide by interval-size products and sum.",
+  "correctness": "Each pair contributes its inversion probability, and linearity of expectation means the total expected count is the sum over all pairs.",
+  "complexity": "O(n^2*R) time with a loop over possible first values (R=max r_i<=100), and O(1) extra space.",
+  "visual": {
+    "kind": "math",
+    "title": "Inversion Probability: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If both intervals are [1,2], only (2,1) is an inversion among four equally likely pairs, probability 1/4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each i<j, count pairs x in [a_i,b_i], y in [a_j,b_j] with x>y by summing max(0,min(b_j,x-1)-a_j+1) over x; divide by interval-size products and sum."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - If both intervals are [1,2], only (2,1) is an inversion among four equally likely pairs, probability 1/4."
+  }
+}

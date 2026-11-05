@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "Positions are one-indexed, so the first digit is at k=1.",
+    "Count the digits contributed by all numbers with 1 digit, then 2 digits, and so on until k falls inside a block.",
+    "Within that block, divide the offset by the digit width to find the number, then use the remainder to select its digit."
+  ],
+  "analogy": "Skip whole pages of equal-width numbers, then locate one digit on the page where the position lands.",
+  "example": "At k=12, digits 1..9 use 9 places; offset 3 in the two-digit block is number 11's second digit, namely 1.",
+  "algorithm": "For digit width d, the block has 9*10^(d-1)*d digits. Subtract full blocks; derive number=10^(d-1)+(k-1)/d and digit index=(k-1)%d.",
+  "correctness": "The blocks partition the infinite string by number length; quotient selects the number and remainder selects its exact character.",
+  "complexity": "O(log k) time and O(1) extra space using a wide integer type.",
+  "visual": {
+    "kind": "trace",
+    "title": "Digit Queries: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3\n7\n19\n12"
+      },
+      {
+        "label": "Work through it",
+        "detail": "At k=12, digits 1..9 use 9 places; offset 3 in the two-digit block is number 11's second digit, namely 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For digit width d, the block has 9*10^(d-1)*d digits. Subtract full blocks; derive number=10^(d-1)+(k-1)/d and digit index=(k-1)%d."
+      },
+      {
+        "label": "Result",
+        "detail": "7\n4\n1"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3"
+      ],
+      [
+        "7"
+      ],
+      [
+        "19"
+      ],
+      [
+        "12"
+      ]
+    ],
+    "caption": "Illustrative example - At k=12, digits 1..9 use 9 places; offset 3 in the two-digit block is number 11's second digit, namely 1."
+  }
+}

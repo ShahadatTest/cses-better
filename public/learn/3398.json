@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "A permutation splits into disjoint cycles; a cycle of length L returns to its start every L rounds.",
+    "The full array returns when the round count is divisible by every cycle length.",
+    "The first such round is the least common multiple, which can be too large to store directly."
+  ],
+  "analogy": "Each cycle has its own rotation period; combine their prime factors using the largest exponent needed.",
+  "example": "Cycles of lengths 4 and 6 need lcm(4,6)=12 rounds to return together.",
+  "correctness": "A position returns exactly at multiples of its cycle length, so the earliest common return contains each prime to the largest exponent found in any cycle.",
+  "complexity": "O(n sqrt n) with trial factoring (or O(n log n) with SPF) and O(n) storage; modular multiplication avoids overflow.",
+  "algorithm": "Find all cycle lengths. Factor each with a smallest-prime-factor table and retain the maximum exponent of each prime across all cycles. Multiply p^e modulo 1,000,000,007 for those maxima; never compute the potentially huge LCM directly.",
+  "visual": {
+    "kind": "math",
+    "title": "Permutation Rounds: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Cycles of lengths 4 and 6 need lcm(4,6)=12 rounds to return together."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Find all cycle lengths. Factor each with a smallest-prime-factor table and retain the maximum exponent of each prime across all cycles. Multiply p^e modulo 1,000,000,007 for those maxima; never compute the potentially huge LCM directly."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "4",
+      "6",
+      "12"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Cycles of lengths 4 and 6 need lcm(4,6)=12 rounds to return together."
+  }
+}

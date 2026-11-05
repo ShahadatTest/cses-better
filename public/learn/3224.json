@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "The mode has highest frequency; ties choose the smallest value.",
+    "Maintain each value's frequency and an ordered set keyed by negative frequency then value.",
+    "Remove the old key before changing a frequency and insert the new key afterward."
+  ],
+  "analogy": "The ordered set is a leaderboard sorted by votes, with smaller values winning ties.",
+  "example": "For [2,1,2,1] and k=3, the modes are 2 and 1.",
+  "algorithm": "Maintain a frequency map and an ordered set of pairs (-frequency,value) for values currently present. On insertion or removal erase the old pair, change the count, and insert the new pair if positive. The first pair gives each window's mode.",
+  "correctness": "The set contains exactly one correctly ranked entry for every present value. Its first entry has the greatest frequency and, among ties, the smallest value.",
+  "complexity": "For n elements and window size k, O(n log k) time and O(k) space.",
+  "visual": {
+    "kind": "window",
+    "title": "Sliding Window Mode: follow one example",
+    "caption": "Slide the active window and update its maintained state.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [2,1,2,1] and k=3, the modes are 2 and 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain a frequency map and an ordered set of pairs (-frequency,value) for values currently present. On insertion or removal erase the old pair, change the count, and insert the new pair if positive. The first pair gives each window's mode."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "1",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [2,1,2,1] and k=3, the modes are 2 and 1."
+  }
+}

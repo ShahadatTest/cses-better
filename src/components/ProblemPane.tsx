@@ -25,8 +25,9 @@ import { LeaderboardTab } from './LeaderboardTab';
 import { SubmissionsTab } from './SubmissionsTab';
 import { NotesTab } from './NotesTab';
 import { cn } from '@/lib/utils';
+import { VisualExplanation } from './VisualExplanation';
 
-export type ProblemTab = 'statement' | 'leaderboard' | 'submissions' | 'notes';
+export type ProblemTab = 'statement' | 'leaderboard' | 'submissions' | 'notes' | 'learn';
 
 export interface ProblemPaneProps {
   problem: Problem;
@@ -49,6 +50,7 @@ export interface ProblemPaneProps {
   onOpenCsesAccount?: () => void;
   onSelectProblem?: (id: string) => void;
   onOpenAllNotes?: () => void;
+  onAddToList?: () => void;
 }
 
 /**
@@ -77,7 +79,7 @@ function cleanStatementHtml(
     );
   }
 
-  return result.trim();
+  return result.trim().replace(/<\/?h1(\s[^>]*)?>/gi, (tag) => tag.replace(/h1/i, 'h2'));
 }
 
 export const ProblemPane: React.FC<ProblemPaneProps> = ({
@@ -101,6 +103,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
   onOpenCsesAccount,
   onSelectProblem,
   onOpenAllNotes,
+  onAddToList,
 }) => {
   const [internalTab, setInternalTab] = useState<ProblemTab>('statement');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -193,6 +196,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
             <span>Statement</span>
           </button>
 
+          <button onClick={() => handleTabClick('learn')} className={cn('px-3 py-3 text-xs font-semibold border-b-2 whitespace-nowrap', currentTab === 'learn' ? 'border-sky-400 text-sky-400' : 'border-transparent text-slate-400 hover:text-slate-200')}>Learn</button>
           {/* Leaderboard & Stats Tab */}
           <button
             onClick={() => handleTabClick('leaderboard')}
@@ -226,7 +230,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
             <History className="w-3.5 h-3.5" />
             <span>Submissions</span>
             {submissions.length > 0 && (
-              <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-surface-3 text-slate-200">
+              <span className="px-1.5 py-0.2 rounded-full text-[11px] font-mono bg-surface-3 text-slate-200">
                 {submissions.length}
               </span>
             )}
@@ -270,6 +274,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
           </div>
         )}
 
+        {currentTab === 'learn' && <LearnTab key={problem.id} problemId={problem.id} />}
         {/* TAB 1: STATEMENT */}
         {currentTab === 'statement' && (
           <div className="space-y-6 max-w-4xl">
@@ -315,6 +320,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                   <span>{isSolved ? 'Solved' : 'Mark Solved'}</span>
                 </button>
 
+                {onAddToList && <button type="button" onClick={onAddToList} className="px-2.5 py-1 rounded-md text-xs font-semibold border border-border-subtle text-slate-300 hover:bg-surface-2">Add to list</button>}
                 {/* Star / Bookmark Button */}
                 <button
                   type="button"
@@ -406,8 +412,8 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
 
             {/* Constraints Section (Rendered with KaTeX math) */}
             {hasConstraints && (
-              <div className="rounded-lg border border-border-subtle bg-surface-1/60 p-4 space-y-2.5 shadow-sm">
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400 border-b border-border-subtle pb-2">
+              <div className="border-t border-border-subtle pt-4 space-y-2.5">
+                <div className="flex items-center gap-2 text-xs font-semibold  text-slate-400 border-b border-border-subtle pb-2">
                   <ShieldAlert className="w-4 h-4 text-amber-400" />
                   <span>Constraints</span>
                 </div>
@@ -429,7 +435,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
             {/* Sample Test Cases with Copy Input / Output */}
             {hasSamples && (
               <div className="space-y-4 pt-2">
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400 border-b border-border-subtle pb-2">
+                <div className="flex items-center gap-2 text-xs font-semibold  text-slate-400 border-b border-border-subtle pb-2">
                   <Terminal className="w-4 h-4 text-sky-400" />
                   <span>
                     Sample Test Cases ({sampleCases.length})
@@ -446,10 +452,10 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                     return (
                       <div
                         key={tc.id || idx}
-                        className="rounded-lg border border-border-subtle bg-surface-1/70 overflow-hidden shadow-sm"
+                        className="border border-border-subtle overflow-hidden"
                       >
                         {/* Sample header */}
-                        <div className="px-3.5 py-2 bg-surface-2/40 border-b border-border-subtle flex items-center justify-between text-xs text-slate-400">
+                        <div className="px-3.5 py-2 border-b border-border-subtle flex items-center justify-between text-xs text-slate-400">
                           <span className="font-semibold text-slate-200">
                             Example {idx + 1}
                           </span>
@@ -461,9 +467,9 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                         {/* Input & Output Grids */}
                         <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border-subtle">
                           {/* Input Block */}
-                          <div className="p-3.5 flex flex-col space-y-2 bg-surface-0/40">
+                          <div className="p-3.5 flex flex-col space-y-2 ">
                             <div className="flex items-center justify-between text-xs">
-                              <span className="font-semibold text-slate-300 uppercase tracking-wider text-[11px]">
+                              <span className="font-semibold text-slate-300  text-[11px]">
                                 Input
                               </span>
                               <button
@@ -501,9 +507,9 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                           </div>
 
                           {/* Expected Output Block */}
-                          <div className="p-3.5 flex flex-col space-y-2 bg-surface-0/40">
+                          <div className="p-3.5 flex flex-col space-y-2 ">
                             <div className="flex items-center justify-between text-xs">
-                              <span className="font-semibold text-slate-300 uppercase tracking-wider text-[11px]">
+                              <span className="font-semibold text-slate-300  text-[11px]">
                                 Expected Output
                               </span>
                               <button
@@ -595,3 +601,37 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
 };
 
 export default ProblemPane;
+
+function lessonHtml(text: string): string { return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'); }
+export interface LearnVisual { kind: string; title: string; caption: string; steps: { label: string; detail: string }[]; diagram?: Record<string, unknown> }
+export interface LearnContent { hints: string[]; analogy: string; example: string; algorithm: string; correctness: string; complexity: string; visual: LearnVisual; diagram: Record<string, unknown> }
+export function isLearnContent(data: any): data is LearnContent {
+  return !!data && Array.isArray(data.hints) && data.hints.length === 3 && data.hints.every((x: unknown) => typeof x === 'string' && x.trim()) && ['analogy', 'example', 'algorithm', 'correctness', 'complexity'].every(key => typeof data[key] === 'string' && data[key].trim()) && !!data.visual && typeof data.visual.kind === 'string' && typeof data.visual.title === 'string' && typeof data.visual.caption === 'string' && Array.isArray(data.visual.steps) && data.visual.steps.length >= 2 && data.visual.steps.every((step: any) => typeof step?.label === 'string' && typeof step?.detail === 'string') && !!data.diagram && ['sequence', 'table', 'grid', 'graph', 'tree', 'intervals'].includes(data.diagram.type);
+}
+function LearnTab({ problemId }: { problemId: string }) {
+  const [content, setContent] = useState<LearnContent | null>(null);
+  const [error, setError] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  const [hints, setHints] = useState(0);
+  const [revealed, setRevealed] = useState(false);
+  React.useEffect(() => {
+    const controller = new AbortController();
+    setContent(null); setError(false);
+    fetch(`/learn/${problemId}.json`, { signal: controller.signal }).then(response => {
+      if (!response.ok) throw new Error('Unavailable');
+      return response.json();
+    }).then(data => {
+      if (!isLearnContent(data)) throw new Error('Invalid lesson');
+      setContent(data);
+    }).catch(() => { if (!controller.signal.aborted) setError(true); });
+    return () => controller.abort();
+  }, [problemId, attempt]);
+  if (error) return <div role="alert" className="text-sm text-slate-300">Lesson unavailable. <button className="text-sky-400 underline" onClick={() => setAttempt(x => x + 1)}>Retry</button></div>;
+  if (!content) return <p role="status" className="text-sm text-slate-400">Loading lesson?</p>;
+  return <div className="max-w-3xl space-y-6 text-sm"><div><h2 className="text-lg font-semibold text-slate-100">Learn at your pace</h2><p className="mt-1 text-slate-400">Reveal a hint when you need one, then explore the full explanation.</p></div>
+    <VisualExplanation visual={{ ...content.visual, diagram: content.diagram }} />
+    {content.hints.slice(0, hints).map((hint, index) => <section key={index} className="border-l-2 border-sky-500 pl-4"><h3 className="text-xs font-semibold text-sky-400 mb-2">Hint {index + 1}</h3><KaTeXRenderer content={lessonHtml(hint)} /></section>)}
+    {hints < 3 && <button onClick={() => setHints(hints + 1)} className="rounded border border-border-muted px-3 py-2 text-slate-200 hover:bg-surface-2">Reveal hint {hints + 1}</button>}
+    {!revealed ? <button onClick={() => setRevealed(true)} className="block rounded bg-sky-700 px-3 py-2 text-white hover:bg-sky-600">Reveal full explanation</button> : <div className="space-y-5">{(['analogy', 'example', 'algorithm', 'correctness', 'complexity'] as const).map(key => <section key={key}><h3 className="mb-2 text-sm font-semibold capitalize text-slate-100">{key}</h3><KaTeXRenderer content={lessonHtml(content[key])} /></section>)}</div>}
+  </div>;
+}

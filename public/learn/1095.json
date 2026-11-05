@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "The exponent may be large, but only its remainders modulo the requested modulus matter.",
+    "Write the exponent in binary.",
+    "Repeatedly square the base and multiply it into the answer when the current exponent bit is 1."
+  ],
+  "analogy": "Build powers 1,2,4,8,... of the base and combine only the powers selected by the exponent.",
+  "example": "3^4 mod 7: square to get 3^2=2, square again to get 3^4=4.",
+  "algorithm": "Use binary exponentiation: answer=1, base%=m; while e>0, multiply answer by base when e is odd, square base modulo m, and halve e.",
+  "correctness": "The invariant represents the unprocessed exponent as powers of two; multiplication modulo m preserves the same residue as the full power.",
+  "complexity": "O(log e) time and O(1) extra space.",
+  "visual": {
+    "kind": "math",
+    "title": "Exponentiation: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "3^4 mod 7: square to get 3^2=2, square again to get 3^4=4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use binary exponentiation: answer=1, base%=m; while e>0, multiply answer by base when e is odd, square base modulo m, and halve e."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Power",
+      "Value mod 7"
+    ],
+    "rows": [
+      [
+        "3^2",
+        "2"
+      ],
+      [
+        "3^4",
+        "4"
+      ]
+    ],
+    "caption": "Illustrative example - Repeated squaring computes 3^4 modulo 7."
+  }
+}

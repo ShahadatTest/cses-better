@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "You may fix positions from left to right.",
+    "Find the value that belongs at the current position.",
+    "Reverse the segment from the current position to that value."
+  ],
+  "analogy": "Bring the correct card to the front of the unsorted suffix by flipping that whole section.",
+  "example": "For [3,1,2], reverse positions 1..2 to get [1,3,2], then reverse 2..3 to get [1,2,3].",
+  "algorithm": "Store the permutation in an implicit balanced tree or implicit treap with lazy reversal. For i from 1 to n, find the current position j of value i, reverse the interval [i,j], and output that interval when j differs from i. Maintain parent pointers and subtree sizes, pushing lazy flags along the path before calculating a node?s index. At most n reversals are used.",
+  "correctness": "Before step i, all positions before i are correct. Value i must lie at or after i. Reversing [i,j] places i at i without touching earlier positions, so induction fixes the whole permutation within n steps.",
+  "complexity": "For n values, an implicit treap supports each index lookup and reversal in expected O(log n) time, for expected O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Reversal Sorting: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [3,1,2], reverse positions 1..2 to get [1,3,2], then reverse 2..3 to get [1,2,3]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Store the permutation in an implicit balanced tree or implicit treap with lazy reversal. For i from 1 to n, find the current position j of value i, reverse the interval [i,j], and output that interval when j differs from i. Maintain parent pointers and subtree sizes, pushing lazy flags along the path before calculating a node?s index. At most n reversals are used."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [3,1,2], reverse positions 1..2 to get [1,3,2], then reverse 2..3 to get [1,2,3]."
+  }
+}

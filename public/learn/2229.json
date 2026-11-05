@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "Insert the largest element into a permutation of smaller elements.",
+    "Its insertion position adds anywhere from 0 to i-1 inversions.",
+    "Use a sliding sum instead of adding i states separately."
+  ],
+  "analogy": "The largest card adds one inversion for each smaller card placed after it.",
+  "example": "For n=3, exactly two permutations have one inversion: 132 and 213.",
+  "algorithm": "Let dp[j] count permutations of the first i-1 numbers with j inversions. For size i, next[j] is the sum of dp[j-t] for t=0 through i-1 where j-t is nonnegative. Compute this moving window in constant time per j, adding dp[j] and subtracting dp[j-i]. Start with dp[0]=1 and repeat for i=1 through n, taking all values modulo 1000000007.",
+  "correctness": "Each permutation has a unique position of its largest element. Removing it gives one smaller permutation and the number of added inversions is exactly the number of elements after it. Summing over these disjoint positions counts every permutation once.",
+  "complexity": "For n numbers and target k, time is O(nk), space O(k).",
+  "visual": {
+    "kind": "dp",
+    "title": "Permutation Inversions: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3, exactly two permutations have one inversion: 132 and 213."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let dp[j] count permutations of the first i-1 numbers with j inversions. For size i, next[j] is the sum of dp[j-t] for t=0 through i-1 where j-t is nonnegative. Compute this moving window in constant time per j, adding dp[j] and subtracting dp[j-i]. Start with dp[0]=1 and repeat for i=1 through n, taking all values modulo 1000000007."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Permutation",
+      "Inversions"
+    ],
+    "rows": [
+      [
+        "132",
+        "1"
+      ],
+      [
+        "213",
+        "1"
+      ],
+      [
+        "Count",
+        "2"
+      ]
+    ],
+    "caption": "Illustrative example - Exactly two permutations of 1,2,3 have one inversion."
+  }
+}

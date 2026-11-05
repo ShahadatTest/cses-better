@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "XOR cancels a value when it is applied twice.",
+    "Use that fact to remove the outgoing value from the rolling XOR.",
+    "XOR every complete window's XOR into the final answer."
+  ],
+  "analogy": "XOR acts like a toggle: applying the same value twice restores the original bits.",
+  "example": "For [1,2,3] and k=2, window XORs are 3 and 1; their XOR is 2.",
+  "algorithm": "Generate the values as specified. XOR each incoming value into the current window, and XOR the value k positions behind out of it, using a circular buffer or a second generator stream. XOR each full window result into the answer. Use wide arithmetic for the generator multiplication.",
+  "correctness": "Because XOR is associative and each value XORed twice cancels, removing the old value and adding the new one maintains exactly the window XOR. Each window contributes once to the final XOR.",
+  "complexity": "For n elements and window size k, O(n) time and O(k) space with a buffer, or O(1) extra space with two generator streams.",
+  "visual": {
+    "kind": "window",
+    "title": "Sliding Window Xor: follow one example",
+    "caption": "Slide the active window and update its maintained state.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,3] and k=2, window XORs are 3 and 1; their XOR is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Generate the values as specified. XOR each incoming value into the current window, and XOR the value k positions behind out of it, using a circular buffer or a second generator stream. XOR each full window result into the answer. Use wide arithmetic for the generator multiplication."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,3] and k=2, window XORs are 3 and 1; their XOR is 2."
+  }
+}

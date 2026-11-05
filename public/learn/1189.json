@@ -1,0 +1,65 @@
+{
+  "hints": [
+    "At each boundary, the net flow is constrained by the cumulative food surplus.",
+    "On a circle, one common offset can be added to every boundary flow.",
+    "Choose the offset minimizing the sum of absolute flows: a median."
+  ],
+  "analogy": "A circulation around the table may be added without changing any child's final amount; choose the cheapest circulation.",
+  "example": "For surpluses [2,-1,-1], prefix sums are [2,1,0]. Their median is 1, giving cost 1+0+1=2.",
+  "algorithm": "For each child compute current food minus desired food and its cyclic prefix sum. Find a median of these n prefix sums and sum the absolute differences from it. Use a wide integer.",
+  "correctness": "Flow conservation forces adjacent boundary flows to differ by each child's surplus, so all feasible flows are prefix sums shifted by a common constant. A median minimizes their total absolute value, and that value is the number of unit transfers.",
+  "complexity": "For n children, O(n log n) time using sorting and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Food Division: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For surpluses [2,-1,-1], prefix sums are [2,1,0]. Their median is 1, giving cost 1+0+1=2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each child compute current food minus desired food and its cyclic prefix sum. Find a median of these n prefix sums and sum the absolute differences from it. Use a wide integer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Prefix",
+      "Value"
+    ],
+    "rows": [
+      [
+        "1",
+        "2"
+      ],
+      [
+        "2",
+        "1"
+      ],
+      [
+        "3",
+        "0"
+      ],
+      [
+        "Median",
+        "1"
+      ],
+      [
+        "Cost",
+        "2"
+      ]
+    ],
+    "caption": "Illustrative example - The median prefix value minimizes the movement cost."
+  }
+}

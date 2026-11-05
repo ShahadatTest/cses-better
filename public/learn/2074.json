@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A sequence tree can isolate a range by position.",
+    "Store each subtree sum and a lazy flag for reversing its sequence.",
+    "Split out the range, reverse it or read its sum, then merge it back."
+  ],
+  "analogy": "A box of numbers records its total even if its contents are turned around.",
+  "example": "For [1,2,3], reversing positions 1 through 2 gives [2,1,3]; the sum of positions 2 through 3 is 4.",
+  "algorithm": "Use an implicit treap storing subtree size, sum, and a lazy reversal flag. Split before a and after b. For a reversal toggle the middle flag; for a query read the middle sum. Merge all pieces back, pushing flags before descent and updating metadata after structural changes. Use wide sums.",
+  "correctness": "The split isolates exactly the range, and reversing a sequence does not change its sum. Correct subtree metadata and lazy propagation therefore give the requested sum and preserve all updates.",
+  "complexity": "For n elements and m operations, expected O(n+m log n) time and O(n) space with linear-time construction.",
+  "visual": {
+    "kind": "flow",
+    "title": "Reversals and Sums: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,3], reversing positions 1 through 2 gives [2,1,3]; the sum of positions 2 through 3 is 4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use an implicit treap storing subtree size, sum, and a lazy reversal flag. Split before a and after b. For a reversal toggle the middle flag; for a query read the middle sum. Merge all pieces back, pushing flags before descent and updating metadata after structural changes. Use wide sums."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,3], reversing positions 1 through 2 gives [2,1,3]; the sum of positions 2 through 3 is 4."
+  }
+}

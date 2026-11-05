@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "A yes/no comparison divides the remaining integer range.",
+    "Ask whether the midpoint is less than the hidden number.",
+    "Maintain inclusive lower and upper bounds until they coincide."
+  ],
+  "analogy": "Each answer discards roughly half of the possible numbers.",
+  "example": "For x=7 in range [1,10], asking y=5 gives YES, then y=8 gives NO, narrowing the range to [6,8].",
+  "algorithm": "Set low=1 and high=10^9. While low<high, query y=floor((low+high)/2), flush, and read the reply. On YES set low=y+1; otherwise set high=y. Print ! followed by low, flush, and terminate.",
+  "correctness": "The response tells exactly whether x lies above y or at most y. Each update keeps x in the remaining interval, which shrinks to one value.",
+  "complexity": "The range contains 10^9 values, so at most 30 queries and O(1) extra space are needed.",
+  "visual": {
+    "kind": "trace",
+    "title": "Hidden Integer: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For x=7 in range [1,10], asking y=5 gives YES, then y=8 gives NO, narrowing the range to [6,8]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Set low=1 and high=10^9. While low<high, query y=floor((low+high)/2), flush, and read the reply. On YES set low=y+1; otherwise set high=y. Print ! followed by low, flush, and terminate."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "7",
+      "1",
+      "10",
+      "5",
+      "8",
+      "6"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For x=7 in range [1,10], asking y=5 gives YES, then y=8 gives NO, narrowing the range to [6,8]."
+  }
+}

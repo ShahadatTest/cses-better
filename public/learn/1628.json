@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Enumerating all 2^n subsets is too slow for n=40.",
+    "Split the elements into two halves and enumerate each half independently.",
+    "For each left sum, count right sums equal to x minus that sum."
+  ],
+  "analogy": "Two teams independently list possible totals, then match totals that complement each other.",
+  "example": "For [1,2,3,2] and target 5, the subsets {3,2} using either 2 and {1,2,2} give 3 ways.",
+  "algorithm": "Split the array in half. Enumerate all subset sums of both halves, including zero, and sort the right sums. For every left sum, use two binary searches to count occurrences of x minus that sum in the right list. Add these counts using a wide integer.",
+  "correctness": "Every subset splits uniquely into one left and one right subset. The searches count exactly the right subsets that complete each left subset to x, including duplicate sums from different choices.",
+  "complexity": "For n elements, O(n*2^(n/2)) time including sorting and O(2^(n/2)) space.",
+  "visual": {
+    "kind": "flow",
+    "title": "Meet in the Middle: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,3,2] and target 5, the subsets {3,2} using either 2 and {1,2,2} give 3 ways."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Split the array in half. Enumerate all subset sums of both halves, including zero, and sort the right sums. For every left sum, use two binary searches to count occurrences of x minus that sum in the right list. Add these counts using a wide integer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3",
+      "5"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,3,2] and target 5, the subsets {3,2} using either 2 and {1,2,2} give 3 ways."
+  }
+}

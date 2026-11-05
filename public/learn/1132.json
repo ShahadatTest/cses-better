@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "For each node, the farthest node must lie in one of the tree's two diameter directions.",
+    "Find diameter endpoints a and b.",
+    "For every node, answer max(distance to a, distance to b)."
+  ],
+  "analogy": "Every node's farthest destination is one of the tree's two outermost endpoints.",
+  "example": "On a line-shaped tree, the farthest distance from each node is the larger distance to either end.",
+  "algorithm": "Find diameter endpoints with two traversals, then run tree traversals from both endpoints to fill distA and distB; output their pointwise maximum.",
+  "correctness": "The diameter endpoints cover the extremes of every branch; for any node, a farthest node is represented by one of these endpoint distances.",
+  "complexity": "O(n) time and O(n) space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Tree Distances I: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "On a line-shaped tree, the farthest distance from each node is the larger distance to either end."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Find diameter endpoints with two traversals, then run tree traversals from both endpoints to fill distA and distB; output their pointwise maximum."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "L",
+        "label": "Left end",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "M",
+        "label": "Node",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "R",
+        "label": "Right end",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "L",
+        "to": "M"
+      },
+      {
+        "from": "M",
+        "to": "R"
+      }
+    ],
+    "caption": "Illustrative example - On a line-shaped tree, a node's farthest endpoint is the farther of the two ends."
+  }
+}

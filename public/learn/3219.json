@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "The mex is the smallest missing nonnegative integer.",
+    "A window of k elements must have mex at most k.",
+    "Maintain frequencies for 0 through k and an ordered set of those currently missing."
+  ],
+  "analogy": "There are k+1 candidate numbered seats and only k occupants, so at least one seat is empty.",
+  "example": "For windows [0,1,1] and [1,1,3], the mex values are 2 and 0.",
+  "algorithm": "Keep frequencies for values at most k and an ordered set initially containing 0 through k. Remove a value from the set when its frequency becomes positive; add it back when the frequency falls to zero. Ignore values above k. Output the smallest missing value for each complete window.",
+  "correctness": "At least one of 0 through k is absent because there are only k elements. The set contains exactly the absent candidates, so its minimum is the mex.",
+  "complexity": "For n elements and window size k, O(n log k) time and O(k) space.",
+  "visual": {
+    "kind": "window",
+    "title": "Sliding Window Mex: follow one example",
+    "caption": "Slide the active window and update its maintained state.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For windows [0,1,1] and [1,1,3], the mex values are 2 and 0."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Keep frequencies for values at most k and an ordered set initially containing 0 through k. Remove a value from the set when its frequency becomes positive; add it back when the frequency falls to zero. Ignore values above k. Output the smallest missing value for each complete window."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "0",
+      "1",
+      "3",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For windows [0,1,1] and [1,1,3], the mex values are 2 and 0."
+  }
+}

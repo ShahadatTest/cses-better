@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "A balanced sequence tree can split at a position and join sequences.",
+    "Cut the requested substring by splitting before and after it.",
+    "Join the remaining prefix and suffix, then append the cut part."
+  ],
+  "analogy": "Cut a ribbon into three pieces and move the middle piece to the end.",
+  "example": "Cut positions 2 through 3 from ABCDE: the pieces A, BC, DE become ADEBC.",
+  "algorithm": "Store characters in an implicit treap, a randomized balanced tree ordered by sequence position, with subtree sizes. Split before a and after b to get prefix, middle and suffix; merge prefix with suffix and then middle. Traverse the final tree in order.",
+  "correctness": "The splits isolate exactly the requested positions in their original order. The merges concatenate the three pieces in precisely the order specified by the operation, preserving all characters.",
+  "complexity": "For string length n and m operations, expected O(n+m log n) time and O(n) space with linear-time treap construction.",
+  "visual": {
+    "kind": "flow",
+    "title": "Cut and Paste: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Cut positions 2 through 3 from ABCDE: the pieces A, BC, DE become ADEBC."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Store characters in an implicit treap, a randomized balanced tree ordered by sequence position, with subtree sizes. Split before a and after b to get prefix, middle and suffix; merge prefix with suffix and then middle. Traverse the final tree in order."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "ABCDE",
+      "A | BC | DE",
+      "ADEBC"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Cut positions 2..3, then place the pieces at the end."
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "The first character must eventually be removed with an equal character to its right.",
+    "Everything between the pair must disappear first.",
+    "Interleave the pair?s removal sequence with removals to its right."
+  ],
+  "analogy": "Match the first character with its partner, then weave two independent streams of removal operations.",
+  "example": "For aabb, remove aa then bb or bb then aa, so there are 2 ways.",
+  "algorithm": "For every even-length interval [l,r], choose a matching position m with s[l]=s[m] and an even number of characters between them. Let A=dp[l+1,m-1], B=dp[m+1,r], with empty intervals equal to 1. The left block and the final pair take (m-l+1)/2 operations, while the right block takes (r-m)/2. Add A*B*C((r-l+1)/2,(m-l+1)/2) to dp[l,r]. Precompute binomial coefficients modulo 1000000007 and fill intervals by increasing length; odd intervals have zero ways.",
+  "correctness": "The first character has a unique partner m in every removal sequence. The inside must vanish before that pair is removed, while the right interval is independent. The binomial coefficient counts all ways to interleave the ordered operation streams; distinct partners and interleavings give disjoint sequences.",
+  "complexity": "For string length n, time is O(n^3) and space O(n^2).",
+  "visual": {
+    "kind": "dp",
+    "title": "Empty String: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For aabb, remove aa then bb or bb then aa, so there are 2 ways."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For every even-length interval [l,r], choose a matching position m with s[l]=s[m] and an even number of characters between them. Let A=dp[l+1,m-1], B=dp[m+1,r], with empty intervals equal to 1. The left block and the final pair take (m-l+1)/2 operations, while the right block takes (r-m)/2. Add A*B*C((r-l+1)/2,(m-l+1)/2) to dp[l,r]. Precompute binomial coefficients modulo 1000000007 and fill intervals by increasing length; odd intervals have zero ways."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Removal order",
+      "Ways"
+    ],
+    "rows": [
+      [
+        "aa then bb",
+        "1"
+      ],
+      [
+        "bb then aa",
+        "1"
+      ]
+    ],
+    "caption": "Illustrative example - For aabb, the two valid pair-removal orders give two ways."
+  }
+}

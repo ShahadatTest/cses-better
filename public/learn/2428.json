@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Maintain a window with at most k distinct values using a frequency map.",
+    "When adding a value creates k+1 distinct values, advance the left edge until the window is valid again.",
+    "For each right endpoint, all starts from left through right give valid subarrays."
+  ],
+  "analogy": "The window tolerates up to k different labels; removing from its left restores that limit.",
+  "example": "For 1,2,3,1,1 with k=2, valid window counts by endpoint total 10.",
+  "algorithm": "Use a sliding window with counts and a distinct counter. Shrink while distinct>k; add right-left+1 to a 64-bit answer.",
+  "correctness": "After shrinking, the maintained window is the longest valid suffix ending at right; every shorter suffix is valid and every earlier start includes too many distinct values.",
+  "complexity": "O(n) expected time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Distinct Values Subarrays II: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5 2\n1 2 3 1 1"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 1,2,3,1,1 with k=2, valid window counts by endpoint total 10."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use a sliding window with counts and a distinct counter. Shrink while distinct>k; add right-left+1 to a 64-bit answer."
+      },
+      {
+        "label": "Result",
+        "detail": "10"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5  2"
+      ],
+      [
+        "1  2  3  1  1"
+      ]
+    ],
+    "caption": "Illustrative example - For 1,2,3,1,1 with k=2, valid window counts by endpoint total 10."
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "hints": [
+    "The shoelace formula gives twice the polygon area.",
+    "An edge with coordinate differences dx,dy contributes gcd(|dx|,|dy|) boundary points when endpoints are counted consistently.",
+    "Use Pick's theorem: area = interior + boundary/2 - 1."
+  ],
+  "analogy": "The greatest common divisor counts equal lattice steps along an edge.",
+  "example": "A 2 by 2 square has boundary 8 and interior 1, matching area 1+8/2-1=4.",
+  "algorithm": "Sum cross products around the polygon and take absolute value A2. Sum gcd(abs(dx),abs(dy)) over edges to obtain boundary count B. Print (A2-B+2)/2 and B. Use a wide integer for the shoelace sum.",
+  "correctness": "Each edge contains gcd(|dx|,|dy|) lattice steps; summing them counts each boundary vertex once. Pick's theorem then uniquely determines the interior count from area and boundary.",
+  "complexity": "For n vertices and maximum coordinate difference C, O(n log C) time and O(n) space.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Polygon Lattice Points: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A 2 by 2 square has boundary 8 and interior 1, matching area 1+8/2-1=4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sum cross products around the polygon and take absolute value A2. Sum gcd(abs(dx),abs(dy)) over edges to obtain boundary count B. Print (A2-B+2)/2 and B. Use a wide integer for the shoelace sum."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "2",
+        "label": "2",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "1",
+        "label": "1",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [],
+    "caption": "Illustrative example - A 2 by 2 square has boundary 8 and interior 1, matching area 1+8/2-1=4."
+  }
+}

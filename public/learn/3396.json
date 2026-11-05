@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "The answer must be strictly greater than n, even when n itself is prime.",
+    "Test odd candidates after n; every composite number has a divisor no larger than its square root.",
+    "With n up to 10^12, use a deterministic 64-bit primality test such as Miller-Rabin rather than trial division."
+  ],
+  "analogy": "A composite candidate can be exposed by a witness that proves it is not prime.",
+  "example": "After 42, candidate 43 is prime, so the next prime is 43.",
+  "algorithm": "For each candidate n+1,n+2,..., test primality with deterministic Miller-Rabin bases valid for 64-bit integers; skip even values after checking 2. Use overflow-safe modular multiplication.",
+  "correctness": "Miller-Rabin's chosen deterministic bases distinguish every composite in the supported integer range; checking candidates in order ensures the first prime found is the next one.",
+  "complexity": "O(g log N) modular multiplications for gap g, with O(1) extra space.",
+  "visual": {
+    "kind": "math",
+    "title": "Next Prime: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "After 42, candidate 43 is prime, so the next prime is 43."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each candidate n+1,n+2,..., test primality with deterministic Miller-Rabin bases valid for 64-bit integers; skip even values after checking 2. Use overflow-safe modular multiplication."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Candidate",
+      "Prime?",
+      "Decision"
+    ],
+    "rows": [
+      [
+        "42",
+        "No",
+        "Skip"
+      ],
+      [
+        "43",
+        "Yes",
+        "Next prime"
+      ]
+    ],
+    "caption": "Illustrative example - Test successive candidates after 42."
+  }
+}

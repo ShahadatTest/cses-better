@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "A point update changes one array value and the sums of intervals containing it.",
+    "Use a segment tree whose parent stores the sum of its children.",
+    "For a range sum, combine the covered nodes; for an update, replace its leaf and refresh ancestors."
+  ],
+  "analogy": "A point change travels up the tree, updating each stored total on its path to the root.",
+  "example": "If [1,2,3] changes position 2 from 2 to 5, the total changes from 6 to 9.",
+  "algorithm": "Build a sum segment tree. For type 1, update one leaf and its ancestors; for type 2, query inclusive range [a,b] by summing covered nodes.",
+  "correctness": "Each tree node represents exactly its interval's sum, and update recomputation preserves that invariant; query partitions the requested interval into those intervals.",
+  "complexity": "O(n) build, O(log n) per update/query, O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Dynamic Range Sum Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If [1,2,3] changes position 2 from 2 to 5, the total changes from 6 to 9."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a sum segment tree. For type 1, update one leaf and its ancestors; for type 2, query inclusive range [a,b] by summing covered nodes."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Range 1",
+        "start": 2,
+        "end": 5
+      },
+      {
+        "label": "Range 2",
+        "start": 6,
+        "end": 9
+      }
+    ],
+    "caption": "Illustrative example - If [1,2,3] changes position 2 from 2 to 5, the total changes from 6 to 9."
+  }
+}

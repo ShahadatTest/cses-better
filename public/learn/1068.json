@@ -1,0 +1,60 @@
+{
+  "hints": [
+    "Start with the given positive n and include it before changing it.",
+    "For each value, choose exactly one rule: halve an even value, or replace an odd value by 3n+1.",
+    "Stop immediately after adding 1; do not apply another step."
+  ],
+  "analogy": "Think of following a deterministic trail: each number tells you which next step to take.",
+  "example": "Starting at 3: odd gives 10, then 5, 16, 8, 4, 2, 1; print that whole trail, including both ends.",
+  "algorithm": "Simulate the stated rule in a loop, appending each current value and terminating when it equals 1. Use an integer type wide enough for intermediate values.",
+  "correctness": "Every printed value is the current state, and each next state follows the problem's rule; stopping at 1 gives exactly the requested execution.",
+  "complexity": "O(m) time and O(m) output space, where m is the number of values in the sequence.",
+  "visual": {
+    "kind": "trace",
+    "title": "Weird Algorithm: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Starting at 3: odd gives 10, then 5, 16, 8, 4, 2, 1; print that whole trail, including both ends."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Simulate the stated rule in a loop, appending each current value and terminating when it equals 1. Use an integer type wide enough for intermediate values."
+      },
+      {
+        "label": "Result",
+        "detail": "3 10 5 16 8 4 2 1"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3"
+      ]
+    ],
+    "caption": "Illustrative example - Odd values become 3n+1; even values are halved until the sequence reaches 1.",
+    "items": [
+      "3",
+      "10",
+      "5",
+      "16",
+      "8",
+      "4",
+      "2",
+      "1"
+    ],
+    "emphasisIndices": [
+      7
+    ]
+  }
+}

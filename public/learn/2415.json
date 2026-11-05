@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "Every weak component of a functional graph contains exactly one directed cycle, with trees feeding into it.",
+    "Rooted labelled trees have exponential generating function T satisfying T = z exp(T).",
+    "Use Lagrange inversion and unsigned Stirling numbers to calculate all component counts in quadratic time."
+  ],
+  "analogy": "Each component is a cycle of trees: the cycle connects the trees while every other edge points toward it.",
+  "example": "For n=3 there are 17 functional graphs with one component, 9 with two, and 1 with three.",
+  "algorithm": "Let c(j,k) be the unsigned Stirling number of the first kind, with c(0,0)=1 and c(j,k)=c(j-1,k-1)+(j-1)c(j-1,k). Precompute factorials and inverse factorials modulo 10^9+7. For each k=1..n compute (n-1)! times the sum over j=k-1..n-1 of c(j+1,k) * n^(n-1-j) / ((n-1-j)! j!). Print each sum modulo the prime.",
+  "correctness": "The generating function marking components by u is (1-T)^(-u). Lagrange inversion gives n![z^n](1-T)^(-u) = (n-1)! [t^(n-1)] u(1-t)^(-u-1)exp(nt). Expanding the rising factorial u(u+1)...(u+j) using c(j+1,k) yields exactly the stated coefficient.",
+  "complexity": "O(n^2) time and O(n^2) space for the Stirling table; powers and factorials take O(n) extra space.",
+  "visual": {
+    "kind": "dp",
+    "title": "Functional Graph Distribution: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3 there are 17 functional graphs with one component, 9 with two, and 1 with three."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let c(j,k) be the unsigned Stirling number of the first kind, with c(0,0)=1 and c(j,k)=c(j-1,k-1)+(j-1)c(j-1,k). Precompute factorials and inverse factorials modulo 10^9+7. For each k=1..n compute (n-1)! times the sum over j=k-1..n-1 of c(j+1,k) * n^(n-1-j) / ((n-1-j)! j!). Print each sum modulo the prime."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Number of components",
+      "Functional graphs"
+    ],
+    "rows": [
+      [
+        "1",
+        "17"
+      ],
+      [
+        "2",
+        "9"
+      ],
+      [
+        "3",
+        "1"
+      ]
+    ],
+    "caption": "Illustrative example - Distribution for three labeled nodes."
+  }
+}

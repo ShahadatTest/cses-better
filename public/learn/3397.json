@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "The kth lexicographic permutation is selected by its first-element block, then the next block.",
+    "There are (n-1)! permutations beginning with each available first value.",
+    "For ranking, count unused values smaller than each element and add their factorial-sized blocks."
+  ],
+  "analogy": "Factorials tell how many dictionary-ordered permutations each next number skips.",
+  "algorithm": "For unranking, convert k to zero-based, choose index k/(r-1)!, then set k %= (r-1)!. For ranking, add the count of smaller unused values times (r-1)! at each position and return one-based rank.",
+  "correctness": "Lexicographic order groups permutations by next unused element, and each group has exactly (r-1)! arrangements; skipping those groups gives the exact rank or selection.",
+  "complexity": "O(n^2) with a simple unused list (n<=20), or O(n log n) with an order-statistics structure; O(n) space.",
+  "example": "For n=3, k=4: each first-number block has (3-1)!=2 permutations. Skip the first three permutations, choose 2 as the first value, and the remaining order is 3,1, so the result is 2,3,1.",
+  "visual": {
+    "kind": "math",
+    "title": "Permutation Order: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3, k=4: each first-number block has (3-1)!=2 permutations. Skip the first three permutations, choose 2 as the first value, and the remaining order is 3,1, so the result is 2,3,1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For unranking, convert k to zero-based, choose index k/(r-1)!, then set k %= (r-1)!. For ranking, add the count of smaller unused values times (r-1)! at each position and return one-based rank."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "4",
+      "-1",
+      "2",
+      "1"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=3, k=4: each first-number block has (3-1)!=2 permutations. Skip the first three permutations, choose 2 as the first value, and the remaining order is 3,1, so the result is 2,3,1."
+  }
+}

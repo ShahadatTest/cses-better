@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Count apples and bananas by weight first.",
+    "For total weight w, sum appleCount[i]*bananaCount[w-i].",
+    "This is polynomial convolution, computable with FFT."
+  ],
+  "analogy": "Multiplying two generating polynomials combines every apple weight with every banana weight.",
+  "example": "Apples [1,2] and bananas [1,1] give counts 2 for sum 2 and 2 for sum 3.",
+  "algorithm": "Form coefficient arrays A and B of frequencies by weight. Compute their convolution with a sufficiently precise FFT and round each resulting coefficient to the nearest integer, or use enough NTT moduli and reconstruct exact coefficients. Print coefficients 2 through 2k.",
+  "correctness": "Coefficient w of the product is the sum over i of A[i]*B[w-i], exactly the number of ordered choices of one apple and one banana of total weight w.",
+  "complexity": "For maximum weight k, O(k log k+n+m) time and O(k) space; exact NTT reconstruction requires a modulus product exceeding n*m.",
+  "visual": {
+    "kind": "flow",
+    "title": "Apples and Bananas: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Apples [1,2] and bananas [1,1] give counts 2 for sum 2 and 2 for sum 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Form coefficient arrays A and B of frequencies by weight. Compute their convolution with a sufficiently precise FFT and round each resulting coefficient to the nearest integer, or use enough NTT moduli and reconstruct exact coefficients. Print coefficients 2 through 2k."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Apples [1,2] and bananas [1,1] give counts 2 for sum 2 and 2 for sum 3."
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "For each x<=10^6, count its divisors by counting how many primes divide it and their exponents.",
+    "A sieve can build the smallest prime factor for every number.",
+    "For x=p^e times other factors, its divisor count multiplies by e+1 for each prime factor."
+  ],
+  "analogy": "Each divisor independently chooses an exponent from zero through the exponent in x.",
+  "example": "12=2^2*3 has (2+1)(1+1)=6 divisors.",
+  "algorithm": "Build smallest-prime-factor values with a sieve. Factor each query x by repeated division and multiply (exponent+1) for each prime.",
+  "correctness": "Every divisor chooses one allowed exponent for each prime factor, and these independent choices produce every divisor exactly once.",
+  "complexity": "O(M log log M+q log M) preprocessing/query time and O(M) space, where M is the maximum bound.",
+  "visual": {
+    "kind": "math",
+    "title": "Counting Divisors: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "12=2^2*3 has (2+1)(1+1)=6 divisors."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build smallest-prime-factor values with a sieve. Factor each query x by repeated division and multiply (exponent+1) for each prime."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Prime factor",
+      "Exponent",
+      "Divisor choices"
+    ],
+    "rows": [
+      [
+        "2",
+        "2",
+        "3"
+      ],
+      [
+        "3",
+        "1",
+        "2"
+      ],
+      [
+        "Total",
+        "",
+        "3 x 2 = 6"
+      ]
+    ],
+    "caption": "Illustrative example - For 12 = 2^2 x 3, multiply exponent-plus-one choices."
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "analogy": "Pair high cards against lower cards to decide which player wins each round.",
+  "hints": [
+    "The first player's score a plus second player's score b is the number of rounds with a winner; the other rounds must be ties.",
+    "Feasibility requires a+b<=n. If a+b>0, both scores must be positive because equal cards tie and the two players use the same set of ranks.",
+    "Use identical cards for ties, then rotate a block of cards to create exactly a wins for player one and b wins for player two."
+  ],
+  "complexity": "O(n) time and O(n) output space per test case.",
+  "algorithm": "Let m=a+b. If m>n, or m>0 and either score is zero, print NO. If m=0, print identical permutations. Otherwise let player one's order be 1..n; player two's order is a+1..m, then 1..a, then m+1..n. Print YES and both orders.",
+  "correctness": "Positions 1..b pair player one's smaller values with player two's larger values, so player two wins b rounds. Positions b+1..m pair player one with larger values, so player one wins a rounds. The remaining ranks tie. The stated conditions are necessary and the construction realizes them.",
+  "example": "For n=4,a=1,b=2, use first row 1 2 3 4 and second row 2 3 1 4. Player two wins rounds 1 and 2, player one wins round 3, and round 4 ties.",
+  "visual": {
+    "kind": "trace",
+    "title": "Raab Game I: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5\n4 1 2\n2 0 1\n3 0 0\n2 1 1\n4 4 1"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=4,a=1,b=2, use first row 1 2 3 4 and second row 2 3 1 4. Player two wins rounds 1 and 2, player one wins round 3, and round 4 ties."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let m=a+b. If m>n, or m>0 and either score is zero, print NO. If m=0, print identical permutations. Otherwise let player one's order be 1..n; player two's order is a+1..m, then 1..a, then m+1..n. Print YES and both orders."
+      },
+      {
+        "label": "Result",
+        "detail": "YES\n1 4 3 2\n2 1 3 4\nNO\nYES\n1 2 3\n1 2 3\nYES\n1 2\n2 1\nNO"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5"
+      ],
+      [
+        "4  1  2"
+      ],
+      [
+        "2  0  1"
+      ],
+      [
+        "3  0  0"
+      ],
+      [
+        "2  1  1"
+      ],
+      [
+        "4  4  1"
+      ]
+    ],
+    "caption": "Illustrative example - For n=4,a=1,b=2, use first row 1 2 3 4 and second row 2 3 1 4. Player two wins rounds 1 and 2, player one wins round 3, and round 4 ties."
+  }
+}

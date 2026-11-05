@@ -1,0 +1,44 @@
+{
+  "hints": [
+    "Use a balanced sequence tree that can isolate a substring by position.",
+    "Reversing a whole subtree can be represented by a pending flag.",
+    "Swap children and propagate reversal lazily only when visiting a node."
+  ],
+  "analogy": "A label on a ribbon says its whole piece is flipped; individual sections are flipped only when needed.",
+  "example": "Reversing positions 2 through 4 of ABCDE gives ADCBE.",
+  "algorithm": "Use an implicit treap with subtree sizes and lazy reversal flags. Split before a and after b, toggle reversal on the middle subtree, and merge the pieces back. Push pending flags before descending or splitting, then output an in-order traversal.",
+  "correctness": "A lazy reversal swaps the order of the two child sequences and reverses each child; pushing the flag preserves that meaning. Splits isolate the requested substring, so each operation produces exactly its reversal.",
+  "complexity": "For length n and m operations, expected O(n+m log n) time and O(n) space with linear-time construction.",
+  "visual": {
+    "kind": "flow",
+    "title": "Substring Reversals: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Reversing positions 2 through 4 of ABCDE gives ADCBE."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use an implicit treap with subtree sizes and lazy reversal flags. Split before a and after b, toggle reversal on the middle subtree, and merge the pieces back. Push pending flags before descending or splitting, then output an in-order traversal."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "ABCDE",
+      "ADCBE"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Reverse positions 2..4."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "Each move removes three coins total, so a+b must be divisible by 3.",
+    "Each move removes either one or two from either pile, so the larger pile cannot exceed twice the smaller.",
+    "Both conditions together are sufficient; check them per test case."
+  ],
+  "analogy": "Each turn removes coins from both piles in a 1-to-2 ratio, so total size and balance limit whether emptying is possible.",
+  "example": "For (2,1), the total is 3 and the piles fit the 2-to-1 balance, so one move empties them.",
+  "algorithm": "For each case print YES exactly when (a+b)%3==0 and max(a,b)<=2*min(a,b).",
+  "correctness": "If there are x moves of type (1,2) and y of type (2,1), then a=x+2y and b=2x+y. Solving gives nonnegative integers exactly under these two conditions.",
+  "complexity": "O(1) time and O(1) extra space per test case.",
+  "visual": {
+    "kind": "trace",
+    "title": "Coin Piles: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3\n2 1\n2 2\n3 3"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For (2,1), the total is 3 and the piles fit the 2-to-1 balance, so one move empties them."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each case print YES exactly when (a+b)%3==0 and max(a,b)<=2*min(a,b)."
+      },
+      {
+        "label": "Result",
+        "detail": "YES\nNO\nYES"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3"
+      ],
+      [
+        "2  1"
+      ],
+      [
+        "2  2"
+      ],
+      [
+        "3  3"
+      ]
+    ],
+    "caption": "Illustrative example - For (2,1), the total is 3 and the piles fit the 2-to-1 balance, so one move empties them."
+  }
+}

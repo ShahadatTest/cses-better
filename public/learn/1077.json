@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "The total absolute distance is minimized at a median.",
+    "Maintain the lower and upper halves of the window and their sums.",
+    "Compute distances to the lower median from the sizes and sums of both halves."
+  ],
+  "analogy": "Moving the common target toward the median reduces distance to more elements than it increases.",
+  "example": "For [1,2,5], choosing 2 costs 1+0+3=4.",
+  "algorithm": "Maintain two balanced multisets split at the lower median m, and their sums. Keep ceil(k/2) values in the lower set. For each window output m*lowerSize-lowerSum + upperSum-m*upperSize. Update sums whenever values move between sets; use wide integers.",
+  "correctness": "A median minimizes the sum of absolute differences because moving away increases distance to at least as many elements as it decreases. The formula sums the distances on both sides using the partition invariant.",
+  "complexity": "For n elements and window size k, O(n log k) time and O(k) space.",
+  "visual": {
+    "kind": "window",
+    "title": "Sliding Window Cost: follow one example",
+    "caption": "Slide the active window and update its maintained state.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,5], choosing 2 costs 1+0+3=4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain two balanced multisets split at the lower median m, and their sums. Keep ceil(k/2) values in the lower set. For each window output m*lowerSize-lowerSum + upperSum-m*upperSize. Update sums whenever values move between sets; use wide integers."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "5",
+      "0",
+      "3",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,5], choosing 2 costs 1+0+3=4."
+  }
+}

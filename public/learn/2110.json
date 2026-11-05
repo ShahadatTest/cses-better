@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Sort the suffixes and look at their prefixes.",
+    "A suffix adds one new substring for every length greater than its LCP with the previous suffix.",
+    "Add one to a whole interval of lengths using a difference array."
+  ],
+  "analogy": "Each suffix contributes a consecutive range of substring lengths, like adding one to all boxes on a shelf.",
+  "example": "For aba, there are 2 distinct substrings of length 1, 2 of length 2, and 1 of length 3.",
+  "algorithm": "Build the suffix array and adjacent LCP array. For each suffix of length len and previous LCP l, add one to all lengths l+1 through len using difference-array endpoints. Prefix-sum the difference array and print the count for each length 1 through n.",
+  "correctness": "A suffix's prefixes of lengths at most l appeared earlier, and all longer prefixes are new. These intervals partition the distinct substrings by their first suffix in sorted order, so summing them gives each length's exact count.",
+  "complexity": "For length n, O(n log n) time using a doubling suffix array and O(n) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Substring Distribution: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For aba, there are 2 distinct substrings of length 1, 2 of length 2, and 1 of length 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build the suffix array and adjacent LCP array. For each suffix of length len and previous LCP l, add one to all lengths l+1 through len using difference-array endpoints. Prefix-sum the difference array and print the count for each length 1 through n."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "1",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For aba, there are 2 distinct substrings of length 1, 2 of length 2, and 1 of length 3."
+  }
+}

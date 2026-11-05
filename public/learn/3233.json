@@ -1,0 +1,44 @@
+{
+  "hints": [
+    "A subarray XOR is the XOR of two distinct prefix positions.",
+    "Count pairs of prefix XOR values using XOR convolution.",
+    "The Walsh-Hadamard transform computes all XOR-convolution coefficients together."
+  ],
+  "analogy": "Pair every prefix with every other prefix at once; XOR convolution groups these pairs by their XOR.",
+  "example": "For [1,1], prefix XORs are [0,1,0]; possible nonempty subarray XORs are 0 and 1.",
+  "algorithm": "Build frequencies of the n+1 prefix XORs, including zero. Apply the XOR Walsh-Hadamard transform, square every transformed coefficient, and apply the inverse transform. For x>0 include x if its coefficient is positive; for x=0 include it if its coefficient exceeds n+1, since the diagonal pairs use identical positions. Print included values in increasing order. Use wide integer arithmetic.",
+  "correctness": "The XOR convolution coefficient for x counts ordered pairs of prefix positions whose XOR is x. For nonzero x these positions are automatically distinct; for zero, subtracting the n+1 diagonal pairs leaves exactly pairs corresponding to nonempty subarrays.",
+  "complexity": "For n values and universe size U=2^20, O(n+U log U) time and O(U) space.",
+  "visual": {
+    "kind": "bitwise",
+    "title": "All Subarray Xors: follow one example",
+    "caption": "Track the binary state and the effect of each bit operation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,1], prefix XORs are [0,1,0]; possible nonempty subarray XORs are 0 and 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build frequencies of the n+1 prefix XORs, including zero. Apply the XOR Walsh-Hadamard transform, square every transformed coefficient, and apply the inverse transform. For x>0 include x if its coefficient is positive; for x=0 include it if its coefficient exceeds n+1, since the diagonal pairs use identical positions. Print included values in increasing order. Use wide integer arithmetic."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1 (binary 1)",
+      "0 (binary 0)"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,1], prefix XORs are [0,1,0]; possible nonempty subarray XORs are 0 and 1."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "The kth row from the top is n-k XOR steps above the bottom.",
+    "A value after t steps is the XOR of entries whose offsets are submasks of t.",
+    "Apply one XOR shift for each set bit of t to compute all requested positions together."
+  ],
+  "analogy": "Each set bit in the number of levels doubles the pattern of contributing bottom entries at that offset.",
+  "example": "For bottom [1,2,3] and k=2, one step gives [1 XOR 2, 2 XOR 3]=[3,1].",
+  "algorithm": "Let t=n-k. For every set bit b of t, update a[i] to a[i] XOR a[i+2^b] for i increasing from 0 while the second index exists. After all selected shifts, print the first k values.",
+  "correctness": "Over XOR, (1+z)^t factors into the product of (1+z^(2^b)) over set bits of t. Each pass applies one factor, so the resulting entry is exactly the value after t pyramid steps.",
+  "complexity": "For n values, O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "bitwise",
+    "title": "Xor Pyramid Row: follow one example",
+    "caption": "Track the binary state and the effect of each bit operation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For bottom [1,2,3] and k=2, one step gives [1 XOR 2, 2 XOR 3]=[3,1]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let t=n-k. For every set bit b of t, update a[i] to a[i] XOR a[i+2^b] for i increasing from 0 while the second index exists. After all selected shifts, print the first k values."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1 (binary 1)",
+      "2 (binary 10)",
+      "3 (binary 11)"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For bottom [1,2,3] and k=2, one step gives [1 XOR 2, 2 XOR 3]=[3,1]."
+  }
+}

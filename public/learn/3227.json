@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "For each board, find how far left and right it can extend before a strictly shorter board.",
+    "In a window containing that board, its best rectangle is its height times the overlap with that span.",
+    "As the window moves, this overlap length is piecewise linear; maximize these line segments over window starts."
+  ],
+  "analogy": "Each board offers a rectangle that expands, stays level, and shrinks as the window slides over its maximal span.",
+  "example": "For heights [4,1,5] and k=2, the best areas are 4 and 5.",
+  "algorithm": "Use monotonic stacks to find each board's maximal interval [L,R] with no smaller height. For each valid window start s containing the board, its candidate is h*(min(R,s+k-1)-max(L,s)+1). Split this expression at the points where either min or max changes, yielding a constant number of line segments in s. Insert each line on its valid start interval into a range Li Chao maximum tree; query each window start. Use wide integer areas.",
+  "correctness": "Any rectangle has a minimum-height board, and its widest version within the window is exactly the intersection of that board's maximal span and the window. Thus every optimum occurs among the inserted candidates, and every candidate is a valid rectangle.",
+  "complexity": "For n boards and window size k, O(n log^2 n) time and O(n) space with a fixed range Li Chao tree.",
+  "visual": {
+    "kind": "window",
+    "title": "Sliding Window Advertisement: follow one example",
+    "caption": "Slide the active window and update its maintained state.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For heights [4,1,5] and k=2, the best areas are 4 and 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use monotonic stacks to find each board's maximal interval [L,R] with no smaller height. For each valid window start s containing the board, its candidate is h*(min(R,s+k-1)-max(L,s)+1). Split this expression at the points where either min or max changes, yielding a constant number of line segments in s. Insert each line on its valid start interval into a range Li Chao maximum tree; query each window start. Use wide integer areas."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "4",
+      "1",
+      "5",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For heights [4,1,5] and k=2, the best areas are 4 and 5."
+  }
+}

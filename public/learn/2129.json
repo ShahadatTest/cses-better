@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Each employee must choose one task, and no task may be chosen twice.",
+    "This is a minimum-cost perfect matching in a bipartite graph.",
+    "Use the Hungarian algorithm to find both the minimum cost and the matching."
+  ],
+  "analogy": "Employees and tasks are opposite sides of a matching, and each chosen link pays its assignment cost.",
+  "example": "For costs [[1,4],[3,2]], assign employee 1 to task 1 and employee 2 to task 2, total 3.",
+  "algorithm": "Apply the Hungarian algorithm to the n by n cost matrix. Maintain row and column potentials and repeatedly augment the matching along a minimum reduced-cost alternating path. Output the matching pairs and sum their original costs.",
+  "correctness": "The algorithm maintains feasible dual potentials and builds a perfect matching on tight edges. A perfect matching whose cost equals the dual bound is optimal by the assignment problem's duality.",
+  "complexity": "For n employees and tasks, O(n^3) time and O(n^2) space for the input matrix.",
+  "visual": {
+    "kind": "flow",
+    "title": "Task Assignment: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For costs [[1,4],[3,2]], assign employee 1 to task 1 and employee 2 to task 2, total 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Apply the Hungarian algorithm to the n by n cost matrix. Maintain row and column potentials and repeatedly augment the matching along a minimum reduced-cost alternating path. Output the matching pairs and sum their original costs."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "4",
+      "3",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For costs [[1,4],[3,2]], assign employee 1 to task 1 and employee 2 to task 2, total 3."
+  }
+}

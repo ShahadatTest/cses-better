@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "A point update changes one position and the query asks for the maximum subarray sum within a range.",
+    "Store sum, best prefix, best suffix, and best subarray for each segment.",
+    "Merge children using the same three-way split cases as the static range structure."
+  ],
+  "analogy": "Keep enough summaries at every segment-tree node to combine the best segment across its boundary.",
+  "example": "For segments [1,-2] and [3,4], the best crossing segment is -2+3+4=5; the right-only segment is 7 and wins.",
+  "correctness": "The merge enumerates all possible locations of an optimal subarray relative to the child boundary, so each node summary is exact.",
+  "complexity": "O(n) build, O(log n) per update/query, O(n) space.",
+  "algorithm": "Build a segment tree storing sum, best prefix, best suffix, and best subarray. Merge with crossing best=left.suffix+right.prefix and best=max(left.best,right.best,crossing). Point assignments rebuild ancestors; range queries merge covered segments in order.",
+  "visual": {
+    "kind": "range",
+    "title": "Subarray Sum Queries II: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For segments [1,-2] and [3,4], the best crossing segment is -2+3+4=5; the right-only segment is 7 and wins."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a segment tree storing sum, best prefix, best suffix, and best subarray. Merge with crossing best=left.suffix+right.prefix and best=max(left.best,right.best,crossing). Point assignments rebuild ancestors; range queries merge covered segments in order."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "-2",
+      "3",
+      "4",
+      "5",
+      "7"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For segments [1,-2] and [3,4], the best crossing segment is -2+3+4=5; the right-only segment is 7 and wins."
+  }
+}

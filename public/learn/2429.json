@@ -1,0 +1,73 @@
+{
+  "hints": [
+    "View the A-cells and B-cells as two partial permutations: each letter must appear once in every row and column.",
+    "Use inclusion-exclusion to remove completions where A and B occupy the same cell.",
+    "There are three possible collision types: both cells are open, only B is fixed, or only A is fixed. Count each type and multiply by the remaining permutation counts."
+  ],
+  "analogy": "Complete two matchings while subtracting every way they can collide in the same grid cell.",
+  "example": "In the sample, the six counts are c0=2, c1=1, c2=0, c3=2, c4=3, c5=3. The signed terms are 36 - 12 - 16 + 8, giving 16 valid grids.",
+  "algorithm": "For each row, record its fixed A-column and B-column. Mark columns already used by A and by B. Count c0 rows with neither letter fixed; c1 rows with A free and B fixed in a column unused by A; c2 rows with B free and A fixed in a column unused by B; c3 columns unused by both; c4 columns unused by A; and c5 columns unused by B. Sum over i=0..min(c0,c3), j=0..c1, k=0..c2 the term (-1)^(i+j+k) * C(c0,i) * C(c3,i) * i! * C(c1,j) * C(c2,k) * (c4-i-j)! * (c5-i-k)!, modulo 1,000,000,007. Precompute factorials and inverse factorials for combinations.",
+  "correctness": "Every completion consists of one permutation of A positions and one permutation of B positions. A conflict occurs exactly when both permutations use the same cell. Such cells fall into three disjoint types: a row with neither letter fixed, a row with only B fixed, or a row with only A fixed. In the first type, choose i open rows and i columns unused by both letters, then pair them in i! ways. In the other types, choosing j or k rows forces their collision cells. After those choices, A and B can be completed in (c4-i-j)! and (c5-i-k)! ways. Inclusion-exclusion alternates by the number of chosen collision events, removing every completion with one or more conflicts. Thus the sum counts exactly the valid grids.",
+  "complexity": "O(n^3) time for the three inclusion-exclusion loops and O(n) space for factorials and the grid, where n<=500.",
+  "visual": {
+    "kind": "dp",
+    "title": "Grid Completion: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In the sample, the six counts are c0=2, c1=1, c2=0, c3=2, c4=3, c5=3. The signed terms are 36 - 12 - 16 + 8, giving 16 valid grids."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each row, record its fixed A-column and B-column. Mark columns already used by A and by B. Count c0 rows with neither letter fixed; c1 rows with A free and B fixed in a column unused by A; c2 rows with B free and A fixed in a column unused by B; c3 columns unused by both; c4 columns unused by A; and c5 columns unused by B. Sum over i=0..min(c0,c3), j=0..c1, k=0..c2 the term (-1)^(i+j+k) * C(c0,i) * C(c3,i) * i! * C(c1,j) * C(c2,k) * (c4-i-j)! * (c5-i-k)!, modulo 1,000,000,007. Precompute factorials and inverse factorials for combinations."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "k",
+      "c_k"
+    ],
+    "rows": [
+      [
+        "0",
+        "2"
+      ],
+      [
+        "1",
+        "1"
+      ],
+      [
+        "2",
+        "0"
+      ],
+      [
+        "3",
+        "2"
+      ],
+      [
+        "4",
+        "3"
+      ],
+      [
+        "5",
+        "3"
+      ],
+      [
+        "Valid grids",
+        "16"
+      ]
+    ],
+    "caption": "Illustrative example - The sample counts feed the signed inclusion-exclusion sum."
+  }
+}

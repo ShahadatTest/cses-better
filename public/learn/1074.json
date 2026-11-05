@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Changing a length x to a target T costs |x-T|.",
+    "The sum of absolute distances is minimized at a median, not necessarily the mean.",
+    "Sort and choose the middle value; for even n, any value between the two middle values is optimal."
+  ],
+  "analogy": "Place a shared meeting point so the total walking distance is smallest; a median balances people on each side.",
+  "example": "Lengths 1,2,9: choose 2 and change costs 1+0+7=8.",
+  "algorithm": "Sort the lengths, take the middle element as target, and sum absolute differences.",
+  "correctness": "If the target moves away from a median, at least as many values become farther as become closer; thus a median minimizes total absolute change.",
+  "complexity": "O(n log n) time and O(1) extra space beyond sorting.",
+  "visual": {
+    "kind": "array",
+    "title": "Stick Lengths: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5\n2 3 1 5 2"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Lengths 1,2,9: choose 2 and change costs 1+0+7=8."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort the lengths, take the middle element as target, and sum absolute differences."
+      },
+      {
+        "label": "Result",
+        "detail": "5"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5"
+      ],
+      [
+        "2  3  1  5  2"
+      ]
+    ],
+    "caption": "Illustrative example - Lengths 1,2,9: choose 2 and change costs 1+0+7=8."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "The graph has positive flight costs, but several different routes to the same city may be needed.",
+    "Store up to k shortest distances per city in a min-priority queue.",
+    "When a city is popped fewer than k times, extend its routes along outgoing edges."
+  ],
+  "analogy": "Keep the first k cheapest arrivals at each city instead of only one best arrival.",
+  "example": "If a destination has route costs 5,7,9, the three outputs are those costs in order.",
+  "algorithm": "Use a min-heap of (distance,city) and a pop counter per city. Expand an entry only while that city's counter is below k; record distances when destination is popped.",
+  "correctness": "Heap order emits route costs globally from smallest upward; retaining k pops at each vertex preserves every prefix route needed among the first k destination routes.",
+  "complexity": "O(km log(km)) upper bound and O(km) queue storage.",
+  "visual": {
+    "kind": "graph",
+    "title": "Flight Routes: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If a destination has route costs 5,7,9, the three outputs are those costs in order."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use a min-heap of (distance,city) and a pop counter per city. Expand an entry only while that city's counter is below k; record distances when destination is popped."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "5",
+      "7",
+      "9"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - If a destination has route costs 5,7,9, the three outputs are those costs in order."
+  }
+}

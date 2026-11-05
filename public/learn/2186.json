@@ -1,0 +1,62 @@
+{
+  "hints": [
+    "A special substring must balance counts of all letters that occur anywhere in the input.",
+    "Compare the prefix count of each such letter with one fixed reference letter.",
+    "Two equal difference vectors mark endpoints of a balanced substring."
+  ],
+  "analogy": "Like a scoreboard: only the differences between scores matter, so matching scoreboards indicate equal gains.",
+  "example": "In abccabab all three letters occur; abc and abccab have equal counts of a, b, and c and are special.",
+  "algorithm": "List the distinct letters and choose one as reference. Scan prefixes while maintaining the vector count(letter)-count(reference) for every other distinct letter. Store how often each vector has occurred; add that frequency to the answer before recording the current prefix. Include the empty prefix.",
+  "correctness": "Equal vectors mean that the difference in counts between every letter and the reference is zero within the intervening substring. Conversely every special substring has equal endpoint vectors, so it is counted once.",
+  "complexity": "With d distinct letters, O(nd log n) time using a balanced map of vectors and O(nd) space; exact vector keys avoid hash collisions.",
+  "visual": {
+    "kind": "trace",
+    "title": "Special Substrings: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In abccabab all three letters occur; abc and abccab have equal counts of a, b, and c and are special."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "List the distinct letters and choose one as reference. Scan prefixes while maintaining the vector count(letter)-count(reference) for every other distinct letter. Store how often each vector has occurred; add that frequency to the answer before recording the current prefix. Include the empty prefix."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Substring",
+      "a",
+      "b",
+      "c",
+      "Special?"
+    ],
+    "rows": [
+      [
+        "abc",
+        "1",
+        "1",
+        "1",
+        "Yes"
+      ],
+      [
+        "abccab",
+        "2",
+        "2",
+        "2",
+        "Yes"
+      ]
+    ],
+    "caption": "Illustrative example - Both shown substrings contain equal counts of a, b, and c."
+  }
+}

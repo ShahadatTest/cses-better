@@ -1,0 +1,65 @@
+{
+  "hints": [
+    "The relative weights are known, but the gaps between consecutive weights may vary.",
+    "Compare the number of left and right coins in every suffix of weight ranks.",
+    "Maintain the minimum and maximum suffix balance under each coin insertion."
+  ],
+  "analogy": "Break each weight into a common base and positive increments; each increment affects every heavier coin.",
+  "example": "After putting coin 2 on the left and coin 3 on the right, the right is certainly heavier. Adding coin 1 to the left makes the result uncertain.",
+  "algorithm": "Give a left coin +1 and a right coin -1. For each rank i maintain the sum of signs of coins with rank at least i. Inserting rank c adds its sign to suffix balances 1..c, which a lazy segment tree supports. If all balances are nonnegative and at least one is positive, print >; if all are nonpositive and at least one is negative, print <; otherwise print ?.",
+  "correctness": "Writing each weight as a positive base plus positive consecutive increments expresses the weight difference as a positive linear combination of these suffix balances. One-sided balances force that sign; mixed signs can be made to dominate by changing the corresponding weight gaps.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Stack Weights: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "After putting coin 2 on the left and coin 3 on the right, the right is certainly heavier. Adding coin 1 to the left makes the result uncertain."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Give a left coin +1 and a right coin -1. For each rank i maintain the sum of signs of coins with rank at least i. Inserting rank c adds its sign to suffix balances 1..c, which a lazy segment tree supports. If all balances are nonnegative and at least one is positive, print >; if all are nonpositive and at least one is negative, print <; otherwise print ?."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Step",
+      "Left stack",
+      "Right stack",
+      "Comparison"
+    ],
+    "rows": [
+      [
+        "Initial",
+        "0",
+        "0",
+        "Equal"
+      ],
+      [
+        "Add 2 left, 3 right",
+        "2",
+        "3",
+        "Right heavier"
+      ],
+      [
+        "Add 1 left",
+        "3",
+        "3",
+        "Equal / uncertain"
+      ]
+    ],
+    "caption": "Illustrative example - Adding weight can change a definite comparison into equality."
+  }
+}

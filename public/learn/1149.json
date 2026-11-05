@@ -1,0 +1,68 @@
+{
+  "hints": [
+    "Appending a character to every existing subsequence seems to double the count.",
+    "If the character appeared before, some newly formed strings are duplicates.",
+    "Subtract the number of subsequences that existed before its previous occurrence."
+  ],
+  "analogy": "When the same letter returns, it can recreate endings that its previous occurrence already made.",
+  "example": "For aba, there are 7 distinct subsequences including the empty string: empty, a, b, aa, ab, ba, aba.",
+  "algorithm": "Let dp[i] count distinct subsequences of the first i characters, including empty. Set dp[0]=1. For character i, start with 2*dp[i-1]; if its previous occurrence was at position j, subtract dp[j-1]. Normalize modulo 10^9+7. Print dp[n].",
+  "correctness": "Every old subsequence either remains unchanged or receives the new character. The duplicates are exactly those formed by appending that character to subsequences preceding its last occurrence, so the subtraction counts each string once.",
+  "complexity": "For string length n, O(n) time and O(n) space, or O(1) alphabet-sized space by remembering the needed prior counts.",
+  "visual": {
+    "kind": "string",
+    "title": "Distinct Subsequences: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For aba, there are 7 distinct subsequences including the empty string: empty, a, b, aa, ab, ba, aba."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let dp[i] count distinct subsequences of the first i characters, including empty. Set dp[0]=1. For character i, start with 2*dp[i-1]; if its previous occurrence was at position j, subtract dp[j-1]. Normalize modulo 10^9+7. Print dp[n]."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Subsequence"
+    ],
+    "rows": [
+      [
+        "empty"
+      ],
+      [
+        "a"
+      ],
+      [
+        "b"
+      ],
+      [
+        "aa"
+      ],
+      [
+        "ab"
+      ],
+      [
+        "ba"
+      ],
+      [
+        "aba"
+      ],
+      [
+        "Count = 7"
+      ]
+    ],
+    "caption": "Illustrative example - The empty subsequence is included."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "A string is a palindrome exactly when it equals its reversal.",
+    "A point change affects one position in both the forward and reversed representations.",
+    "Maintain polynomial hashes with a segment tree for both directions."
+  ],
+  "analogy": "Compare a word seen from the left with the same word seen from the right.",
+  "example": "Starting with abba, the full range is palindromic; changing the first a to c makes cbba, which is not.",
+  "algorithm": "Store for each segment its length and forward and backward polynomial hashes. Merge adjacent segments by shifting one hash by the other segment's length. Update a leaf when a character changes; query the requested interval and compare its two hashes. Use two moduli or another robust hash to reduce collision risk.",
+  "correctness": "The merge formulas represent exactly the forward and reversed strings of each interval. A palindrome always has equal hashes in both directions; equal hashes for different strings are possible but very unlikely with robust hashing.",
+  "complexity": "For length n and q operations, O(n+q log n) time and O(n) space. Hashing is probabilistic.",
+  "visual": {
+    "kind": "string",
+    "title": "Palindrome Queries: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Starting with abba, the full range is palindromic; changing the first a to c makes cbba, which is not."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Store for each segment its length and forward and backward polynomial hashes. Merge adjacent segments by shifting one hash by the other segment's length. Update a leaf when a character changes; query the requested interval and compare its two hashes. Use two moduli or another robust hash to reduce collision risk."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "State",
+      "Text",
+      "Palindrome?"
+    ],
+    "rows": [
+      [
+        "Initial",
+        "abba",
+        "Yes"
+      ],
+      [
+        "After change",
+        "cbba",
+        "No"
+      ]
+    ],
+    "caption": "Illustrative example - Changing the first a to c breaks the full-range palindrome."
+  }
+}

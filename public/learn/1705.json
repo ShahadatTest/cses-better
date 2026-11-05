@@ -1,0 +1,73 @@
+{
+  "hints": [
+    "If a or b is the forbidden city, the answer is NO.",
+    "A non-articulation city cannot disconnect the remaining cities.",
+    "Represent articulation points and biconnected blocks as a tree."
+  ],
+  "analogy": "Replace each robust district with one block and use junction cities to connect the blocks.",
+  "example": "For roads 1-2-3, removing 2 disconnects 1 from 3, while removing 1 does not disconnect 2 from 3.",
+  "algorithm": "Use a DFS low-link algorithm with an edge stack to find all biconnected blocks. Build the block-cut tree with one node per block and one node per articulation vertex, joining each block to its articulation vertices. Map every non-articulation original vertex to its unique block and every articulation vertex to its own tree node. Preprocess depths and LCA. For each query, reject if c equals a or b; otherwise answer NO exactly when c is an articulation vertex and its block-cut node lies on the path between the mapped nodes of a and b. Test path membership using tree distances.",
+  "correctness": "The block-cut tree captures every way components meet: deleting an articulation vertex separates exactly the branches incident to its node. Thus the deletion disconnects a and b exactly when that node lies on their unique tree path. Deleting any other vertex leaves the rest connected.",
+  "complexity": "For n cities, m roads and q queries, decomposition takes O(n+m), LCA preprocessing O((n+m) log n), and queries O(q log n); space is O((n+m) log n).",
+  "visual": {
+    "kind": "graph",
+    "title": "Forbidden Cities: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For roads 1-2-3, removing 2 disconnects 1 from 3, while removing 1 does not disconnect 2 from 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use a DFS low-link algorithm with an edge stack to find all biconnected blocks. Build the block-cut tree with one node per block and one node per articulation vertex, joining each block to its articulation vertices. Map every non-articulation original vertex to its unique block and every articulation vertex to its own tree node. Preprocess depths and LCA. For each query, reject if c equals a or b; otherwise answer NO exactly when c is an articulation vertex and its block-cut node lies on the path between the mapped nodes of a and b. Test path membership using tree distances."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "1",
+        "to": "2"
+      }
+    ],
+    "caption": "Illustrative example - For roads 1-2-3, removing 2 disconnects 1 from 3, while removing 1 does not disconnect 2 from 3."
+  }
+}

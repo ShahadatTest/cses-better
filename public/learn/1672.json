@@ -1,0 +1,76 @@
+{
+  "hints": [
+    "There are multiple queries but only n<=500 cities, so precompute every pair's shortest distance.",
+    "Initialize direct road costs and zero on the diagonal; keep the minimum if parallel roads exist.",
+    "For each possible intermediate city k, allow routes from i to j that go through k."
+  ],
+  "analogy": "Gradually permit each city to serve as a transfer stop and improve all pairs of routes.",
+  "example": "If i->k costs 4 and k->j costs 5, the route through k updates i->j to at most 9.",
+  "algorithm": "Use Floyd-Warshall: for k,i,j, set dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]); answer each query or -1 if unreachable.",
+  "correctness": "After processing k, dist[i][j] is the best route whose intermediate cities come from the processed set; induction over k proves all routes considered at the end.",
+  "complexity": "O(n^3+q) time and O(n^2) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Shortest Routes II: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If i->k costs 4 and k->j costs 5, the route through k updates i->j to at most 9."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use Floyd-Warshall: for k,i,j, set dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]); answer each query or -1 if unreachable."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "i",
+        "label": "i",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "k",
+        "label": "k",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "j",
+        "label": "j",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "i",
+        "to": "k",
+        "label": "cost 4"
+      },
+      {
+        "from": "k",
+        "to": "j",
+        "label": "cost 5"
+      },
+      {
+        "from": "i",
+        "to": "j",
+        "label": "updated to at most 9"
+      }
+    ],
+    "caption": "Illustrative example - The route through k costs 4+5=9 and improves the i-to-j bound."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Subtract the target average from every element.",
+    "A subset has the required average exactly when its adjusted sum is zero.",
+    "The value bounds limit every adjusted sum, making a sum-indexed dynamic program possible."
+  ],
+  "analogy": "Balance positive and negative deviations around zero.",
+  "example": "For [1,2,3] and target 2, the valid nonempty subsets are [2] and [1,3], giving 2.",
+  "algorithm": "Subtract a from each value. Let dp[s] count subsets with adjusted sum s, initially dp[0]=1. For each adjusted value v, update dp[s+v] += dp[s] modulo 1000000007. Use a separate next array, or update sums downward when v>0 and upward when v<0; for v=0 double each count. Offset indices to represent negative sums. Finally subtract one for the empty subset.",
+  "correctness": "A nonempty subset has average a precisely when the sum of its adjusted elements is zero. At each element, every existing subset either excludes it or includes it once. The DP counts these disjoint choices, and subtracting the empty subset gives the answer.",
+  "complexity": "For n elements with values and target at most 500, adjusted sums lie between -499n and 499n. Time is O(500 n^2) and space O(500 n).",
+  "visual": {
+    "kind": "trace",
+    "title": "Subsets with Fixed Average: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,3] and target 2, the valid nonempty subsets are [2] and [1,3], giving 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Subtract a from each value. Let dp[s] count subsets with adjusted sum s, initially dp[0]=1. For each adjusted value v, update dp[s+v] += dp[s] modulo 1000000007. Use a separate next array, or update sums downward when v>0 and upward when v<0; for v=0 double each count. Offset indices to represent negative sums. Finally subtract one for the empty subset."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,3] and target 2, the valid nonempty subsets are [2] and [1,3], giving 2."
+  }
+}

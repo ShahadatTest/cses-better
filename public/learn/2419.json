@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Expand the top value as XORs of bottom-row values.",
+    "A bottom value appears according to a binomial coefficient modulo two.",
+    "Coefficient C(n-1,i) is odd exactly when i uses only bits present in n-1."
+  ],
+  "analogy": "Repeated XOR forms Pascal's triangle with even counts cancelling out.",
+  "example": "For bottom row [1,2,3], the top is (1 XOR 2) XOR (2 XOR 3)=1 XOR 3=2.",
+  "algorithm": "For every zero-based index i from 0 through n-1, XOR a[i] into the answer if (i AND (n-1)) equals i. Print the result.",
+  "correctness": "After n-1 levels, a[i] appears C(n-1,i) times. XOR keeps it only when that coefficient is odd; Lucas' theorem gives the stated bit-subset test.",
+  "complexity": "For n bottom values, O(n) time and O(1) extra space.",
+  "visual": {
+    "kind": "bitwise",
+    "title": "Xor Pyramid Peak: follow one example",
+    "caption": "Track the binary state and the effect of each bit operation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For bottom row [1,2,3], the top is (1 XOR 2) XOR (2 XOR 3)=1 XOR 3=2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For every zero-based index i from 0 through n-1, XOR a[i] into the answer if (i AND (n-1)) equals i. Print the result."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1 (binary 1)",
+      "2 (binary 10)",
+      "3 (binary 11)"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For bottom row [1,2,3], the top is (1 XOR 2) XOR (2 XOR 3)=1 XOR 3=2."
+  }
+}

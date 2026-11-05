@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Keep each value's original one-based position before sorting.",
+    "For each value, search for target-value among values that appear later in the sorted order.",
+    "Return the two original positions, making sure they are distinct."
+  ],
+  "analogy": "Sort labeled cards by value; for each card, look for the complement while keeping the labels.",
+  "example": "For values 2,7,5,1 and target 8, the values 7 and 1 have original positions 2 and 4.",
+  "algorithm": "Sort pairs (value,index). Use two pointers from both ends; if their sum is too small move left up, if too large move right down, and on equality print indices.",
+  "correctness": "The ordering makes sums monotone as either pointer moves, so each discarded pair of possibilities cannot be a solution; stored labels recover the required positions.",
+  "complexity": "O(n log n) time and O(n) space for indexed sorted pairs.",
+  "visual": {
+    "kind": "array",
+    "title": "Sum of Two Values: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "4 8\n2 7 5 1"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For values 2,7,5,1 and target 8, the values 7 and 1 have original positions 2 and 4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort pairs (value,index). Use two pointers from both ends; if their sum is too small move left up, if too large move right down, and on equality print indices."
+      },
+      {
+        "label": "Result",
+        "detail": "2 4"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "4  8"
+      ],
+      [
+        "2  7  5  1"
+      ]
+    ],
+    "caption": "Illustrative example - For values 2,7,5,1 and target 8, the values 7 and 1 have original positions 2 and 4."
+  }
+}

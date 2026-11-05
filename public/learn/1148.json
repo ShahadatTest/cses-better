@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "For each bottom row, record the height of the consecutive empty run ending at each column.",
+    "A rectangle ending at this row corresponds to an interval in the height histogram.",
+    "Use a monotone stack to group intervals by their minimum height, then aggregate their width and height contributions with difference arrays."
+  ],
+  "analogy": "Each histogram bar is a ceiling: an interval can hold every building height up to its lowest ceiling.",
+  "example": "In a completely empty 2 by 3 grid there are six 1 by 1 placements, four 1 by 2 placements, and two 2 by 2 placements.",
+  "algorithm": "For each row update histogram heights and use a monotone stack with a consistent tie rule to assign every column interval to one minimum bar. If its left and right choices are L and R, the number of assigned intervals of each width is a triangular (piecewise linear) function of width; all heights from 1 through the bar height are valid. Add those linear width ranges to a two-dimensional difference structure over height and width, then prefix-sum to obtain every size count.",
+  "correctness": "Every empty rectangle has one bottom row and one histogram interval. The tie rule assigns that interval exactly once, and its minimum height is precisely the largest allowed building height.",
+  "complexity": "O(nm) time and O(nm) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Maximum Building II: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In a completely empty 2 by 3 grid there are six 1 by 1 placements, four 1 by 2 placements, and two 2 by 2 placements."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each row update histogram heights and use a monotone stack with a consistent tie rule to assign every column interval to one minimum bar. If its left and right choices are L and R, the number of assigned intervals of each width is a triangular (piecewise linear) function of width; all heights from 1 through the bar height are valid. Add those linear width ranges to a two-dimensional difference structure over height and width, then prefix-sum to obtain every size count."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Rectangle size",
+      "Placements in 2 by 3"
+    ],
+    "rows": [
+      [
+        "1 by 1",
+        "6"
+      ],
+      [
+        "1 by 2",
+        "4"
+      ],
+      [
+        "2 by 2",
+        "2"
+      ]
+    ],
+    "caption": "Illustrative example - Count each placement size in an empty 2 by 3 grid."
+  }
+}

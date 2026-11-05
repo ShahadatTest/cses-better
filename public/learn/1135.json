@@ -1,0 +1,59 @@
+{
+  "hints": [
+    "The distance between u and v can be split at their lowest common ancestor.",
+    "Find l=LCA(u,v) using binary lifting.",
+    "Distance is depth[u]+depth[v]-2*depth[l]."
+  ],
+  "analogy": "Their paths go up to a shared ancestor and down again; subtract the shared climb counted twice.",
+  "example": "If depths are 4 and 3 and the LCA depth is 1, distance is 4+3-2=5 edges.",
+  "algorithm": "Precompute depth and binary-lifting ancestors. For each query compute LCA and apply the depth formula.",
+  "correctness": "The unique tree path consists of u-to-LCA plus LCA-to-v; their lengths are depth[u]-depth[l] and depth[v]-depth[l].",
+  "complexity": "O(n log n+q log n) time and O(n log n) space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Distance Queries: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If depths are 4 and 3 and the LCA depth is 1, distance is 4+3-2=5 edges."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Precompute depth and binary-lifting ancestors. For each query compute LCA and apply the depth formula."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "3",
+        "label": "3",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "3",
+        "to": "2"
+      }
+    ],
+    "caption": "Illustrative example - If depths are 4 and 3 and the LCA depth is 1, distance is 4+3-2=5 edges."
+  }
+}

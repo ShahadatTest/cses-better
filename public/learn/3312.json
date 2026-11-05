@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Each cell has exactly two allowed new letters.",
+    "Use one Boolean variable per cell to choose between them.",
+    "Forbid each pair of choices that would give adjacent cells the same letter."
+  ],
+  "analogy": "Each neighboring pair contributes a rule saying the two endpoints cannot both pick a conflicting option.",
+  "example": "For a single cell initially A, either B or C is a valid answer.",
+  "algorithm": "Assign a Boolean variable to each cell, with its two truth values representing its two letters different from the original. For every adjacent cell pair and each pair of options with equal letters, add a 2-SAT clause forbidding that combination. Build the implication graph and find strongly connected components. If a variable and its negation share a component, print IMPOSSIBLE; otherwise use reverse component order to choose truth values and print their letters.",
+  "correctness": "A clause forbids exactly one pair of choices that would make neighboring cells equal. The conjunction of all clauses therefore describes exactly the valid grids, while each variable always selects an allowed changed letter. The standard SCC criterion and assignment for 2-SAT find a satisfying choice exactly when one exists.",
+  "complexity": "For an n by m grid, there are O(nm) variables, clauses and implication edges. Time and space are O(nm).",
+  "visual": {
+    "kind": "trace",
+    "title": "Grid Coloring II: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For a single cell initially A, either B or C is a valid answer."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Assign a Boolean variable to each cell, with its two truth values representing its two letters different from the original. For every adjacent cell pair and each pair of options with equal letters, add a 2-SAT clause forbidding that combination. Build the implication graph and find strongly connected components. If a variable and its negation share a component, print IMPOSSIBLE; otherwise use reverse component order to choose truth values and print their letters."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "A"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - For a single cell colored A, either B or C is a valid recoloring."
+  }
+}

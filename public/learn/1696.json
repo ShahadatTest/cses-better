@@ -1,0 +1,82 @@
+{
+  "hints": [
+    "Each student can be matched with at most one partner, and each partner with at most one student.",
+    "Create a bipartite graph from students to acceptable partners.",
+    "Maximum bipartite matching can be found with augmenting paths; reroute earlier matches when necessary."
+  ],
+  "analogy": "Assign a student to a partner; if that partner is occupied, try moving the current match elsewhere.",
+  "example": "If student 1 accepts A,B and student 2 accepts A, a maximum assignment is 1-B and 2-A, not just 1-A.",
+  "algorithm": "Use DFS augmenting paths for each student with a visited-partner array; if a partner is free or its current student can be rematched, assign it. Print matched pairs.",
+  "correctness": "An augmenting path increases the matching size by one while preserving existing one-to-one constraints; when no such path remains, the matching is maximum.",
+  "complexity": "O(nm) time with simple DFS and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "School Dance: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If student 1 accepts A,B and student 2 accepts A, a maximum assignment is 1-B and 2-A, not just 1-A."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use DFS augmenting paths for each student with a visited-partner array; if a partner is free or its current student can be rematched, assign it. Print matched pairs."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "S1",
+        "label": "S1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "S2",
+        "label": "S2",
+        "x": 36.66666666666667,
+        "y": 50
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "x": 63.333333333333336,
+        "y": 50
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "S1",
+        "to": "A",
+        "label": "can choose"
+      },
+      {
+        "from": "S1",
+        "to": "B",
+        "label": "assigned"
+      },
+      {
+        "from": "S2",
+        "to": "A",
+        "label": "assigned"
+      }
+    ],
+    "caption": "Illustrative example - Assign S1 to B and S2 to A to match both students."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Fix the top and bottom rows and regard each column as a set of letters.",
+    "For a fixed strip, use a sliding column window to count intervals whose union contains every letter.",
+    "A two-stack queue can maintain a bitwise OR over the window in amortized constant time."
+  ],
+  "analogy": "Each column is a bag of letters; count consecutive groups of bags whose union is complete.",
+  "example": "In a 2 by 2 grid AB/BA with letters A and B, both rows, both columns and the whole grid contain both letters, so the answer is 5.",
+  "algorithm": "For each top row, reset an n-element array of column masks. Extend the bottom row downward, OR-ing each new cell?s letter bit into its column mask. For each row pair, slide a window across the column masks. Maintain the window OR using a queue made from two stacks, each entry storing its stack?s cumulative OR. For each right endpoint, append its column; while the window OR has all k bits, pop its leftmost column. The number of removed columns is the number of valid left endpoints for that right endpoint; add it to the answer. Use 64-bit counts.",
+  "correctness": "Every rectangle has a unique pair of top and bottom rows and a column interval. The column masks contain exactly the letters in their vertical strips. Union only gains letters as a window extends, so after removing all possible leftmost columns, every earlier start and only those starts produced a valid rectangle. The two-stack OR queue maintains the exact union.",
+  "complexity": "For an n by n grid and at most 26 letters, each row pair performs O(n) amortized mask operations, giving O(n^3) time and O(n) working space beyond the grid.",
+  "visual": {
+    "kind": "dp",
+    "title": "All Letter Subgrid Count II: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In a 2 by 2 grid AB/BA with letters A and B, both rows, both columns and the whole grid contain both letters, so the answer is 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each top row, reset an n-element array of column masks. Extend the bottom row downward, OR-ing each new cell?s letter bit into its column mask. For each row pair, slide a window across the column masks. Maintain the window OR using a queue made from two stacks, each entry storing its stack?s cumulative OR. For each right endpoint, append its column; while the window OR has all k bits, pop its leftmost column. The number of removed columns is the number of valid left endpoints for that right endpoint; add it to the answer. Use 64-bit counts."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "A"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - Both rows, both columns, and the whole grid contain both letters."
+  }
+}

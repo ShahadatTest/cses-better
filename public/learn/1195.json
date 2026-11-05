@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "A route may use the half-price coupon at most once.",
+    "Track two distances per city: coupon unused and coupon already used.",
+    "For an edge of cost c, either travel normally in the same state or use floor(c/2) to move from unused to used."
+  ],
+  "analogy": "Run shortest paths in a graph where each city has two versions: before and after spending the coupon.",
+  "example": "A flight costing 9 can be taken for 4 with the coupon because integer division rounds down.",
+  "algorithm": "Run Dijkstra on states (city,used). Relax normal cost c within each layer; from unused also relax floor(c/2) into used. Answer the used-state distance to n.",
+  "correctness": "Every legal journey has a unique transition where the coupon is used; the two-layer graph represents exactly those routes, and Dijkstra finds their minimum cost.",
+  "complexity": "O((n+m) log n) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Flight Discount: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A flight costing 9 can be taken for 4 with the coupon because integer division rounds down."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run Dijkstra on states (city,used). Relax normal cost c within each layer; from unused also relax floor(c/2) into used. Answer the used-state distance to n."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Flight fare",
+      "Discounted fare"
+    ],
+    "rows": [
+      [
+        "9",
+        "4"
+      ]
+    ],
+    "caption": "Illustrative example - The coupon halves fare 9 with integer division."
+  }
+}

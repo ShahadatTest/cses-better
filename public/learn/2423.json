@@ -1,0 +1,52 @@
+{
+  "hints": [
+    "A valid board must have area divisible by three and both dimensions at least two.",
+    "Rectangles of size 2x3 and 3x2 each fit two L trominoes.",
+    "Odd by odd boards require a special 5x9 block; a 3 by odd board is impossible."
+  ],
+  "analogy": "Tile most of the board with small even-sided blocks, using one special block to handle two odd dimensions.",
+  "example": "A 2 by 3 board can be tiled as AAB / ABB. A 3 by 3 board cannot be tiled.",
+  "algorithm": "Reject boards with a side below 2, area not divisible by 3, or a side equal to 3 while the other side is odd. If one dimension is even and the other is divisible by 3, tile directly with 2x3 blocks. If an even dimension is itself divisible by 3 and the other is odd, split the odd dimension into one strip of width 3 and strips of width 2; fill the first with 2x3 blocks and the rest with 3x2 blocks. If both dimensions are odd, orient the board so the second dimension is the odd multiple of 3; it is at least 9 and the first dimension is at least 5. Place this 5x9 block, with each repeated letter representing one tromino: ABBCCDDEE / AABCFDGGE / HHIIFFGJJ / HKLIMMNOJ / KKLLMNNOO. Fill the remaining strips with 2x3 and 3x2 blocks. Finally assign letters greedily to whole trominoes, avoiding letters of already colored neighboring pieces.",
+  "correctness": "Each displayed or small block consists of disjoint L trominoes, and the strips cover every remaining square. Area divisibility and minimum dimensions are necessary; a boundary-state check for a width-three strip shows its length must be even. These are the only excluded cases, because the decomposition constructs all others. A tromino has at most eight neighboring pieces, so 26 letters suffice for greedy coloring.",
+  "complexity": "For an n by m board, O(nm) time and O(nm) space.",
+  "visual": {
+    "kind": "grid",
+    "title": "Filling Trominos: follow one example",
+    "caption": "Follow the construction or state across rows and columns.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A 2 by 3 board can be tiled as AAB / ABB. A 3 by 3 board cannot be tiled."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Reject boards with a side below 2, area not divisible by 3, or a side equal to 3 while the other side is odd. If one dimension is even and the other is divisible by 3, tile directly with 2x3 blocks. If an even dimension is itself divisible by 3 and the other is odd, split the odd dimension into one strip of width 3 and strips of width 2; fill the first with 2x3 blocks and the rest with 3x2 blocks. If both dimensions are odd, orient the board so the second dimension is the odd multiple of 3; it is at least 9 and the first dimension is at least 5. Place this 5x9 block, with each repeated letter representing one tromino: ABBCCDDEE / AABCFDGGE / HHIIFFGJJ / HKLIMMNOJ / KKLLMNNOO. Fill the remaining strips with 2x3 and 3x2 blocks. Finally assign letters greedily to whole trominoes, avoiding letters of already colored neighboring pieces."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "A",
+        "A",
+        "B"
+      ],
+      [
+        "A",
+        "B",
+        "B"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - The 2 by 3 board tiles as AAB / ABB; the 3 by 3 board is impossible."
+  }
+}

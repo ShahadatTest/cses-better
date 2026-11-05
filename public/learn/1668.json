@@ -1,0 +1,73 @@
+{
+  "hints": [
+    "Friends must be placed on opposite teams, so assign one of two colors along each edge.",
+    "Start a BFS/DFS in every component and propagate the opposite color.",
+    "An edge joining equal colors proves the component cannot be split into two teams."
+  ],
+  "analogy": "Alternate two colors across each friendship; a conflict means the friendships form an odd loop.",
+  "example": "For a triangle, alternating teams around the loop returns to the starting pupil with the opposite team requirement, so it is impossible.",
+  "correctness": "Any valid split must give adjacent endpoints different colors; propagation assigns all forced relative colors, and a conflict is a proof no assignment exists.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "algorithm": "Color every component with BFS/DFS. For each edge (u,v), require color[v]=3-color[u]; print IMPOSSIBLE on conflict, otherwise print all assigned 1/2 labels.",
+  "visual": {
+    "kind": "graph",
+    "title": "Building Teams: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For a triangle, alternating teams around the loop returns to the starting pupil with the opposite team requirement, so it is impossible."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Color every component with BFS/DFS. For each edge (u,v), require color[v]=3-color[u]; print IMPOSSIBLE on conflict, otherwise print all assigned 1/2 labels."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "1"
+      }
+    ],
+    "caption": "Illustrative example - An odd cycle cannot alternate between two teams."
+  }
+}

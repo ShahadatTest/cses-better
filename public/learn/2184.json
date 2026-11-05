@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A query selects the original coins at positions a through b; their order does not matter for subset sums.",
+    "Sort only the values in that selected range and maintain the largest continuously reachable sum x.",
+    "A coin c<=x+1 extends reachable sums through x+c; the first larger coin exposes the missing x+1."
+  ],
+  "analogy": "Within each selected bag of coins, grow the covered sum interval until the next coin is too large to bridge its next gap.",
+  "algorithm": "Build a persistent segment tree over coin values for each array prefix, storing counts and value sums. For query [a,b], use roots b and a-1 to obtain count/sum of values <=T. Start T=0; query the sum S of selected coins <=T+1; if S=T stop and answer T+1, otherwise set T=S and repeat. Use coordinate compression and wide sums.",
+  "correctness": "The persistent-root difference represents exactly the coins in index range [a,b]. At each step all coins <=T+1 extend the reachable interval, whose new endpoint is their total sum; when that sum no longer changes, the next value T+1 cannot be formed.",
+  "complexity": "O(n log n) preprocessing and memory; each query uses O(log n) per threshold iteration, with O(log n) iterations because T at least doubles when it grows.",
+  "example": "For query positions 2..4 in [2,9,1,2,7], the selected coins are 9,1,2. Sorted 1,2,9 cover sums 1,2,3, so the smallest missing sum is 4.",
+  "visual": {
+    "kind": "range",
+    "title": "Missing Coin Sum Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For query positions 2..4 in [2,9,1,2,7], the selected coins are 9,1,2. Sorted 1,2,9 cover sums 1,2,3, so the smallest missing sum is 4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a persistent segment tree over coin values for each array prefix, storing counts and value sums. For query [a,b], use roots b and a-1 to obtain count/sum of values <=T. Start T=0; query the sum S of selected coins <=T+1; if S=T stop and answer T+1, otherwise set T=S and repeat. Use coordinate compression and wide sums."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Range 1",
+        "start": 2,
+        "end": 4
+      }
+    ],
+    "caption": "Illustrative example - For query positions 2..4 in [2,9,1,2,7], the selected coins are 9,1,2. Sorted 1,2,9 cover sums 1,2,3, so the smallest missing sum is 4."
+  }
+}

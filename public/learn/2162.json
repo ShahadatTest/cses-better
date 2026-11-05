@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Simulate the circle with a queue of labels 1..n.",
+    "On each turn, move the front person to the back, then remove the next person.",
+    "Continue until the queue is empty; the output order is the elimination order."
+  ],
+  "analogy": "A rotating queue models everyone passing the count around the circle.",
+  "example": "For n=5, alternately rotate and remove: 2,4,1,5,3.",
+  "algorithm": "Initialize a queue with 1..n; while nonempty, push its front to the back, then pop and print the new front.",
+  "correctness": "The queue preserves the circle's current order, and each rotate-then-pop performs exactly one count-and-eliminate step.",
+  "complexity": "O(n) time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Josephus Problem I: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "7"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=5, alternately rotate and remove: 2,4,1,5,3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Initialize a queue with 1..n; while nonempty, push its front to the back, then pop and print the new front."
+      },
+      {
+        "label": "Result",
+        "detail": "2 4 6 1 5 3 7"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "7"
+      ]
+    ],
+    "caption": "Illustrative example - For n=5, alternately rotate and remove: 2,4,1,5,3."
+  }
+}

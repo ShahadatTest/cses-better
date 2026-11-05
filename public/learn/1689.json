@@ -1,0 +1,122 @@
+{
+  "hints": [
+    "A knight's tour visits every square once, so use backtracking to choose each next legal unvisited jump.",
+    "Warnsdorff's heuristic tries next squares with the fewest onward options first, making dead ends appear early.",
+    "A complete path must contain n^2 squares; if search gets stuck, backtrack."
+  ],
+  "analogy": "Leave the tightest square choices for early, because flexible squares can wait.",
+  "correctness": "Backtracking explores candidate tours without repeating a square; when all squares are visited the path is a legal tour, while ordering changes only search speed.",
+  "complexity": "Worst-case exponential search; O(n^2) memory for the board and path.",
+  "algorithm": "The input gives the knight's starting square. Backtrack from it, marking each visited square with its step number; order legal unvisited knight moves by fewest onward options (Warnsdorff) and undo on a dead end. Print the 8x8 step-number grid.",
+  "example": "Starting at the given square, label it 1. Every later label must be one legal knight move from the previous label and must use a previously unvisited square; the final board contains labels 1 through 64.",
+  "visual": {
+    "kind": "graph",
+    "title": "Knight's Tour: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Starting at the given square, label it 1. Every later label must be one legal knight move from the previous label and must use a previously unvisited square; the final board contains labels 1 through 64."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "The input gives the knight's starting square. Backtrack from it, marking each visited square with its step number; order legal unvisited knight moves by fewest onward options (Warnsdorff) and undo on a dead end. Print the 8x8 step-number grid."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty"
+      ],
+      [
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty"
+      ],
+      [
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty"
+      ],
+      [
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty"
+      ],
+      [
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty"
+      ],
+      [
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty"
+      ],
+      [
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty"
+      ],
+      [
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - An 8 by 8 board is filled with consecutive labels; each next square must be a legal knight move and unvisited."
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "Subtracting the largest available digit is always optimal; compare the optimal answers for consecutive integers.",
+    "The same long decimal blocks repeat when only the maximum digit of the fixed prefix matters.",
+    "Memoize how many greedy steps cross a block and the small amount by which the final step overshoots it."
+  ],
+  "analogy": "Treat each block of consecutive numbers as a shortcut: remember its cost and where the last jump lands.",
+  "example": "For 27, the largest-digit rule gives 27 -> 20 -> 18 -> 10 -> 9 -> 0, requiring 5 steps.",
+  "algorithm": "Run the largest-digit greedy rule, accelerated by decimal blocks. For a block [H*10^L,(H+1)*10^L-1], memoize the number of steps and exit value when starting r below its upper end, keyed by L, the maximum digit of H, and r (0 through 8). Split a block into its ten consecutive length-(L-1) blocks and process them from high to low, carrying the overshoot into the next block; a length-zero block is one greedy subtraction. For the initial partial block, descend into the block containing n and then process the lower full blocks. Stop at zero.",
+  "correctness": "The optimal step count is nondecreasing. Compare the first digit d of an optimal move from x+1 with x: if d is present in x, subtract it; if it is the newly increased units digit, x has a nonzero digit at least d-1; if a carry produced it, x ends in 9. In each case induction compares the resulting states. Consequently, subtracting the largest digit reaches a state no harder than any other choice. Each block exactly simulates this greedy process; since a step subtracts at most 9, its exit overshoot needs only nine possible states.",
+  "complexity": "For D decimal digits, O(10^3 D) time and O(10^2 D) space for the memoized block states, apart from constant-size initial traversal.",
+  "visual": {
+    "kind": "trace",
+    "title": "Removing Digits II: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 27, the largest-digit rule gives 27 -> 20 -> 18 -> 10 -> 9 -> 0, requiring 5 steps."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run the largest-digit greedy rule, accelerated by decimal blocks. For a block [H*10^L,(H+1)*10^L-1], memoize the number of steps and exit value when starting r below its upper end, keyed by L, the maximum digit of H, and r (0 through 8). Split a block into its ten consecutive length-(L-1) blocks and process them from high to low, carrying the overshoot into the next block; a length-zero block is one greedy subtraction. For the initial partial block, descend into the block containing n and then process the lower full blocks. Stop at zero."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "27",
+      "20",
+      "18",
+      "10",
+      "9",
+      "0"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Subtract the largest digit at each step."
+  }
+}

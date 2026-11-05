@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Every palindrome ending at the current position is a palindromic suffix of the scanned prefix.",
+    "A palindromic tree stores distinct palindromes and links each to its longest proper palindromic suffix.",
+    "After adding each character, its current suffix node gives the answer."
+  ],
+  "analogy": "A chain of suffix mirrors lets you find the largest mirror that the new letter can extend.",
+  "example": "For ababa, longest palindromes ending at successive positions have lengths 1,1,3,3,5.",
+  "algorithm": "Build an eertree with roots of lengths -1 and 0. For each character follow suffix links from the previous longest suffix until the palindrome can be extended on both sides. Follow or create the corresponding transition, setting a new node's suffix link similarly. Output the current node's length after every character.",
+  "correctness": "Suffix links enumerate possible palindromic suffixes from longest to shortest. The first extendable one yields the longest palindrome ending at the new position, and the tree stores exactly the extensions needed for later positions.",
+  "complexity": "For length n and fixed 26-letter alphabet, O(n) amortized time and O(26n) space.",
+  "visual": {
+    "kind": "string",
+    "title": "All Palindromes: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For ababa, longest palindromes ending at successive positions have lengths 1,1,3,3,5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build an eertree with roots of lengths -1 and 0. For each character follow suffix links from the previous longest suffix until the palindrome can be extended on both sides. Follow or create the corresponding transition, setting a new node's suffix link similarly. Output the current node's length after every character."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "3",
+      "5"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For ababa, longest palindromes ending at successive positions have lengths 1,1,3,3,5."
+  }
+}

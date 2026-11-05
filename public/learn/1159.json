@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "This is knapsack with a limited number of copies of each book.",
+    "Split each copy count into groups of powers of two, plus a remainder.",
+    "Each group is a 0/1 item, handled with a descending budget loop."
+  ],
+  "analogy": "Bundle copies into groups that can combine to represent every allowed quantity.",
+  "example": "With price 3, pages 4, two copies, and budget 6, buying both gives 8 pages.",
+  "algorithm": "For each book split its quantity into groups 1,2,4,... and a final remainder. Each group has total price and pages multiplied by its size. Update a one-dimensional 0/1 knapsack array in descending budget order for each group; print the best value at budget x.",
+  "correctness": "The groups represent every number of copies from zero through the available quantity. Descending updates use each group at most once, so the DP considers exactly all legal purchases.",
+  "complexity": "For budget x and copy counts c_i, O(x*sum(log(c_i+1))) time and O(x) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Book Shop II: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With price 3, pages 4, two copies, and budget 6, buying both gives 8 pages."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each book split its quantity into groups 1,2,4,... and a final remainder. Each group has total price and pages multiplied by its size. Update a one-dimensional 0/1 knapsack array in descending budget order for each group; print the best value at budget x."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Price",
+      "Pages",
+      "Copies",
+      "Total"
+    ],
+    "rows": [
+      [
+        "3",
+        "4",
+        "2",
+        "cost 6, pages 8"
+      ]
+    ],
+    "caption": "Illustrative example - Both copies fit the budget and yield eight pages."
+  }
+}

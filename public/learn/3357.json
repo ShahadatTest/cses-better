@@ -1,0 +1,73 @@
+{
+  "hints": [
+    "A walk can revisit vertices and edges; it is not required to be a simple path.",
+    "Track whether the number of steps so far is even or odd.",
+    "Once a walk exists, traverse an edge forward and back to add two steps."
+  ],
+  "analogy": "Imagine two copies of each city: one for arriving on an even turn and one for arriving on an odd turn.",
+  "example": "In a triangle 1-2-3-1, going from 1 to 2 takes one step directly or two via 3. Thus lengths 1, 2, 3 and more are possible.",
+  "algorithm": "For each start vertex, run BFS on states (vertex, parity), where every edge flips parity. Store the shortest distance to every state. For a query (a,b,x), answer YES exactly when the distance from (a,even) to (b,x mod 2) is at most x. The graph is connected and has at least one edge, so any extra even number of steps can be spent traversing an edge and returning.",
+  "correctness": "BFS gives the shortest walk for each parity. Every walk of the requested length is at least that distance; conversely, the distance has the correct parity and backtracking adds any required even difference.",
+  "complexity": "With n vertices, m edges and q queries, all BFS runs take O(n(n+m)) time and O(n^2+m) space; answering queries takes O(q).",
+  "visual": {
+    "kind": "graph",
+    "title": "Fixed Length Walk Queries: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In a triangle 1-2-3-1, going from 1 to 2 takes one step directly or two via 3. Thus lengths 1, 2, 3 and more are possible."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each start vertex, run BFS on states (vertex, parity), where every edge flips parity. Store the shortest distance to every state. For a query (a,b,x), answer YES exactly when the distance from (a,even) to (b,x mod 2) is at most x. The graph is connected and has at least one edge, so any extra even number of steps can be spent traversing an edge and returning."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "1"
+      }
+    ],
+    "caption": "Illustrative example - In a triangle 1-2-3-1, going from 1 to 2 takes one step directly or two via 3. Thus lengths 1, 2, 3 and more are possible."
+  }
+}

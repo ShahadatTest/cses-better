@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "Treat every connection as an unweighted edge and start BFS at computer 1.",
+    "Store the parent of each computer when first discovered.",
+    "BFS layers are route lengths in edges; reconstruct from n or print IMPOSSIBLE."
+  ],
+  "analogy": "Search outward from computer 1 one connection-count layer at a time.",
+  "example": "If route 1-4-5 exists, it uses three computers; the route string is reconstructed by following parents from 5 back to 1.",
+  "algorithm": "Run BFS on the undirected graph from 1; if n is reached, follow parent pointers to 1, reverse the list, and print its size and vertices.",
+  "correctness": "BFS visits vertices in nondecreasing edge distance, so the first parent chain to n has minimum connections and therefore minimum computers.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Message Route: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If route 1-4-5 exists, it uses three computers; the route string is reconstructed by following parents from 5 back to 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run BFS on the undirected graph from 1; if n is reached, follow parent pointers to 1, reverse the list, and print its size and vertices."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "4",
+        "label": "4",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "5",
+        "label": "5",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "4"
+      },
+      {
+        "from": "4",
+        "to": "5"
+      }
+    ],
+    "caption": "Illustrative example - If route 1-4-5 exists, it uses three computers; the route string is reconstructed by following parents from 5 back to 1."
+  }
+}

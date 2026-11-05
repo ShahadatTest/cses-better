@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "A query restricts both an index interval [a,b] and a value interval [c,d].",
+    "Keep a frequency tree of values for every array prefix; subtracting two prefixes isolates exactly the queried indices.",
+    "Coordinate-compress the array values, then query the count between c and d in the difference of prefix roots b and a-1."
+  ],
+  "analogy": "Two cumulative frequency snapshots let you cancel everything before the requested index range, then count only values in the requested band.",
+  "example": "For x=[3,2,4,5,1,1,5,3], query indices 2..4 and values 2..4. Those three array values are 2, 4, and 5, so the answer is 2.",
+  "algorithm": "Coordinate-compress the n array values. Build persistent segment-tree roots root[0..n], where root[i] stores frequencies of values in x[1..i]; create root[i] from root[i-1] by adding x[i]. For a query [a,b] and [c,d], find the compressed value range for c..d and return its count in root[b] minus its count in root[a-1].",
+  "correctness": "Each prefix root stores exactly the frequencies in its prefix. Subtracting root[a-1] from root[b] therefore leaves exactly the values at indices a through b. A range-count query over values c through d counts precisely the indices satisfying both query inequalities.",
+  "complexity": "O((n+q) log n) time: n persistent updates and q range-count queries each take O(log n). Space is O(n log n) for the persistent nodes.",
+  "visual": {
+    "kind": "range",
+    "title": "Range Interval Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For x=[3,2,4,5,1,1,5,3], query indices 2..4 and values 2..4. Those three array values are 2, 4, and 5, so the answer is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Coordinate-compress the n array values. Build persistent segment-tree roots root[0..n], where root[i] stores frequencies of values in x[1..i]; create root[i] from root[i-1] by adding x[i]. For a query [a,b] and [c,d], find the compressed value range for c..d and return its count in root[b] minus its count in root[a-1]."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Range 1",
+        "start": 2,
+        "end": 4
+      },
+      {
+        "label": "Range 2",
+        "start": 2,
+        "end": 4
+      }
+    ],
+    "caption": "Illustrative example - For x=[3,2,4,5,1,1,5,3], query indices 2..4 and values 2..4. Those three array values are 2, 4, and 5, so the answer is 2."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "After sorting, an optimal matching can use pairs of adjacent remaining values.",
+    "A smallest adjacent gap can be selected, but later choices may need to undo that pairing.",
+    "Replace its two neighboring gaps by their sum minus the chosen gap, and use a min-heap."
+  ],
+  "analogy": "Think of picking the cheapest link in a chain; a replacement link records the cost of swapping that choice for the two links beside it.",
+  "example": "Sorted 1,2,3,3,4,7,7,9 gives optimal costs 0, 0, 1, 6 for one through four pairs.",
+  "algorithm": "Sort the values and put all adjacent gaps in a min-heap and a doubly linked list. Repeatedly take the smallest live gap, add its value to the running answer, and remove it and its immediate neighbors. If both neighbors exist, insert a replacement gap of left + right - chosen between the remaining neighbors; otherwise insert no replacement. Output the running answer after each selection, up to floor(n/2). Use lazy deletion in the heap.",
+  "correctness": "An uncrossing argument gives an optimal matching on adjacent sorted values. Choosing the minimum gap is safe for one more pair: if a later optimum instead uses both neighboring gaps, the replacement records exactly the extra cost of swapping the chosen gap for those two. Repeating maintains the optimum for each cardinality.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Minimum Cost Pairs: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Sorted 1,2,3,3,4,7,7,9 gives optimal costs 0, 0, 1, 6 for one through four pairs."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort the values and put all adjacent gaps in a min-heap and a doubly linked list. Repeatedly take the smallest live gap, add its value to the running answer, and remove it and its immediate neighbors. If both neighbors exist, insert a replacement gap of left + right - chosen between the remaining neighbors; otherwise insert no replacement. Output the running answer after each selection, up to floor(n/2). Use lazy deletion in the heap."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "7",
+      "9",
+      "0",
+      "6"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Sorted 1,2,3,3,4,7,7,9 gives optimal costs 0, 0, 1, 6 for one through four pairs."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Manhattan distance becomes a linear expression when a reserved point is in a fixed quadrant.",
+    "Sweep points by one coordinate and query the best value among earlier points by the other coordinate.",
+    "Repeat after reflecting coordinates to cover all four quadrants."
+  ],
+  "analogy": "Look southwest, southeast, northwest and northeast separately; in each direction a suitable extreme point is closest.",
+  "example": "With reserved points (1,1) and (4,2), a free point (3,1) has distances 2 and 2, so its answer is 2.",
+  "algorithm": "For each sign pair sx,sy in {+1,-1}, transform X=sx*x and Y=sy*y. Sort all reserved and query points by X, processing reserved points before queries on ties. Maintain a Fenwick tree over compressed Y coordinates storing the maximum X+Y of inserted reserved points. For each free point query the maximum for Y<=its Y, and minimize its answer with X+Y-maxValue. Repeat for all four sign pairs.",
+  "correctness": "After transformation, the sweep and prefix query select exactly reserved points with X<=query X and Y<=query Y. For those points Manhattan distance equals query X+query Y-(X+Y), so the maximum gives the nearest in that quadrant. Every reserved point belongs to at least one of the four transformed quadrants, and the minimum over sweeps is the true nearest distance.",
+  "complexity": "For n reserved and m free points, four sorts and Fenwick sweeps take O((n+m) log(n+m)) time and O(n+m) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Nearest Campsites II: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With reserved points (1,1) and (4,2), a free point (3,1) has distances 2 and 2, so its answer is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each sign pair sx,sy in {+1,-1}, transform X=sx*x and Y=sy*y. Sort all reserved and query points by X, processing reserved points before queries on ties. Maintain a Fenwick tree over compressed Y coordinates storing the maximum X+Y of inserted reserved points. For each free point query the maximum for Y<=its Y, and minimize its answer with X+Y-maxValue. Repeat for all four sign pairs."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "4",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - With reserved points (1,1) and (4,2), a free point (3,1) has distances 2 and 2, so its answer is 2."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Express a subarray average using prefix sums.",
+    "The average ending at i is the slope from an earlier prefix point to point i.",
+    "Maintain a lower convex hull and choose the point giving the steepest slope."
+  ],
+  "analogy": "Each earlier prefix is a point; the best starting position gives the steepest line to the current prefix.",
+  "example": "For [1,3,2], the best subarray ending at position 3 is [3,2], with average 2.5 and length 2.",
+  "algorithm": "Let S[0]=0 and S[i] be prefix sums. Maintain the lower convex hull of points (j,S[j]) for j<i in increasing j. For each i, binary search adjacent hull points for the maximum slope (S[i]-S[j])/(i-j), choosing the earlier j when slopes tie, and output i-j. Then insert (i,S[i]), removing the last hull point while it makes a non-left turn. Compare slopes by cross multiplication with 64-bit or wider intermediates.",
+  "correctness": "Every subarray ending at i corresponds to one earlier prefix point and its average is the slope to (i,S[i]). A point above the lower hull cannot give a larger slope than both endpoints of its hull edge. Slopes along the lower convex hull are unimodal, so binary search finds the maximum. Choosing the earliest maximizing point gives the longest tied subarray.",
+  "complexity": "For n values, each point enters and leaves the hull once and each query takes O(log n), for O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Maximum Average Subarrays: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,3,2], the best subarray ending at position 3 is [3,2], with average 2.5 and length 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let S[0]=0 and S[i] be prefix sums. Maintain the lower convex hull of points (j,S[j]) for j<i in increasing j. For each i, binary search adjacent hull points for the maximum slope (S[i]-S[j])/(i-j), choosing the earlier j when slopes tie, and output i-j. Then insert (i,S[i]), removing the last hull point while it makes a non-left turn. Compare slopes by cross multiplication with 64-bit or wider intermediates."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "3",
+      "2",
+      "5"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,3,2], the best subarray ending at position 3 is [3,2], with average 2.5 and length 2."
+  }
+}

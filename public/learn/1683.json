@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "Strongly connected components are maximal groups where every vertex can reach every other.",
+    "Kosaraju's algorithm first records DFS finishing order in the graph, then explores the reversed graph in reverse finish order.",
+    "Each second-pass traversal yields exactly one component."
+  ],
+  "analogy": "First order cities by when their forward exploration finishes, then explore reversed roads from last finished to first.",
+  "example": "If 1 and 2 can reach each other but neither connects mutually with 3, they form one component and 3 another.",
+  "algorithm": "Run DFS to create finishing order; traverse reversed graph in reverse order, assigning a new component ID to each DFS tree.",
+  "correctness": "The first-pass order ensures that in the remaining condensation graph, the next unassigned root has no outgoing path to another unassigned component in the reversed search direction, so each traversal stays within one SCC.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Planets and Kingdoms: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If 1 and 2 can reach each other but neither connects mutually with 3, they form one component and 3 another."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Run DFS to create finishing order; traverse reversed graph in reverse order, assigning a new component ID to each DFS tree."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "1"
+      }
+    ],
+    "caption": "Illustrative example - Nodes 1 and 2 are mutually reachable; node 3 is a separate component."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "A 2D Fenwick tree supports changing one cell and summing a rectangle.",
+    "Store counts at Fenwick ancestors in both row and column dimensions.",
+    "A rectangle sum uses four prefix sums by inclusion-exclusion."
+  ],
+  "analogy": "The 2D tree updates a cell's row and column ancestor buckets, while queries combine four corners.",
+  "example": "Toggling one tree from empty to occupied changes a rectangle containing it by one.",
+  "algorithm": "Build a 2D Fenwick tree. A toggle changes the cell by +1 or -1; query rectangle [y1,x1]..[y2,x2] from four 2D prefix queries.",
+  "correctness": "The 2D Fenwick prefix returns exactly the sum of its top-left rectangle; inclusion-exclusion isolates the requested rectangle and point updates maintain all containing buckets.",
+  "complexity": "O(log n log m) per update/query and O(nm) storage.",
+  "visual": {
+    "kind": "range",
+    "title": "Forest Queries II: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Toggling one tree from empty to occupied changes a rectangle containing it by one."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a 2D Fenwick tree. A toggle changes the cell by +1 or -1; query rectangle [y1,x1]..[y2,x2] from four 2D prefix queries."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "1"
+      ]
+    ],
+    "path": [
+      [
+        0,
+        0
+      ]
+    ],
+    "caption": "Illustrative example - A single toggle changes the occupied-cell count of any rectangle containing that cell by one."
+  }
+}

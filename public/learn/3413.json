@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Start with one-cell squares.",
+    "A larger filled square ending at a cell requires three smaller neighboring squares.",
+    "Add the largest valid size at each cell to the count for its letter."
+  ],
+  "analogy": "Grow solid squares from their bottom-right corner.",
+  "example": "In a 2 by 2 grid of A, there are four size-one squares and one size-two square, for 5.",
+  "algorithm": "For each cell, set dp to 1. If its top, left and top-left neighbors exist and all have the same letter as the cell, set dp to 1 plus the minimum of those three neighbors? dp values. Add dp to the total for this cell?s letter. Use two rows of dp.",
+  "correctness": "A square of side s>1 is filled exactly when its three overlapping side-(s-1) squares ending above, left and diagonally above-left are filled with the same letter. Thus dp counts exactly the possible sizes ending at the cell, and every square has one bottom-right corner.",
+  "complexity": "For an n by n grid, time is O(n^2) and extra space O(n), apart from the input grid.",
+  "visual": {
+    "kind": "dp",
+    "title": "Filled Subgrid Count I: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In a 2 by 2 grid of A, there are four size-one squares and one size-two square, for 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each cell, set dp to 1. If its top, left and top-left neighbors exist and all have the same letter as the cell, set dp to 1 plus the minimum of those three neighbors? dp values. Add dp to the total for this cell?s letter. Use two rows of dp."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "A",
+        "A"
+      ],
+      [
+        "A",
+        "A"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - Four single cells plus one 2 by 2 square give five filled squares."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A subarray XOR equals the XOR of two prefix XORs.",
+    "For each current prefix, find the earlier prefix producing the greatest XOR.",
+    "A binary trie greedily prefers the opposite bit from high to low."
+  ],
+  "analogy": "At the most significant bit, a disagreement is more valuable than all lower bits combined.",
+  "example": "For [5,1,5], prefix XORs are 0,5,4,1; choosing 0 and 5 gives maximum 5.",
+  "algorithm": "Insert prefix XOR zero into a binary trie. Scan the array, update the current prefix XOR, and query the trie from the highest bit down, preferring the opposite bit whenever available. Update the answer, then insert the current prefix.",
+  "correctness": "XORing two prefix XORs cancels their common prefix and yields the subarray between them. The greedy trie choice maximizes the highest differing bit first, so it finds the best earlier prefix for each endpoint.",
+  "complexity": "For n elements and B relevant bits, O(nB) time and O(nB) worst-case space.",
+  "visual": {
+    "kind": "bitwise",
+    "title": "Maximum Xor Subarray: follow one example",
+    "caption": "Track the binary state and the effect of each bit operation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [5,1,5], prefix XORs are 0,5,4,1; choosing 0 and 5 gives maximum 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Insert prefix XOR zero into a binary trie. Scan the array, update the current prefix XOR, and query the trie from the highest bit down, preferring the opposite bit whenever available. Update the answer, then insert the current prefix."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "5 (binary 101)",
+      "1 (binary 1)",
+      "0 (binary 0)",
+      "4 (binary 100)"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [5,1,5], prefix XORs are 0,5,4,1; choosing 0 and 5 gives maximum 5."
+  }
+}

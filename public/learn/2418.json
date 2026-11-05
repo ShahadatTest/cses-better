@@ -1,0 +1,63 @@
+{
+  "hints": [
+    "A path through every cell alternates checkerboard colors, so the endpoint colors are constrained.",
+    "Thin rectangles have extra impossible cases even when their endpoint colors fit.",
+    "Use a rectangle Hamilton-path feasibility test, then recursively cut the rectangle or splice in a two-column strip."
+  ],
+  "analogy": "A path can be assembled like a tour through two rooms: cross their common wall exactly once, or replace one boundary edge by a detour through a strip.",
+  "example": "In a 2x2 grid, the top-left and bottom-right corners have the same color, so they cannot be the endpoints of a four-cell path. Top-left to bottom-left works with RDL.",
+  "algorithm": "Use zero-based coordinates, with x as the column and y as the row. Rotate so height h<=width w, and order the endpoints so x1<=x2. A single-cell rectangle is feasible when its endpoints coincide; larger rectangles cannot have coincident endpoints. A one-row grid is feasible only when the endpoints are its two ends. For height 2, endpoints in the same column are feasible only at an outermost column; otherwise their checkerboard colors must differ. For odd area, both endpoints must have even x+y. For even area with height at least 4, colors must differ. For height 3 and even area, colors must differ; additionally reject when the left endpoint has odd x+y and either x1<x2-1, or x1<x2 and y1=1. For a feasible rectangle, normalize by reflection, handle one-row and small at-most-4x5 rectangles using precomputed exhaustive paths, and handle adjacent endpoints on a two-row board by a direct perimeter snake. Otherwise try removing a two-column strip away from both endpoints when the remainder is feasible: recursively solve the remainder, replace a vertical boundary edge by a snake through the strip, and reconnect it. If no strip applies, try horizontal or vertical cuts between endpoints and a crossing pair of adjacent cells for which both subrectangles pass the same feasibility test; recursively concatenate their paths and the crossing step. Undo the rotations/reflections in the output.",
+  "correctness": "The checkerboard and thin-board tests are the rectangular grid Hamilton-path characterization. The strip operation replaces one path edge by a detour covering exactly the removed cells. Each cut joins two disjoint full-coverage paths by one edge, so the result visits every cell exactly once. The rectangular-grid construction theorem guarantees an applicable strip or feasible cut for the remaining non-base cases.",
+  "complexity": "For an n by m rectangle, a direct implementation that scans candidate cuts and materializes recursive paths takes O((nm)^2) time and space in a conservative bound, including output; the base cases are fixed-size.",
+  "visual": {
+    "kind": "grid",
+    "title": "Grid Path Construction: follow one example",
+    "caption": "Follow the construction or state across rows and columns.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In a 2x2 grid, the top-left and bottom-right corners have the same color, so they cannot be the endpoints of a four-cell path. Top-left to bottom-left works with RDL."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use zero-based coordinates, with x as the column and y as the row. Rotate so height h<=width w, and order the endpoints so x1<=x2. A single-cell rectangle is feasible when its endpoints coincide; larger rectangles cannot have coincident endpoints. A one-row grid is feasible only when the endpoints are its two ends. For height 2, endpoints in the same column are feasible only at an outermost column; otherwise their checkerboard colors must differ. For odd area, both endpoints must have even x+y. For even area with height at least 4, colors must differ. For height 3 and even area, colors must differ; additionally reject when the left endpoint has odd x+y and either x1<x2-1, or x1<x2 and y1=1. For a feasible rectangle, normalize by reflection, handle one-row and small at-most-4x5 rectangles using precomputed exhaustive paths, and handle adjacent endpoints on a two-row board by a direct perimeter snake. Otherwise try removing a two-column strip away from both endpoints when the remainder is feasible: recursively solve the remainder, replace a vertical boundary edge by a snake through the strip, and reconnect it. If no strip applies, try horizontal or vertical cuts between endpoints and a crossing pair of adjacent cells for which both subrectangles pass the same feasibility test; recursively concatenate their paths and the crossing step. Undo the rotations/reflections in the output."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "start",
+        "open"
+      ],
+      [
+        "open",
+        "end"
+      ]
+    ],
+    "path": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "caption": "Illustrative example - The diagonal corners share a color; the worked valid route is RDL from top-left to bottom-left and across."
+  }
+}

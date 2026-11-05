@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A spanning tree connects all n cities using n-1 roads.",
+    "Sort roads by cost and accept a road only when it joins two different components.",
+    "If fewer than n-1 roads are accepted, the graph cannot be connected."
+  ],
+  "analogy": "Build a network cheaply, skipping any road whose endpoints are already connected by chosen roads.",
+  "example": "If edges cost 1,4,7 connect a chain, Kruskal accepts all three for total 12.",
+  "algorithm": "Sort edges by weight and use disjoint-set union (DSU). Add each edge that merges two components; sum costs and check n-1 accepted edges.",
+  "correctness": "Kruskal's cut/exchange property guarantees the lightest safe edge can belong to some minimum spanning tree; DSU prevents cycles and connectivity requires n-1 edges.",
+  "complexity": "O(m log m) time and O(n) DSU space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Road Reparation: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If edges cost 1,4,7 connect a chain, Kruskal accepts all three for total 12."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort edges by weight and use disjoint-set union (DSU). Add each edge that merges two components; sum costs and check n-1 accepted edges."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "4",
+      "7",
+      "12"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - If edges cost 1,4,7 connect a chain, Kruskal accepts all three for total 12."
+  }
+}

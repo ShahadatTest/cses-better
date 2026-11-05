@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A die throw adds a value from 1 through 6, so the sequence counts satisfy a recurrence using the previous six values.",
+    "The target n can be enormous, so a loop up to n is too slow.",
+    "Represent the recurrence as a 6-state vector and raise its transition matrix to power n."
+  ],
+  "analogy": "A fixed six-step rule can jump many target values at once by exponentiating its transition.",
+  "example": "For n=3, the ordered throws summing to 3 are 1+1+1,1+2,2+1,3, so answer 4.",
+  "algorithm": "Let dp[s]=sum(dp[s-1..s-6]), with dp[0]=1. Build the 6x6 companion matrix for this recurrence and binary-exponentiate it to obtain dp[n] modulo 1e9+7.",
+  "correctness": "The recurrence partitions ways by the last die result; matrix powers apply this recurrence the requested number of times without computing intermediate states one by one.",
+  "complexity": "O(6^3 log n) time and O(6^2) space.",
+  "visual": {
+    "kind": "math",
+    "title": "Throwing Dice: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3, the ordered throws summing to 3 are 1+1+1,1+2,2+1,3, so answer 4."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let dp[s]=sum(dp[s-1..s-6]), with dp[0]=1. Build the 6x6 companion matrix for this recurrence and binary-exponentiate it to obtain dp[n] modulo 1e9+7."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=3, the ordered throws summing to 3 are 1+1+1,1+2,2+1,3, so answer 4."
+  }
+}

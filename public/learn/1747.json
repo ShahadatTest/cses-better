@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "Consider the smallest remaining value.",
+    "In a pyramid it must end up at one of the two ends.",
+    "Choose the cheaper end and remove it from further consideration."
+  ],
+  "analogy": "Peel the smallest card from whichever end costs fewer adjacent swaps.",
+  "example": "For [2,1,3], move 1 left once to obtain [1,2,3]; the minimum is 1.",
+  "algorithm": "Process values in increasing order. Maintain a Fenwick tree with 1 at each position of an unprocessed element. For the current value, count unprocessed elements to its left and right, add the smaller count to the answer, and remove its position from the tree. Use 64-bit arithmetic.",
+  "correctness": "In any pyramid, the smallest remaining value is at one end. Moving it to the left or right end costs exactly the number of remaining elements on that side. Its choice does not change the relative order of the remaining elements, so each step can independently choose the cheaper side. Constructing choices in increasing order yields a valid pyramid.",
+  "complexity": "For n elements, sorting and Fenwick operations take O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Pyramid Array: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [2,1,3], move 1 left once to obtain [1,2,3]; the minimum is 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Process values in increasing order. Maintain a Fenwick tree with 1 at each position of an unprocessed element. For the current value, count unprocessed elements to its left and right, add the smaller count to the answer, and remove its position from the tree. Use 64-bit arithmetic."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "1",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [2,1,3], move 1 left once to obtain [1,2,3]; the minimum is 1."
+  }
+}

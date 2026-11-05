@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A later value no larger than an earlier value makes that earlier value useless while both are in the window.",
+    "Keep candidate values and their indices in increasing order in a deque.",
+    "Remove expired indices from the front and dominated values from the back."
+  ],
+  "analogy": "The deque is a queue of minimum candidates; a cheaper, newer candidate retires older more expensive ones.",
+  "example": "For [3,1,2] and k=2, both window minima are 1, and their XOR is 0.",
+  "algorithm": "Generate values in order. Before inserting each value, discard expired indices from the front and values at least as large from the back; append the new value and index. Once the window is full, XOR the front value into the answer. Use wide arithmetic for the generator.",
+  "correctness": "A removed back value can never be the minimum while the newer no-larger value remains, and the newer value expires later. The front is therefore the smallest unexpired candidate.",
+  "complexity": "For n generated elements and window size k, O(n) time and O(k) space; each item enters and leaves the deque once.",
+  "visual": {
+    "kind": "window",
+    "title": "Sliding Window Minimum: follow one example",
+    "caption": "Slide the active window and update its maintained state.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [3,1,2] and k=2, both window minima are 1, and their XOR is 0."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Generate values in order. Before inserting each value, discard expired indices from the front and values at least as large from the back; append the new value and index. Once the window is full, XOR the front value into the answer. Use wide arithmetic for the generator."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2",
+      "0"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [3,1,2] and k=2, both window minima are 1, and their XOR is 0."
+  }
+}

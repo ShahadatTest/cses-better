@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "The most frequent letter must fit in alternating positions, so its count cannot exceed ceil(n/2).",
+    "Build the answer left to right and try available letters in alphabetical order, skipping the letter just used.",
+    "After tentatively choosing a letter, check the remaining counts with the boundary: the previous letter must fit in at most floor(remaining/2) positions; every other letter may use at most ceil(remaining/2)."
+  ],
+  "analogy": "Place the smallest tile that still leaves enough separated slots for every remaining repeated letter, while keeping the first open slot different from the tile just placed.",
+  "algorithm": "Count the 26 letters and print -1 if any count exceeds ceil(n/2). For each output position, try available letters A to Z except the previous output letter. Temporarily use a candidate; for the remaining r positions, accept it only if the previous letter has count at most floor(r/2) and every other letter has count at most ceil(r/2). Keep the first candidate that passes and continue. If no candidate passes at a step, print -1.",
+  "correctness": "The initial bound is necessary because a letter appearing more than ceil(n/2) times cannot be separated. At each position, the feasibility test is necessary and sufficient for arranging the remaining letters with the first one different from the previous output letter: that boundary letter has only floor(r/2) usable slots, while every other letter has ceil(r/2). Therefore the first candidate that passes can be completed. Trying letters in order chooses the smallest possible next character among all completable answers, so the final result is valid and lexicographically minimal.",
+  "complexity": "O(n*26*26) time: there are n positions, at most 26 candidates, and each feasibility check scans 26 counts. This is O(n) for the fixed uppercase alphabet. Space is O(n) for the output and O(26) for counts.",
+  "example": "For ABB, trying A first leaves two Bs and no separator, so it fails. Choosing B leaves A and B; then choose A and the final B. The result BAB is valid and is lexicographically smallest.",
+  "visual": {
+    "kind": "trace",
+    "title": "String Reorder: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "HATTIVATTI"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For ABB, trying A first leaves two Bs and no separator, so it fails. Choosing B leaves A and B; then choose A and the final B. The result BAB is valid and is lexicographically smallest."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Count the 26 letters and print -1 if any count exceeds ceil(n/2). For each output position, try available letters A to Z except the previous output letter. Temporarily use a candidate; for the remaining r positions, accept it only if the previous letter has count at most floor(r/2) and every other letter has count at most ceil(r/2). Keep the first candidate that passes and continue. If no candidate passes at a step, print -1."
+      },
+      {
+        "label": "Result",
+        "detail": "AHATITITVT"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "HATTIVATTI"
+      ]
+    ],
+    "caption": "Illustrative example - For ABB, trying A first leaves two Bs and no separator, so it fails. Choosing B leaves A and B; then choose A and the final B. The result BAB is valid and is lexicographically smallest."
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "hints": [
+    "From prime factorization n=product(p_i^e_i), each divisor chooses an exponent from 0 to e_i.",
+    "The divisor count is product(e_i+1); the divisor sum is product(1+p+...+p^e).",
+    "The product of all divisors is n^(divisorCount/2); compute its exponent modulo MOD-1, handling odd divisor count by pairing."
+  ],
+  "analogy": "Every divisor pairs with its complementary divisor n/d, so their product is n; only the square-root divisor needs special handling.",
+  "example": "For n=12, its six divisors multiply to 1*2*3*4*6*12=1728=12^3.",
+  "complexity": "O(r log MOD) modular work for r prime factors and O(1) extra space.",
+  "correctness": "Prime factorization makes divisor count and sum independent products. Every divisor pairs with n/d; if D is even all pair products contribute n, while odd D means every prime exponent is even and the square-root divisor is handled by using exponent (a/2)*D.",
+  "algorithm": "For each prime power p^a, multiply divisor count D by (a+1) and divisor sum by (1+p+...+p^a), reducing modulo MOD. For the divisor product, compute D modulo 2*(MOD-1) so both parity and D/2 modulo MOD-1 are known. If D is even, the exponent of p is a*(D/2); if D is odd, all a are even and it is (a/2)*D. Reduce exponents modulo MOD-1 and multiply p^exponent modulo MOD.",
+  "visual": {
+    "kind": "math",
+    "title": "Divisor Analysis: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=12, its six divisors multiply to 1*2*3*4*6*12=1728=12^3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each prime power p^a, multiply divisor count D by (a+1) and divisor sum by (1+p+...+p^a), reducing modulo MOD. For the divisor product, compute D modulo 2*(MOD-1) so both parity and D/2 modulo MOD-1 are known. If D is even, the exponent of p is a*(D/2); if D is odd, all a are even and it is (a/2)*D. Reduce exponents modulo MOD-1 and multiply p^exponent modulo MOD."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Divisor",
+      "1",
+      "2",
+      "3",
+      "4",
+      "6",
+      "12"
+    ],
+    "rows": [
+      [
+        "Value",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "12"
+      ],
+      [
+        "Product",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "1728"
+      ]
+    ],
+    "caption": "Illustrative example - The six divisors of 12 multiply to 1728 = 12^3."
+  }
+}

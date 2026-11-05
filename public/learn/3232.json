@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Collapse each strongly connected component (SCC); the components of a tournament form a directed acyclic graph.",
+    "Between any two SCCs all edges point the same way, so the condensation is a transitive tournament and has a unique order.",
+    "Count by the first SCC: choose its vertices and a strongly connected tournament on them, then count the remaining components."
+  ],
+  "analogy": "A tournament breaks into an ordered sequence of strongly connected blocks, with every edge between blocks pointing forward.",
+  "example": "For n=3 there are 8 tournaments: 2 directed 3-cycles have one SCC, 6 transitive tournaments have three SCCs, and none have exactly two SCCs. The output is 2, 0, 6.",
+  "algorithm": "Let F[n]=2^(n choose 2), the number of all tournaments, and g[n] the number that are strongly connected. Set g[1]=1 and compute g[n]=F[n]-?(s=1..n-1) C(n,s)g[s]F[n-s] modulo MOD by considering the first SCC. Set dp[0][0]=1. For each n?1 and k?1 compute dp[n][k]=?(s=1..n) C(n,s)g[s]dp[n-s][k-1]. Print dp[n][k] for k=1..n. Precompute binomial coefficients and powers of two modulo MOD.",
+  "correctness": "The SCC condensation of a tournament is itself a tournament and is acyclic; an acyclic tournament has a unique total order, with all cross-component edges directed forward. Thus every tournament decomposes uniquely into an ordered sequence of strongly connected blocks. The recurrence for g subtracts all decompositions whose first block is smaller than n from the total F[n]. The dp recurrence chooses the first block?s labels and strongly connected internal tournament, then uniquely counts the remaining ordered blocks. Hence dp[n][k] counts exactly tournaments with k SCCs.",
+  "complexity": "O(n?) time and O(n?) space for the recurrences and binomial coefficients, where n?500.",
+  "visual": {
+    "kind": "dp",
+    "title": "Tournament Graph Distribution: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3 there are 8 tournaments: 2 directed 3-cycles have one SCC, 6 transitive tournaments have three SCCs, and none have exactly two SCCs. The output is 2, 0, 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let F[n]=2^(n choose 2), the number of all tournaments, and g[n] the number that are strongly connected. Set g[1]=1 and compute g[n]=F[n]-?(s=1..n-1) C(n,s)g[s]F[n-s] modulo MOD by considering the first SCC. Set dp[0][0]=1. For each n?1 and k?1 compute dp[n][k]=?(s=1..n) C(n,s)g[s]dp[n-s][k-1]. Print dp[n][k] for k=1..n. Precompute binomial coefficients and powers of two modulo MOD."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "8",
+      "2",
+      "6",
+      "0"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=3 there are 8 tournaments: 2 directed 3-cycles have one SCC, 6 transitive tournaments have three SCCs, and none have exactly two SCCs. The output is 2, 0, 6."
+  }
+}

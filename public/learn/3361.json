@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "For a proposed average T, subtract T from every value.",
+    "The two chosen prefix lengths are independent after this transformation.",
+    "Binary search T and retain the best prefix from each array."
+  ],
+  "analogy": "An average is achievable when the two best adjusted prefix sums add to at least zero.",
+  "example": "For A=[1,9] and B=[4,2], prefixes of lengths 2 and 1 have average 14/3, which is optimal.",
+  "algorithm": "Binary search a real value T between the minimum and maximum inputs. For each T scan both arrays, finding the largest nonempty prefix sum of value-T and its index. T is feasible exactly when the two maxima sum to at least zero. When feasible, record both maximizing prefix indices and raise the lower bound; otherwise lower the upper bound. Perform enough iterations, such as 80, then print the recorded indices.",
+  "correctness": "The combined average of two prefixes is at least T exactly when their combined adjusted sum is nonnegative. Since the prefix choices are independent, the largest possible combined adjusted sum is the sum of the two separate maxima. Feasibility is monotone in T, so binary search approaches the optimum and recorded indices attain the feasible bound.",
+  "complexity": "For arrays of length n and I binary-search iterations, time is O(In) and space O(1) beyond the input.",
+  "visual": {
+    "kind": "trace",
+    "title": "Two Array Average: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For A=[1,9] and B=[4,2], prefixes of lengths 2 and 1 have average 14/3, which is optimal."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Binary search a real value T between the minimum and maximum inputs. For each T scan both arrays, finding the largest nonempty prefix sum of value-T and its index. T is feasible exactly when the two maxima sum to at least zero. When feasible, record both maximizing prefix indices and raise the lower bound; otherwise lower the upper bound. Perform enough iterations, such as 80, then print the recorded indices."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "9",
+      "4",
+      "2",
+      "14",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For A=[1,9] and B=[4,2], prefixes of lengths 2 and 1 have average 14/3, which is optimal."
+  }
+}

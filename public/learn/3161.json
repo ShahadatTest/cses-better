@@ -1,0 +1,44 @@
+{
+  "hints": [
+    "Count input values divisible by each candidate gcd.",
+    "All nonempty subsets of those values have gcd divisible by that candidate.",
+    "Process gcd values downward and subtract subsets with larger exact gcd."
+  ],
+  "analogy": "Count all groups divisible by k, then remove groups already assigned a larger gcd.",
+  "example": "For [2,4], exact gcd 2 occurs for subsets [2] and [2,4], while exact gcd 4 occurs for [4].",
+  "algorithm": "Count frequencies of input values. For each k from n down to 1, sum frequencies at multiples of k; start with 2^count-1 modulo 10^9+7, then subtract the previously computed exact counts for all proper multiples of k. Print the resulting counts.",
+  "correctness": "A subset has every element divisible by k exactly when its gcd is a multiple of k. The downward subtraction partitions these subsets by their unique exact gcd.",
+  "complexity": "For n values bounded by n, O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "GCD Subsets: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [2,4], exact gcd 2 occurs for subsets [2] and [2,4], while exact gcd 4 occurs for [4]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Count frequencies of input values. For each k from n down to 1, sum frequencies at multiples of k; start with 2^count-1 modulo 10^9+7, then subtract the previously computed exact counts for all proper multiples of k. Print the resulting counts."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [2,4], exact gcd 2 occurs for subsets [2] and [2,4], while exact gcd 4 occurs for [4]."
+  }
+}

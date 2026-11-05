@@ -1,0 +1,60 @@
+{
+  "hints": [
+    "The shoelace formula calculates polygon area from consecutive vertices.",
+    "Sum x_i y_(i+1)-y_i x_(i+1), including the closing edge.",
+    "Take the absolute value; this is already twice the area."
+  ],
+  "analogy": "Each directed edge contributes a signed strip; overlaps cancel and leave the polygon's area.",
+  "example": "The triangle (0,0),(2,0),(0,3) has area 3, so the requested output is 6.",
+  "algorithm": "Traverse all edges cyclically and sum x_i*y_next-y_i*x_next. Print the absolute value of this sum using an integer type wide enough for the accumulated products.",
+  "correctness": "The shoelace formula gives signed twice-area for either orientation. Taking the absolute value removes the orientation and preserves the requested integer.",
+  "complexity": "For n vertices, O(n) time and O(n) space if storing vertices, or O(1) extra space when streaming.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Polygon Area: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "The triangle (0,0),(2,0),(0,3) has area 3, so the requested output is 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Traverse all edges cyclically and sum x_i*y_next-y_i*x_next. Print the absolute value of this sum using an integer type wide enough for the accumulated products."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "(0,0)",
+        "x": 10,
+        "y": 90
+      },
+      {
+        "id": "2",
+        "label": "(2,0)",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "id": "3",
+        "label": "(0,3)",
+        "x": 10,
+        "y": 10
+      }
+    ],
+    "edges": [],
+    "caption": "Illustrative example - The triangle (0,0),(2,0),(0,3) has area 3, so the requested output is 6."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "All measurable amounts are multiples of gcd(a,b).",
+    "Container A cannot hold more than its capacity.",
+    "These two conditions are also sufficient."
+  ],
+  "analogy": "The two capacities generate every nonnegative multiple of their greatest common divisor up to either container?s capacity.",
+  "example": "For capacities 5 and 3, gcd is 1 and 4<=5, so the answer is YES. For capacities 2 and 2, one unit is impossible.",
+  "algorithm": "For each query compute g=gcd(a,b) using Euclid?s algorithm. Print YES exactly when x<=a and x is divisible by g; otherwise print NO.",
+  "correctness": "Filling, emptying and pouring preserve the property that both amounts are multiples of g, and A cannot exceed a. Conversely, the standard repeated-fill-and-pour construction generates every multiple of g between zero and a in container A, so both conditions are sufficient.",
+  "complexity": "Each query takes O(log(min(a,b))) time and O(1) extra space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Water Containers Queries: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For capacities 5 and 3, gcd is 1 and 4<=5, so the answer is YES. For capacities 2 and 2, one unit is impossible."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each query compute g=gcd(a,b) using Euclid?s algorithm. Print YES exactly when x<=a and x is divisible by g; otherwise print NO."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Capacities",
+      "Target",
+      "Possible?"
+    ],
+    "rows": [
+      [
+        "5, 3",
+        "4",
+        "Yes (gcd 1)"
+      ],
+      [
+        "2, 2",
+        "1",
+        "No"
+      ]
+    ],
+    "caption": "Illustrative example - A target is possible only when it is within capacity and divisible by the gcd."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "hints": [
+    "A number divisible by any selected prime can be counted with inclusion-exclusion.",
+    "For every nonempty subset of the given primes, compute their product and add or subtract floor(n/product) according to subset size parity.",
+    "Avoid multiplication overflow by stopping when product exceeds n."
+  ],
+  "analogy": "Count multiples of each prime, subtract overlaps, add back triple overlaps, and continue alternating.",
+  "example": "For n=20 and primes 2,3, count 10+6-3=13 numbers divisible by at least one.",
+  "algorithm": "Enumerate all 2^k-1 prime subsets. Compute subset product safely; add floor(n/product) for odd subset size and subtract for even, using a wide integer.",
+  "correctness": "Inclusion-exclusion counts numbers divisible by exactly one or more selected primes with net coefficient one, and nonmultiples with coefficient zero.",
+  "complexity": "O(2^k) time and O(1) extra space.",
+  "visual": {
+    "kind": "math",
+    "title": "Prime Multiples: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=20 and primes 2,3, count 10+6-3=13 numbers divisible by at least one."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Enumerate all 2^k-1 prime subsets. Compute subset product safely; add floor(n/product) for odd subset size and subtract for even, using a wide integer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "20",
+      "2",
+      "3",
+      "10",
+      "6",
+      "-3",
+      "13"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=20 and primes 2,3, count 10+6-3=13 numbers divisible by at least one."
+  }
+}

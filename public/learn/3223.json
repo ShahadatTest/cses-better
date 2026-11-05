@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "An inversion has a larger value on the left.",
+    "When removing the leftmost value, subtract the number of remaining values smaller than it.",
+    "When adding a rightmost value, add the number of existing values larger than it."
+  ],
+  "analogy": "Count only pairs touching the end that changes; all pairs wholly inside the window remain unchanged.",
+  "example": "For [3,1,2] and k=2, [3,1] has one inversion and [1,2] has zero.",
+  "algorithm": "Coordinate-compress values and maintain frequencies in a Fenwick tree. Build the first window by adding the number of prior values strictly greater than each inserted value. On a slide, erase the outgoing leftmost value and subtract the count of remaining values strictly smaller than it; add the count strictly greater than the incoming rightmost value, then insert it. Use a wide count.",
+  "correctness": "Only inversions involving the removed or added element change. The Fenwick queries count exactly those pairs with strict inequality, while all other pairs persist.",
+  "complexity": "For n elements and window size k, O(n log n) time and O(n) space for compression and the tree.",
+  "visual": {
+    "kind": "window",
+    "title": "Sliding Window Inversions: follow one example",
+    "caption": "Slide the active window and update its maintained state.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [3,1,2] and k=2, [3,1] has one inversion and [1,2] has zero."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Coordinate-compress values and maintain frequencies in a Fenwick tree. Build the first window by adding the number of prior values strictly greater than each inserted value. On a slide, erase the outgoing leftmost value and subtract the count of remaining values strictly smaller than it; add the count strictly greater than the incoming rightmost value, then insert it. Use a wide count."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [3,1,2] and k=2, [3,1] has one inversion and [1,2] has zero."
+  }
+}

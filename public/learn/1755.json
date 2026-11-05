@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Count how many times each uppercase letter appears.",
+    "A palindrome can have at most one letter with an odd count; place that letter in the center.",
+    "Put half of each remaining count on the left and mirror the left side to form the right."
+  ],
+  "analogy": "Build one half of a mirror, add the possible center letter, then reflect the half.",
+  "example": "AAAACACBA has A:5, C:2, B:1; put A in the middle and arrange the remaining halves as AAC, giving AACABACAA.",
+  "algorithm": "Count letters, reject if more than one count is odd, then concatenate each letter count/2 times, the odd letter if present, and the reverse of the first half.",
+  "correctness": "Matching mirrored positions use equal counts, while the sole odd letter (if any) occupies the center; the count condition is also necessary.",
+  "complexity": "O(n+26) time and O(n+26) space for the constructed string.",
+  "visual": {
+    "kind": "trace",
+    "title": "Palindrome Reorder: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "AAAACACBA"
+      },
+      {
+        "label": "Work through it",
+        "detail": "AAAACACBA has A:5, C:2, B:1; put A in the middle and arrange the remaining halves as AAC, giving AACABACAA."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Count letters, reject if more than one count is odd, then concatenate each letter count/2 times, the odd letter if present, and the reverse of the first half."
+      },
+      {
+        "label": "Result",
+        "detail": "AACABACAA"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "AAAACACBA"
+      ]
+    ],
+    "caption": "Illustrative example - AAAACACBA has A:5, C:2, B:1; put A in the middle and arrange the remaining halves as AAC, giving AACABACAA."
+  }
+}

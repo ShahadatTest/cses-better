@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "The required median is the lower middle value in sorted order.",
+    "Split the window into a lower half and an upper half using two balanced multisets.",
+    "Keep the lower half at size ceil(k/2); its largest element is the median."
+  ],
+  "analogy": "Divide the sorted window at its middle; the rightmost item in the left pile is the answer.",
+  "example": "For [1,4,2,3] with k=4, the sorted window is [1,2,3,4], so the lower median is 2.",
+  "algorithm": "Maintain two multisets, with every lower value at most every upper value. Insert and remove the sliding elements, then rebalance so the lower set has ceil(k/2) values in a full window. Output its maximum. Handle duplicates as separate occurrences.",
+  "correctness": "The order and size invariants place exactly ceil(k/2) values in the lower set, so its maximum is the lower middle element, including for even k.",
+  "complexity": "For n elements and window size k, O(n log k) time and O(k) space.",
+  "visual": {
+    "kind": "window",
+    "title": "Sliding Window Median: follow one example",
+    "caption": "Slide the active window and update its maintained state.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,4,2,3] with k=4, the sorted window is [1,2,3,4], so the lower median is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain two multisets, with every lower value at most every upper value. Insert and remove the sliding elements, then rebalance so the lower set has ceil(k/2) values in a full window. Output its maximum. Handle duplicates as separate occurrences."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "4",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,4,2,3] with k=4, the sorted window is [1,2,3,4], so the lower median is 2."
+  }
+}

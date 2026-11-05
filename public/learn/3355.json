@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "Every nonnegative integer is a sum of four squares, so a solution always exists.",
+    "Precompute which values are sums of two squares and store one pair for each such value.",
+    "For each n, test a first square and look up whether the remainder is a sum of two squares."
+  ],
+  "analogy": "Build a lookup table for two-square piles, then split the target into two such piles.",
+  "example": "For 5, use 2^2+1^2+0^2+0^2=5.",
+  "correctness": "Every pair table entry is a valid sum of two squares. The four-square theorem guarantees a decomposition of n into two pairs, so the search over a and the pair lookup finds a valid four-square representation.",
+  "complexity": "O(N) pair-generation time and O(N) lookup space up to constant factors; each query takes O(sqrt(n)) time, where N is the largest input and sum of inputs is bounded.",
+  "algorithm": "Let N be the maximum input. Build pair[x] for sums x=a^2+b^2<=N by looping a,b<=sqrt(N), storing one witness pair. For each n, loop a<=sqrt(n); if pair[n-a^2] exists, output a and that pair's two values followed by 0, giving four squares.",
+  "visual": {
+    "kind": "math",
+    "title": "Sum of Four Squares: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 5, use 2^2+1^2+0^2+0^2=5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let N be the maximum input. Build pair[x] for sums x=a^2+b^2<=N by looping a,b<=sqrt(N), storing one witness pair. For each n, loop a<=sqrt(n); if pair[n-a^2] exists, output a and that pair's two values followed by 0, giving four squares."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Square term",
+      "Value"
+    ],
+    "rows": [
+      [
+        "2^2",
+        "4"
+      ],
+      [
+        "1^2",
+        "1"
+      ],
+      [
+        "0^2 + 0^2",
+        "0"
+      ],
+      [
+        "Sum",
+        "5"
+      ]
+    ],
+    "caption": "Illustrative example - The four squares sum to 5."
+  }
+}

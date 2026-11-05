@@ -1,0 +1,54 @@
+{
+  "hints": [
+    "Every intersection is between one horizontal and one vertical segment.",
+    "Sweep a vertical line from left to right and maintain horizontal segments currently crossing it.",
+    "A Fenwick tree over compressed y coordinates counts active horizontals in a vertical segment's y range."
+  ],
+  "analogy": "As a scanner moves right, horizontal segments enter and leave an active shelf; each vertical segment counts shelves in its height range.",
+  "example": "A horizontal segment from (0,1) to (4,1) intersects vertical segments at x=1 and x=3 spanning y=1, giving 2.",
+  "algorithm": "Create start and end events for horizontal segments and query events for vertical segments. Sort by x; maintain active horizontal y coordinates in a Fenwick tree. For each vertical event, query the count in its y interval. The input guarantees no endpoint is an intersection, so equal-x endpoint ordering cannot change the answer.",
+  "correctness": "At a vertical segment's x coordinate, the active structure contains exactly the horizontal segments spanning that x. Its range query counts precisely those whose y lies in the vertical segment, so each intersection is counted once.",
+  "complexity": "For n segments, O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Intersection Points: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A horizontal segment from (0,1) to (4,1) intersects vertical segments at x=1 and x=3 spanning y=1, giving 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Create start and end events for horizontal segments and query events for vertical segments. Sort by x; maintain active horizontal y coordinates in a Fenwick tree. For each vertical event, query the count in its y interval. The input guarantees no endpoint is an intersection, so equal-x endpoint ordering cannot change the answer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "(0,1)",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "(4,1)",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [],
+    "caption": "Illustrative example - A horizontal segment from (0,1) to (4,1) intersects vertical segments at x=1 and x=3 spanning y=1, giving 2."
+  }
+}

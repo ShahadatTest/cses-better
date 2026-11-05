@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "For a longest strictly increasing subsequence, equal values cannot extend one another.",
+    "Maintain tails[length] as the smallest possible ending value of an increasing subsequence of that length.",
+    "Binary-search the first tail greater than or equal to the new value and replace it."
+  ],
+  "analogy": "Keep the easiest-to-extend ending value for every subsequence length.",
+  "example": "For 3,1,2,5,4, tails evolve to [1,2,4], so the longest length is 3.",
+  "algorithm": "For each x, lower_bound tails for x; replace that entry, or append if x exceeds every tail. The number of tails is the answer.",
+  "correctness": "For each length, a smaller tail is at least as useful as a larger one for future extensions; replacing maintains the best representative and preserves the maximum attainable length.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "dp",
+    "title": "Increasing Subsequence: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 3,1,2,5,4, tails evolve to [1,2,4], so the longest length is 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each x, lower_bound tails for x; replace that entry, or append if x exceeds every tail. The number of tails is the answer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2",
+      "5",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For 3,1,2,5,4, tails evolve to [1,2,4], so the longest length is 3."
+  }
+}

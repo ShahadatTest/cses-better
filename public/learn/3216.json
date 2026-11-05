@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "Unfold each bounce into a straight diagonal path through mirrored copies of the grid.",
+    "The ball returns to the starting corner after twice the least common multiple of n-1 and m-1 steps.",
+    "A cell is visited exactly when its zero-based coordinates x,y satisfy x = y or x = -y modulo 2g, where g=gcd(n-1,m-1)."
+  ],
+  "analogy": "Imagine tiling the plane with mirror images of the board: the bouncing path becomes a straight line.",
+  "example": "For a 3 by 4 board, the side lengths are 2 and 3. The first return takes 12 steps and the ball visits 6 distinct cells.",
+  "algorithm": "Set a=n-1, b=m-1, g=gcd(a,b), A=a/g, B=b/g. Let E(q)=(q+1)//2 and O(q)=q//2 count even and odd numbers in 0..q-1. The return time is 2*lcm(a,b); the distinct count is E(A+1)*E(B+1)+O(A+1)*O(B+1)+(g-1)*A*B. Use wide integers.",
+  "correctness": "Unfolding shows that folded coordinates (x,y) occur exactly when x equals y or -y modulo 2g. When both coordinates are multiples of g the two congruences overlap, contributing the parity-matching first two terms. For each of the other g-1 residues, the two congruences are disjoint and contribute A*B cells. The unfolded position first returns to both zero boundaries after 2*lcm(a,b) steps.",
+  "complexity": "O(log min(n,m)) time and O(1) space per test case.",
+  "visual": {
+    "kind": "trace",
+    "title": "Bouncing Ball Cycle: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For a 3 by 4 board, the side lengths are 2 and 3. The first return takes 12 steps and the ball visits 6 distinct cells."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Set a=n-1, b=m-1, g=gcd(a,b), A=a/g, B=b/g. Let E(q)=(q+1)//2 and O(q)=q//2 count even and odd numbers in 0..q-1. The return time is 2*lcm(a,b); the distinct count is E(A+1)*E(B+1)+O(A+1)*O(B+1)+(g-1)*A*B. Use wide integers."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Board",
+      "Return period",
+      "Distinct cells"
+    ],
+    "rows": [
+      [
+        "3 by 4",
+        "12 steps",
+        "6"
+      ]
+    ],
+    "caption": "Illustrative example - The bounce orbit repeats after 12 steps and visits 6 cells."
+  }
+}

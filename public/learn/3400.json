@@ -1,0 +1,55 @@
+{
+  "hints": [
+    "Fix the first player?s card order to 1..n; every relative order of the second player occurs for exactly n! pairs of card orders.",
+    "Tied rounds are fixed points of the relative permutation. Delete those rows and cards: the remaining derangement keeps the same greater-than comparisons.",
+    "Count derangements by the number of excedances using inclusion?exclusion over fixed points and Eulerian numbers."
+  ],
+  "analogy": "First choose a relative permutation; fixed points are ties, and the remaining positions split into wins for each player.",
+  "example": "For n=3 and scores a=1,b=2, there are no ties. Exactly one derangement has two excedances, so the answer is 3!?1=6 possible pairs of card orders.",
+  "algorithm": "Let j=n-a-b. If j<0, the answer is 0. Let E[s][e] be the number of permutations of s elements with e excedances (positions i where ?(i)>i), with E[0][0]=1 and E[s][e]=(e+1)E[s-1][e]+(s-e)E[s-1][e-1]. Let D[m][e]=?(i=0..m)(-1)^i C(m,i)E[m-i][e], the number of derangements with e excedances. For m=a+b, the answer is n!?C(n,j)?D[m][b] modulo 1,000,000,007. Precompute E through the largest n; evaluate D for each test in O(m) using factorials and inverse factorials for binomial coefficients.",
+  "correctness": "Every first-player order can be relabeled as 1..n, leaving n! choices that all have the same relative comparison pattern. A tie is exactly a fixed point, so selecting its j positions and deleting them leaves a derangement on m=n-j elements; deleting a fixed point preserves the comparison direction of every remaining position. The second player wins exactly at excedances, so D[m][b] counts the possible tie-free relative orders. Inclusion?exclusion removes all fixed points from Eulerian permutations, and choosing the j tie positions gives C(n,j). Multiplying these independent counts yields exactly all games with scores (a,b).",
+  "complexity": "Precomputation takes O(N?) time and space for Eulerian numbers through N=max n. Each test takes O(n) time and O(1) extra space, where n is that test?s card count.",
+  "visual": {
+    "kind": "dp",
+    "title": "Raab Game II: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3 and scores a=1,b=2, there are no ties. Exactly one derangement has two excedances, so the answer is 3!?1=6 possible pairs of card orders."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let j=n-a-b. If j<0, the answer is 0. Let E[s][e] be the number of permutations of s elements with e excedances (positions i where ?(i)>i), with E[0][0]=1 and E[s][e]=(e+1)E[s-1][e]+(s-e)E[s-1][e-1]. Let D[m][e]=?(i=0..m)(-1)^i C(m,i)E[m-i][e], the number of derangements with e excedances. For m=a+b, the answer is n!?C(n,j)?D[m][b] modulo 1,000,000,007. Precompute E through the largest n; evaluate D for each test in O(m) using factorials and inverse factorials for binomial coefficients."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "n",
+      "a",
+      "b",
+      "No-tie derangements",
+      "Order pairs"
+    ],
+    "rows": [
+      [
+        "3",
+        "1",
+        "2",
+        "1",
+        "6"
+      ]
+    ],
+    "caption": "Illustrative example - For this illustrative parameter choice, six possible pairs of card orders remain."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "The value is organized in square layers; coordinates with the larger of x and y determine the layer.",
+    "Let z=max(x,y). The layer's largest corner value is z squared; the other coordinate tells how far to move back along that layer.",
+    "Use separate formulas depending on whether the layer index is even or odd, and check the diagonal x=y."
+  ],
+  "analogy": "Each new square border continues the numbering in a different direction, so parity tells which corner grows along the row.",
+  "example": "At row y=2, column x=3, layer 3 is odd and the formula gives 8; the first three rows/columns follow the spiral's alternating direction.",
+  "algorithm": "For each query, set z=max(x,y). If z is odd, use (z-1)^2 plus the coordinate offset; if even, use z^2 and count backward using the offset. Select the offset according to whether x or y equals z.",
+  "correctness": "The larger coordinate fixes the outer square layer, and the smaller coordinate gives the exact offset from that layer's known corner.",
+  "complexity": "O(1) time per query and O(1) extra space; compute squares in a wide integer type.",
+  "visual": {
+    "kind": "trace",
+    "title": "Number Spiral: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3\n2 3\n1 1\n4 2"
+      },
+      {
+        "label": "Work through it",
+        "detail": "At row y=2, column x=3, layer 3 is odd and the formula gives 8; the first three rows/columns follow the spiral's alternating direction."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each query, set z=max(x,y). If z is odd, use (z-1)^2 plus the coordinate offset; if even, use z^2 and count backward using the offset. Select the offset according to whether x or y equals z."
+      },
+      {
+        "label": "Result",
+        "detail": "8\n1\n15"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3"
+      ],
+      [
+        "2  3"
+      ],
+      [
+        "1  1"
+      ],
+      [
+        "4  2"
+      ]
+    ],
+    "caption": "Illustrative example - At row y=2, column x=3, layer 3 is odd and the formula gives 8; the first three rows/columns follow the spiral's alternating direction."
+  }
+}

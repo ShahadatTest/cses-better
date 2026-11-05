@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "Choose a spanning forest and consider edges outside it.",
+    "Each non-tree edge can be chosen independently; its choice determines which tree edges are needed for even degrees.",
+    "The number of non-tree edges is m-n+c, where c is the number of connected components."
+  ],
+  "analogy": "Every extra edge creates a cycle; combining selected cycles keeps every degree even.",
+  "example": "A triangle has two Eulerian subgraphs: no edges and all three edges.",
+  "algorithm": "Count connected components c by DFS or disjoint-set union. Compute 2^(m-n+c) modulo 10^9+7 using fast exponentiation. Isolated vertices count as components.",
+  "correctness": "Fix arbitrary choices for all non-tree edges. Process each spanning tree from leaves upward: the parent edge is uniquely determined by the parity needed at the child, and the root is automatically even because the sum of degrees is even. Thus every choice gives exactly one Eulerian subgraph.",
+  "complexity": "For n vertices and m edges, O(n+m+log m) time and O(n+m) space with DFS.",
+  "visual": {
+    "kind": "flow",
+    "title": "Eulerian Subgraphs: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "A triangle has two Eulerian subgraphs: no edges and all three edges."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Count connected components c by DFS or disjoint-set union. Compute 2^(m-n+c) modulo 10^9+7 using fast exponentiation. Isolated vertices count as components."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Selected edges",
+      "Eulerian?"
+    ],
+    "rows": [
+      [
+        "None",
+        "Yes"
+      ],
+      [
+        "All three triangle edges",
+        "Yes"
+      ]
+    ],
+    "caption": "Illustrative example - A triangle has two Eulerian subgraphs."
+  }
+}

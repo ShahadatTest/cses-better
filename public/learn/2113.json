@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "Each alignment sums products of one signal value and one mask value.",
+    "Reverse the mask so those products appear at the same convolution coefficient.",
+    "Compute the convolution with FFT or exact number-theoretic transforms."
+  ],
+  "analogy": "Reversing the mask turns a sliding dot product into ordinary polynomial multiplication.",
+  "example": "For signal [1,2] and mask [3,4], the overlap sums from left to right are 4, 11, 6.",
+  "algorithm": "Reverse the mask and convolve it with the signal. Print all n+m-1 coefficients in order. Use a sufficiently precise FFT and round to integers, or use an NTT modulus large enough to hold the maximum coefficient.",
+  "correctness": "Coefficient t sums signal[i]*reversedMask[t-i], exactly the products of entries aligned at the corresponding shift, including partial overlaps at both ends.",
+  "complexity": "For signal length n and mask length m, O((n+m) log(n+m)) time and O(n+m) space.",
+  "visual": {
+    "kind": "flow",
+    "title": "Signal Processing: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For signal [1,2] and mask [3,4], the overlap sums from left to right are 4, 11, 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Reverse the mask and convolve it with the signal. Print all n+m-1 coefficients in order. Use a sufficiently precise FFT and round to integers, or use an NTT modulus large enough to hold the maximum coefficient."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "11",
+      "6"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For signal [1,2] and mask [3,4], the overlap sums from left to right are 4, 11, 6."
+  }
+}

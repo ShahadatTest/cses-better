@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Sweep across rectangle left and right edges.",
+    "Between consecutive x events, covered area is covered y-length times the x gap.",
+    "Maintain union length of active y intervals using a segment tree and cover counts."
+  ],
+  "analogy": "Slide a vertical ruler across the rectangles; at each step multiply the inked length by the distance moved.",
+  "example": "Two rectangles [0,2] x [0,2] and [1,3] x [0,2] have union area 6.",
+  "algorithm": "Compress all rectangle y endpoints. Sort events at each left and right x. Maintain a segment tree over elementary y intervals with cover counts and covered lengths; a positive cover count covers the whole node, otherwise its length is the sum of children. Before applying each x group, add the x gap times the current covered length.",
+  "correctness": "Between adjacent event coordinates the active rectangles do not change, so the tree's union length times the gap is exactly the covered area of that strip. The strips are disjoint and cover the union.",
+  "complexity": "For n rectangles, O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Area of Rectangles: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Two rectangles [0,2] x [0,2] and [1,3] x [0,2] have union area 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Compress all rectangle y endpoints. Sort events at each left and right x. Maintain a segment tree over elementary y intervals with cover counts and covered lengths; a positive cover count covers the whole node, otherwise its length is the sum of children. Before applying each x group, add the x gap times the current covered length."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "0",
+      "2",
+      "1",
+      "3",
+      "6"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Two rectangles [0,2] x [0,2] and [1,3] x [0,2] have union area 6."
+  }
+}

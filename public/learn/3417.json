@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "A square border is valid exactly when its four sides are runs of the same letter.",
+    "The two opposite corners of each square lie on one top-left to bottom-right diagonal.",
+    "Sweep each diagonal, counting starting corners whose top and left runs reach the current bottom-right corner."
+  ],
+  "analogy": "Each top-left corner opens a window of possible sizes; it expires as soon as either its top or left border stops matching.",
+  "example": "In a 2 by 2 grid of A letters there are four size-1 squares and one size-2 square, so the count for A is 5.",
+  "algorithm": "Precompute lengths of equal-letter runs to the right, down, left and up from every cell. On each down-right diagonal, let start[p] be min(right,down) at position p and end[q] be min(left,up) at q. Sweep q from left to right. Insert q in a Fenwick tree of active starts and schedule its removal at q+start[q]; remove any starts expiring at the current q. Query the number of active p in [q-end[q]+1,q], and add it to the answer for the letter at q.",
+  "correctness": "For a square with corners p and q on the diagonal, the start remains active exactly when its top and left sides cover the square; the query range enforces the bottom and right sides. Their shared corners force all four runs to have the same letter. Every square has exactly one such pair and is counted once.",
+  "complexity": "O(n^2 log n) time and O(n^2) space; a block-bitset Fenwick tree can reduce constants for the 1-second limit.",
+  "visual": {
+    "kind": "dp",
+    "title": "Border Subgrid Count I: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In a 2 by 2 grid of A letters there are four size-1 squares and one size-2 square, so the count for A is 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Precompute lengths of equal-letter runs to the right, down, left and up from every cell. On each down-right diagonal, let start[p] be min(right,down) at position p and end[q] be min(left,up) at q. Sweep q from left to right. Insert q in a Fenwick tree of active starts and schedule its removal at q+start[q]; remove any starts expiring at the current q. Query the number of active p in [q-end[q]+1,q], and add it to the answer for the letter at q."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "A",
+        "A"
+      ],
+      [
+        "A",
+        "A"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - Four size-one squares and one size-two square are counted for A."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "A rectangle spanning several boards is limited by the shortest board.",
+    "For each board, find how far its height can extend in both directions.",
+    "A monotonic stack finds the nearest shorter boards in linear time."
+  ],
+  "analogy": "Each board can be the limiting height of the widest rectangle that contains it.",
+  "example": "For heights [2,1,2], the whole width at height 1 has area 3, larger than either height-2 rectangle.",
+  "algorithm": "Scan heights with a stack of increasing heights and their earliest possible starting positions. When a new height is smaller, pop taller bars and calculate each popped height times the width from its start to the current index. Carry the earliest popped start into the new bar. Append a zero-height sentinel to flush the stack and output the maximum area.",
+  "correctness": "When a bar is popped, the current board is the first shorter board to its right, while its stored start is just after the nearest shorter board to its left. Thus its computed width is the widest rectangle at that height. Every optimal rectangle has some limiting board, so one computed area is optimal.",
+  "complexity": "For n boards, every bar enters and leaves the stack once: O(n) time and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Advertisement: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For heights [2,1,2], the whole width at height 1 has area 3, larger than either height-2 rectangle."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Scan heights with a stack of increasing heights and their earliest possible starting positions. When a new height is smaller, pop taller bars and calculate each popped height times the width from its start to the current index. Carry the earliest popped start into the new bar. Append a zero-height sentinel to flush the stack and output the maximum area."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "2",
+      "1",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For heights [2,1,2], the whole width at height 1 has area 3, larger than either height-2 rectangle."
+  }
+}

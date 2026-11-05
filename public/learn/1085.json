@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "If a maximum allowed segment sum T is fixed, greedily pack consecutive positive values until the next would exceed T.",
+    "This greedy process gives the fewest segments needed under T.",
+    "Binary-search the smallest T that needs at most k segments."
+  ],
+  "analogy": "Test a proposed capacity by loading each segment as full as possible before starting the next.",
+  "example": "For 2,4,7,3,5 with k=3, capacity 8 allows [2,4],[7],[3,5], whose largest sum is 8.",
+  "algorithm": "Binary-search T between max(array) and total sum. Scan values, starting a new segment when current+x>T, and test whether segment count<=k.",
+  "correctness": "For positive values, packing greedily delays each cut as long as possible and therefore minimizes the number of segments for capacity T; feasibility is monotone in T.",
+  "complexity": "O(n log S) time and O(1) extra space, where S is the array sum.",
+  "visual": {
+    "kind": "array",
+    "title": "Array Division: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5 3\n2 4 7 3 5"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 2,4,7,3,5 with k=3, capacity 8 allows [2,4],[7],[3,5], whose largest sum is 8."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Binary-search T between max(array) and total sum. Scan values, starting a new segment when current+x>T, and test whether segment count<=k."
+      },
+      {
+        "label": "Result",
+        "detail": "8"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5  3"
+      ],
+      [
+        "2  4  7  3  5"
+      ]
+    ],
+    "caption": "Illustrative example - For 2,4,7,3,5 with k=3, capacity 8 allows [2,4],[7],[3,5], whose largest sum is 8."
+  }
+}

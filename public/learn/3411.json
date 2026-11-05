@@ -1,0 +1,60 @@
+{
+  "hints": [
+    "Separate Manhattan distance into x and y contributions.",
+    "After sorting one coordinate, each value's distance to all earlier values uses a prefix sum.",
+    "Add i*value minus the sum of earlier values for each sorted position i."
+  ],
+  "analogy": "On a number line, the distance from a new rightmost point to earlier points is its coordinate repeated minus their coordinate sum.",
+  "example": "For points (0,0),(2,0),(1,1), pair distances are 2,2,2, summing to 6.",
+  "algorithm": "Sort all x coordinates and independently sort all y coordinates. For each sorted list, keep a prefix sum and add i*value-prefix to the answer at zero-based index i. Sum both coordinate contributions using a sufficiently wide integer.",
+  "correctness": "Sorting ensures every earlier value is at most the current one, so i*value-prefix is exactly the sum of distances to earlier points. Every unordered pair is counted once on each axis.",
+  "complexity": "For n points, O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "geometry",
+    "title": "All Manhattan Distances: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For points (0,0),(2,0),(1,1), pair distances are 2,2,2, summing to 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort all x coordinates and independently sort all y coordinates. For each sorted list, keep a prefix sum and add i*value-prefix to the answer at zero-based index i. Sum both coordinate contributions using a sufficiently wide integer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "(0,0)",
+        "x": 10,
+        "y": 90
+      },
+      {
+        "id": "2",
+        "label": "(2,0)",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "id": "3",
+        "label": "(1,1)",
+        "x": 50,
+        "y": 10
+      }
+    ],
+    "edges": [],
+    "caption": "Illustrative example - For points (0,0),(2,0),(1,1), pair distances are 2,2,2, summing to 6."
+  }
+}

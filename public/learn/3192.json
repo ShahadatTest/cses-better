@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "An XOR basis has r independent vectors and generates 2^r distinct values.",
+    "Every distinct XOR appears the same number 2^(n-r) of times.",
+    "Reduce the basis so enumerating its vectors by a binary counter gives XOR values in increasing order."
+  ],
+  "analogy": "Independent switches produce distinct XORs; dependent original choices duplicate every result equally often.",
+  "example": "For [1,1,2], distinct XORs are 0,1,2,3 and each appears twice; the first five are 0,0,1,1,2.",
+  "algorithm": "Build an XOR basis with distinct highest pivots. Eliminate each lower pivot from all higher-pivot vectors, then list vectors in increasing pivot order. For index t from 0 upward, XOR the vectors corresponding to set bits of t; output that value 2^(n-r) times, stopping after k outputs. Cap the multiplicity at k to avoid overflow.",
+  "correctness": "The reduced vectors have unique pivot bits and zero at every other pivot, so the highest differing counter bit determines the ordering of their XORs. The linear map from 2^n subsets onto the rank-r span has a kernel of size 2^(n-r), giving equal multiplicity.",
+  "complexity": "For n values, B bits and k outputs, O(nB+B^2+kB) time and O(B) extra space excluding output.",
+  "visual": {
+    "kind": "bitwise",
+    "title": "K Subset Xors: follow one example",
+    "caption": "Track the binary state and the effect of each bit operation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,1,2], distinct XORs are 0,1,2,3 and each appears twice; the first five are 0,0,1,1,2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build an XOR basis with distinct highest pivots. Eliminate each lower pivot from all higher-pivot vectors, then list vectors in increasing pivot order. For index t from 0 upward, XOR the vectors corresponding to set bits of t; output that value 2^(n-r) times, stopping after k outputs. Cap the multiplicity at k to avoid overflow."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1 (binary 1)",
+      "2 (binary 10)",
+      "0 (binary 0)",
+      "3 (binary 11)"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,1,2], distinct XORs are 0,1,2,3 and each appears twice; the first five are 0,0,1,1,2."
+  }
+}

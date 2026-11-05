@@ -1,0 +1,594 @@
+[
+  {
+    "id": "inoi-2004-legacy-1",
+    "contestId": "inoi",
+    "year": 2004,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0401",
+    "title": "The Nilgiri Tahr",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2004/inoi2004/inoi2004-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "grid",
+      "bfs",
+      "shortest-path"
+    ],
+    "visual": {
+      "kind": "grid-path",
+      "title": "Visualize The Nilgiri Tahr",
+      "caption": "Reachable rocks form a grid graph; connect orthogonal neighbors only when their heights differ by at most one.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Reachable rocks form a grid graph; connect orthogonal neighbors only when their heights differ by at most one."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Mark legal one-foot moves as edges, then trace a path from the top-left to the grass."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Mark legal one-foot moves as edges, then trace a path from the top-left to the grass."
+      }
+    }
+  },
+  {
+    "id": "inoi-2004-legacy-2",
+    "contestId": "inoi",
+    "year": 2004,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0402",
+    "title": "The Rajah's Wrestlers",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2004/inoi2004/inoi2004-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "greedy",
+      "ordering"
+    ],
+    "visual": {
+      "kind": "ordered-pairs",
+      "title": "Visualize The Rajah's Wrestlers",
+      "caption": "Represent each wrestler by the strength/constraint pair from the paper and order the pairings to satisfy the stated maximum safely.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Represent each wrestler by the strength/constraint pair from the paper and order the pairings to satisfy the stated maximum safely."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Sort the wrestlers by the key that constrains the next pairing; inspect the feasible boundary after each choice."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Sort the wrestlers by the key that constrains the next pairing; inspect the feasible boundary after each choice."
+      }
+    }
+  },
+  {
+    "id": "inoi-2005-legacy-1",
+    "contestId": "inoi",
+    "year": 2005,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0501",
+    "title": "Frog jumping",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2005/inoi2005/inoi2005-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "sequence",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "state-transition",
+      "title": "Visualize Frog jumping",
+      "caption": "Model each stone as a state; transitions connect jumps allowed by the statement, and retain the best reachable score/cost.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Model each stone as a state; transitions connect jumps allowed by the statement, and retain the best reachable score/cost."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "For each landing position, compare the valid predecessor jumps and keep the best result."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "For each landing position, compare the valid predecessor jumps and keep the best result."
+      }
+    }
+  },
+  {
+    "id": "inoi-2005-legacy-2",
+    "contestId": "inoi",
+    "year": 2005,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0502",
+    "title": "The Gangster's Authentication Protocol",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2005/inoi2005/inoi2005-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "strings",
+      "simulation",
+      "encoding"
+    ],
+    "visual": {
+      "kind": "sequence-trace",
+      "title": "Visualize The Gangster's Authentication Protocol",
+      "caption": "The protocol transforms a sequence of symbols; track the current encoded state after each prescribed operation.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "The protocol transforms a sequence of symbols; track the current encoded state after each prescribed operation."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Write the original symbols in order and annotate the protocol state after each step."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Write the original symbols in order and annotate the protocol state after each step."
+      }
+    }
+  },
+  {
+    "id": "inoi-2006-legacy-1",
+    "contestId": "inoi",
+    "year": 2006,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0601",
+    "title": "Gift Coupons",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2006/inoi2006/inoi2006-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "greedy",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "ranked-items",
+      "title": "Visualize Gift Coupons",
+      "caption": "Each coupon contributes a value under the stated constraints; sort candidate choices and maintain the best feasible selection.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Each coupon contributes a value under the stated constraints; sort candidate choices and maintain the best feasible selection."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Order coupon values, then show which items enter the selection as the constraint advances."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Order coupon values, then show which items enter the selection as the constraint advances."
+      }
+    }
+  },
+  {
+    "id": "inoi-2006-legacy-2",
+    "contestId": "inoi",
+    "year": 2006,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0602",
+    "title": "Train ride",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2006/inoi2006/inoi2006-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "graphs",
+      "shortest-path",
+      "dijkstra"
+    ],
+    "visual": {
+      "kind": "weighted-graph",
+      "title": "Visualize Train ride",
+      "caption": "Stations are vertices and train links are weighted edges; the requested journey is a minimum-cost route.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Stations are vertices and train links are weighted edges; the requested journey is a minimum-cost route."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Draw stations as nodes, label each train connection with its cost, and highlight the least-cost route."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Draw stations as nodes, label each train connection with its cost, and highlight the least-cost route."
+      }
+    }
+  },
+  {
+    "id": "inoi-2007-legacy-1",
+    "contestId": "inoi",
+    "year": 2007,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0701",
+    "title": "SMS Dictionary",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2007/inoi2007/inoi2007-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "strings",
+      "trie",
+      "prefixes"
+    ],
+    "visual": {
+      "kind": "prefix-tree",
+      "title": "Visualize SMS Dictionary",
+      "caption": "Phone-key sequences share prefixes; organize words by their successive key symbols to resolve dictionary choices.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Phone-key sequences share prefixes; organize words by their successive key symbols to resolve dictionary choices."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Branch on each key press; shared initial presses occupy the same path in the tree."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Branch on each key press; shared initial presses occupy the same path in the tree."
+      }
+    }
+  },
+  {
+    "id": "inoi-2007-legacy-2",
+    "contestId": "inoi",
+    "year": 2007,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0702",
+    "title": "The Middleman",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2007/inoi2007/inoi2007-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "graphs",
+      "shortest-path",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "hub-graph",
+      "title": "Visualize The Middleman",
+      "caption": "Represent the network as a graph and evaluate candidate intermediate vertices by combining route costs through them.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Represent the network as a graph and evaluate candidate intermediate vertices by combining route costs through them."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "For each candidate middle vertex, compare the two-leg path cost against other candidates."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "For each candidate middle vertex, compare the two-leg path cost against other candidates."
+      }
+    }
+  },
+  {
+    "id": "inoi-2008-legacy-1",
+    "contestId": "inoi",
+    "year": 2008,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0801",
+    "title": "Cultural Programme",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2008/inoi2008/inoi2008-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "scheduling",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "timeline-dp",
+      "title": "Visualize Cultural Programme",
+      "caption": "Treat programme choices in order and retain the best compatible schedule for each prefix.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Treat programme choices in order and retain the best compatible schedule for each prefix."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "A timeline shows chosen events; the DP frontier stores the best total through each event."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "A timeline shows chosen events; the DP frontier stores the best total through each event."
+      }
+    }
+  },
+  {
+    "id": "inoi-2008-legacy-2",
+    "contestId": "inoi",
+    "year": 2008,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0802",
+    "title": "Domino Solitaire",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2008/inoi2008/inoi2008-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "sequence",
+      "maximum-sum"
+    ],
+    "visual": {
+      "kind": "domino-strip",
+      "title": "Visualize Domino Solitaire",
+      "caption": "A domino contributes the endpoint values it covers; sweep across the sequence keeping the best score for each boundary state.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "A domino contributes the endpoint values it covers; sweep across the sequence keeping the best score for each boundary state."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Show adjacent domino placements and the score carried forward at each covered position."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Show adjacent domino placements and the score carried forward at each covered position."
+      }
+    }
+  },
+  {
+    "id": "inoi-2009-legacy-1",
+    "contestId": "inoi",
+    "year": 2009,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0901",
+    "title": "Rearranging cartons",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2009/inoi2009/inoi2009-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "inversions",
+      "fenwick-tree"
+    ],
+    "visual": {
+      "kind": "inversion-crossings",
+      "title": "Visualize Rearranging cartons",
+      "caption": "Adjacent swaps needed to transform one order into another equal the inversion count after mapping cartons to target ranks.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Adjacent swaps needed to transform one order into another equal the inversion count after mapping cartons to target ranks."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Map each carton to its destination rank; every reversed rank pair must cross once."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Map each carton to its destination rank; every reversed rank pair must cross once."
+      }
+    }
+  },
+  {
+    "id": "inoi-2009-legacy-2",
+    "contestId": "inoi",
+    "year": 2009,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI0902",
+    "title": "Glass Bead Game",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2009/inoi2009/inoi2009-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "strings",
+      "simulation",
+      "state-transition"
+    ],
+    "visual": {
+      "kind": "state-transition",
+      "title": "Visualize Glass Bead Game",
+      "caption": "The game evolves a bead arrangement under the stated move rules; track a compact arrangement state and its transitions.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "The game evolves a bead arrangement under the stated move rules; track a compact arrangement state and its transitions."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Show one arrangement as a row of beads and draw arrows for legal moves to successor states."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Show one arrangement as a row of beads and draw arrows for legal moves to successor states."
+      }
+    }
+  },
+  {
+    "id": "inoi-2010-legacy-1",
+    "contestId": "inoi",
+    "year": 2010,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1001",
+    "title": "Vogon zoo",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2010/inoi2010/inoi2010-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "sorting",
+      "greedy",
+      "selection"
+    ],
+    "visual": {
+      "kind": "number-line",
+      "title": "Visualize Vogon zoo",
+      "caption": "A safe cage requires pairwise blood-type separation of at least K; sort types and select a maximum compatible subset.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "A safe cage requires pairwise blood-type separation of at least K; sort types and select a maximum compatible subset."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Place blood types on a number line and mark selected values at least K apart."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Place blood types on a number line and mark selected values at least K apart."
+      }
+    }
+  },
+  {
+    "id": "inoi-2010-legacy-2",
+    "contestId": "inoi",
+    "year": 2010,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1002",
+    "title": "Twin robots",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2010/inoi2010/inoi2010-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "grid",
+      "state-transition"
+    ],
+    "visual": {
+      "kind": "two-agent-grid",
+      "title": "Visualize Twin robots",
+      "caption": "Track the two robot positions together as one state; transitions advance both under the movement constraints.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "Track the two robot positions together as one state; transitions advance both under the movement constraints."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Plot both robots on the same grid; each DP layer represents their positions after one move."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Plot both robots on the same grid; each DP layer represents their positions after one move."
+      }
+    }
+  },
+  {
+    "id": "inoi-2011-legacy-1",
+    "contestId": "inoi",
+    "year": 2011,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1101",
+    "title": "Counting triangles",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2011/inoi2011/inoi2011-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "geometry",
+      "hashing",
+      "counting"
+    ],
+    "visual": {
+      "kind": "coordinate-cross",
+      "title": "Visualize Counting triangles",
+      "caption": "For each point as a right-angle corner, pair other points sharing its x and y coordinates.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "For each point as a right-angle corner, pair other points sharing its x and y coordinates."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "At corner (x,y), combine every other point on its vertical ray with every point on its horizontal ray."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "At corner (x,y), combine every other point on its vertical ray with every point on its horizontal ray."
+      }
+    }
+  },
+  {
+    "id": "inoi-2011-legacy-2",
+    "contestId": "inoi",
+    "year": 2011,
+    "round": "Indian National Olympiad in Informatics",
+    "taskId": "INOI1102",
+    "title": "IOI Training Camp 20xx",
+    "sourceUrl": "https://www.iarcs.org.in/inoi/2011/inoi2011/inoi2011-qpaper.pdf",
+    "statementAvailability": "official-link",
+    "tags": [
+      "dynamic-programming",
+      "scheduling",
+      "optimization"
+    ],
+    "visual": {
+      "kind": "schedule-frontier",
+      "title": "Visualize IOI Training Camp 20xx",
+      "caption": "The camp schedule is optimized over ordered days; keep the best attainable result at each day boundary.",
+      "steps": [
+        {
+          "label": "Encode the task",
+          "detail": "The camp schedule is optimized over ordered days; keep the best attainable result at each day boundary."
+        },
+        {
+          "label": "Advance the state",
+          "detail": "Show the schedule as consecutive days and the best score/cost frontier after each day."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Use the final marked state to identify the requested answer."
+        }
+      ],
+      "diagram": {
+        "text": "Show the schedule as consecutive days and the best score/cost frontier after each day."
+      }
+    }
+  }
+]

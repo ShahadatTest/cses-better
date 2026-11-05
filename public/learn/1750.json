@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "A planet's next destination is fixed, so repeated jumps form a functional graph.",
+    "Precompute jump destinations for 1,2,4,8,... steps for each planet.",
+    "For each query, apply only the jump powers whose bits are set in k."
+  ],
+  "analogy": "Build a table of where you land after powers of two jumps, then combine those jumps according to k's binary digits.",
+  "example": "If k=13=8+4+1, apply the 8-step, 4-step, and 1-step tables to the current planet.",
+  "algorithm": "Set up[0][v]=next[v] and up[j][v]=up[j-1][up[j-1][v]]. For each query, lift v for every set bit of k.",
+  "correctness": "The doubling recurrence composes two equal-length jump blocks; binary decomposition expresses every requested number of moves as these blocks.",
+  "complexity": "O(n log K+q log K) time and O(n log K) space, where K is the largest query jump count.",
+  "visual": {
+    "kind": "graph",
+    "title": "Planets Queries I: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If k=13=8+4+1, apply the 8-step, 4-step, and 1-step tables to the current planet."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Set up[0][v]=next[v] and up[j][v]=up[j-1][up[j-1][v]]. For each query, lift v for every set bit of k."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Jump size",
+      "Binary part of k=13"
+    ],
+    "rows": [
+      [
+        "8",
+        "1"
+      ],
+      [
+        "4",
+        "1"
+      ],
+      [
+        "1",
+        "1"
+      ]
+    ],
+    "caption": "Illustrative example - The binary lifting query applies jumps 8, 4, and 1."
+  }
+}

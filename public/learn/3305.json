@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "The scores within each country are sorted from highest to lowest.",
+    "Split the first k combined scores into i from Finland and k-i from Sweden.",
+    "Binary-search i until neither excluded next score exceeds an included last score."
+  ],
+  "analogy": "A cut through two sorted lists is correct when every score to its left is at least every score to its right.",
+  "example": "For Finland [9,4,3], Sweden [8,6,1], and k=3, the first three are 9,8,6, so the answer is 6.",
+  "algorithm": "Binary-search i in [max(0,k-n),min(n,k)], with j=k-i. Query boundary elements F[i], F[i+1], S[j], S[j+1] as needed, treating out-of-range boundaries as infinities. If F[i] is smaller than S[j+1], decrease i; if S[j] is smaller than F[i+1], increase i. Otherwise output the smaller of the last included scores, ignoring empty sides. Flush each query and final answer.",
+  "correctness": "At a valid cut, the largest excluded score is below both relevant included boundary scores, so the left side contains exactly the k highest scores. Its smallest score is the kth. Each failed comparison determines which side needs more entries.",
+  "complexity": "For n<=100000, O(log n) rounds, at most 4*(ceil(log2(n+1))+1)<100 queries, and O(1) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "K-th Highest Score: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For Finland [9,4,3], Sweden [8,6,1], and k=3, the first three are 9,8,6, so the answer is 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Binary-search i in [max(0,k-n),min(n,k)], with j=k-i. Query boundary elements F[i], F[i+1], S[j], S[j+1] as needed, treating out-of-range boundaries as infinities. If F[i] is smaller than S[j+1], decrease i; if S[j] is smaller than F[i+1], increase i. Otherwise output the smaller of the last included scores, ignoring empty sides. Flush each query and final answer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "9",
+      "4",
+      "3",
+      "8",
+      "6",
+      "1"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For Finland [9,4,3], Sweden [8,6,1], and k=3, the first three are 9,8,6, so the answer is 6."
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "For each query interval of time [a,b], only movies fully contained in that interval can be watched.",
+    "Sort movies by ending time and precompute the next compatible movie after each one.",
+    "Binary lifting lets you jump through the greedy schedule for many selections."
+  ],
+  "analogy": "Answer each time window by repeatedly choosing the earliest-ending movie that fits, using jump pointers to skip many choices.",
+  "example": "For movies [1,3],[3,5],[5,7], interval [1,6] allows the first two, so answer 2.",
+  "algorithm": "Sort movies by end time; build successor links to the first movie starting at or after each end. Precompute powers of these links; for each query, find the first movie starting>=a and jump while its end<=b.",
+  "correctness": "Earliest-finish greedy is optimal for interval scheduling, and each jump table entry composes repeated valid next choices within the query boundary.",
+  "complexity": "O(n log n+q log n) time and O(n log n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Movie Festival Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For movies [1,3],[3,5],[5,7], interval [1,6] allows the first two, so answer 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort movies by end time; build successor links to the first movie starting at or after each end. Precompute powers of these links; for each query, find the first movie starting>=a and jump while its end<=b."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "3",
+      "5",
+      "7",
+      "6",
+      "2"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For movies [1,3],[3,5],[5,7], interval [1,6] allows the first two, so answer 2."
+  }
+}

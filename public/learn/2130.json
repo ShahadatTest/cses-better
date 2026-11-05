@@ -1,0 +1,83 @@
+{
+  "hints": [
+    "A teleporter may be used only once across all days.",
+    "Give each directed edge capacity one and cost one.",
+    "Find k units of minimum-cost flow, then decompose the final flow into k routes."
+  ],
+  "analogy": "Each day sends one unit through a network where each teleporter is a single-use ticket.",
+  "example": "With routes 1->2->4 and 1->3->4, two days cost four teleporters in total.",
+  "algorithm": "Build a unit-capacity, unit-cost residual network and send k units of minimum-cost flow from 1 to n with shortest augmenting paths and potentials. If fewer than k units are possible print -1. Otherwise follow positive flow edges from source to sink repeatedly, removing each recovered path, and print its vertices and the total cost.",
+  "correctness": "Integral flow decomposes into source-to-sink paths and cycles; an optimal positive-cost solution contains no flow cycle. Unit capacities make the paths edge-disjoint, and min-cost flow minimizes their total edge count.",
+  "complexity": "For n rooms, m teleporters and k days, O(k*m log n) time and O(n+m) space, plus output.",
+  "visual": {
+    "kind": "flow",
+    "title": "Distinct Routes II: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With routes 1->2->4 and 1->3->4, two days cost four teleporters in total."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a unit-capacity, unit-cost residual network and send k units of minimum-cost flow from 1 to n with shortest augmenting paths and potentials. If fewer than k units are possible print -1. Otherwise follow positive flow edges from source to sink repeatedly, removing each recovered path, and print its vertices and the total cost."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 36.66666666666667,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 63.333333333333336,
+        "y": 50
+      },
+      {
+        "id": "4",
+        "label": "4",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "4"
+      },
+      {
+        "from": "1",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "4"
+      }
+    ],
+    "caption": "Illustrative example - Two edge-disjoint routes from 1 to 4 use four teleporters in total."
+  }
+}

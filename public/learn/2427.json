@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "A move transfers a neighboring pair of letters into the current two empty boxes without reversing the pair.",
+    "Look for a pair that moves a B rightward across the gap or an A leftward across it.",
+    "When neither preferred move exists, use a two-move fallback; handle the tiny cases by searching their full state graph."
+  ],
+  "analogy": "The empty pair acts like a temporary parking space: a two-letter block moves into it, leaving a new gap behind.",
+  "example": "Starting from AB..BA, move the last BA into the gap to get ABBA..; then move BB into the new gap to get A..ABB.",
+  "algorithm": "For n<=3, breadth-first search all states until the letters ignoring dots are sorted, or report -1 if none is reachable. For n>=4, scan for the first BA or BB left of the dots and move it into the gap; if none exists, scan for the first AB or AA to the right and move it. If neither exists, move the first BA to the right into the gap, then move the first BB to the left into the new gap, or the first AB to its left if no BB exists. Repeat until every A precedes every B, recording the entire string after each move.",
+  "correctness": "Every recorded step moves two adjacent letters into the adjacent empty cells in their original order. The two priority scans and fallback form a constructive sorting procedure for n>=4 within 10n moves. For n<=3 the complete state graph is searched, so -1 is returned exactly when no target is reachable. The final state is checked directly by ignoring the dots and looking for a B before an A.",
+  "complexity": "O(n^2) time and O(n^2) space including the recorded states, with at most 10n moves; the small-case search has constant size.",
+  "visual": {
+    "kind": "trace",
+    "title": "Letter Pair Move Game: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Starting from AB..BA, move the last BA into the gap to get ABBA..; then move BB into the new gap to get A..ABB."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For n<=3, breadth-first search all states until the letters ignoring dots are sorted, or report -1 if none is reachable. For n>=4, scan for the first BA or BB left of the dots and move it into the gap; if none exists, scan for the first AB or AA to the right and move it. If neither exists, move the first BA to the right into the gap, then move the first BB to the left into the new gap, or the first AB to its left if no BB exists. Repeat until every A precedes every B, recording the entire string after each move."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "AB..BA",
+      "ABBA..",
+      "A..ABB"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Move BA into the gap, then move BB into the new gap."
+  }
+}

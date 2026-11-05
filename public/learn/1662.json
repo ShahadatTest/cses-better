@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "A subarray sum is divisible by n exactly when its two prefix sums have the same remainder modulo n.",
+    "Normalize negative remainders into 0..n-1.",
+    "Count each remainder's earlier occurrences; each matching pair of prefix boundaries makes one valid subarray."
+  ],
+  "analogy": "Prefix sums with the same remainder are separated by a whole multiple of n.",
+  "example": "With n=5 and values 3,1,2,7,4, equal prefix remainders identify the valid segment [3,1,2,7].",
+  "algorithm": "Start frequency[0]=1; accumulate prefix remainder ((sum%n)+n)%n, add its prior frequency to answer, then increment it.",
+  "correctness": "Equal remainders imply their difference is divisible by n; every divisible-sum subarray has equal endpoint remainders.",
+  "complexity": "O(n) time and O(n) frequency space.",
+  "visual": {
+    "kind": "array",
+    "title": "Subarray Divisibility: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5\n3 1 2 7 4"
+      },
+      {
+        "label": "Work through it",
+        "detail": "With n=5 and values 3,1,2,7,4, equal prefix remainders identify the valid segment [3,1,2,7]."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Start frequency[0]=1; accumulate prefix remainder ((sum%n)+n)%n, add its prior frequency to answer, then increment it."
+      },
+      {
+        "label": "Result",
+        "detail": "1"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5"
+      ],
+      [
+        "3  1  2  7  4"
+      ]
+    ],
+    "caption": "Illustrative example - With n=5 and values 3,1,2,7,4, equal prefix remainders identify the valid segment [3,1,2,7]."
+  }
+}

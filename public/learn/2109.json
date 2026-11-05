@@ -1,0 +1,69 @@
+{
+  "hints": [
+    "A suffix automaton represents each distinct substring as a path.",
+    "Unlike the distinct version, count each path endpoint by the number of occurrences of that substring.",
+    "Propagate occurrence counts along suffix links, then use weighted path counts to select k."
+  ],
+  "analogy": "A branch contains repeated copies of its word as well as all longer words beginning with it.",
+  "example": "For aba, sorted substrings are a, a, ab, aba, b, ba; k=2 gives a.",
+  "algorithm": "Build a suffix automaton, marking each non-clone state created for a new prefix with count 1 and clones with 0. Propagate counts to suffix links in decreasing length. Compute ways[v]=sum over transitions v->u of (occ[u]+ways[u]). Traverse transitions in character order, skipping groups by their sizes; after taking an edge, consume occ[u] copies of the current substring before continuing. Use wide counts.",
+  "correctness": "Every substring path ends at a state whose occurrence count is its number of end positions. Weighted path counts therefore list each substring with exactly its multiplicity, and lexicographic branch selection returns the requested copy.",
+  "complexity": "For n characters over 26 letters, O(26n) time and O(26n) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Substring Order II: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For aba, sorted substrings are a, a, ab, aba, b, ba; k=2 gives a."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a suffix automaton, marking each non-clone state created for a new prefix with count 1 and clones with 0. Propagate counts to suffix links in decreasing length. Compute ways[v]=sum over transitions v->u of (occ[u]+ways[u]). Traverse transitions in character order, skipping groups by their sizes; after taking an edge, consume occ[u] copies of the current substring before continuing. Use wide counts."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Rank",
+      "Substring"
+    ],
+    "rows": [
+      [
+        "1",
+        "a"
+      ],
+      [
+        "2",
+        "a"
+      ],
+      [
+        "3",
+        "ab"
+      ],
+      [
+        "4",
+        "aba"
+      ],
+      [
+        "5",
+        "b"
+      ],
+      [
+        "6",
+        "ba"
+      ]
+    ],
+    "caption": "Illustrative example - For the multiset of sorted substrings, rank 2 is a."
+  }
+}

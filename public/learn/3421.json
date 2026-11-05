@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "A subsequence chooses positions in order, and its chosen values must all be distinct.",
+    "When value x appears, append it only to previously valid subsequences that do not already contain x, plus the empty subsequence.",
+    "Track the total count and how many current subsequences contain each value."
+  ],
+  "analogy": "Each new value extends all earlier valid sequences that have not used that value before.",
+  "example": "For [1,2,1], valid nonempty subsequences are [1] at either position, [2], [1,2], and [2,1], totaling 5.",
+  "algorithm": "Let total be the number of nonempty valid subsequences seen, and used[x] count those containing x. For each x, save old=total; set total=2*total-used[x]+1 modulo 1e9+7, then set used[x]=old+1. The +1 adds singleton [x]; output total.",
+  "correctness": "Every old subsequence remains. New subsequences ending at x are exactly the valid old subsequences not containing x plus the empty sequence; their count is total-used[x]+1. After appending x, the new subsequences containing x number old total+1, giving the update.",
+  "complexity": "O(n) expected time and O(n) space using a hash map for used[x].",
+  "visual": {
+    "kind": "array",
+    "title": "Distinct Values Subsequences: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "4\n1 2 1 3"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,1], valid nonempty subsequences are [1] at either position, [2], [1,2], and [2,1], totaling 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let total be the number of nonempty valid subsequences seen, and used[x] count those containing x. For each x, save old=total; set total=2*total-used[x]+1 modulo 1e9+7, then set used[x]=old+1. The +1 adds singleton [x]; output total."
+      },
+      {
+        "label": "Result",
+        "detail": "11"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "4"
+      ],
+      [
+        "1  2  1  3"
+      ]
+    ],
+    "caption": "Illustrative example - For [1,2,1], valid nonempty subsequences are [1] at either position, [2], [1,2], and [2,1], totaling 5."
+  }
+}

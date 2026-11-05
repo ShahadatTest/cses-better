@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "A missing subsequence can be built one letter at a time.",
+    "For each suffix, know where each DNA letter next occurs.",
+    "Choose a letter that minimizes one plus the best answer after its earliest occurrence."
+  ],
+  "analogy": "At each step look for the earliest matching letter in the remaining strand; a missing letter ends the search.",
+  "example": "For ACGTACGT, AAA is absent, while every two-letter DNA sequence occurs, so length 3 is optimal.",
+  "algorithm": "Scan the string from right to left while maintaining the next occurrence of A, C, G and T. Let dp[i] be the shortest absent subsequence length in suffix starting at i. For each letter, its candidate is 1 if absent from the suffix, otherwise 1+dp[next occurrence+1]. Store the minimizing letter and next position. Follow these choices from position 0 until choosing a missing letter to reconstruct an answer.",
+  "correctness": "A sequence beginning with a letter is a subsequence exactly when its remainder is a subsequence after that letter?s earliest occurrence. Therefore each candidate gives the shortest missing sequence with that first letter, and taking the minimum gives the optimal answer.",
+  "complexity": "For DNA length n, time is O(n) and space O(n).",
+  "visual": {
+    "kind": "trace",
+    "title": "Shortest Subsequence: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For ACGTACGT, AAA is absent, while every two-letter DNA sequence occurs, so length 3 is optimal."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Scan the string from right to left while maintaining the next occurrence of A, C, G and T. Let dp[i] be the shortest absent subsequence length in suffix starting at i. For each letter, its candidate is 1 if absent from the suffix, otherwise 1+dp[next occurrence+1]. Store the minimizing letter and next position. Follow these choices from position 0 until choosing a missing letter to reconstruct an answer."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "DNA text",
+      "Candidate",
+      "Present?"
+    ],
+    "rows": [
+      [
+        "ACGTACGT",
+        "AAA",
+        "No"
+      ],
+      [
+        "ACGTACGT",
+        "every 2-letter string",
+        "Yes"
+      ]
+    ],
+    "caption": "Illustrative example - Every two-letter DNA sequence occurs, but AAA does not, so the shortest missing subsequence has length 3."
+  }
+}

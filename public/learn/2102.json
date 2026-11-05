@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "Many patterns share prefixes, so searching for each separately wastes work.",
+    "Build a trie of all patterns and add failure links as in KMP.",
+    "Scan the text once with Aho-Corasick, then propagate visited states along failure links."
+  ],
+  "analogy": "The trie is a shared dictionary; failure links tell you the longest useful suffix after a mismatch.",
+  "example": "In text ababa, patterns aba and bab occur, while ac does not.",
+  "algorithm": "Insert every pattern into a trie and build Aho-Corasick failure links in breadth-first order. Scan the text, recording which automaton states are visited. Propagate visits from each state to its failure parent in reverse breadth-first order. A pattern occurs exactly when its terminal state receives a visit.",
+  "correctness": "At each text position the automaton state represents the longest dictionary prefix that is a suffix of the scanned text. Its failure ancestors represent all shorter such suffixes, so propagation marks exactly the patterns ending at some position.",
+  "complexity": "For text length n, total pattern length L and fixed alphabet size 26, O(n+26L) time and O(26L) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Finding Patterns: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In text ababa, patterns aba and bab occur, while ac does not."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Insert every pattern into a trie and build Aho-Corasick failure links in breadth-first order. Scan the text, recording which automaton states are visited. Propagate visits from each state to its failure parent in reverse breadth-first order. A pattern occurs exactly when its terminal state receives a visit."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Text",
+      "Pattern",
+      "Occurs?"
+    ],
+    "rows": [
+      [
+        "ababa",
+        "aba",
+        "Yes"
+      ],
+      [
+        "ababa",
+        "bab",
+        "Yes"
+      ],
+      [
+        "ababa",
+        "ac",
+        "No"
+      ]
+    ],
+    "caption": "Illustrative example - The worked example compares multiple patterns with the same text."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "The final segment of a valid split must contain no duplicate.",
+    "A sliding window finds all valid starts of that final segment.",
+    "Sum the numbers of splits of the prefixes before those starts."
+  ],
+  "analogy": "Place the last cut anywhere that leaves a duplicate-free tail.",
+  "example": "For [1,2,1], the valid splits are [1][2][1], [1,2][1], and [1][2,1], giving 3.",
+  "algorithm": "Maintain left, the earliest start of a duplicate-free suffix ending at i, by moving it past the previous occurrence of x[i] when needed. Let dp[0]=1 and dp[i] be the number of valid splits of the first i elements. Then dp[i] is the sum of dp[j] for j from left-1 to i-1. Maintain prefix sums of dp to compute this range in O(1), modulo 1000000007.",
+  "correctness": "Every valid split has exactly one last segment, whose start lies in the maintained window. Removing that segment leaves an independently valid prefix split, and every such prefix split can be extended with the duplicate-free suffix. The recurrence counts each split exactly once.",
+  "complexity": "For n elements, time is expected O(n) with a hash map and space O(n).",
+  "visual": {
+    "kind": "trace",
+    "title": "Distinct Values Splits: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,1], the valid splits are [1][2][1], [1,2][1], and [1][2,1], giving 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain left, the earliest start of a duplicate-free suffix ending at i, by moving it past the previous occurrence of x[i] when needed. Let dp[0]=1 and dp[i] be the number of valid splits of the first i elements. Then dp[i] is the sum of dp[j] for j from left-1 to i-1. Maintain prefix sums of dp to compute this range in O(1), modulo 1000000007."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,1], the valid splits are [1][2][1], [1,2][1], and [1][2,1], giving 3."
+  }
+}

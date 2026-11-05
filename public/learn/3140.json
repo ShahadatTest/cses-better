@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Reversing a segment changes only inversions whose two endpoints are inside it.",
+    "Reversal swaps inverted and non-inverted pairs inside the segment.",
+    "Measure inversions in every suffix with two reversals, recover the permutation, then sort it."
+  ],
+  "analogy": "A reversed suffix turns every internal inverted pair into a non-inverted pair and vice versa, revealing how many inversions it contained.",
+  "example": "For [3,1,2], suffix inversion counts are 2,0,0. Their differences 2,0,0 say that 3 has two smaller values to its right, then 1 has none, then 2 has none.",
+  "algorithm": "First reverse a single position to learn the initial inversion count I; stop immediately whenever the judge reports 0. For each suffix i..n-1 of length L, reverse it and read Iprime, so its original inversion count is (L*(L-1)/2 - (Iprime-I))/2; reverse it again to restore the permutation. The last one-element suffix has zero inversions. Differences between consecutive suffix counts give the number of smaller remaining values to the right of each position. Recover each value as the (difference+1)-th smallest unused number using a Fenwick tree. Finally, for i=1 through n, reverse from i to the current position of value i, updating the known permutation. Flush and read after every operation, stopping as soon as the count is zero.",
+  "correctness": "Reversal flips the inversion status of every pair inside it, while all pairs with an endpoint outside retain their contribution. Consecutive suffix counts differ by exactly the number of smaller values following the first element, so selecting that rank reconstructs the permutation. Each final reversal places the correct value without disturbing earlier positions.",
+  "complexity": "For n elements, at most 1+2(n-1)+(n-1) <= 3n-2 operations, within 4n. Reconstruction and maintaining positions take O(n^2) time with direct array reversals and O(n) space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Inversion Sorting: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [3,1,2], suffix inversion counts are 2,0,0. Their differences 2,0,0 say that 3 has two smaller values to its right, then 1 has none, then 2 has none."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "First reverse a single position to learn the initial inversion count I; stop immediately whenever the judge reports 0. For each suffix i..n-1 of length L, reverse it and read Iprime, so its original inversion count is (L*(L-1)/2 - (Iprime-I))/2; reverse it again to restore the permutation. The last one-element suffix has zero inversions. Differences between consecutive suffix counts give the number of smaller remaining values to the right of each position. Recover each value as the (difference+1)-th smallest unused number using a Fenwick tree. Finally, for i=1 through n, reverse from i to the current position of value i, updating the known permutation. Flush and read after every operation, stopping as soon as the count is zero."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2",
+      "0"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [3,1,2], suffix inversion counts are 2,0,0. Their differences 2,0,0 say that 3 has two smaller values to its right, then 1 has none, then 2 has none."
+  }
+}

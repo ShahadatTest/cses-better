@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Insert lights in the order given; each one splits one existing gap into two.",
+    "Track the current gap lengths and the largest gap.",
+    "A multiset keeps duplicate gap lengths, while an ordered set of positions finds the neighbors."
+  ],
+  "analogy": "A new traffic light cuts one road segment into two smaller segments.",
+  "example": "On road length 10, inserting at 4 splits length 10 into 4 and 6; the largest gap is 6.",
+  "algorithm": "Keep positions including 0 and x in an ordered set and gap lengths in a multiset. For p, find neighbors l,r, erase r-l, insert p-l and r-p, then print the largest gap.",
+  "correctness": "Only the gap containing p changes; replacing it with its two parts maintains the exact set of current road gaps.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Traffic Lights: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "8 3\n3 6 2"
+      },
+      {
+        "label": "Work through it",
+        "detail": "On road length 10, inserting at 4 splits length 10 into 4 and 6; the largest gap is 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Keep positions including 0 and x in an ordered set and gap lengths in a multiset. For p, find neighbors l,r, erase r-l, insert p-l and r-p, then print the largest gap."
+      },
+      {
+        "label": "Result",
+        "detail": "5 3 3"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "8  3"
+      ],
+      [
+        "3  6  2"
+      ]
+    ],
+    "caption": "Illustrative example - On road length 10, inserting at 4 splits length 10 into 4 and 6; the largest gap is 6."
+  }
+}

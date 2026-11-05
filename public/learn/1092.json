@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "The total sum is n(n+1)/2; it must be even.",
+    "If divisible by 4, pairs from the ends can be grouped to give each set the same sum.",
+    "If the total is 2 mod 4, a constructive alternating pattern works; output each number exactly once."
+  ],
+  "analogy": "You are balancing a numbered pile; first check whether the total weight can be split evenly, then build groups that meet at half.",
+  "example": "For n=7, total 28. Sets {1,2,4,7} and {3,5,6} each total 14.",
+  "algorithm": "Reject when n(n+1)/2 is odd. Otherwise construct by processing blocks of four: when n mod 4 is 0, assign two smallest and two largest in each block to one side; when n mod 4 is 3, seed the groups with {1,2} and {3}, then use four-number blocks. Print sizes and elements.",
+  "correctness": "Equal-sum sets require an even total; the construction assigns each block equal weight, with the seed handling the n mod 4 = 3 case.",
+  "complexity": "O(n) time and O(n) space if storing both sets (or O(1) auxiliary space when streaming).",
+  "visual": {
+    "kind": "trace",
+    "title": "Two Sets: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "7"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=7, total 28. Sets {1,2,4,7} and {3,5,6} each total 14."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Reject when n(n+1)/2 is odd. Otherwise construct by processing blocks of four: when n mod 4 is 0, assign two smallest and two largest in each block to one side; when n mod 4 is 3, seed the groups with {1,2} and {3}, then use four-number blocks. Print sizes and elements."
+      },
+      {
+        "label": "Result",
+        "detail": "YES\n4\n1 2 4 7\n3\n3 5 6"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "7"
+      ]
+    ],
+    "caption": "Illustrative example - For n=7, total 28. Sets {1,2,4,7} and {3,5,6} each total 14."
+  }
+}

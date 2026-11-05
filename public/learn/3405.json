@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "OR has no direct inverse when a value leaves.",
+    "For each bit, count how many current elements have it set.",
+    "The window OR has a bit set exactly when its count is positive."
+  ],
+  "analogy": "Each bit has a vote count; it stays on until its last voter leaves.",
+  "example": "For [1,2,3] and k=2, window ORs are 3 and 3, so their XOR is 0.",
+  "algorithm": "Generate the values and maintain counts for each bit when inserting the incoming value and removing the outgoing one. Set or clear a bit in the current OR when its count crosses zero. XOR the OR of every full window into the answer. Store outgoing values in a circular buffer, or regenerate them with a second stream; use wide arithmetic in the generator.",
+  "correctness": "A bit belongs to the OR exactly when at least one window element contains it. The counts maintain that condition under each insertion and removal, so every accumulated window result is correct.",
+  "complexity": "For n elements, window size k and B relevant bits, O(nB) time and O(k+B) space with a buffer; a second generator stream uses O(B) space.",
+  "visual": {
+    "kind": "window",
+    "title": "Sliding Window Or: follow one example",
+    "caption": "Slide the active window and update its maintained state.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,3] and k=2, window ORs are 3 and 3, so their XOR is 0."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Generate the values and maintain counts for each bit when inserting the incoming value and removing the outgoing one. Set or clear a bit in the current OR when its count crosses zero. XOR the OR of every full window into the answer. Store outgoing values in a circular buffer, or regenerate them with a second stream; use wide arithmetic in the generator."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3",
+      "0"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,3] and k=2, window ORs are 3 and 3, so their XOR is 0."
+  }
+}

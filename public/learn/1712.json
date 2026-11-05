@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "The expression is a^(b^c) modulo 1,000,000,007, where the exponent itself is huge.",
+    "Because the modulus is prime, Fermat's theorem lets reduce the exponent modulo mod-1 when a is not divisible by mod.",
+    "Compute b^c mod mod-1 first, then compute a raised to that result modulo mod."
+  ],
+  "analogy": "Reduce the enormous exponent using the prime modulus cycle, then use fast powering twice.",
+  "example": "For modulus 7, if the exponent is 100, powers of a repeat every 6, so use 100 mod 6=4 when a is nonzero modulo 7.",
+  "correctness": "Fermat gives a^(mod-1)=1 for nonzero a modulo the prime; exponent reduction preserves the result, and the inner power computes the needed exponent residue.",
+  "complexity": "O(log c+log mod) time per test and O(1) space.",
+  "algorithm": "For each test compute e=b^c mod (MOD-1), then answer a^e mod MOD with binary exponentiation. Since inputs b,c are positive, the exponent is positive; if a is zero, the result is zero.",
+  "visual": {
+    "kind": "math",
+    "title": "Exponentiation II: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For modulus 7, if the exponent is 100, powers of a repeat every 6, so use 100 mod 6=4 when a is nonzero modulo 7."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each test compute e=b^c mod (MOD-1), then answer a^e mod MOD with binary exponentiation. Since inputs b,c are positive, the exponent is positive; if a is zero, the result is zero."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Quantity",
+      "Value"
+    ],
+    "rows": [
+      [
+        "Exponent",
+        "100"
+      ],
+      [
+        "Cycle length",
+        "6"
+      ],
+      [
+        "Reduced exponent",
+        "4"
+      ]
+    ],
+    "caption": "Illustrative example - Reduce exponent 100 modulo 6 before modular exponentiation."
+  }
+}

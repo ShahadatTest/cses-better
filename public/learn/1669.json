@@ -1,0 +1,73 @@
+{
+  "hints": [
+    "Run DFS while remembering the parent edge for each vertex.",
+    "A visited neighbor other than the parent indicates a cycle in this undirected graph.",
+    "Save parents and reconstruct the path from the current vertex through the ancestor back to itself."
+  ],
+  "analogy": "When exploration reaches a previously visited road destination through a different road, it has closed a loop.",
+  "example": "Edges 1-2,2-3,3-1 form a cycle; output the vertices around it and repeat the first at the end.",
+  "algorithm": "DFS with states and parent pointers. On a back edge to an active ancestor, trace parents to that ancestor, reverse the chain, and append the ancestor again.",
+  "correctness": "The back edge plus the unique DFS-tree path between its endpoints forms a cycle; every reported consecutive pair is an input edge.",
+  "complexity": "O(n+m) time and O(n+m) space.",
+  "visual": {
+    "kind": "graph",
+    "title": "Round Trip: follow one example",
+    "caption": "Follow how a state moves through connected choices.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Edges 1-2,2-3,3-1 form a cycle; output the vertices around it and repeat the first at the end."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "DFS with states and parent pointers. On a back edge to an active ancestor, trace parents to that ancestor, reverse the chain, and append the ancestor again."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "1",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "2",
+        "label": "2",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "3",
+        "label": "3",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "from": "3",
+        "to": "1"
+      }
+    ],
+    "caption": "Illustrative example - Edges 1-2,2-3,3-1 form a cycle; output the vertices around it and repeat the first at the end."
+  }
+}

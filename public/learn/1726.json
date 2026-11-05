@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "There is one robot on every square; each robot independently takes k random legal orthogonal moves.",
+    "For each starting square, propagate its probability across up/down/left/right neighbors, dividing equally among legal moves.",
+    "For each final square, multiply the chance each robot misses it, then sum those empty-square probabilities."
+  ],
+  "analogy": "Each robot spreads probability across nearby squares; a square is empty only if all 64 robots miss it.",
+  "example": "At k=1, a corner robot chooses among its two legal neighboring squares with probability 1/2 each; it cannot stay on the corner.",
+  "algorithm": "For each of 64 starting cells, run k probability steps, distributing equally among its legal up/down/left/right neighbors. For each destination cell multiply (1-probability from start i) across all starts; sum all 64 empty probabilities.",
+  "correctness": "Robots move independently, so the chance a square is empty is the product of each robot's chance not to be there. The expected number of empty squares is the sum of these probabilities.",
+  "complexity": "O(64*k*8+64^2) time for the fixed board and O(64) probability storage.",
+  "visual": {
+    "kind": "math",
+    "title": "Moving Robots: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "At k=1, a corner robot chooses among its two legal neighboring squares with probability 1/2 each; it cannot stay on the corner."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each of 64 starting cells, run k probability steps, distributing equally among its legal up/down/left/right neighbors. For each destination cell multiply (1-probability from start i) across all starts; sum all 64 empty probabilities."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "Robot",
+        "Possible",
+        ""
+      ],
+      [
+        "Possible",
+        "",
+        ""
+      ]
+    ],
+    "path": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "caption": "Illustrative example - At a corner, a robot has two legal neighboring cells and cannot remain in place."
+  }
+}

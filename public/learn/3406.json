@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "A triangular number has form k(k+1)/2.",
+    "Check first whether n itself is triangular; if not, try pairs of triangular numbers summing to n.",
+    "Every positive integer is a sum of at most three triangular numbers."
+  ],
+  "analogy": "Test whether the target is one triangular pile, then two; if neither works, three always suffice.",
+  "example": "42=21+21, so its minimum count is 2 because 42 is not itself triangular.",
+  "algorithm": "Generate triangular numbers up to the maximum n. For each test, use an integer-square-root test on 8n+1 to check one term; otherwise two-pointer search the sorted triangular list for a pair summing to n; if no pair exists, answer 3.",
+  "correctness": "The one-term and two-term searches are exhaustive over their possible triangular values. Gauss's theorem guarantees every positive integer is a sum of three triangular numbers, so returning 3 after both checks is valid and minimal.",
+  "complexity": "O(sqrt N) time per test for the two-pointer search and O(sqrt N) storage, where N is the largest n.",
+  "visual": {
+    "kind": "math",
+    "title": "Triangle Number Sums: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "42=21+21, so its minimum count is 2 because 42 is not itself triangular."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Generate triangular numbers up to the maximum n. For each test, use an integer-square-root test on 8n+1 to check one term; otherwise two-pointer search the sorted triangular list for a pair summing to n; if no pair exists, answer 3."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Triangular number",
+      "Value"
+    ],
+    "rows": [
+      [
+        "T(6)",
+        "21"
+      ],
+      [
+        "T(6) + T(6)",
+        "42"
+      ]
+    ],
+    "caption": "Illustrative example - 42 needs two triangular numbers because it is not itself triangular."
+  }
+}

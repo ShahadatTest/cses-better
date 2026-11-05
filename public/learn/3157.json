@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "A new collection round begins when i+1 is located before i.",
+    "The number of rounds is one plus the number of descents in the inverse permutation.",
+    "Permutations with a fixed number of descents are counted by Eulerian numbers."
+  ],
+  "analogy": "The positions of 1,2,... form a permutation; every descent forces another pass.",
+  "example": "For n=3, the counts for 1, 2, and 3 rounds are 1, 4, and 1.",
+  "algorithm": "Let E(i,d) count permutations of i elements with d descents. Initialize E(1,0)=1 and use E(i,d)=(d+1)*E(i-1,d)+(i-d)*E(i-1,d-1), with missing states zero. Compute rows modulo 1000000007 using two arrays. Print E(n,k-1) for k=1..n.",
+  "correctness": "The inverse positions form a permutation, and every descent between consecutive values forces exactly one new collection round. Inserting the largest element into a permutation with d descents has d+1 positions preserving the descent count and i-d positions that increase it from d-1. This gives the recurrence and counts each permutation once.",
+  "complexity": "For n elements, time is O(n^2) and space O(n).",
+  "visual": {
+    "kind": "dp",
+    "title": "Collecting Numbers Distribution: follow one example",
+    "caption": "Read each state as a smaller subproblem feeding later states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3, the counts for 1, 2, and 3 rounds are 1, 4, and 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Let E(i,d) count permutations of i elements with d descents. Initialize E(1,0)=1 and use E(i,d)=(d+1)*E(i-1,d)+(i-d)*E(i-1,d-1), with missing states zero. Compute rows modulo 1000000007 using two arrays. Print E(n,k-1) for k=1..n."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "1",
+      "2",
+      "4"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=3, the counts for 1, 2, and 3 rounds are 1, 4, and 1."
+  }
+}

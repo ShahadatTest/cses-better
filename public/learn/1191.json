@@ -1,0 +1,44 @@
+{
+  "hints": [
+    "Try a starting position and greedily take the longest segment of sum at most k.",
+    "Duplicate the array so a full turn becomes a linear interval.",
+    "Use binary lifting over greedy next positions to evaluate all starts quickly."
+  ],
+  "analogy": "From each cut, jump as far as the budget allows until you have covered one full circle.",
+  "example": "For cyclic [2,2,2] with k=4, one segment can cover two values and another covers the last, so the answer is 2.",
+  "algorithm": "Duplicate the array. Use a two-pointer window to find next[i], the first position after the longest segment starting at i whose sum is at most k. Build binary lifting tables for repeated next jumps. For each original start i, use lifting to make the largest number of jumps that still ends before i+n, then add one final segment. Take the minimum over all starts. Use 64-bit sums.",
+  "correctness": "All values are positive, so a valid segment can be extended greedily as far as possible without making the remaining coverage harder. Therefore repeated next jumps give the fewest segments for each fixed start. Every cyclic partition has a segment boundary at some original position, so considering all starts includes an optimal boundary.",
+  "complexity": "For n elements, two pointers take O(n), lifting and all start queries take O(n log n), and space is O(n log n).",
+  "visual": {
+    "kind": "trace",
+    "title": "Cyclic Array: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For cyclic [2,2,2] with k=4, one segment can cover two values and another covers the last, so the answer is 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Duplicate the array. Use a two-pointer window to find next[i], the first position after the longest segment starting at i whose sum is at most k. Build binary lifting tables for repeated next jumps. For each original start i, use lifting to make the largest number of jumps that still ends before i+n, then add one final segment. Take the minimum over all starts. Use 64-bit sums."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "[2,2]",
+      "[2]"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For cyclic [2,2,2] and target 4, one segment covers two values and the next covers the last."
+  }
+}

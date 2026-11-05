@@ -1,0 +1,56 @@
+{
+  "hints": [
+    "Use a shared trie so common pattern prefixes are processed once.",
+    "Count visits to automaton states while scanning the text.",
+    "Push counts along failure links in reverse breadth-first order."
+  ],
+  "analogy": "Each position deposits a token at its longest matching prefix; failure links pass the token to shorter suffix matches.",
+  "example": "In ababa, aba occurs twice and bab occurs once, including overlapping occurrences.",
+  "algorithm": "Build the Aho-Corasick automaton for all patterns. Scan the text and increment the reached state at every position. Process states in reverse breadth-first order, adding each count to its failure parent. Output the count at each pattern's terminal state.",
+  "correctness": "A pattern ends at a position exactly when its terminal node is the current state or a failure ancestor. Reverse propagation adds precisely one contribution for every such position, including overlaps.",
+  "complexity": "For text length n and total pattern length L over 26 letters, O(n+26L) time and O(26L) space.",
+  "visual": {
+    "kind": "string",
+    "title": "Counting Patterns: follow one example",
+    "caption": "Follow positions, prefixes, and matches along the string.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In ababa, aba occurs twice and bab occurs once, including overlapping occurrences."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build the Aho-Corasick automaton for all patterns. Scan the text and increment the reached state at every position. Process states in reverse breadth-first order, adding each count to its failure parent. Output the count at each pattern's terminal state."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Text",
+      "Pattern",
+      "Occurrences"
+    ],
+    "rows": [
+      [
+        "ababa",
+        "aba",
+        "2"
+      ],
+      [
+        "ababa",
+        "bab",
+        "1"
+      ]
+    ],
+    "caption": "Illustrative example - Overlapping occurrences count."
+  }
+}

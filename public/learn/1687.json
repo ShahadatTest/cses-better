@@ -1,0 +1,53 @@
+{
+  "hints": [
+    "The input asks for the kth ancestor of a node, with k potentially large.",
+    "Precompute each node's 2^j-th ancestor from two 2^(j-1) jumps.",
+    "Decompose k into powers of two and lift the node for each set bit."
+  ],
+  "analogy": "Climb a huge number of manager links in jumps of 1,2,4,8,... steps.",
+  "example": "If k=5=4+1, jump four ancestors and then one more.",
+  "correctness": "The table entries are exact compositions of parent links, and every k is a sum of powers of two, so the selected jumps reach the kth ancestor.",
+  "complexity": "O(n log n+q log n) time and O(n log n) space.",
+  "algorithm": "Root the company tree at employee 1 and precompute binary ancestors up[j][v], the 2^j-th manager of v. For query (v,k), apply jumps for set bits of k; if the ancestor does not exist, print -1.",
+  "visual": {
+    "kind": "tree",
+    "title": "Company Queries I: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If k=5=4+1, jump four ancestors and then one more."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Root the company tree at employee 1 and precompute binary ancestors up[j][v], the 2^j-th manager of v. For query (v,k), apply jumps for set bits of k; if the ancestor does not exist, print -1."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Binary jump",
+      "Remaining k"
+    ],
+    "rows": [
+      [
+        "4",
+        "1"
+      ],
+      [
+        "1",
+        "0"
+      ]
+    ],
+    "caption": "Illustrative example - A five-ancestor jump is decomposed into 4 plus 1."
+  }
+}

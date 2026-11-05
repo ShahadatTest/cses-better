@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "XOR combinations form a vector space over bits.",
+    "Build a basis with at most one pivot for each highest set bit.",
+    "Greedily XOR basis vectors from high pivot to low when that increases the answer."
+  ],
+  "analogy": "A basis is a small toolbox from which every obtainable XOR can be assembled.",
+  "example": "For [1,6,12], choosing 1 and 12 gives 13, the maximum subset XOR.",
+  "algorithm": "Insert each value into an XOR basis: eliminate its highest set bit using an existing vector, or store it as the vector for that pivot if none exists. Starting from zero, inspect basis vectors from highest pivot downward and XOR a vector whenever the result increases.",
+  "correctness": "Elimination preserves the set of representable XORs. At each pivot, setting that highest undecided bit improves the number more than any lower bits can offset; greedy choices therefore give the maximum.",
+  "complexity": "For n values and B bits, O(nB+B^2) time and O(B) space.",
+  "visual": {
+    "kind": "bitwise",
+    "title": "Maximum Xor Subset: follow one example",
+    "caption": "Track the binary state and the effect of each bit operation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,6,12], choosing 1 and 12 gives 13, the maximum subset XOR."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Insert each value into an XOR basis: eliminate its highest set bit using an existing vector, or store it as the vector for that pivot if none exists. Starting from zero, inspect basis vectors from highest pivot downward and XOR a vector whenever the result increases."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1 (binary 1)",
+      "6 (binary 110)",
+      "12 (binary 1100)",
+      "13 (binary 1101)"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,6,12], choosing 1 and 12 gives 13, the maximum subset XOR."
+  }
+}

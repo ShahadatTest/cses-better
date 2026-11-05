@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "The answer can contain fewer strings than n!, because equal letters do not create a new distinct string.",
+    "Sort the letters, then repeatedly take the next lexicographic permutation.",
+    "A standard next-permutation step skips duplicate arrangements naturally."
+  ],
+  "analogy": "Arrange letter tiles in dictionary order and move to the next distinct ordering.",
+  "example": "For aab, the distinct sorted results are aab, aba, baa: the repeated a does not double the count.",
+  "algorithm": "Sort the input, output it, then apply the next-lexicographic-permutation operation until no successor exists; count how many were emitted.",
+  "correctness": "Starting from the sorted arrangement gives the smallest string, and next permutation visits every distinct arrangement exactly once in sorted order.",
+  "complexity": "O(k*n) time and O(n) working space, where n is string length and k is the number of distinct permutations.",
+  "visual": {
+    "kind": "trace",
+    "title": "Creating Strings: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "aabac"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For aab, the distinct sorted results are aab, aba, baa: the repeated a does not double the count."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort the input, output it, then apply the next-lexicographic-permutation operation until no successor exists; count how many were emitted."
+      },
+      {
+        "label": "Result",
+        "detail": "20\naaabc\naaacb\naabac\naabca\naacab\naacba\nabaac\nabaca\nabcaa\nacaab\nacaba\nacbaa\nbaaac\nbaaca\nbacaa\nbcaaa\ncaaab\ncaaba\ncabaa\ncbaaa"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "aabac"
+      ]
+    ],
+    "caption": "Illustrative example - For aab, the distinct sorted results are aab, aba, baa: the repeated a does not double the count."
+  }
+}

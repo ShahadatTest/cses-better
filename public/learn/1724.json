@@ -1,0 +1,71 @@
+{
+  "hints": [
+    "The route must use exactly k flights, and a cheapest route may revisit cities.",
+    "Store the minimum direct edge cost from i to j, or infinity if none exists.",
+    "Use matrix multiplication where combining paths adds costs and choosing between them takes the minimum."
+  ],
+  "analogy": "The min-plus version of matrix multiplication combines route costs instead of counting routes.",
+  "example": "If i->j costs 4 and j->k costs 3, that two-flight route costs 7.",
+  "algorithm": "Set matrix A[i][j] to the cheapest direct edge. Binary exponentiate under min-plus operations: product[i][j]=min over x of left[i][x]+right[x][j]. Answer A^k[1][n], or -1 if unreachable.",
+  "correctness": "Each matrix power represents the cheapest walk of that exact length; the min over intermediate city x considers every possible split of the route.",
+  "complexity": "O(n^3 log k) time and O(n^2) space.",
+  "visual": {
+    "kind": "math",
+    "title": "Graph Paths II: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If i->j costs 4 and j->k costs 3, that two-flight route costs 7."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Set matrix A[i][j] to the cheapest direct edge. Binary exponentiate under min-plus operations: product[i][j]=min over x of left[i][x]+right[x][j]. Answer A^k[1][n], or -1 if unreachable."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "i",
+        "label": "i",
+        "x": 10,
+        "y": 50
+      },
+      {
+        "id": "j",
+        "label": "j",
+        "x": 50,
+        "y": 50
+      },
+      {
+        "id": "k",
+        "label": "k",
+        "x": 90,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "i",
+        "to": "j",
+        "label": "cost 4"
+      },
+      {
+        "from": "j",
+        "to": "k",
+        "label": "cost 3"
+      }
+    ],
+    "caption": "Illustrative example - The two-flight route costs 4+3=7."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "hints": [
+    "Placing the largest remaining value first creates one inversion with each smaller remaining value.",
+    "Use as many of those inversions as possible while k is large.",
+    "When fewer than the maximum remain, place one appropriately ranked value and then list the rest increasingly."
+  ],
+  "analogy": "Each selected value spends one inversion for every smaller unused value left behind it.",
+  "example": "For n=4 and k=4, output [4,2,1,3]: 4 contributes 3 inversions and 2 contributes 1.",
+  "algorithm": "Maintain the unused numbers as an ordered sequence. At each position with r numbers remaining, choose the (min(k,r-1)+1)-th smallest unused number, subtract that many smaller unused numbers from k, and remove it. A Fenwick tree supports selection, or exploit the greedy structure to output full descending largest values followed by one pivot and the remaining values increasingly.",
+  "correctness": "The chosen value creates exactly one inversion with each smaller unused number. The greedy spends at most r-1 inversions per position and always leaves a feasible remainder; after all positions the total spent is the original k.",
+  "complexity": "For n values, O(n) time and O(1) extra space with the descending-prefix construction, excluding output.",
+  "visual": {
+    "kind": "grid",
+    "title": "Inverse Inversions: follow one example",
+    "caption": "Follow the construction or state across rows and columns.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=4 and k=4, output [4,2,1,3]: 4 contributes 3 inversions and 2 contributes 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain the unused numbers as an ordered sequence. At each position with r numbers remaining, choose the (min(k,r-1)+1)-th smallest unused number, subtract that many smaller unused numbers from k, and remove it. A Fenwick tree supports selection, or exploit the greedy structure to output full descending largest values followed by one pivot and the remaining values increasingly."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "4",
+      "2",
+      "1",
+      "3"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For n=4 and k=4, output [4,2,1,3]: 4 contributes 3 inversions and 2 contributes 1."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    "A range sum changes by a point update, so maintain a segment tree of sums.",
+    "For every node interval, store both its total sum and the best prefix sum inside it.",
+    "When joining left and right intervals, best prefix is max(left.best, left.sum+right.best)."
+  ],
+  "analogy": "The best prefix either stops inside the left half or takes all of it and continues into the right.",
+  "example": "For segment [-2,3], total is 1 and best prefix is 1; either take -2+3 or just the first? max(-2,1)=1.",
+  "correctness": "Any prefix of a concatenated interval either ends in A or includes all A and a prefix of B; the merge checks exactly those cases.",
+  "complexity": "O(n) build, O(log n) per operation, O(n) space.",
+  "algorithm": "Build a segment tree with each node storing segment sum and best prefix sum. Merge left A and right B as sum=A.sum+B.sum, prefix=max(A.prefix,A.sum+B.prefix). For type 1 point assignment, rebuild ancestors; for type 2 range query, merge covered nodes in left-to-right order and output best prefix.",
+  "visual": {
+    "kind": "range",
+    "title": "Prefix Sum Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For segment [-2,3], total is 1 and best prefix is 1; either take -2+3 or just the first? max(-2,1)=1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a segment tree with each node storing segment sum and best prefix sum. Merge left A and right B as sum=A.sum+B.sum, prefix=max(A.prefix,A.sum+B.prefix). For type 1 point assignment, rebuild ancestors; for type 2 range query, merge covered nodes in left-to-right order and output best prefix."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "-2",
+      "3",
+      "1"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For segment [-2,3], total and best prefix are 1. The best prefix is max(-2,1)=1."
+  }
+}

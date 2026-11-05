@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "For each right endpoint, find the earliest left endpoint that keeps all values distinct.",
+    "Maintain last-seen positions; when value x repeats inside the window, move left past its previous position.",
+    "The number of valid subarrays ending at right is right-left+1."
+  ],
+  "analogy": "A sliding window grows until a repeated value forces its left edge past the earlier copy.",
+  "example": "For 1,2,1,3, at the final 3 the unique suffix is 2,1,3, adding three valid subarrays.",
+  "algorithm": "Track last positions and a left boundary. For each index i, update left=max(left,last[a[i]]+1), add i-left+1, and store last[a[i]]=i.",
+  "correctness": "Every valid subarray ending at i starts at or after left, and every such start works; counting these contributions counts each distinct-value subarray once.",
+  "complexity": "O(n) expected time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Distinct Values Subarrays: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "4\n1 2 1 3"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 1,2,1,3, at the final 3 the unique suffix is 2,1,3, adding three valid subarrays."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Track last positions and a left boundary. For each index i, update left=max(left,last[a[i]]+1), add i-left+1, and store last[a[i]]=i."
+      },
+      {
+        "label": "Result",
+        "detail": "8"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "4"
+      ],
+      [
+        "1  2  1  3"
+      ]
+    ],
+    "caption": "Illustrative example - For 1,2,1,3, at the final 3 the unique suffix is 2,1,3, adding three valid subarrays."
+  }
+}

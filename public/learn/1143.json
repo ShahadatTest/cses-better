@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Each hotel has a remaining capacity, and a group needs one hotel with capacity at least its size.",
+    "A segment tree stores the maximum capacity in each interval.",
+    "At each request, descend left first where the maximum is large enough, assign that earliest hotel, then reduce its capacity."
+  ],
+  "analogy": "Use interval maximums to skip every block of hotels that cannot fit the next group.",
+  "example": "Capacities 3,5,4 and request 4 fit the first suitable hotel, index 2; its remaining capacity becomes 1.",
+  "algorithm": "Build a max segment tree. For request x, if root maximum<x output 0; otherwise descend to the leftmost leaf with value>=x, subtract x, and output its index.",
+  "correctness": "The left-first descent selects the earliest eligible hotel; the stored maximum proves skipped subtrees contain no fit, and updating the leaf preserves later searches.",
+  "complexity": "O((n+q) log n) time and O(n) space.",
+  "visual": {
+    "kind": "range",
+    "title": "Hotel Queries: follow one example",
+    "caption": "See which interval contributes to the query or update.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "Capacities 3,5,4 and request 4 fit the first suitable hotel, index 2; its remaining capacity becomes 1."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build a max segment tree. For request x, if root maximum<x output 0; otherwise descend to the leftmost leaf with value>=x, subtract x, and output its index."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "3",
+      "5",
+      "4",
+      "2",
+      "1"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - Capacities 3,5,4 and request 4 fit the first suitable hotel, index 2; its remaining capacity becomes 1."
+  }
+}

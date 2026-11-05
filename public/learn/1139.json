@@ -1,0 +1,51 @@
+{
+  "hints": [
+    "For each node, count the distinct color labels in its subtree.",
+    "A subtree is a contiguous interval in Euler order, so offline queries can be sorted by right endpoint.",
+    "Maintain a Fenwick marker only at the latest occurrence of each color in the processed prefix."
+  ],
+  "analogy": "Sweep the flattened tree order and leave one marker at each color's latest occurrence.",
+  "example": "If a subtree interval contains red at positions 2 and 5, the marker at 5 counts red once when the query ends at 5.",
+  "algorithm": "Euler-tour the tree to obtain subtree intervals. Sort nodes by tout; sweep positions, moving each color's Fenwick marker to its latest position, then query [tin,tout].",
+  "correctness": "A color has exactly one marker in a subtree interval if and only if its latest occurrence before that interval's right endpoint lies inside the interval.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "tree",
+    "title": "Distinct Colors: follow one example",
+    "caption": "Read the structure from parent to child and combine subtree or path states.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "If a subtree interval contains red at positions 2 and 5, the marker at 5 counts red once when the query ends at 5."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Euler-tour the tree to obtain subtree intervals. Sort nodes by tout; sweep positions, moving each color's Fenwick marker to its latest position, then query [tin,tout]."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "intervals",
+    "items": [
+      {
+        "label": "Subtree positions with red",
+        "start": 2,
+        "end": 2
+      },
+      {
+        "label": "Subtree positions with red",
+        "start": 5,
+        "end": 5
+      }
+    ],
+    "caption": "Illustrative example - The marker at position 5 counts the last red occurrence once."
+  }
+}

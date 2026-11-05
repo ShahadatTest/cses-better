@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "Different moves measure different kinds of disorder.",
+    "Cycles describe arbitrary swaps; increasing subsequences describe moving elements anywhere.",
+    "For moves only to the front, keep the longest final consecutive suffix already in order."
+  ],
+  "analogy": "Each operation has its own measure of what can stay untouched.",
+  "example": "For [2,1,3], one adjacent swap, one arbitrary swap, one move anywhere, or moving 1 to the front each sorts the array.",
+  "algorithm": "Count inversions using a Fenwick tree for adjacent swaps. Decompose the permutation into cycles and sum cycle length minus one for arbitrary swaps. Compute n minus the length of a longest increasing subsequence for moves to arbitrary positions. For moves to the front, scan from right to left looking for n,n-1,...; if t consecutive largest values are found in that order, output n-t. Print the four values in the requested order.",
+  "correctness": "An adjacent swap changes inversion count by at most one, and bubble sorting achieves it. A cycle of length L needs L-1 arbitrary swaps. Elements never moved by the third method must form an increasing subsequence, and an LIS can stay. For front moves, untouched values must form the increasing suffix k,k+1,...,n; keeping the longest such suffix and moving the rest in descending value order is optimal.",
+  "complexity": "For n elements, inversion counting and LIS take O(n log n) time; all other steps take O(n). Space is O(n).",
+  "visual": {
+    "kind": "trace",
+    "title": "Sorting Methods: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [2,1,3], one adjacent swap, one arbitrary swap, one move anywhere, or moving 1 to the front each sorts the array."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Count inversions using a Fenwick tree for adjacent swaps. Decompose the permutation into cycles and sum cycle length minus one for arbitrary swaps. Compute n minus the length of a longest increasing subsequence for moves to arbitrary positions. For moves to the front, scan from right to left looking for n,n-1,...; if t consecutive largest values are found in that order, output n-t. Print the four values in the requested order."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Sorting operation",
+      "Example action"
+    ],
+    "rows": [
+      [
+        "Adjacent swap",
+        "swap 2 and 1"
+      ],
+      [
+        "Arbitrary swap",
+        "swap values 2 and 1"
+      ],
+      [
+        "Move anywhere",
+        "move 1 to the front"
+      ],
+      [
+        "Move minimum",
+        "move 1 to the front"
+      ]
+    ],
+    "caption": "Illustrative example - Each listed operation sorts [2,1,3] in one operation."
+  }
+}

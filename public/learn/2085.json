@@ -1,0 +1,48 @@
+{
+  "hints": [
+    "Let dp[i] be the cheapest cost ending by killing monster i.",
+    "Each earlier kill contributes a line with slope equal to its new factor.",
+    "Use a Li Chao tree because strengths and factors need not be ordered."
+  ],
+  "analogy": "Each possible last skill offers a cost line; query the lowest line at the current strength.",
+  "example": "With initial factor 10, strengths [2,3], and factors [1,1], killing both costs 23 while killing only the final monster costs 30.",
+  "algorithm": "Insert the initial line y=x_initial*t into a minimum Li Chao tree over strengths 1 through 10^6. For each i, query at s[i] to get dp[i], then insert y=f[i]*t+dp[i]. Print dp[n], using wide integer arithmetic.",
+  "correctness": "The last kill before i determines both the previous minimum cost and the factor used at i. Its line evaluates to that transition, and querying all prior lines finds the exact minimum.",
+  "complexity": "For n levels and coordinate domain X=10^6, O(n log X) time and O(X) space with a fixed tree.",
+  "visual": {
+    "kind": "flow",
+    "title": "Monster Game II: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "With initial factor 10, strengths [2,3], and factors [1,1], killing both costs 23 while killing only the final monster costs 30."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Insert the initial line y=x_initial*t into a minimum Li Chao tree over strengths 1 through 10^6. For each i, query at s[i] to get dp[i], then insert y=f[i]*t+dp[i]. Print dp[n], using wide integer arithmetic."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "10",
+      "2",
+      "3",
+      "1",
+      "23",
+      "30"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - With initial factor 10, strengths [2,3], and factors [1,1], killing both costs 23 while killing only the final monster costs 30."
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "hints": [
+    "The maximum candy count is k, and each of n children independently receives a uniform integer from 1 to k.",
+    "The maximum equals r when all choices are at most r, minus the chance they are all at most r-1.",
+    "Sum r times the probability that the maximum equals r."
+  ],
+  "analogy": "Use cumulative probabilities: all children stay below a threshold with probability (threshold/k)^n.",
+  "example": "For one child, the maximum is uniform 1..k, so its expected value is (k+1)/2.",
+  "correctness": "The event max<=r means every independent child chooses one of r values, so its probability is (r/k)^n; differencing gives exact max probabilities.",
+  "complexity": "O(k log n) using exponentiation by squaring per r, O(1) extra space.",
+  "algorithm": "For each possible maximum r=1..k, P(max=r)=(r/k)^n-((r-1)/k)^n. Sum r*P(max=r) using floating-point arithmetic and print six decimals.",
+  "visual": {
+    "kind": "math",
+    "title": "Candy Lottery: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For one child, the maximum is uniform 1..k, so its expected value is (k+1)/2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each possible maximum r=1..k, P(max=r)=(r/k)^n-((r-1)/k)^n. Sum r*P(max=r) using floating-point arithmetic and print six decimals."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Maximum face",
+      "Probability"
+    ],
+    "rows": [
+      [
+        "1",
+        "1/k"
+      ],
+      [
+        "2",
+        "1/k"
+      ],
+      [
+        "...",
+        "..."
+      ],
+      [
+        "k",
+        "1/k"
+      ],
+      [
+        "Expected value",
+        "(k+1)/2"
+      ]
+    ],
+    "caption": "Illustrative example - For one child each value from 1 through k is equally likely."
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "hints": [
+    "Represent one bits by 1 and zero bits by 0.",
+    "For distance d, sum s[i]*s[i+d] over valid i.",
+    "This correlation becomes a convolution after reversing one copy of the string."
+  ],
+  "analogy": "Slide a reversed copy against the original; each overlap of two ones contributes a match.",
+  "example": "In 1011, distance 1 has one pair, distance 2 has one, and distance 3 has one.",
+  "algorithm": "Make an array A of the bits and B as A reversed. Convolve A and B using FFT with careful rounding or an exact NTT. For each distance d from 1 to n-1, output coefficient n-1+d.",
+  "correctness": "The coefficient at n-1+d sums A[i+d]*A[i] over all valid i, so it counts exactly pairs of one bits separated by d.",
+  "complexity": "For length n, O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "flow",
+    "title": "One Bit Positions: follow one example",
+    "caption": "Follow the main operation from input state to derived result.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "In 1011, distance 1 has one pair, distance 2 has one, and distance 3 has one."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Make an array A of the bits and B as A reversed. Convolve A and B using FFT with careful rounding or an exact NTT. For each distance d from 1 to n-1, output coefficient n-1+d."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Distance",
+      "Pair count"
+    ],
+    "rows": [
+      [
+        "1",
+        "1"
+      ],
+      [
+        "2",
+        "1"
+      ],
+      [
+        "3",
+        "1"
+      ]
+    ],
+    "caption": "Illustrative example - The 1-bits in 1011 give one pair at each shown distance."
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "hints": [
+    "Sort points by x, breaking ties by y.",
+    "Build lower and upper chains, removing turns that bend inward.",
+    "Keep collinear boundary points: remove only strict clockwise turns."
+  ],
+  "analogy": "Stretch a rubber band around the points, retaining every point lying on its boundary.",
+  "example": "For (0,0),(1,0),(2,0),(2,1),(0,1), all five points lie on the hull boundary.",
+  "algorithm": "Sort points lexicographically. Build lower and upper chains in opposite orders; while the last two chain points and the new point make a strict clockwise turn, remove the last point. Append the new point. Concatenate chains, omitting duplicated endpoints. Use wide cross products.",
+  "correctness": "Each chain removes exactly inward bends and retains collinear edge points. The resulting two outer chains bound all points and contain every input point on the boundary.",
+  "complexity": "For n points, O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "geometry",
+    "title": "Convex Hull: follow one example",
+    "caption": "Track the points, boundaries, and geometric relationship involved.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For (0,0),(1,0),(2,0),(2,1),(0,1), all five points lie on the hull boundary."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sort points lexicographically. Build lower and upper chains in opposite orders; while the last two chain points and the new point make a strict clockwise turn, remove the last point. Append the new point. Concatenate chains, omitting duplicated endpoints. Use wide cross products."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "graph",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "(0,0)",
+        "x": 10,
+        "y": 90
+      },
+      {
+        "id": "2",
+        "label": "(1,0)",
+        "x": 50,
+        "y": 90
+      },
+      {
+        "id": "3",
+        "label": "(2,0)",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "id": "4",
+        "label": "(2,1)",
+        "x": 90,
+        "y": 10
+      },
+      {
+        "id": "5",
+        "label": "(0,1)",
+        "x": 10,
+        "y": 10
+      }
+    ],
+    "edges": [],
+    "caption": "Illustrative example - For (0,0),(1,0),(2,0),(2,1),(0,1), all five points lie on the hull boundary."
+  }
+}

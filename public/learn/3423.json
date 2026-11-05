@@ -1,0 +1,61 @@
+{
+  "hints": [
+    "Try the identity permutation for the first array.",
+    "A block of consecutive values can be paired in reverse order so each pair has the same sum.",
+    "Choose a prime just larger than the current largest unused value to form such a block."
+  ],
+  "analogy": "A prime sum acts like a mirror: each value i pairs with prime-i.",
+  "example": "For n=3, prime 5 pairs 2 with 3 and 3 with 2; the remaining 1 pairs with itself to sum to 2.",
+  "algorithm": "Sieve primes through 2n. Set a[i]=i. While the largest unused value is r, choose the smallest prime p greater than r and set l=p-r. For i from l through r set b[i]=p-i, then continue with r=l-1. Print both permutations.",
+  "correctness": "Bertrand's postulate ensures a prime between r and 2r for r>1, so l is positive and at most r; r=1 uses p=2. Each block maps onto itself by reversal, so b is a permutation and every pair sums to p.",
+  "complexity": "For n values, O(n log log n) sieve time and O(n) space.",
+  "visual": {
+    "kind": "grid",
+    "title": "Permutation Prime Sums: follow one example",
+    "caption": "Follow the construction or state across rows and columns.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=3, prime 5 pairs 2 with 3 and 3 with 2; the remaining 1 pairs with itself to sum to 2."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Sieve primes through 2n. Set a[i]=i. While the largest unused value is r, choose the smallest prime p greater than r and set l=p-r. For i from l through r set b[i]=p-i, then continue with r=l-1. Print both permutations."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Value",
+      "Partner",
+      "Sum"
+    ],
+    "rows": [
+      [
+        "2",
+        "3",
+        "5"
+      ],
+      [
+        "3",
+        "2",
+        "5"
+      ],
+      [
+        "1",
+        "1",
+        "2"
+      ]
+    ],
+    "caption": "Illustrative example - The remaining 1 pairs with itself to make the prime sum 2."
+  }
+}

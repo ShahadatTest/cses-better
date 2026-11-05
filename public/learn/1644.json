@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Use prefix sums so a segment from l through r has sum prefix[r]-prefix[l].",
+    "At each right endpoint r, allowed start prefixes range from r-b through r-a.",
+    "The largest segment sum uses the smallest prefix value in that active range; maintain it in a deque."
+  ],
+  "analogy": "For each ending point, choose the lowest starting balance among starts whose segment length is allowed.",
+  "example": "For values 2,-1,3,-2,5, a length 1..2 segment ending at the final 5 can use -2+5=3 or 5, while earlier segment 3-2+5=6 is best.",
+  "algorithm": "Build prefix sums. As r advances, add prefix[r-a] to a monotonic increasing deque, remove indices below r-b, and maximize prefix[r]-prefix[deque.front].",
+  "correctness": "Each permitted start is added when it becomes eligible and removed only after it leaves the length window; the deque front is the minimum eligible prefix, giving the best segment ending at r.",
+  "complexity": "O(n) time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Maximum Subarray Sum II: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "8 1 2\n-1 3 -2 5 3 -5 2 2"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For values 2,-1,3,-2,5, a length 1..2 segment ending at the final 5 can use -2+5=3 or 5, while earlier segment 3-2+5=6 is best."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Build prefix sums. As r advances, add prefix[r-a] to a monotonic increasing deque, remove indices below r-b, and maximize prefix[r]-prefix[deque.front]."
+      },
+      {
+        "label": "Result",
+        "detail": "8"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "8  1  2"
+      ],
+      [
+        "-1  3  -2  5  3  -5  2  2"
+      ]
+    ],
+    "caption": "Illustrative example - For values 2,-1,3,-2,5, a length 1..2 segment ending at the final 5 can use -2+5=3 or 5, while earlier segment 3-2+5=6 is best."
+  }
+}

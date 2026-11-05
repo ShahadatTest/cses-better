@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "At time T, machine i makes floor(T/k_i) products.",
+    "The total product count is monotone: once enough products are made by T, every larger time also works.",
+    "Binary-search the smallest feasible T; stop counting early when the target is reached."
+  ],
+  "analogy": "Ask whether a proposed time is enough, then shrink the time range like a guessing game.",
+  "algorithm": "Binary-search T from 0 to min(k)*t. Feasibility sums floor(T/k_i), capped when it reaches t; find the first feasible time.",
+  "correctness": "The predicate changes only from false to true as time grows; binary search finds its boundary, which is exactly the minimum time required.",
+  "complexity": "O(n log U) time and O(1) extra space, where U=min(k_i)*t.",
+  "example": "Machines taking 3,2,5 seconds make floor(8/3)+floor(8/2)+floor(8/5)=2+4+1=7 products by time 8, so 8 seconds is feasible.",
+  "visual": {
+    "kind": "array",
+    "title": "Factory Machines: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "3 7\n3 2 5"
+      },
+      {
+        "label": "Work through it",
+        "detail": "Machines taking 3,2,5 seconds make floor(8/3)+floor(8/2)+floor(8/5)=2+4+1=7 products by time 8, so 8 seconds is feasible."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Binary-search T from 0 to min(k)*t. Feasibility sums floor(T/k_i), capped when it reaches t; find the first feasible time."
+      },
+      {
+        "label": "Result",
+        "detail": "8"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "3  7"
+      ],
+      [
+        "3  2  5"
+      ]
+    ],
+    "caption": "Illustrative example - Machines taking 3,2,5 seconds make floor(8/3)+floor(8/2)+floor(8/5)=2+4+1=7 products by time 8, so 8 seconds is feasible."
+  }
+}

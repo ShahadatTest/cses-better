@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "All array values are positive, so increasing the right edge only increases the window sum.",
+    "Grow the window until its sum reaches x; if it is too large, move the left edge forward.",
+    "Count each window with sum exactly x."
+  ],
+  "analogy": "A positive-weight sliding window grows when light and shrinks when too heavy.",
+  "example": "For 2,4,1,2,7 and x=7, matching windows are [2,4,1], [4,1,2], and [7], so answer 3.",
+  "algorithm": "Use two pointers and running sum. Add each right value, shrink while sum>x, and add one when sum==x.",
+  "correctness": "Positivity means a window that is too large can only be fixed by moving its left edge, and all candidate starts are visited in order.",
+  "complexity": "O(n) time and O(1) extra space.",
+  "visual": {
+    "kind": "array",
+    "title": "Subarray Sums I: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5 7\n2 4 1 2 7"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 2,4,1,2,7 and x=7, matching windows are [2,4,1], [4,1,2], and [7], so answer 3."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Use two pointers and running sum. Add each right value, shrink while sum>x, and add one when sum==x."
+      },
+      {
+        "label": "Result",
+        "detail": "3"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5  7"
+      ],
+      [
+        "2  4  1  2  7"
+      ]
+    ],
+    "caption": "Illustrative example - For 2,4,1,2,7 and x=7, matching windows are [2,4,1], [4,1,2], and [7], so answer 3."
+  }
+}

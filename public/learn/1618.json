@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "A trailing zero comes from a factor 10, which needs one factor 2 and one factor 5.",
+    "Factorials contain more 2s than 5s, so count only how many factors of 5 occur in n!.",
+    "Numbers divisible by 25, 125, and higher powers contribute extra factors."
+  ],
+  "analogy": "Count how many complete 2-and-5 pairs are in the factorial; the 5s are the scarce ingredient.",
+  "example": "For 20!, multiples of 5 contribute four factors of 5 (5,10,15,20), so there are 4 trailing zeros.",
+  "algorithm": "Add floor(n/5)+floor(n/25)+floor(n/125)+... until the power exceeds n.",
+  "correctness": "Each counted factor of 5 pairs with a factor of 2 to make a decimal zero; higher powers supply additional 5s.",
+  "complexity": "O(log_5 n) time and O(1) extra space.",
+  "visual": {
+    "kind": "trace",
+    "title": "Trailing Zeros: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "20"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For 20!, multiples of 5 contribute four factors of 5 (5,10,15,20), so there are 4 trailing zeros."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Add floor(n/5)+floor(n/25)+floor(n/125)+... until the power exceeds n."
+      },
+      {
+        "label": "Result",
+        "detail": "4"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "20"
+      ]
+    ],
+    "caption": "Illustrative example - For 20!, multiples of 5 contribute four factors of 5 (5,10,15,20), so there are 4 trailing zeros."
+  }
+}

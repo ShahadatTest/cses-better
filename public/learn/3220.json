@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "Only one element leaves and one enters when a window moves.",
+    "Subtract the outgoing value and add the new one.",
+    "XOR each completed window sum into one final answer."
+  ],
+  "analogy": "Keep a running receipt: erase the item leaving the basket and add the new item.",
+  "example": "For [1,2,3] and k=2, sums are 3 and 5, whose XOR is 6.",
+  "algorithm": "Generate the sequence as specified. Maintain a rolling sum and access the value k positions behind, for example with a circular buffer. Add the incoming value, remove the outgoing value once the window exceeds k, and XOR the sum into the answer for each full window. Use wide arithmetic for generator multiplication and sums.",
+  "correctness": "The rolling sum initially contains exactly the first window, and each update removes precisely its departing element and adds precisely its entering element. Every window sum is therefore XORed once.",
+  "complexity": "For n elements and window size k, O(n) time and O(k) space; two synchronized generator streams can reduce extra space to O(1).",
+  "visual": {
+    "kind": "window",
+    "title": "Sliding Window Sum: follow one example",
+    "caption": "Slide the active window and update its maintained state.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For [1,2,3] and k=2, sums are 3 and 5, whose XOR is 6."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Generate the sequence as specified. Maintain a rolling sum and access the value k positions behind, for example with a circular buffer. Add the incoming value, remove the outgoing value once the window exceeds k, and XOR the sum into the answer for each full window. Use wide arithmetic for generator multiplication and sums."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "sequence",
+    "items": [
+      "1",
+      "2",
+      "3",
+      "5",
+      "6"
+    ],
+    "emphasisIndices": [],
+    "caption": "Illustrative example - For [1,2,3] and k=2, sums are 3 and 5, whose XOR is 6."
+  }
+}

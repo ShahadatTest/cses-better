@@ -1,0 +1,47 @@
+{
+  "hints": [
+    "For a k by k board, count all unordered pairs of distinct squares first.",
+    "Each pair is attacked only if the knights occupy one of the 2-by-3 rectangles in a possible orientation.",
+    "There are 4(k-1)(k-2) attacking pairs; subtract them from the total pairs."
+  ],
+  "analogy": "Start with every possible pair of squares, then remove the pairs where the two knights can jump at each other.",
+  "example": "On a 3 by 3 board there are choose(9,2)=36 pairs and 4(2)(1)=8 attacking pairs, leaving 28.",
+  "algorithm": "For each k from 1 to n, compute k^2(k^2-1)/2 - 4(k-1)(k-2), treating the second term as zero when k<3.",
+  "correctness": "Every placement is one unordered pair; the rectangle count enumerates every attacking knight pair exactly once, so the subtraction leaves precisely safe placements.",
+  "complexity": "O(n) time and O(1) extra space beyond the n outputs; use a wide integer type.",
+  "visual": {
+    "kind": "trace",
+    "title": "Two Knights: follow one example",
+    "caption": "Follow the state as one operation changes it.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "8"
+      },
+      {
+        "label": "Work through it",
+        "detail": "On a 3 by 3 board there are choose(9,2)=36 pairs and 4(2)(1)=8 attacking pairs, leaving 28."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "For each k from 1 to n, compute k^2(k^2-1)/2 - 4(k-1)(k-2), treating the second term as zero when k<3."
+      },
+      {
+        "label": "Result",
+        "detail": "0\n6\n28\n96\n252\n550\n1056\n1848"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "8"
+      ]
+    ],
+    "caption": "Illustrative example - On a 3 by 3 board there are choose(9,2)=36 pairs and 4(2)(1)=8 attacking pairs, leaving 28."
+  }
+}

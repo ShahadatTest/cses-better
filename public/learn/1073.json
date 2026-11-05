@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "Each new cube goes on the tower whose top is the smallest value strictly greater than the cube.",
+    "If no tower top is greater, start a new tower.",
+    "A sorted list of tower tops makes this the first value greater than x."
+  ],
+  "analogy": "Place each cube onto the smallest taller top; this leaves other tower tops as low as possible.",
+  "example": "For cubes 3,8,2,1,5, tops evolve to [3], [3,8], [2,8], [1,8], [1,5], so two towers.",
+  "algorithm": "Maintain tower top values in sorted order. For each x, binary-search the first top>x and replace it; if absent, append a new top.",
+  "correctness": "The rule uses an available compatible tower whenever possible and changes its top to x; every tower must correspond to an increasing subsequence of placed tops, so the count is minimal.",
+  "complexity": "O(n log n) time and O(n) space.",
+  "visual": {
+    "kind": "array",
+    "title": "Towers: follow one example",
+    "caption": "Track how the array is ordered, matched, or partitioned.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "5\n3 8 2 1 5"
+      },
+      {
+        "label": "Work through it",
+        "detail": "For cubes 3,8,2,1,5, tops evolve to [3], [3,8], [2,8], [1,8], [1,5], so two towers."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "Maintain tower top values in sorted order. For each x, binary-search the first top>x and replace it; if absent, append a new top."
+      },
+      {
+        "label": "Result",
+        "detail": "2"
+      }
+    ]
+  },
+  "diagram": {
+    "type": "table",
+    "columns": [
+      "Published sample input"
+    ],
+    "rows": [
+      [
+        "5"
+      ],
+      [
+        "3  8  2  1  5"
+      ]
+    ],
+    "caption": "Illustrative example - For cubes 3,8,2,1,5, tops evolve to [3], [3,8], [2,8], [1,8], [1,5], so two towers."
+  }
+}

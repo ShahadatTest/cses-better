@@ -1,0 +1,50 @@
+{
+  "hints": [
+    "A coloring is unchanged by a symmetry only when each cell shares its color with every cell in that symmetry's orbit.",
+    "For each of the four rotations, count the independent cell-orbits and compute m^(orbit count).",
+    "Burnside's lemma averages the fixed colorings over the square's rotation group."
+  ],
+  "analogy": "A symmetric coloring assigns one color per group of cells that rotate into one another.",
+  "correctness": "Each coloring orbit under the four rotations contributes one after averaging its number of fixed representatives, which is Burnside's lemma.",
+  "complexity": "O(n^2) time to enumerate cell orbits (or derive formulas) and O(n^2) space; can be O(1) extra space with formulas.",
+  "algorithm": "The grid has two colors. Use Burnside over the four square rotations: the identity fixes 2^(n*n) grids, 180 degrees fixes 2^ceil(n*n/2), and 90/270 degrees each fix 2^ceil(n*n/4). Sum and multiply by inverse 4 modulo 1,000,000,007.",
+  "example": "For n=2, a 180-degree rotation groups the four cells into two pairs, so it fixes 2^2=4 two-color grids.",
+  "visual": {
+    "kind": "math",
+    "title": "Counting Grids: follow one example",
+    "caption": "Track the number or combinatorial quantity through the key transformation.",
+    "steps": [
+      {
+        "label": "Input",
+        "detail": "Read the values and constraints from the statement."
+      },
+      {
+        "label": "Work through it",
+        "detail": "For n=2, a 180-degree rotation groups the four cells into two pairs, so it fixes 2^2=4 two-color grids."
+      },
+      {
+        "label": "Apply the idea",
+        "detail": "The grid has two colors. Use Burnside over the four square rotations: the identity fixes 2^(n*n) grids, 180 degrees fixes 2^ceil(n*n/2), and 90/270 degrees each fix 2^ceil(n*n/4). Sum and multiply by inverse 4 modulo 1,000,000,007."
+      },
+      {
+        "label": "Result",
+        "detail": "Produce the value required by the statement."
+      }
+    ]
+  },
+  "diagram": {
+    "type": "grid",
+    "cells": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "A"
+      ]
+    ],
+    "path": [],
+    "caption": "Illustrative example - A half-turn pairs opposite cells, leaving two independent color choices."
+  }
+}
