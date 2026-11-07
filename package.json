@@ -18,7 +18,7 @@
     "@supabase/supabase-js": "^2.118.0",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
-    "isomorphic-dompurify": "^3.19.0",
+    "isomorphic-dompurify": "2.22.0",
     "jszip": "^3.10.2",
     "katex": "^0.16.11",
     "lucide-react": "^0.468.0",
