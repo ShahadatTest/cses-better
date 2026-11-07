@@ -1,12 +1,12 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
 import { AppearanceEntry } from '../../components/AppearanceSettings';
+import { pageMetadata } from '@/core/seo';
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Privacy',
-  alternates: { canonical: '/privacy' },
-  openGraph: { url: '/privacy' },
-};
+  description: 'Learn how CSES Better handles local practice data, sign-in, code execution, and optional AI features.',
+  path: '/privacy',
+});
 
 export default function PrivacyPage() {
   return (

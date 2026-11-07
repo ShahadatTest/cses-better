@@ -1,6 +1,12 @@
 import type { MetadataRoute } from 'next';
+import problems from '@/data/problems.json';
+import { contestProblems } from '@/data/olympiad';
+import { absoluteSiteUrl } from '@/core/seo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = process.env.NEXT_PUBLIC_APP_URL || 'https://cses-better.vercel.app';
-  return ['/', '/practice', '/privacy'].map((path) => ({ url: `${base}${path}`, lastModified: new Date() }));
+  const staticPaths = ['/', '/practice', '/privacy'];
+  const practicePaths = problems.map((problem) => `/practice/${encodeURIComponent(problem.id)}`);
+  const contestPaths = contestProblems.map((problem) => `/olympiad/${encodeURIComponent(problem.id)}`);
+  const paths = [...staticPaths, ...practicePaths, ...contestPaths];
+  return [...new Set(paths)].map((path) => ({ url: absoluteSiteUrl(path) }));
 }

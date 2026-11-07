@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og';
+import { getSiteUrl } from '@/core/seo';
 
 export const runtime = 'edge';
 export const alt = 'CSES Better — a focused CSES practice workspace';
@@ -18,7 +19,7 @@ export default function OpenGraphImage() {
           <div style={{ display: 'flex', fontSize: 28, lineHeight: 1.4, color: '#cbd5e1' }}>Practice with an integrated editor, test runner, notes, and progress tracking.</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 20, color: '#7dd3fc' }}>
-          <div style={{ display: 'flex', background: '#7dd3fc', width: 12, height: 12, borderRadius: 6 }} /> Open practice at cses-better.vercel.app
+          <div style={{ display: 'flex', background: '#7dd3fc', width: 12, height: 12, borderRadius: 6 }} /> Practice at {getSiteUrl().host}
         </div>
       </div>
     ),
