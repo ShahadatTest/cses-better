@@ -116,13 +116,13 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
 
   return (
     <div
-      className={`flex flex-col h-full w-full bg-[#18181b] border border-surface-2 rounded-lg overflow-hidden ${className}`}
+      className={`flex flex-col h-full w-full bg-surface-1 border border-surface-2 rounded-lg overflow-hidden ${className}`}
     >
       {/* Top Header bar */}
       <div className="flex items-center justify-between px-3 py-2 bg-surface-1 border-b border-surface-2 select-none shrink-0">
         <div className="flex items-center gap-2 min-w-0">
           <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span className="text-xs font-medium text-slate-200 truncate">
+          <span className="text-xs font-medium text-text-primary truncate">
             OnlineCompiler.io Embedded Sandbox
           </span>
           {hasValidWidgetKey ? (
@@ -144,7 +144,7 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
                   type="button"
                   onClick={() => setIsEditingKey(!isEditingKey)}
                   title="Change or update your widget key"
-                  className="flex items-center gap-1 px-2 py-1 text-xs text-slate-400 hover:text-slate-200 hover:bg-surface-2 rounded transition-colors"
+                  className="flex items-center gap-1 px-2 py-1 text-xs text-text-muted hover:text-text-primary hover:bg-surface-2 rounded transition-colors"
                 >
                   <KeyRound className="w-3.5 h-3.5" />
                   <span className="hidden md:inline">Change Key</span>
@@ -155,7 +155,7 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
                 type="button"
                 onClick={handleRefresh}
                 title="Reload sandbox with current editor code"
-                className="flex items-center gap-1 px-2 py-1 text-xs text-slate-400 hover:text-slate-200 hover:bg-surface-2 rounded transition-colors"
+                className="flex items-center gap-1 px-2 py-1 text-xs text-text-muted hover:text-text-primary hover:bg-surface-2 rounded transition-colors"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span className="hidden md:inline">Sync Code</span>
@@ -166,7 +166,7 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Open in external browser window"
-                className="flex items-center gap-1 px-2 py-1 text-xs text-slate-400 hover:text-sky-400 hover:bg-surface-2 rounded transition-colors"
+                className="flex items-center gap-1 px-2 py-1 text-xs text-text-muted hover:text-accent hover:bg-surface-2 rounded transition-colors"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
                 <span className="hidden md:inline">Pop Out</span>
@@ -179,7 +179,7 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
               type="button"
               onClick={onSwitchToMonaco}
               title="Switch back to Monaco Pro Editor"
-              className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 rounded border border-sky-500/30 transition-colors"
+              className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-accent hover:text-accent hover:bg-accent/10 rounded border border-accent/30 transition-colors"
             >
               <Code2 className="w-3.5 h-3.5" />
               <span>Monaco Pro</span>
@@ -207,7 +207,7 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
       )}
 
       {/* Main Content Area */}
-      <div className="relative flex-1 w-full min-h-0 bg-[#1e1e1e]">
+      <div className="relative flex-1 w-full min-h-0 bg-surface-1">
         {/* State A: Key is Missing or User is Editing Key */}
         {!hasValidWidgetKey || isEditingKey ? (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 bg-surface-1/95 backdrop-blur-sm overflow-y-auto">
@@ -217,24 +217,24 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
                   <AlertCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-white">
+                  <h3 className="text-sm font-semibold text-text-primary">
                     OnlineCompiler.io Embed Widget Key
                   </h3>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                  <p className="text-xs text-text-muted mt-1 leading-relaxed">
                     OnlineCompiler.io uses separate keys for <strong>REST API execution</strong> and <strong>Embed Widgets</strong>:
                   </p>
                 </div>
               </div>
 
-              <div className="space-y-2 text-xs bg-surface-1/80 border border-border-subtle rounded-lg p-3 text-slate-300">
+              <div className="space-y-2 text-xs bg-surface-1/80 border border-border-subtle rounded-lg p-3 text-text-secondary">
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400">REST API Key:</span>
+                  <span className="text-text-muted">REST API Key:</span>
                   <span className="font-mono text-emerald-400 text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/30">
                     Active (Run & Submit work!)
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400">Widget Key:</span>
+                  <span className="text-text-muted">Widget Key:</span>
                   <span className="font-mono text-amber-300 text-[11px] bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/30">
                     {hasValidWidgetKey ? 'Configured' : 'Missing for iframe embed'}
                   </span>
@@ -244,8 +244,8 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
               {/* Input Form */}
               <form onSubmit={handleApplyKey} className="space-y-3">
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center gap-1.5">
-                    <KeyRound className="w-3.5 h-3.5 text-slate-400" />
+                  <label className="block text-xs font-medium text-text-secondary mb-1 flex items-center gap-1.5">
+                    <KeyRound className="w-3.5 h-3.5 text-text-muted" />
                     <span>Enter your Widget Key:</span>
                   </label>
                   <input
@@ -253,7 +253,7 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
                     value={keyInput}
                     onChange={(e) => setKeyInput(e.target.value)}
                     placeholder="Paste Widget Key from onlinecompiler.io..."
-                    className="w-full bg-surface-2 border border-border-muted rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 font-mono focus:outline-none focus:border-sky-500"
+                    className="w-full bg-surface-2 border border-border-muted rounded-lg px-3 py-2 text-xs text-text-primary placeholder-slate-500 font-mono focus:outline-none focus:border-accent"
                   />
                 </div>
 
@@ -261,7 +261,7 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
                   <button
                     type="submit"
                     disabled={!keyInput.trim()}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium bg-sky-600 hover:bg-sky-500 text-white rounded-lg transition-colors disabled:opacity-40 disabled:pointer-events-none shadow-sm"
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium bg-accent hover:opacity-90 text-accent-foreground rounded-lg transition-colors disabled:opacity-40 disabled:pointer-events-none shadow-sm"
                   >
                     <Check className="w-3.5 h-3.5" />
                     <span>Activate Embed Widget</span>
@@ -271,7 +271,7 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
                     <button
                       type="button"
                       onClick={() => setIsEditingKey(false)}
-                      className="px-3 py-2 text-xs text-slate-400 hover:text-slate-200 hover:bg-surface-2 rounded-lg border border-border-subtle transition-colors"
+                      className="px-3 py-2 text-xs text-text-muted hover:text-text-primary hover:bg-surface-2 rounded-lg border border-border-subtle transition-colors"
                     >
                       Cancel
                     </button>
@@ -285,7 +285,7 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
                   href="https://onlinecompiler.io/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sky-400 hover:underline"
+                  className="inline-flex items-center gap-1 text-accent hover:underline"
                 >
                   <span>OnlineCompiler.io Dashboard ➔ Widgets</span>
                   <ExternalLink className="w-3 h-3" />
@@ -295,7 +295,7 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
                   <button
                     type="button"
                     onClick={onSwitchToMonaco}
-                    className="inline-flex items-center gap-1 text-slate-300 hover:text-white font-medium"
+                    className="inline-flex items-center gap-1 text-text-secondary hover:text-text-primary font-medium"
                   >
                     <span>Use Monaco Pro Editor Instead →</span>
                   </button>
@@ -307,8 +307,8 @@ export const InbuiltCompilerView: React.FC<InbuiltCompilerViewProps> = ({
           /* State B: Valid Widget Key Active -> Render Iframe */
           <>
             {isLoading && (
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#1e1e1e] text-slate-400 gap-3">
-                <Loader2 className="w-6 h-6 animate-spin text-sky-400" />
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-surface-1 text-text-muted gap-3">
+                <Loader2 className="w-6 h-6 animate-spin text-accent" />
                 <span className="text-xs font-mono">Initializing secure compiler sandbox...</span>
               </div>
             )}

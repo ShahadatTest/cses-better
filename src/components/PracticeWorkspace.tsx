@@ -1,0 +1,1431 @@
+'use client';
+
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import confetti from 'canvas-confetti';
+import problemsData from '../data/problems.json';
+import { categories } from '../data/categories';
+import {
+  Problem,
+  LanguageId,
+  TestCase,
+  TestResult,
+  VerdictStatus,
+  SubmissionRecord,
+  AppSettings,
+  DEFAULT_APP_SETTINGS,
+  isLargeInput,
+  UserProfile,
+  ProblemStats,
+  CsesVerdictResult,
+} from '../core/types';
+import {
+  getDraft,
+  saveDraft,
+  getSubmissions,
+  saveSubmission,
+  getSolvedProblems,
+  saveSolvedProblem,
+  removeSolvedProblem,
+  getStarredProblems,
+  saveStarredProblem,
+  removeStarredProblem,
+  claimGuestStars,
+  cleanEmptySubmissions,
+  getSettings,
+  saveSettings,
+  getStoredUser,
+  saveStoredUser,
+  clearStoredUser,
+  getAllNotes,
+} from '../core/storage';
+import {
+  getSupabase,
+  mapSupabaseUser,
+  fetchUserDataFromCloud,
+  syncUserDataToCloud,
+  syncAllLocalProgressToCloud,
+  syncPendingStarredToCloud,
+} from '../core/supabase';
+import { getLanguageTemplate } from '../core/templates';
+import { executeCode } from '../core/compiler';
+import { evaluateTestCase, computeDiff, summarizeTestResults } from '../core/judge';
+import {
+  playVerdictChime,
+  sendDesktopNotification,
+  requestNotificationPermission,
+} from '../core/notifications';
+import { Check, X, AlertTriangle } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+import { SplitPane } from '../components/SplitPane';
+import { Header } from '../components/Header';
+import { CommandPalette } from '../components/CommandPalette';
+import { SettingsModal } from '../components/SettingsModal';
+import { ProblemPane } from '../components/ProblemPane';
+import type { ProblemTab } from '../components/ProblemPane';
+import { EditorWorkbench } from '../components/editor/EditorWorkbench';
+import { TestBench } from '../components/TestBench';
+import { AuthModal } from '../components/AuthModal';
+import { CsesSubmitModal } from '../components/CsesSubmitModal';
+import { CsesUserProfileModal } from '../components/CsesUserProfileModal';
+import { ArchiveExplorerModal } from '../components/ArchiveExplorerModal';
+import { CsesAccountModal } from '../components/CsesAccountModal';
+import { AllNotesModal } from '../components/AllNotesModal';
+import { ListsModal } from '../components/ListsModal';
+import { ContestBankModal } from '../components/ContestBankModal';
+import type { ContestProblem } from '../core/contest-types';
+import { recordOfficialSolve, syncOfficialSolves } from '../core/streaks';
+import { COMMAND_CATALOG, isDialogOpen, isEditableTarget, isShortcutRecordingTarget, matchesShortcut, resolveShortcutOverrides } from '../core/commands';
+import { LAST_ACCESSED_QUESTION_KEY, questionPath, resolveInitialQuestionId } from '../core/question-routing';
+
+const allProblems = problemsData as Problem[];
+
+export default function CSESBetterApp({ initialProblemId }: { initialProblemId?: string } = {}) {
+  // Navigation & Problem Selection State
+  const [currentProblemId, setCurrentProblemId] = useState<string>(
+    initialProblemId && allProblems.some((problem) => problem.id === initialProblemId) ? initialProblemId : '1068'
+  );
+  const [activeLanguage, setActiveLanguage] = useState<LanguageId>('cpp');
+  const [code, setCode] = useState<string>('');
+  const [mobilePane, setMobilePane] = useState<'problem' | 'editor'>('problem');
+  const [activeProblemTab, setActiveProblemTab] = useState<ProblemTab>('statement');
+  const [zenMode, setZenMode] = useState<boolean>(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+  const [settingsInitialTab, setSettingsInitialTab] = useState<'appearance' | 'shortcuts' | undefined>(undefined);
+  const [cloudSyncStatus, setCloudSyncStatus] = useState<'idle' | 'pending' | 'synced' | 'failed'>('idle');
+  const cloudSyncOwnerRef = React.useRef<string | null>(null);
+  const [workspaceNotice, setWorkspaceNotice] = useState<string | null>(null);
+  const [showQuickstart, setShowQuickstart] = useState(false);
+  const [quickstartReady, setQuickstartReady] = useState(false);
+
+  // Public User & Auth State
+  const [listOwner, setListOwner] = useState<string | undefined>();
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [isCsesSubmitModalOpen, setIsCsesSubmitModalOpen] = useState<boolean>(false);
+  const [isCsesUserModalOpen, setIsCsesUserModalOpen] = useState<boolean>(false);
+  const [inspectedCsesNick, setInspectedCsesNick] = useState<string>('');
+  const [isArchiveModalOpen, setIsArchiveModalOpen] = useState<boolean>(false);
+  const [isCsesAccountModalOpen, setIsCsesAccountModalOpen] = useState<boolean>(false);
+  const [listsOpen, setListsOpen] = useState(false);
+  const [contestBankOpen, setContestBankOpen] = useState(false);
+  const [contestProblems, setContestProblems] = useState<ContestProblem[]>([]);
+  const [contestCatalogLoading, setContestCatalogLoading] = useState(false);
+  const [listProblem, setListProblem] = useState<string | undefined>();
+  const [isAllNotesOpen, setIsAllNotesOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if ((!contestBankOpen && !listsOpen) || contestProblems.length) return;
+    const controller = new AbortController();
+    setContestCatalogLoading(true);
+    fetch('/api/olympiad', { signal: controller.signal }).then(response => {
+      if (!response.ok) throw new Error('Contest catalog is unavailable');
+      return response.json();
+    }).then((records: unknown) => {
+      if (!Array.isArray(records)) throw new Error('Contest catalog has an invalid format');
+      setContestProblems(records as ContestProblem[]);
+    }).catch(() => {
+      if (!controller.signal.aborted) setContestCatalogLoading(false);
+    }).finally(() => {
+      if (!controller.signal.aborted) setContestCatalogLoading(false);
+    });
+    return () => controller.abort();
+  }, [contestBankOpen, listsOpen, contestProblems.length]);
+
+  // Settings & Storage State
+  const [settings, setSettings] = useState<AppSettings>(DEFAULT_APP_SETTINGS);
+  const [solvedIds, setSolvedIds] = useState<Set<string>>(new Set());
+  const [starredIds, setStarredIds] = useState<Set<string>>(new Set());
+  const [submissions, setSubmissions] = useState<SubmissionRecord[]>([]);
+
+  useEffect(() => {
+    const owner = currentUser?.id || 'guest';
+    let active = true;
+    const refresh = () => { if (active) setStarredIds(getStarredProblems(owner)); };
+    const synchronize = () => {
+      refresh();
+      if (owner !== 'guest') syncPendingStarredToCloud(owner).then(refresh).catch(() => {});
+    };
+    const onVisible = () => { if (document.visibilityState === 'visible') synchronize(); };
+    synchronize();
+    window.addEventListener('online', synchronize);
+    window.addEventListener('storage', refresh);
+    window.addEventListener('cses-stars-changed', refresh);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      active = false;
+      window.removeEventListener('online', synchronize);
+      window.removeEventListener('storage', refresh);
+      window.removeEventListener('cses-stars-changed', refresh);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [currentUser?.id]);
+
+  // Testing & Execution State
+  const [customTestCases, setCustomTestCases] = useState<Record<string, TestCase[]>>({});
+  const [activeTestCaseId, setActiveTestCaseId] = useState<string>('sample-1');
+  const [testResults, setTestResults] = useState<Record<string, TestResult>>({});
+  const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const isPausedRef = React.useRef<boolean>(false);
+  const isCancelledRef = React.useRef<boolean>(false);
+  const [overallVerdict, setOverallVerdict] = useState<VerdictStatus | undefined>(undefined);
+  const [submissionResults, setSubmissionResults] = useState<TestResult[] | null>(null);
+  const [completionToast, setCompletionToast] = useState<{
+    status: VerdictStatus;
+    message: string;
+    submessage?: string;
+  } | null>(null);
+
+  const handleTogglePause = useCallback(() => {
+    if (!isSubmitting) return;
+    const nextPaused = !isPausedRef.current;
+    isPausedRef.current = nextPaused;
+    setIsPaused(nextPaused);
+    setOverallVerdict(nextPaused ? 'PAUSED' : 'RUNNING');
+  }, [isSubmitting]);
+
+  const handleCancelSubmit = useCallback(() => {
+    if (!isSubmitting) return;
+    isCancelledRef.current = true;
+    isPausedRef.current = false;
+    setIsPaused(false);
+  }, [isSubmitting]);
+
+  // Live CSES Problem Stats & Leaderboard Cache
+  const [liveStats, setLiveStats] = useState<Record<string, ProblemStats>>({});
+  const [isRefreshingStats, setIsRefreshingStats] = useState<boolean>(false);
+  const [statsRefreshedAt, setStatsRefreshedAt] = useState<Record<string, number>>({});
+  const debouncedSyncTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  // Debounced cloud sync: batches updates and respects the 60s cooldown without spamming on every click
+  const queueDebouncedCloudSync = useCallback((userId: string) => {
+    if (debouncedSyncTimerRef.current) {
+      clearTimeout(debouncedSyncTimerRef.current);
+    }
+    setCloudSyncStatus('pending');
+    debouncedSyncTimerRef.current = setTimeout(() => {
+      const localSolved = Array.from(getSolvedProblems());
+      const localNotes = getAllNotes();
+      const localSubmissions = getSubmissions();
+      const localStarred = Array.from(getStarredProblems());
+
+      syncUserDataToCloud(userId, {
+        solvedIds: localSolved,
+        drafts: {},
+        submissions: localSubmissions,
+        notes: localNotes,
+        starredIds: localStarred,
+      }).then((synced) => {
+        if (cloudSyncOwnerRef.current === userId) setCloudSyncStatus(synced ? 'synced' : 'failed');
+      }).catch((e) => {
+        if (cloudSyncOwnerRef.current === userId) setCloudSyncStatus('failed');
+        console.warn('[Progress sync notice]:', e);
+      });
+    }, 15000);
+  }, []);
+
+  useEffect(() => {
+    cloudSyncOwnerRef.current = currentUser?.id || null;
+    setCloudSyncStatus('idle');
+  }, [currentUser?.id]);
+
+  useEffect(() => {
+    return () => {
+      if (debouncedSyncTimerRef.current) {
+        clearTimeout(debouncedSyncTimerRef.current);
+      }
+    };
+  }, []);
+
+
+  const handleFetchStats = useCallback(async (problemId: string, force: boolean = false) => {
+    setIsRefreshingStats(true);
+    try {
+      const res = await fetch(`/api/cses/stats/${problemId}${force ? '?refresh=true' : ''}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.stats) {
+          setLiveStats((prev) => ({ ...prev, [problemId]: data.stats }));
+          setStatsRefreshedAt((prev) => ({ ...prev, [problemId]: data.cachedAt || Date.now() }));
+        }
+      }
+    } catch (err) {
+      console.warn('[Live Stats] Failed to fetch live stats:', err);
+    } finally {
+      setIsRefreshingStats(false);
+    }
+  }, []);
+
+  // Fetch live stats when problem changes
+  useEffect(() => {
+    if (currentProblemId) {
+      handleFetchStats(currentProblemId, false);
+    }
+  }, [currentProblemId, handleFetchStats]);
+
+  // Resolved Current Problem Object (with live stats overlay)
+  const currentProblem = useMemo(() => {
+    const base = allProblems.find((p) => p.id === currentProblemId) || allProblems[0];
+    if (liveStats[currentProblemId]) {
+      return { ...base, stats: liveStats[currentProblemId] };
+    }
+    return base;
+  }, [currentProblemId, liveStats]);
+
+  // Combined test cases (Sample + Custom for current problem)
+  const combinedTestCases = useMemo(() => {
+    const custom = customTestCases[currentProblemId] || [];
+    return [...(currentProblem.testCases || []), ...custom];
+  }, [currentProblem, customTestCases, currentProblemId]);
+
+  // Ensure activeTestCaseId is valid when problem changes
+  useEffect(() => {
+    if (combinedTestCases.length > 0) {
+      const exists = combinedTestCases.some((tc) => tc.id === activeTestCaseId);
+      if (!exists) {
+        setActiveTestCaseId(combinedTestCases[0].id);
+      }
+    } else {
+      setActiveTestCaseId('');
+    }
+  }, [combinedTestCases, activeTestCaseId]);
+
+  // Initial client-side load (hydration safety)
+  useEffect(() => {
+    const refreshSettings = () => setSettings(getSettings());
+    window.addEventListener('cses-settings-changed', refreshSettings);
+    window.addEventListener('storage', refreshSettings);
+    return () => { window.removeEventListener('cses-settings-changed', refreshSettings); window.removeEventListener('storage', refreshSettings); };
+  }, []);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const knownIds = new Set(allProblems.map((problem) => problem.id));
+    let legacyHash = window.location.hash.slice(1).trim();
+    try { legacyHash = decodeURIComponent(legacyHash); } catch { /* Keep malformed legacy hashes available for the error message. */ }
+    let savedId: string | null = null;
+    try { savedId = window.localStorage.getItem(LAST_ACCESSED_QUESTION_KEY); } catch { /* Storage can be disabled. */ }
+    const { id: initialId, invalidExplicit } = resolveInitialQuestionId({
+      explicitId: initialProblemId,
+      legacyHash,
+      savedId,
+      knownIds,
+      fallbackId: '1068',
+    });
+    setCurrentProblemId(initialId);
+    if (invalidExplicit) setWorkspaceNotice(`Problem "${initialProblemId}" was not found. Opened problem 1068 instead.`);
+    else if (legacyHash && !knownIds.has(legacyHash)) setWorkspaceNotice(`Problem "${legacyHash}" was not found. Opened problem 1068 instead.`);
+    try { window.localStorage.setItem(LAST_ACCESSED_QUESTION_KEY, initialId); } catch { /* Storage can be disabled. */ }
+    const canonicalPath = questionPath(initialId);
+    if (window.location.pathname !== canonicalPath || window.location.hash) {
+      window.history.replaceState(null, '', `${canonicalPath}${window.location.search}`);
+    }
+    // Load settings & storage data
+    cleanEmptySubmissions();
+    const loadedSettings = getSettings();
+    setSettings(loadedSettings);
+    setSolvedIds(getSolvedProblems());
+    setStarredIds(getStarredProblems());
+
+    // Load initial code draft or fallback to template
+    const savedDraft = getDraft(initialId, 'cpp');
+    setCode(savedDraft ?? getLanguageTemplate('cpp'));
+    setSubmissions(getSubmissions(initialId));
+
+    // Clean query parameters if redirected after OAuth callback
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('auth_success') === 'true') {
+      setWorkspaceNotice('GitHub sign-in succeeded. Your account is connected.');
+    } else if (urlParams.get('auth_error')) {
+      setWorkspaceNotice(`GitHub sign-in failed: ${urlParams.get('auth_error')}`);
+    }
+    if (urlParams.get('auth_success') === 'true' || urlParams.get('auth_error')) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+    try {
+      const dismissed = window.localStorage.getItem('cses_quickstart_dismissed') === 'true';
+      setShowQuickstart(!dismissed);
+    } catch { setShowQuickstart(true); }
+    setQuickstartReady(true);
+
+    // Immediate local user hydration
+    const cachedUser = getStoredUser();
+    if (cachedUser) {
+      setCurrentUser(cachedUser);
+    }
+
+    // Check for existing Supabase Auth Session
+    const supabase = getSupabase();
+    if (supabase) {
+      supabase.auth.getSession().then(({ data }) => {
+        if (data.session?.user) {
+          const user = mapSupabaseUser(data.session.user);
+          setCurrentUser(user);
+          setListOwner(user.id);
+          saveStoredUser(user);
+          if (user) claimGuestStars(user.id);
+          // Sync once on initial mount if a valid session exists
+          setCloudSyncStatus('pending');
+          syncAllLocalProgressToCloud(user.id).then((result) => {
+            if (cloudSyncOwnerRef.current === user.id) setCloudSyncStatus(result.success ? 'synced' : 'failed');
+            setSolvedIds(getSolvedProblems());
+            setStarredIds(getStarredProblems());
+          }).catch(() => { if (cloudSyncOwnerRef.current === user.id) setCloudSyncStatus('failed'); });
+        }
+      });
+
+      const { data: authSub } = supabase.auth.onAuthStateChange((event, session) => {
+        if (session?.user) {
+          const user = mapSupabaseUser(session.user);
+          setCurrentUser(user);
+          setListOwner(user.id);
+          saveStoredUser(user);
+          claimGuestStars(user.id);
+          // Only sync on explicit SIGNED_IN event, never on TOKEN_REFRESHED or repeatedly on mount
+          if (event === 'SIGNED_IN') {
+            setCloudSyncStatus('pending');
+            syncAllLocalProgressToCloud(user.id).then((result) => {
+              if (cloudSyncOwnerRef.current === user.id) setCloudSyncStatus(result.success ? 'synced' : 'failed');
+              setSolvedIds(getSolvedProblems());
+              setStarredIds(getStarredProblems());
+            }).catch(() => { if (cloudSyncOwnerRef.current === user.id) setCloudSyncStatus('failed'); });
+          }
+        } else {
+          setCurrentUser(null);
+          setListOwner(undefined);
+          clearStoredUser();
+        }
+      });
+
+      return () => {
+        authSub.subscription.unsubscribe();
+      };
+    }
+  }, []);
+
+  // Handler for when official CSES verdict is ACCEPTED
+  const handleOfficialCsesAccepted = useCallback(
+    (pId: string, result?: CsesVerdictResult) => {
+      saveSolvedProblem(pId);
+      setSolvedIds((prev) => {
+        const updated = new Set(prev);
+        updated.add(pId);
+        return updated;
+      });
+      setSubmissions(getSubmissions(pId));
+      if (result?.owner?.isPersonal && result.owner.userId && result.timestamp) {
+        const owner = currentUser?.id || 'guest';
+        recordOfficialSolve(owner, result.owner.userId, pId, result.timestamp);
+        if (currentUser) void syncOfficialSolves(owner, result.owner.userId).catch(() => {});
+      }
+
+      try {
+        confetti({
+          particleCount: 100,
+          spread: 80,
+          origin: { y: 0.6 },
+        });
+      } catch {}
+
+      if (currentUser) {
+        queueDebouncedCloudSync(currentUser.id);
+      }
+
+      // Immediately bypass cache and pull live CSES leaderboard containing the new submission
+      handleFetchStats(pId, true);
+    },
+    [currentUser, handleFetchStats, queueDebouncedCloudSync]
+  );
+
+  // Manual toggle for problem solved status from tick boxes
+  const handleToggleSolved = useCallback(
+    (pId: string) => {
+      setSolvedIds((prev) => {
+        const updated = new Set(prev);
+        if (updated.has(pId)) {
+          updated.delete(pId);
+          removeSolvedProblem(pId);
+        } else {
+          updated.add(pId);
+          saveSolvedProblem(pId);
+          try {
+            confetti({
+              particleCount: 75,
+              spread: 60,
+              origin: { y: 0.6 },
+            });
+          } catch {}
+        }
+
+        if (currentUser) {
+          queueDebouncedCloudSync(currentUser.id);
+        }
+
+        return updated;
+      });
+    },
+    [currentUser, activeLanguage, code, queueDebouncedCloudSync]
+  );
+
+  // Manual toggle for problem starred status
+  const handleToggleStarred = useCallback(
+    (pId: string) => {
+      const owner = currentUser?.id || 'guest';
+      if (getStarredProblems(owner).has(pId)) removeStarredProblem(pId, owner);
+      else saveStarredProblem(pId, owner);
+      setStarredIds(getStarredProblems(owner));
+      if (currentUser) void syncPendingStarredToCloud(owner).then(() => {
+        if (getStoredUser()?.id === owner) setStarredIds(getStarredProblems(owner));
+      }).catch(() => {});
+    },
+    [currentUser]
+  );
+
+  const handleOpenCsesProfile = useCallback((nickOrId?: string, userId?: string) => {
+    setInspectedCsesNick(userId || nickOrId || '');
+    setIsCsesUserModalOpen(true);
+  }, []);
+
+  const handleCsesSolvesSynced = useCallback(
+    (newSolvedIds: string[]) => {
+      setSolvedIds((prev) => {
+        const updated = new Set(prev);
+        newSolvedIds.forEach((id) => {
+          updated.add(id);
+          saveSolvedProblem(id);
+        });
+        return updated;
+      });
+
+      if (currentUser) {
+        queueDebouncedCloudSync(currentUser.id);
+      }
+    },
+    [currentUser, solvedIds, queueDebouncedCloudSync]
+  );
+
+  // Sync problem change with draft code and submissions
+  const handleSelectProblem = useCallback(
+    (id: string) => {
+      if (!allProblems.some((p) => p.id === id) || id === currentProblemId) return;
+
+      setCurrentProblemId(id);
+      setTestResults({});
+      setSubmissionResults(null);
+      setOverallVerdict(undefined);
+
+      // Load draft or template for the new problem
+      const savedCode = getDraft(id, activeLanguage);
+      setCode(savedCode ?? getLanguageTemplate(activeLanguage));
+      setSubmissions(getSubmissions(id));
+
+      if (typeof window !== 'undefined') {
+        window.history.pushState(null, '', `${questionPath(id)}${window.location.search}`);
+        try { window.localStorage.setItem(LAST_ACCESSED_QUESTION_KEY, id); } catch { /* Storage can be disabled. */ }
+      }
+    },
+    [currentProblemId, activeLanguage, testResults, submissionResults, overallVerdict]
+  );
+
+  useEffect(() => {
+    const restoreFromHistory = () => {
+      const routeMatch = window.location.pathname.match(/^\/practice\/([^/]+)\/?$/);
+      let requestedId = routeMatch ? routeMatch[1] : window.location.hash.slice(1).trim();
+      try { requestedId = decodeURIComponent(requestedId); } catch { /* Invalid escapes are handled as unknown IDs. */ }
+      const id = allProblems.some((problem) => problem.id === requestedId) ? requestedId : '1068';
+      if (requestedId !== id) {
+        setWorkspaceNotice(`Problem "${requestedId || 'unknown'}" was not found. Opened problem 1068 instead.`);
+        window.history.replaceState(null, '', `${questionPath('1068')}${window.location.search}`);
+      } else if (window.location.pathname !== questionPath(id) || window.location.hash) {
+        window.history.replaceState(null, '', `${questionPath(id)}${window.location.search}`);
+      }
+      if (id === currentProblemId) return;
+      setCurrentProblemId(id);
+      try { window.localStorage.setItem(LAST_ACCESSED_QUESTION_KEY, id); } catch { /* Storage can be disabled. */ }
+      setCode(getDraft(id, activeLanguage) ?? getLanguageTemplate(activeLanguage));
+      setSubmissions(getSubmissions(id));
+      setTestResults({});
+      setSubmissionResults(null);
+      setOverallVerdict(undefined);
+    };
+    window.addEventListener('popstate', restoreFromHistory);
+    return () => window.removeEventListener('popstate', restoreFromHistory);
+  }, [currentProblemId, activeLanguage, testResults, submissionResults, overallVerdict]);
+
+  // Sync language change with draft code
+  const handleLanguageChange = useCallback(
+    (newLang: LanguageId) => {
+      setActiveLanguage(newLang);
+      const savedCode = getDraft(currentProblemId, newLang);
+      setCode(savedCode ?? getLanguageTemplate(newLang));
+    },
+    [currentProblemId]
+  );
+
+  // Code editor change handler with auto-save
+  const handleCodeChange = useCallback(
+    (newCode: string) => {
+      setCode(newCode);
+      saveDraft(currentProblemId, activeLanguage, newCode);
+    },
+    [currentProblemId, activeLanguage]
+  );
+
+  // Reset template handler
+  const handleResetTemplate = useCallback(() => {
+    const template = getLanguageTemplate(activeLanguage);
+    setCode(template);
+    saveDraft(currentProblemId, activeLanguage, template);
+  }, [currentProblemId, activeLanguage]);
+
+  // Load code from past submission
+  const handleSelectSubmissionCode = useCallback(
+    (subCode: string, lang: LanguageId) => {
+      setActiveLanguage(lang);
+      setCode(subCode);
+      saveDraft(currentProblemId, lang, subCode);
+    },
+    [currentProblemId]
+  );
+
+  // Settings update handler
+  const handleUpdateSettings = useCallback((newSettings: AppSettings) => {
+    setSettings(newSettings);
+    saveSettings(newSettings);
+  }, []);
+
+  // Custom test case management
+  const [isLoadingOfficialTests, setIsLoadingOfficialTests] = useState<boolean>(false);
+
+  const handleLoadOfficialTests = useCallback(async () => {
+    if (isLoadingOfficialTests) return;
+    setIsLoadingOfficialTests(true);
+    try {
+      const JSZip = (await import('jszip')).default;
+      const res = await fetch(`https://cses-tests.pages.dev/${currentProblemId}.zip`);
+      if (!res.ok) throw new Error('Failed to load official tests');
+      const zip = await JSZip.loadAsync(await res.arrayBuffer());
+      const inputFiles = Object.keys(zip.files)
+        .map((name) => ({ name, match: name.match(/^(\d+)\.in$/) }))
+        .filter((file): file is { name: string; match: RegExpMatchArray } => !!file.match)
+        .sort((a, b) => Number(a.match[1]) - Number(b.match[1]));
+      const testCases: TestCase[] = [];
+      for (const { name, match } of inputFiles) {
+        const number = Number(match[1]);
+        const inputFile = zip.file(name);
+        const outputFile = zip.file(`${number}.out`);
+        if (inputFile && outputFile) {
+          const [input, expectedOutput] = await Promise.all([
+            inputFile.async('text'),
+            outputFile.async('text'),
+          ]);
+          testCases.push({ id: `official-${number}`, input, expectedOutput, isSample: number === 1 });
+        }
+      }
+      if (testCases.length > 0) {
+        setCustomTestCases((prev) => {
+          const existing = prev[currentProblemId] || [];
+          const existingIds = new Set(existing.map((t) => t.id));
+          const newTests = testCases.filter((t) => !existingIds.has(t.id));
+          return {
+            ...prev,
+            [currentProblemId]: [...existing, ...newTests],
+          };
+        });
+        if (testCases[0]) {
+          setActiveTestCaseId(testCases[0].id);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoadingOfficialTests(false);
+    }
+  }, [currentProblemId, isLoadingOfficialTests]);
+
+  const handleAddCustomTestCase = useCallback(
+    (input: string, expectedOutput: string) => {
+      const newTc: TestCase = {
+        id: `custom-${Date.now()}`,
+        input,
+        expectedOutput,
+        isSample: false,
+      };
+
+      setCustomTestCases((prev) => ({
+        ...prev,
+        [currentProblemId]: [...(prev[currentProblemId] || []), newTc],
+      }));
+      setActiveTestCaseId(newTc.id);
+    },
+    [currentProblemId]
+  );
+
+  const handleDeleteCustomTestCase = useCallback(
+    (id: string) => {
+      setCustomTestCases((prev) => ({
+        ...prev,
+        [currentProblemId]: (prev[currentProblemId] || []).filter((tc) => tc.id !== id),
+      }));
+    },
+    [currentProblemId]
+  );
+
+  // "RUN" Handler: Executes code for active test case
+  const handleRun = useCallback(async () => {
+    if (isRunning || isSubmitting) return;
+
+    const targetTestCase =
+      combinedTestCases.find((tc) => tc.id === activeTestCaseId) ||
+      combinedTestCases[0];
+
+    if (!targetTestCase) return;
+
+    // Check if input size exceeds 100KB sandbox capacity
+    if (isLargeInput(targetTestCase.input)) {
+      setTestResults((prev) => ({
+        ...prev,
+        [targetTestCase.id]: {
+          testCaseId: targetTestCase.id,
+          status: 'SKIPPED',
+          executionTimeMs: 0,
+          memoryBytes: 0,
+          actualOutput: '(Large input > 100KB: cloud compiler execution bypassed)',
+          expectedOutput: targetTestCase.expectedOutput,
+          stderr: `Notice: Test case input size (${(targetTestCase.input.length / 1024).toFixed(1)} KB) exceeds the 100KB OnlineCompiler.io sandbox limit. Marked as completed.`,
+        },
+      }));
+      return;
+    }
+
+    setIsRunning(true);
+    setOverallVerdict(undefined);
+
+    // Set running state in testResults
+    setTestResults((prev) => ({
+      ...prev,
+      [targetTestCase.id]: {
+        testCaseId: targetTestCase.id,
+        status: 'RUNNING',
+        executionTimeMs: 0,
+        memoryBytes: 0,
+        actualOutput: '',
+        expectedOutput: targetTestCase.expectedOutput,
+      },
+    }));
+
+    try {
+      const timeLimitSec = parseFloat(currentProblem.timeLimit) || 1.0;
+      const res = await executeCode({
+        language: activeLanguage,
+        code,
+        stdin: targetTestCase.input,
+        endpoint: settings.compilerEndpoint,
+        apiKey: settings.apiKey,
+        timeoutMs: 25000, // Generous HTTP timeout for cloud compilation
+      });
+
+      const status = evaluateTestCase(
+        targetTestCase.expectedOutput,
+        res.output,
+        res.exitCode,
+        res.stderr,
+        res.wallTimeMs,
+        timeLimitSec
+      );
+
+      const diff = computeDiff(targetTestCase.expectedOutput, res.output);
+
+      const testResult: TestResult = {
+        testCaseId: targetTestCase.id,
+        status,
+        executionTimeMs: res.wallTimeMs,
+        memoryBytes: res.memoryBytes,
+        actualOutput: res.output,
+        expectedOutput: targetTestCase.expectedOutput,
+        stderr: res.stderr,
+        diff: diff || undefined,
+      };
+
+      setTestResults((prev) => ({
+        ...prev,
+        [targetTestCase.id]: testResult,
+      }));
+    } catch (err: any) {
+      setTestResults((prev) => ({
+        ...prev,
+        [targetTestCase.id]: {
+          testCaseId: targetTestCase.id,
+          status: 'RE',
+          executionTimeMs: 0,
+          memoryBytes: 0,
+          actualOutput: '',
+          expectedOutput: targetTestCase.expectedOutput,
+          stderr: err?.message || 'Execution error occurred.',
+        },
+      }));
+    } finally {
+      setIsRunning(false);
+    }
+  }, [
+    isRunning,
+    isSubmitting,
+    combinedTestCases,
+    activeTestCaseId,
+    currentProblem,
+    activeLanguage,
+    code,
+    settings,
+  ]);
+
+  // "SUBMIT" Handler: Executes code against test cases in parallel according to rate limits with Pause/Resume and Notifications
+  const handleSubmit = useCallback(async () => {
+    if (isRunning || isSubmitting) return;
+    if (combinedTestCases.length === 0) return;
+
+    // Prompt desktop notification permission in the background if not yet requested
+    requestNotificationPermission().catch(() => {});
+
+    setIsSubmitting(true);
+    setIsPaused(false);
+    isPausedRef.current = false;
+    isCancelledRef.current = false;
+    setOverallVerdict('RUNNING');
+
+    // 1. Initialize submission results matrix immediately: all tests marked IDLE
+    const initialSubmissionMatrix: TestResult[] = combinedTestCases.map((tc) => ({
+      testCaseId: tc.id,
+      status: 'IDLE',
+      executionTimeMs: 0,
+      memoryBytes: 0,
+      actualOutput: '',
+      expectedOutput: tc.expectedOutput,
+    }));
+    setSubmissionResults(initialSubmissionMatrix);
+
+    const initialResultsDict: Record<string, TestResult> = {};
+    for (const tc of combinedTestCases) {
+      initialResultsDict[tc.id] = {
+        testCaseId: tc.id,
+        status: 'IDLE',
+        executionTimeMs: 0,
+        memoryBytes: 0,
+        actualOutput: '',
+        expectedOutput: tc.expectedOutput,
+      };
+    }
+    setTestResults(initialResultsDict);
+
+    const evaluatedResults: TestResult[] = new Array(combinedTestCases.length);
+    const timeLimitSec = parseFloat(currentProblem.timeLimit) || 1.0;
+
+    let nextIndex = 0;
+    let hasCE = false;
+    let maxTime = 0;
+    let maxMemory = 0;
+
+    // 2. Parallel Worker Pool: concurrency of 2 stays safely under API rate limits while cutting wait time in half
+    const concurrency = Math.min(2, combinedTestCases.length);
+
+    const runWorker = async (workerId: number) => {
+      // Stagger start slightly to avoid simultaneous network bursts
+      if (workerId > 0) {
+        await new Promise((resolve) => setTimeout(resolve, workerId * 140));
+      }
+
+      while (true) {
+        // Handle Pause state: wait while paused unless cancelled
+        while (isPausedRef.current && !isCancelledRef.current) {
+          await new Promise((resolve) => setTimeout(resolve, 150));
+        }
+
+        // Check if Cancelled or has Compilation Error
+        if (isCancelledRef.current || hasCE) {
+          break;
+        }
+
+        // Claim next available testcase
+        const i = nextIndex++;
+        if (i >= combinedTestCases.length) {
+          break;
+        }
+
+        const tc = combinedTestCases[i];
+
+        // Mark current testcase as RUNNING in real-time
+        setTestResults((prev) => ({
+          ...prev,
+          [tc.id]: {
+            testCaseId: tc.id,
+            status: 'RUNNING',
+            executionTimeMs: 0,
+            memoryBytes: 0,
+            actualOutput: '',
+            expectedOutput: tc.expectedOutput,
+          },
+        }));
+
+        setSubmissionResults((prev) => {
+          if (!prev) return prev;
+          const updated = [...prev];
+          updated[i] = {
+            ...updated[i],
+            status: 'RUNNING',
+          };
+          return updated;
+        });
+
+        // Check if input size exceeds OnlineCompiler.io 100KB limit
+        if (isLargeInput(tc.input)) {
+          const skippedResult: TestResult = {
+            testCaseId: tc.id,
+            status: 'SKIPPED',
+            executionTimeMs: 0,
+            memoryBytes: 0,
+            actualOutput: '(Large input > 100KB: cloud execution bypassed)',
+            expectedOutput: tc.expectedOutput,
+            stderr: `Notice: Test case input size (${(tc.input.length / 1024).toFixed(1)} KB) exceeds the 100KB compiler sandbox limit. Automatically marked as done.`,
+          };
+
+          evaluatedResults[i] = skippedResult;
+          setTestResults((prev) => ({ ...prev, [tc.id]: skippedResult }));
+          setSubmissionResults((prev) => {
+            if (!prev) return [skippedResult];
+            const updated = [...prev];
+            updated[i] = skippedResult;
+            return updated;
+          });
+          continue;
+        }
+
+        try {
+          const res = await executeCode({
+            language: activeLanguage,
+            code,
+            stdin: tc.input,
+            endpoint: settings.compilerEndpoint,
+            apiKey: settings.apiKey,
+            timeoutMs: 25000,
+          });
+
+          const status = evaluateTestCase(
+            tc.expectedOutput,
+            res.output,
+            res.exitCode,
+            res.stderr,
+            res.wallTimeMs,
+            timeLimitSec
+          );
+
+          const diff = computeDiff(tc.expectedOutput, res.output);
+
+          const tResult: TestResult = {
+            testCaseId: tc.id,
+            status,
+            executionTimeMs: res.wallTimeMs,
+            memoryBytes: res.memoryBytes,
+            actualOutput: res.output,
+            expectedOutput: tc.expectedOutput,
+            stderr: res.stderr,
+            diff: diff || undefined,
+          };
+
+          evaluatedResults[i] = tResult;
+
+          // Instantly update UI for this test case
+          setTestResults((prev) => ({ ...prev, [tc.id]: tResult }));
+          setSubmissionResults((prev) => {
+            if (!prev) return [tResult];
+            const updated = [...prev];
+            updated[i] = tResult;
+            return updated;
+          });
+
+          maxTime = Math.max(maxTime, res.wallTimeMs);
+          maxMemory = Math.max(maxMemory, res.memoryBytes);
+
+          if (status === 'CE') {
+            hasCE = true;
+            break;
+          }
+        } catch (err: any) {
+          const errResult: TestResult = {
+            testCaseId: tc.id,
+            status: 'RE',
+            executionTimeMs: 0,
+            memoryBytes: 0,
+            actualOutput: '',
+            expectedOutput: tc.expectedOutput,
+            stderr: err?.message || 'Execution failed',
+          };
+          evaluatedResults[i] = errResult;
+          setTestResults((prev) => ({ ...prev, [tc.id]: errResult }));
+          setSubmissionResults((prev) => {
+            if (!prev) return [errResult];
+            const updated = [...prev];
+            updated[i] = errResult;
+            return updated;
+          });
+        }
+
+        // Small inter-run breath to prevent TCP socket exhaustion
+        await new Promise((resolve) => setTimeout(resolve, 80));
+      }
+    };
+
+    const workers = Array.from({ length: concurrency }, (_, workerId) => runWorker(workerId));
+    await Promise.all(workers);
+
+    // 3. Summarize final results
+    const completedResults = evaluatedResults.filter(Boolean);
+    const summary = summarizeTestResults(completedResults.length > 0 ? completedResults : []);
+    const finalVerdict: VerdictStatus = isCancelledRef.current
+      ? (completedResults.length > 0 ? summary.status : 'WA')
+      : hasCE
+      ? 'CE'
+      : summary.status;
+
+    setOverallVerdict(finalVerdict);
+    setSubmissionResults(
+      evaluatedResults.map((r, idx) => r || {
+        testCaseId: combinedTestCases[idx].id,
+        status: isCancelledRef.current ? 'IDLE' : hasCE ? 'CE' : 'IDLE',
+        executionTimeMs: 0,
+        memoryBytes: 0,
+        actualOutput: '',
+        expectedOutput: combinedTestCases[idx].expectedOutput,
+      })
+    );
+
+    const passedCount = summary.passedCount;
+
+    // Record submission to localStorage
+    const record: SubmissionRecord = {
+      id: `sub_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      problemId: currentProblem.id,
+      language: activeLanguage,
+      code,
+      charCount: code.length,
+      timestamp: Date.now(),
+      status: finalVerdict,
+      passedCount,
+      totalCount: combinedTestCases.length,
+      maxTimeMs: maxTime,
+      maxMemoryBytes: maxMemory,
+    };
+
+    saveSubmission(record);
+    setSubmissions(getSubmissions(currentProblem.id));
+
+    // If Accepted: Fire Confetti Celebration & update Solved Problems
+    if (finalVerdict === 'AC' && !isCancelledRef.current) {
+      const updatedSolved = getSolvedProblems();
+      updatedSolved.add(currentProblem.id);
+      saveSolvedProblem(currentProblem.id);
+      setSolvedIds(updatedSolved);
+
+      // Cloud persistence symmetry for authenticated users (debounced & cooldown throttled)
+      if (currentUser) {
+        queueDebouncedCloudSync(currentUser.id);
+      }
+
+      try {
+        confetti({
+          particleCount: 120,
+          spread: 75,
+          origin: { y: 0.6 },
+          colors: ['#10b981', '#38bdf8', '#818cf8', '#f59e0b', '#34d399'],
+        });
+      } catch {
+        // Confetti fallback
+      }
+    }
+
+    // 4. Send Completion Notifications (Desktop Notification + Audio Chime + Floating In-App Toast)
+    sendDesktopNotification(
+      finalVerdict === 'AC'
+        ? `Accepted! #${currentProblem.id} ${currentProblem.title}`
+        : `Evaluation Finished: ${finalVerdict} (#${currentProblem.id})`,
+      {
+        body: `${passedCount} of ${combinedTestCases.length} test cases passed (Max runtime: ${maxTime} ms)`,
+      }
+    );
+
+    playVerdictChime(finalVerdict);
+
+    setCompletionToast({
+      status: finalVerdict,
+      message:
+        finalVerdict === 'AC'
+          ? `Accepted! All ${passedCount} test cases passed!`
+          : isCancelledRef.current
+          ? `Execution Stopped (${passedCount}/${combinedTestCases.length} completed)`
+          : `Verdict: ${finalVerdict} (${passedCount}/${combinedTestCases.length} passed)`,
+      submessage: `Max time: ${maxTime} ms • Memory: ${(maxMemory / (1024 * 1024)).toFixed(1)} MB`,
+    });
+
+    setTimeout(() => {
+      setCompletionToast(null);
+    }, 5000);
+
+    setIsSubmitting(false);
+    setIsPaused(false);
+    isPausedRef.current = false;
+  }, [
+    isRunning,
+    isSubmitting,
+    combinedTestCases,
+    currentProblem,
+    activeLanguage,
+    code,
+    settings,
+    currentUser,
+    submissions,
+    queueDebouncedCloudSync,
+  ]);
+
+  const commandBindings = useMemo(() => resolveShortcutOverrides(settings.shortcutOverrides), [settings.shortcutOverrides]);
+  const commandActions = useMemo(() => ({
+    run: () => { if (!isRunning && !isSubmitting) handleRun(); },
+    runAll: () => { if (!isRunning && !isSubmitting) handleSubmit(); },
+    submitCses: () => { if (!isRunning && !isSubmitting) setIsCsesSubmitModalOpen(true); },
+    cleanCode: () => window.dispatchEvent(new Event('cses-clean-llm-code')),
+    palette: () => setIsCommandPaletteOpen(true),
+    settings: () => { setSettingsInitialTab(undefined); setIsSettingsOpen(true); },
+    help: () => { setSettingsInitialTab('shortcuts'); setIsSettingsOpen(true); },
+    zen: () => setZenMode(value => !value),
+    lists: () => { setListProblem(undefined); setListsOpen(true); },
+    notes: () => setIsAllNotesOpen(true),
+    copyLink: async () => { const safeLink = `${window.location.origin}${questionPath(currentProblemId)}`; try { await navigator.clipboard.writeText(safeLink); setWorkspaceNotice('Problem link copied.'); } catch { setWorkspaceNotice(`Copy this problem link: ${safeLink}`); } },
+    previous: () => { const problem = allProblems.find(p => p.id === currentProblemId); const category = problem && (categories.find(c => c.name.toLowerCase() === problem.category.toLowerCase()) || categories.find(c => c.problemIds.includes(problem.id))); const list = category?.problemIds.length ? category.problemIds.map(id => allProblems.find(p => p.id === id)).filter((p): p is Problem => !!p) : allProblems.filter(p => p.category === problem?.category); const i = list.findIndex(p => p.id === currentProblemId); if (i > 0) handleSelectProblem(list[i - 1].id); },
+    next: () => { const problem = allProblems.find(p => p.id === currentProblemId); const category = problem && (categories.find(c => c.name.toLowerCase() === problem.category.toLowerCase()) || categories.find(c => c.problemIds.includes(problem.id))); const list = category?.problemIds.length ? category.problemIds.map(id => allProblems.find(p => p.id === id)).filter((p): p is Problem => !!p) : allProblems.filter(p => p.category === problem?.category); const i = list.findIndex(p => p.id === currentProblemId); if (i >= 0 && i < list.length - 1) handleSelectProblem(list[i + 1].id); },
+    focusStatement: () => { setMobilePane('problem'); setActiveProblemTab('statement'); document.querySelector<HTMLElement>('[data-command-pane="statement"]')?.focus(); },
+    focusEditor: () => { setMobilePane('editor'); requestAnimationFrame(() => document.querySelector<HTMLElement>('.monaco-editor textarea')?.focus()); },
+    focusTests: () => { setMobilePane('editor'); requestAnimationFrame(() => document.querySelector<HTMLElement>('[data-command-pane="tests"]')?.focus()); },
+    appearance: () => { setSettingsInitialTab('appearance'); setIsSettingsOpen(true); },
+    learn: () => { setMobilePane('problem'); setActiveProblemTab('learn'); },
+  }), [handleRun, handleSubmit, isRunning, isSubmitting, currentProblemId, handleSelectProblem]);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.repeat || event.isComposing || event.keyCode === 229 || isShortcutRecordingTarget(event.target)) return;
+      const editable = isEditableTarget(event.target);
+      const bindings = commandBindings;
+      const executionIds = ['run', 'runAll', 'submitCses', 'cleanCode'] as const;
+      const matchId = executionIds.find(id => matchesShortcut(event, bindings[id]));
+      if (matchId) {
+        if (isDialogOpen()) return;
+        if (matchId === 'cleanCode' && !((event.target as HTMLElement | null)?.closest?.('.monaco-editor'))) return;
+        event.preventDefault(); event.stopPropagation(); commandActions[matchId](); return;
+      }
+      if (editable || isDialogOpen()) return;
+      const id = COMMAND_CATALOG.find(command => matchesShortcut(event, bindings[command.id]));
+      if (!id) return;
+      event.preventDefault(); event.stopPropagation();
+      commandActions[id.id as keyof typeof commandActions]?.();
+    };
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [commandBindings, commandActions]);
+
+  // Find user's best execution time for personal comparison scorecard
+  const userBestTimeMs = useMemo(() => {
+    const acSubs = submissions.filter((s) => s.status === 'AC');
+    if (acSubs.length === 0) return undefined;
+    return Math.min(...acSubs.map((s) => s.maxTimeMs));
+  }, [submissions]);
+
+  return (
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-surface-0 text-text-primary font-sans">
+      {/* Top Header */}
+      <Header
+        currentProblem={currentProblem}
+        allProblems={allProblems}
+        categories={categories}
+        solvedCount={solvedIds.size}
+        totalProblems={allProblems.length}
+        solvedProblemIds={solvedIds}
+        onToggleSolved={handleToggleSolved}
+        starredProblemIds={starredIds}
+        onToggleStarred={handleToggleStarred}
+        onSelectProblem={handleSelectProblem}
+        onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+        commandPaletteShortcut={commandBindings.palette}
+        zenMode={zenMode}
+        onToggleZenMode={() => setZenMode(!zenMode)}
+        onOpenSettings={() => setIsSettingsOpen(true)}
+        currentUser={currentUser}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
+        onOpenArchive={() => setIsArchiveModalOpen(true)}
+        onOpenAllNotes={() => setIsAllNotesOpen(true)}
+        onOpenLists={() => { setListProblem(undefined); setListsOpen(true); }}
+        onOpenContestBank={() => setContestBankOpen(true)}
+        onOpenCsesProfile={handleOpenCsesProfile}
+        onOpenCsesAccount={() => setIsCsesAccountModalOpen(true)}
+        onOpenHelp={() => { setSettingsInitialTab('shortcuts'); setIsSettingsOpen(true); }}
+        onCopyProblemLink={async () => {
+          const safeLink = `${window.location.origin}${questionPath(currentProblemId)}`;
+          try {
+            await navigator.clipboard.writeText(safeLink);
+          } catch {
+            setWorkspaceNotice(`Copy this problem link: ${safeLink}`);
+            return;
+          }
+          setWorkspaceNotice('Problem link copied. It contains no account credentials.');
+        }}
+        syncStatus={cloudSyncStatus}
+        onRetrySync={() => { if (currentUser) queueDebouncedCloudSync(currentUser.id); }}
+      />
+
+      {(workspaceNotice || (quickstartReady && showQuickstart)) && (
+        <div className="fixed top-[4.5rem] right-4 z-20 w-[min(25rem,calc(100vw-2rem))] space-y-2" aria-live="polite">
+          {workspaceNotice && <div className="rounded-md border border-border-muted bg-surface-1 px-3 py-2 text-xs text-text-secondary shadow-lg flex items-start gap-2"><span className="flex-1 min-w-0 break-words select-text">{workspaceNotice}</span><button type="button" onClick={() => setWorkspaceNotice(null)} className="text-slate-400 hover:text-white" aria-label="Dismiss notice">×</button></div>}
+          {quickstartReady && showQuickstart && <section className="rounded-md border border-sky-500/30 bg-surface-1 px-4 py-3 text-xs text-text-secondary shadow-lg" aria-label="Quickstart">
+            <div className="flex justify-between items-center"><h2 className="font-semibold text-text-primary">Quickstart</h2><button type="button" aria-label="Dismiss quickstart" onClick={() => { setShowQuickstart(false); try { window.localStorage.setItem('cses_quickstart_dismissed', 'true'); } catch {} }} className="text-slate-400 hover:text-white">×</button></div>
+            <p className="mt-2 text-slate-400">Choose a problem, edit your solution, then run the selected test or all loaded tests. Workbench results cover those inputs. Submit to CSES sends your code to the official judge.</p>
+            <button type="button" className="mt-2 text-sky-300 hover:text-sky-200" onClick={() => { setShowQuickstart(false); try { window.localStorage.setItem('cses_quickstart_dismissed', 'true'); } catch {} }}>Got it</button>
+          </section>}
+        </div>
+      )}
+
+      <div className="lg:hidden flex border-b border-border-subtle bg-surface-1" aria-label="Workspace view"><button className={`flex-1 py-2 text-sm ${mobilePane === 'problem' ? 'text-sky-400' : 'text-slate-400'}`} onClick={() => setMobilePane('problem')}>Problem</button><button className={`flex-1 py-2 text-sm ${mobilePane === 'editor' ? 'text-sky-400' : 'text-slate-400'}`} onClick={() => setMobilePane('editor')}>Editor &amp; tests</button></div>
+      {/* Main Workspace Body */}
+      <main className="flex-1 min-h-0 relative overflow-hidden">
+        <SplitPane
+          direction="horizontal"
+          initialSize={42}
+          minSize={25}
+          maxSize={70}
+          firstCollapsed={zenMode}
+          className={`h-full w-full mobile-${mobilePane}`}
+        >
+          {/* Left Pane: Problem Statement, Leaderboard, Submissions, Notes */}
+          <div data-command-pane="statement" tabIndex={-1} className="h-full w-full overflow-hidden bg-surface-1">
+            <ProblemPane
+              activeTab={activeProblemTab}
+              onTabChange={setActiveProblemTab}
+              problem={currentProblem}
+              editorCode={code}
+              editorLanguage={activeLanguage}
+              submissions={submissions}
+              isSolved={solvedIds.has(currentProblem.id)}
+              isStarred={starredIds.has(currentProblem.id)}
+              onToggleSolved={handleToggleSolved}
+              onToggleStar={handleToggleStarred}
+              onSelectCode={handleSelectSubmissionCode}
+              userExecutionTimeMs={userBestTimeMs}
+              userCharCount={code.length}
+              onSelectUser={handleOpenCsesProfile}
+              onRefreshStats={() => handleFetchStats(currentProblemId, true)}
+              isRefreshingStats={isRefreshingStats}
+              statsRefreshedAt={statsRefreshedAt[currentProblemId]}
+              currentUser={currentUser}
+              onOpenCsesAccount={() => setIsCsesAccountModalOpen(true)}
+              onSelectProblem={handleSelectProblem}
+              onOpenAllNotes={() => setIsAllNotesOpen(true)}
+              onAddToList={() => { setListProblem(currentProblem.id); setListsOpen(true); }}
+              className="h-full w-full"
+            />
+          </div>
+
+          {/* Right Pane: Vertical Split (Upper: EditorWorkbench, Lower: TestBench) */}
+          <div data-command-pane="editor" tabIndex={-1} className="h-full w-full overflow-hidden bg-surface-0">
+            <SplitPane
+              direction="vertical"
+              initialSize={60}
+              minSize={30}
+              maxSize={80}
+              className="h-full w-full"
+            >
+              {/* Upper Pane: Code Editor Workbench */}
+              <div data-command-pane="editor" tabIndex={-1} className="h-full w-full overflow-hidden bg-surface-1">
+                <EditorWorkbench
+                  code={code}
+                  onChange={handleCodeChange}
+                  language={activeLanguage}
+                  onLanguageChange={handleLanguageChange}
+                  onResetTemplate={handleResetTemplate}
+                  onRun={handleRun}
+                  onSubmit={handleSubmit}
+                  runShortcut={commandBindings.run}
+                  runAllShortcut={commandBindings.runAll}
+                  onSubmitCses={() => setIsCsesSubmitModalOpen(true)}
+                  isRunning={isRunning}
+                  isSubmitting={isSubmitting}
+                  isPaused={isPaused}
+                  onPauseResume={handleTogglePause}
+                  onCancel={handleCancelSubmit}
+                  fontSize={settings.fontSize}
+                  problemId={currentProblem.id}
+                  problemTitle={currentProblem.title}
+                  apiKey={settings.apiKey}
+                  widgetKey={settings.widgetKey}
+                  onSaveWidgetKey={(key) =>
+                    setSettings((prev) => ({ ...prev, widgetKey: key }))
+                  }
+                  defaultEditorMode={
+                    settings.defaultEditor === 'inbuilt' ? 'embed' : 'monaco'
+                  }
+                  className="h-full w-full"
+                />
+              </div>
+
+              {/* Lower Pane: Test Bench, Testcases, Diff Inspector */}
+              <div data-command-pane="tests" tabIndex={-1} className="h-full w-full overflow-hidden bg-surface-1">
+                <TestBench
+                  testCases={combinedTestCases}
+                  results={testResults}
+                  activeTestCaseId={activeTestCaseId}
+                  onSelectTestCase={setActiveTestCaseId}
+                  onAddCustomTestCase={handleAddCustomTestCase}
+                  onDeleteCustomTestCase={handleDeleteCustomTestCase}
+                  onLoadOfficialTests={handleLoadOfficialTests}
+                  isLoadingOfficialTests={isLoadingOfficialTests}
+                  problemId={currentProblemId}
+                  isRunning={isRunning || isSubmitting}
+                  isPaused={isPaused}
+                  onPauseResume={handleTogglePause}
+                  onCancel={handleCancelSubmit}
+                  overallStatus={overallVerdict}
+                  submissionResults={submissionResults}
+                  className="h-full w-full"
+                />
+              </div>
+            </SplitPane>
+          </div>
+        </SplitPane>
+      </main>
+
+      <ListsModal open={listsOpen} onClose={() => setListsOpen(false)} owner={listOwner} problems={allProblems} contestProblems={contestProblems} solved={solvedIds} onSelect={(id) => { if (/^(zio|zco|inoi|usaco)-\d{4}-/.test(id)) { window.location.assign(`/olympiad/${encodeURIComponent(id)}`); return; } handleSelectProblem(id); }} onToggleSolved={handleToggleSolved} currentProblemId={listProblem} />
+      <ContestBankModal open={contestBankOpen} onClose={() => setContestBankOpen(false)} problems={contestProblems} loading={contestCatalogLoading} onSelect={(id) => { window.location.assign(`/olympiad/${encodeURIComponent(id)}`); }} />
+      {/* Accessible Modals */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        problems={allProblems}
+        onSelectProblem={handleSelectProblem}
+        solvedIds={solvedIds}
+        commands={Object.fromEntries(COMMAND_CATALOG.map(command => [command.id, { shortcut: commandBindings[command.id], run: () => commandActions[command.id as keyof typeof commandActions]?.(), available: !!commandActions[command.id as keyof typeof commandActions] }]))}
+      />
+
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        settings={settings}
+        onUpdateSettings={handleUpdateSettings}
+        initialTab={settingsInitialTab}
+      />
+
+      {/* Public Auth Modal (GitHub 1-click login) */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        currentUser={currentUser}
+        onUserChange={(user) => {
+          setCurrentUser(user);
+          saveStoredUser(user);
+          if (user) claimGuestStars(user.id);
+        }}
+        solvedCount={solvedIds.size}
+      />
+
+      {/* Direct CSES Remote Submit Modal */}
+      <CsesSubmitModal
+        isOpen={isCsesSubmitModalOpen}
+        onClose={() => setIsCsesSubmitModalOpen(false)}
+        problemId={currentProblem.id}
+        problemTitle={currentProblem.title}
+        language={activeLanguage}
+        code={code}
+        onAccepted={handleOfficialCsesAccepted}
+        onCompleted={(record) => {
+          if (record.problemId === currentProblemId) setSubmissions(getSubmissions(currentProblemId));
+          if (currentUser) queueDebouncedCloudSync(currentUser.id);
+        }}
+      />
+
+      {/* CSES User Profile Inspector Modal */}
+      <CsesUserProfileModal
+        isOpen={isCsesUserModalOpen}
+        onClose={() => setIsCsesUserModalOpen(false)}
+        initialNick={inspectedCsesNick}
+        onSelectProblem={handleSelectProblem}
+      />
+
+      {/* CSES Continuous Mirror & Archive Explorer */}
+      <ArchiveExplorerModal
+        isOpen={isArchiveModalOpen}
+        onClose={() => setIsArchiveModalOpen(false)}
+        onSelectProblem={handleSelectProblem}
+        solvedIds={solvedIds}
+        onToggleSolved={handleToggleSolved}
+        starredIds={starredIds}
+        onToggleStarred={handleToggleStarred}
+      />
+
+      {/* Official CSES Account Connect & Solves Sync Modal */}
+      <CsesAccountModal
+        isOpen={isCsesAccountModalOpen}
+        onClose={() => setIsCsesAccountModalOpen(false)}
+        onSolvesSynced={handleCsesSolvesSynced}
+      />
+
+      {/* CSES Notebook: All Problem Notes Modal */}
+      <AllNotesModal
+        isOpen={isAllNotesOpen}
+        onClose={() => setIsAllNotesOpen(false)}
+        onSelectProblem={(id) => {
+          handleSelectProblem(id);
+          setIsAllNotesOpen(false);
+        }}
+        currentProblemId={currentProblemId}
+        allProblems={allProblems}
+      />
+
+      {/* Floating Completion Toast Notification */}
+      {completionToast && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 p-3.5 rounded-xl bg-surface-1/95 border border-border-muted shadow-2xl backdrop-blur-md text-slate-100 max-w-md animate-in fade-in slide-in-from-bottom-3 duration-200">
+          <div
+            className={cn(
+              'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border',
+              completionToast.status === 'AC'
+                ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
+                : completionToast.status === 'WA'
+                ? 'bg-rose-500/20 text-rose-400 border-rose-500/40'
+                : completionToast.status === 'CE'
+                ? 'bg-purple-500/20 text-purple-400 border-purple-500/40'
+                : 'bg-amber-500/20 text-amber-400 border-amber-500/40'
+            )}
+          >
+            {completionToast.status === 'AC' ? (
+              <Check className="w-4 h-4 stroke-[3]" />
+            ) : completionToast.status === 'WA' ? (
+              <X className="w-4 h-4 stroke-[3]" />
+            ) : (
+              <AlertTriangle className="w-4 h-4" />
+            )}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-semibold truncate text-slate-200">
+              {completionToast.message}
+            </p>
+            {completionToast.submessage && (
+              <p className="text-[11px] text-slate-400 truncate mt-0.5">
+                {completionToast.submessage}
+              </p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => setCompletionToast(null)}
+            className="p-1 text-slate-400 hover:text-slate-200 rounded hover:bg-surface-2 transition-colors cursor-pointer"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}

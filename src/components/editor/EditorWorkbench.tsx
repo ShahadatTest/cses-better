@@ -26,6 +26,7 @@ import { SUPPORTED_LANGUAGES, getLanguageConfig } from '@/core/templates';
 import { extractCodeFromMarkdown } from '@/core/markdown-code';
 import MonacoEditorView from './MonacoEditorView';
 import InbuiltCompilerView from './InbuiltCompilerView';
+import { formatShortcut } from '@/core/commands';
 
 export interface EditorWorkbenchProps {
   code: string;
@@ -50,6 +51,9 @@ export interface EditorWorkbenchProps {
   isVimMode?: boolean;
   className?: string;
   defaultEditorMode?: 'monaco' | 'embed';
+  runAllAvailable?: boolean;
+  runShortcut?: string | null;
+  runAllShortcut?: string | null;
 }
 
 export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
@@ -75,6 +79,9 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
   isVimMode = false,
   className = '',
   defaultEditorMode = 'monaco',
+  runAllAvailable = true,
+  runShortcut = 'Mod+Enter',
+  runAllShortcut = 'Mod+Shift+Enter',
 }) => {
   const [editorMode, setEditorMode] = useState<'monaco' | 'embed'>(defaultEditorMode);
   const [isZenMode, setIsZenMode] = useState(false);
@@ -135,6 +142,12 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
     setTimeout(() => setLlmNotice(null), 3000);
   };
 
+  useEffect(() => {
+    const handleCommand = () => { if (editorMode === 'monaco') void handleCleanLlmMarkdown(); };
+    window.addEventListener('cses-clean-llm-code', handleCommand);
+    return () => window.removeEventListener('cses-clean-llm-code', handleCommand);
+  }, [editorMode, code, language]);
+
   // Compute filename based on problem and language
   const downloadFilename = useMemo(() => {
     const config = getLanguageConfig(language);
@@ -178,33 +191,17 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
     }
   }, [initialFontSize]);
 
-  // Handle keyboard shortcuts globally when workbench has focus
+  // Zen escape is local to this workbench; execution shortcuts are routed by the workspace once.
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Escape exits Zen mode
       if (e.key === 'Escape' && isZenMode) {
         setIsZenMode(false);
-        return;
-      }
-
-      // Check for Ctrl+Enter or Cmd+Enter
-      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-        e.preventDefault();
-        if (e.shiftKey) {
-          if (!isRunning && !isSubmitting) {
-            onSubmit();
-          }
-        } else {
-          if (!isRunning && !isSubmitting) {
-            onRun();
-          }
-        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isZenMode, isRunning, isSubmitting, onRun, onSubmit]);
+  }, [isZenMode]);
 
   // Copy code handler with feedback
   const handleCopyCode = async () => {
@@ -274,7 +271,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
               className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60 ${
                 editorMode === 'monaco'
                   ? 'bg-surface-2 text-sky-400 font-semibold'
-                  : 'text-slate-400 hover:text-slate-100 hover:bg-surface-2/60'
+                  : 'text-text-muted hover:text-text-primary hover:bg-surface-2/60'
               }`}
               title="Monaco Code Editor Pro (with VS Code features & shortcuts)"
             >
@@ -288,7 +285,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
               className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60 ${
                 editorMode === 'embed'
                   ? 'bg-surface-2 text-amber-400 font-semibold'
-                  : 'text-slate-400 hover:text-slate-100 hover:bg-surface-2/60'
+                  : 'text-text-muted hover:text-text-primary hover:bg-surface-2/60'
               }`}
               title="OnlineCompiler.io Embedded Sandbox Widget"
             >
@@ -302,21 +299,23 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
             <select
               value={language}
               onChange={(e) => onLanguageChange(e.target.value as LanguageId)}
-              className="appearance-none bg-surface-2 hover:bg-surface-3/80 text-slate-200 text-xs font-mono font-medium rounded-md pl-2.5 pr-7 py-1.5 border border-surface-3/60 focus:outline-none focus:ring-1 focus:ring-sky-500 cursor-pointer transition-colors"
+              className="appearance-none bg-surface-2 hover:bg-surface-3/80 text-text-secondary text-xs font-mono font-medium rounded-md pl-2.5 pr-7 py-1.5 border border-surface-3/60 focus:outline-none focus:ring-1 focus:ring-sky-500 cursor-pointer transition-colors"
               title="Select Programming Language"
             >
               {SUPPORTED_LANGUAGES.map((lang) => (
-                <option key={lang.id} value={lang.id} className="bg-surface-1 text-slate-200">
+                <option key={lang.id} value={lang.id} className="bg-surface-1 text-text-secondary">
                   {lang.name}
                 </option>
               ))}
             </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 pointer-events-none absolute right-2" />
+            <ChevronDown className="w-3.5 h-3.5 text-text-muted pointer-events-none absolute right-2" />
           </div>
         </div>
 
         {/* Right: Quick Tools & Zen Toggle */}
-        <div className="flex items-center gap-1 sm:gap-1.5">
+        <details className="relative flex items-center gap-1 sm:gap-1.5">
+          <summary className="list-none cursor-pointer rounded-md border border-surface-3/60 px-2 py-1 text-[11px] text-text-secondary hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">Tools</summary>
+          <div className="absolute right-0 top-full mt-2 z-40 flex items-center gap-1 rounded-md border border-border-muted bg-surface-1 p-1 shadow-xl">
           {/* Minimap Toggle (Monaco mode only) */}
           {editorMode === 'monaco' && (
             <button
@@ -325,7 +324,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
               className={`p-1.5 rounded-md text-xs transition-colors ${
                 minimap
                   ? 'text-sky-400 bg-surface-2'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-surface-2'
+                  : 'text-text-muted hover:text-text-secondary hover:bg-surface-2'
               }`}
               title={minimap ? 'Hide Minimap' : 'Show Minimap'}
             >
@@ -338,7 +337,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
             type="button"
             onClick={handleFormatCode}
             disabled={editorMode !== 'monaco'}
-            className="p-1.5 rounded-md text-slate-400 hover:text-slate-200 hover:bg-surface-2 transition-colors disabled:opacity-30 disabled:pointer-events-none"
+            className="p-1.5 rounded-md text-text-muted hover:text-text-secondary hover:bg-surface-2 transition-colors disabled:opacity-30 disabled:pointer-events-none"
             title="Format Code (Alt+Shift+F)"
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -348,7 +347,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
           <button
             type="button"
             onClick={handleCleanLlmMarkdown}
-            className="p-1.5 rounded-md text-slate-400 hover:text-amber-400 hover:bg-surface-2 transition-colors relative"
+            className="p-1.5 rounded-md text-text-muted hover:text-amber-400 hover:bg-surface-2 transition-colors relative"
             title="Clean LLM Code (Strips markdown backticks & preamble from ChatGPT, Claude, DeepSeek)"
           >
             <Bot className="w-3.5 h-3.5" />
@@ -358,7 +357,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
           <button
             type="button"
             onClick={handleCopyCode}
-            className="p-1.5 rounded-md text-slate-400 hover:text-slate-200 hover:bg-surface-2 transition-colors relative"
+            className="p-1.5 rounded-md text-text-muted hover:text-text-secondary hover:bg-surface-2 transition-colors relative"
             title={copied ? 'Copied to clipboard!' : 'Copy Code'}
           >
             {copied ? (
@@ -372,7 +371,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
           <button
             type="button"
             onClick={handleDownloadCode}
-            className="p-1.5 rounded-md text-slate-400 hover:text-sky-400 hover:bg-surface-2 transition-colors relative"
+            className="p-1.5 rounded-md text-text-muted hover:text-sky-400 hover:bg-surface-2 transition-colors relative"
             title={
               downloaded
                 ? `Downloaded ${downloadFilename}!`
@@ -390,7 +389,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
           <button
             type="button"
             onClick={handleReset}
-            className="p-1.5 rounded-md text-slate-400 hover:text-rose-400 hover:bg-surface-2 transition-colors"
+            className="p-1.5 rounded-md text-text-muted hover:text-rose-400 hover:bg-surface-2 transition-colors"
             title="Reset to Language Template"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -405,13 +404,14 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
             className={`p-1.5 rounded-md text-xs transition-colors ${
               isZenMode
                 ? 'text-amber-400 bg-surface-2'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-surface-2'
+                : 'text-text-muted hover:text-text-secondary hover:bg-surface-2'
             }`}
             title={isZenMode ? 'Exit Zen Mode (Esc)' : 'Enter Zen Mode / Fullscreen'}
           >
             {isZenMode ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
-        </div>
+          </div>
+        </details>
       </div>
 
       {/* ── Main Editor Canvas ── */}
@@ -460,7 +460,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
         <div className="flex items-center gap-2 sm:gap-3 text-xs">
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[11px] font-mono text-slate-300">Auto-saved</span>
+            <span className="text-[11px] font-mono text-text-secondary" title="Draft is saved through the app's local storage helper">Draft saved locally</span>
           </div>
 
           <span className="text-surface-3">|</span>
@@ -470,7 +470,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
               Embed Active: Run in sandbox above, or switch to Monaco Pro for Test Bench
             </span>
           ) : (
-            <span className="text-[11px] font-mono text-slate-400">
+            <span className="text-[11px] font-mono text-text-muted">
               {lineCount} {lineCount === 1 ? 'line' : 'lines'}, {code.length} chars
             </span>
           )}
@@ -491,7 +491,7 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
           <button
             type="button"
             onClick={handleDownloadCode}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-surface-2 hover:bg-surface-3 text-slate-300 hover:text-white border border-surface-3/80 shadow-xs transition-all active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-surface-2 hover:bg-surface-3 text-text-secondary hover:text-white border border-surface-3/80 shadow-xs transition-all active:scale-95"
             title={`Download ${downloadFilename} to upload and submit manually on official CSES`}
           >
             {downloaded ? (
@@ -522,22 +522,20 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
                 type="button"
                 onClick={onRun}
                 disabled={isRunning || isSubmitting}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-surface-2 hover:bg-surface-3 text-slate-200 border border-surface-3/80 shadow-sm transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
-                title="Run Code against Sample Test Cases (Ctrl+Enter)"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-surface-2 hover:bg-surface-3 text-text-secondary border border-surface-3/80 shadow-sm transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+                  title={`Run the selected test case (${formatShortcut(runShortcut)})`}
               >
                 {isRunning ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-400" />
                 ) : (
                   <Play className="w-3.5 h-3.5 fill-current text-sky-400" />
                 )}
-                <span>{isRunning ? 'Running...' : 'Run'}</span>
-                <kbd className="hidden sm:inline-block ml-1 px-1 py-0.5 text-[11px] text-slate-400 bg-surface-0/60 rounded border border-surface-3 font-mono">
-                  Ctrl+↵
-                </kbd>
+                  <span>{isRunning ? 'Running...' : 'Run selected'}</span>
+                {runShortcut && <kbd className="hidden sm:inline-block ml-1 px-1 py-0.5 text-[11px] text-text-muted bg-surface-0/60 rounded border border-surface-3 font-mono">{formatShortcut(runShortcut)}</kbd>}
               </button>
 
               {/* Test Cases Button + Pause / Resume / Stop Controls */}
-              {isSubmitting ? (
+              {!runAllAvailable ? null : isSubmitting ? (
                 <div className="flex items-center gap-1.5">
                   <button
                     type="button"
@@ -581,13 +579,11 @@ export const EditorWorkbench: React.FC<EditorWorkbenchProps> = ({
                   onClick={onSubmit}
                   disabled={isRunning}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-surface-2 hover:bg-surface-3 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 shadow-sm transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
-                  title="Run all test cases in parallel according to rate limits (Ctrl+Shift+Enter)"
+                  title="Run all loaded sample, custom, or downloaded tests locally (Ctrl+Shift+Enter). This does not submit to CSES."
                 >
                   <Check className="w-3.5 h-3.5" />
-                  <span>Test Cases</span>
-                  <kbd className="hidden sm:inline-block ml-1 px-1 py-0.5 text-[11px] text-emerald-300/80 bg-emerald-950/60 rounded border border-emerald-800/60 font-mono">
-                    Ctrl+Shift+↵
-                  </kbd>
+                  <span>Run all tests</span>
+                  {runAllShortcut && <kbd className="hidden sm:inline-block ml-1 px-1 py-0.5 text-[11px] text-emerald-300/80 bg-emerald-950/60 rounded border border-emerald-800/60 font-mono">{formatShortcut(runAllShortcut)}</kbd>}
                 </button>
               )}
 

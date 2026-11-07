@@ -48,19 +48,7 @@ export function AuthModal({
     setError(null);
     setIsLoading(true);
     try {
-      if (!isSupabaseConfigured) {
-        const mockUser: UserProfile = {
-          id: `demo-${Date.now()}`,
-          displayName: 'codewithpom',
-          username: 'codewithpom',
-          email: 'dev@github.com',
-          provider: 'github',
-          avatarUrl: 'https://avatars.githubusercontent.com/u/9919?v=4',
-        };
-        onUserChange(mockUser);
-        setIsLoading(false);
-        return;
-      }
+      if (!isSupabaseConfigured) throw new Error('Cloud sign-in is unavailable until Supabase is configured. You can continue as a guest.');
 
       const { error: err } = await signInWithGitHub();
       if (err) throw err;

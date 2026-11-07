@@ -194,23 +194,23 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
             className={cn(
               'flex items-center gap-2 px-3 py-3 text-xs font-semibold border-b-2 transition-colors whitespace-nowrap',
               currentTab === 'statement'
-                ? 'border-sky-400 text-sky-400 bg-surface-2/40'
-                : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-surface-2/20'
+                ? 'border-accent text-accent bg-surface-2/40'
+                : 'border-transparent text-text-muted hover:text-text-primary hover:bg-surface-2/20'
             )}
           >
             <BookOpen className="w-3.5 h-3.5" />
             <span>Statement</span>
           </button>
 
-          <button onClick={() => handleTabClick('learn')} className={cn('px-3 py-3 text-xs font-semibold border-b-2 whitespace-nowrap', currentTab === 'learn' ? 'border-sky-400 text-sky-400' : 'border-transparent text-slate-400 hover:text-slate-200')}>Learn</button>
+          <button onClick={() => handleTabClick('learn')} className={cn('px-3 py-3 text-xs font-semibold border-b-2 whitespace-nowrap', currentTab === 'learn' ? 'border-accent text-accent' : 'border-transparent text-text-muted hover:text-text-primary')}>Learn</button>
           {/* Leaderboard & Stats Tab */}
           <button
             onClick={() => handleTabClick('leaderboard')}
             className={cn(
               'flex items-center gap-2 px-3 py-3 text-xs font-semibold border-b-2 transition-colors whitespace-nowrap',
               currentTab === 'leaderboard'
-                ? 'border-sky-400 text-sky-400 bg-surface-2/40'
-                : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-surface-2/20'
+                ? 'border-accent text-accent bg-surface-2/40'
+                : 'border-transparent text-text-muted hover:text-text-primary hover:bg-surface-2/20'
             )}
           >
             <Trophy className="w-3.5 h-3.5" />
@@ -229,14 +229,14 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
             className={cn(
               'flex items-center gap-2 px-3 py-3 text-xs font-semibold border-b-2 transition-colors whitespace-nowrap',
               currentTab === 'submissions'
-                ? 'border-sky-400 text-sky-400 bg-surface-2/40'
-                : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-surface-2/20'
+                ? 'border-accent text-accent bg-surface-2/40'
+                : 'border-transparent text-text-muted hover:text-text-primary hover:bg-surface-2/20'
             )}
           >
             <History className="w-3.5 h-3.5" />
             <span>Submissions</span>
             {submissions.length > 0 && (
-              <span className="px-1.5 py-0.2 rounded-full text-[11px] font-mono bg-surface-3 text-slate-200">
+              <span className="px-1.5 py-0.2 rounded-full text-[11px] font-mono bg-surface-3 text-text-primary">
                 {submissions.length}
               </span>
             )}
@@ -248,8 +248,8 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
             className={cn(
               'flex items-center gap-2 px-3 py-3 text-xs font-semibold border-b-2 transition-colors whitespace-nowrap',
               currentTab === 'notes'
-                ? 'border-sky-400 text-sky-400 bg-surface-2/40'
-                : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-surface-2/20'
+                ? 'border-accent text-accent bg-surface-2/40'
+                : 'border-transparent text-text-muted hover:text-text-primary hover:bg-surface-2/20'
             )}
           >
             <StickyNote className="w-3.5 h-3.5" />
@@ -262,11 +262,11 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
           href={`https://cses.fi/problemset/task/${problem.id}`}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-300 hover:text-sky-300 transition-colors px-2.5 py-1 rounded-md bg-surface-2/60 hover:bg-surface-2 border border-border-subtle shadow-xs"
+          className="inline-flex items-center gap-1.5 text-[11px] font-medium text-text-secondary hover:text-accent transition-colors px-2.5 py-1 rounded-md bg-surface-2/60 hover:bg-surface-2 border border-border-subtle shadow-xs"
           title="Open official task page on CSES.fi to upload and submit your downloaded solution"
         >
           <span>Submit on CSES.fi</span>
-          <ExternalLink className="w-3 h-3 text-sky-400" />
+          <ExternalLink className="w-3 h-3 text-accent" />
         </a>
       </div>
 
@@ -274,7 +274,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
       <div className="flex-1 overflow-y-auto p-5 relative">
         {/* Floating Toast Notification */}
         {toastMessage && (
-          <div className="fixed bottom-5 left-8 z-50 flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface-2 text-slate-200 border border-emerald-500/40 shadow-xl text-xs font-medium animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <div className="fixed bottom-5 left-8 z-50 flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface-2 text-text-primary border border-emerald-500/40 shadow-xl text-xs font-medium animate-in fade-in slide-in-from-bottom-2 duration-200">
             <Check className="w-4 h-4 text-emerald-400" />
             <span>{toastMessage}</span>
           </div>
@@ -287,20 +287,20 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
             {/* Header: Category & Title & Badges */}
             <div className="space-y-3 pb-4 border-b border-border-subtle">
               {/* Category Breadcrumb */}
-              <div className="flex items-center gap-2 text-xs text-slate-400">
-                <span className="font-semibold text-sky-400">CSES Problemset</span>
-                <span className="text-slate-500">/</span>
-                <span className="text-slate-300 font-medium truncate">
+              <div className="flex items-center gap-2 text-xs text-text-muted">
+                <span className="font-semibold text-accent">CSES Problemset</span>
+                <span className="text-text-muted">/</span>
+                <span className="text-text-secondary font-medium truncate">
                   {problem.category}
                 </span>
               </div>
 
               {/* Problem Title & ID & Star Button */}
               <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-xl sm:text-2xl font-bold text-slate-100 tracking-tight">
+                <h1 className="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">
                   {problem.title}
                 </h1>
-                <span className="px-2 py-0.5 rounded text-xs font-mono font-semibold bg-surface-2 text-slate-300 border border-border-subtle">
+                <span className="px-2 py-0.5 rounded text-xs font-mono font-semibold bg-surface-2 text-text-secondary border border-border-subtle">
                   #{problem.id}
                 </span>
 
@@ -312,7 +312,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                     'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border transition-all cursor-pointer',
                     isSolved
                       ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40 hover:bg-emerald-500/25 shadow-xs'
-                      : 'bg-surface-2/60 text-slate-400 border-border-subtle hover:text-emerald-400 hover:border-emerald-400/30 hover:bg-surface-2'
+                      : 'bg-surface-2/60 text-text-muted border-border-subtle hover:text-emerald-400 hover:border-emerald-400/30 hover:bg-surface-2'
                   )}
                   title={isSolved ? 'Mark problem as unsolved' : 'Mark problem as solved'}
                   aria-label={isSolved ? 'Mark problem as unsolved' : 'Mark problem as solved'}
@@ -320,13 +320,13 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                   <Check
                     className={cn(
                       'w-3.5 h-3.5 transition-transform',
-                      isSolved ? 'text-emerald-400 stroke-[3]' : 'text-slate-500'
+                      isSolved ? 'text-emerald-400 stroke-[3]' : 'text-text-muted'
                     )}
                   />
                   <span>{isSolved ? 'Solved' : 'Mark Solved'}</span>
                 </button>
 
-                {onAddToList && <button type="button" onClick={onAddToList} className="px-2.5 py-1 rounded-md text-xs font-semibold border border-border-subtle text-slate-300 hover:bg-surface-2">Add to list</button>}
+                {onAddToList && <button type="button" onClick={onAddToList} className="px-2.5 py-1 rounded-md text-xs font-semibold border border-border-subtle text-text-secondary hover:bg-surface-2">Add to list</button>}
                 <AskAiMenu problem={csesAiContext(problem)} code={editorCode} language={editorLanguage} />
                 {/* Star / Bookmark Button */}
                 <button
@@ -337,7 +337,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                     'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border transition-all cursor-pointer',
                     activeStarred
                       ? 'bg-amber-400/15 text-amber-300 border-amber-400/40 hover:bg-amber-400/25 shadow-xs'
-                      : 'bg-surface-2/60 text-slate-400 border-border-subtle hover:text-amber-400 hover:border-amber-400/30 hover:bg-surface-2'
+                      : 'bg-surface-2/60 text-text-muted border-border-subtle hover:text-amber-400 hover:border-amber-400/30 hover:bg-surface-2'
                   )}
                   title="Star this problem (bookmark)"
                   aria-label="Star this problem (bookmark)"
@@ -345,7 +345,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                   <Star
                     className={cn(
                       'w-3.5 h-3.5 transition-transform active:scale-125',
-                      activeStarred ? 'text-amber-400 fill-amber-400' : 'text-slate-400'
+                      activeStarred ? 'text-amber-400 fill-amber-400' : 'text-text-muted'
                     )}
                   />
                   <span>{activeStarred ? 'Starred' : 'Star'}</span>
@@ -356,24 +356,24 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
               <div className="flex flex-wrap items-center gap-2.5 pt-1">
                 {/* Time Limit */}
                 <div
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-surface-2/60 text-slate-300 border border-border-subtle"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-surface-2/60 text-text-secondary border border-border-subtle"
                   title="CPU Time Limit"
                 >
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
+                  <Clock className="w-3.5 h-3.5 text-text-muted" />
                   <span>Time limit:</span>
-                  <span className="font-mono text-slate-200 font-semibold">
+                  <span className="font-mono text-text-primary font-semibold">
                     {problem.timeLimit}
                   </span>
                 </div>
 
                 {/* Memory Limit */}
                 <div
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-surface-2/60 text-slate-300 border border-border-subtle"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-surface-2/60 text-text-secondary border border-border-subtle"
                   title="Memory Limit"
                 >
-                  <Cpu className="w-3.5 h-3.5 text-slate-400" />
+                  <Cpu className="w-3.5 h-3.5 text-text-muted" />
                   <span>Memory limit:</span>
-                  <span className="font-mono text-slate-200 font-semibold">
+                  <span className="font-mono text-text-primary font-semibold">
                     {problem.memoryLimit}
                   </span>
                 </div>
@@ -384,7 +384,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                     'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border',
                     isSolved
                       ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                      : 'bg-slate-800/40 text-slate-400 border-border-subtle'
+                      : 'bg-slate-800/40 text-text-muted border-border-subtle'
                   )}
                 >
                   {isSolved ? (
@@ -394,7 +394,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                     </>
                   ) : (
                     <>
-                      <CircleDot className="w-3.5 h-3.5 text-slate-400" />
+                      <CircleDot className="w-3.5 h-3.5 text-text-muted" />
                       <span>Unsolved</span>
                     </>
                   )}
@@ -404,10 +404,10 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                 <a
                   href={`/api/tests/${problem.id}`}
                   download={`cses_${problem.id}_tests.zip`}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-sky-950/40 hover:bg-sky-900/60 text-sky-300 border border-sky-800/50 transition-colors shadow-xs"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-accent/40 hover:bg-accent/60 text-accent border border-accent/50 transition-colors shadow-xs"
                   title="Download all official CSES test cases (.zip archive)"
                 >
-                  <Download className="w-3.5 h-3.5 text-sky-400" />
+                  <Download className="w-3.5 h-3.5 text-accent" />
                   <span>Download Tests (.zip)</span>
                 </a>
               </div>
@@ -421,7 +421,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
             {/* Constraints Section (Rendered with KaTeX math) */}
             {hasConstraints && (
               <div className="border-t border-border-subtle pt-4 space-y-2.5">
-                <div className="flex items-center gap-2 text-xs font-semibold  text-slate-400 border-b border-border-subtle pb-2">
+                <div className="flex items-center gap-2 text-xs font-semibold  text-text-muted border-b border-border-subtle pb-2">
                   <ShieldAlert className="w-4 h-4 text-amber-400" />
                   <span>Constraints</span>
                 </div>
@@ -430,9 +430,9 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                   {problem.constraints?.map((constraint, idx) => (
                     <li
                       key={idx}
-                      className="flex items-center gap-2.5 text-xs text-slate-300"
+                      className="flex items-center gap-2.5 text-xs text-text-secondary"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
                       <KaTeXRenderer content={constraint} inline />
                     </li>
                   ))}
@@ -443,8 +443,8 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
             {/* Sample Test Cases with Copy Input / Output */}
             {hasSamples && (
               <div className="space-y-4 pt-2">
-                <div className="flex items-center gap-2 text-xs font-semibold  text-slate-400 border-b border-border-subtle pb-2">
-                  <Terminal className="w-4 h-4 text-sky-400" />
+                <div className="flex items-center gap-2 text-xs font-semibold  text-text-muted border-b border-border-subtle pb-2">
+                  <Terminal className="w-4 h-4 text-accent" />
                   <span>
                     Sample Test Cases ({sampleCases.length})
                   </span>
@@ -463,11 +463,11 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                         className="border border-border-subtle overflow-hidden"
                       >
                         {/* Sample header */}
-                        <div className="px-3.5 py-2 border-b border-border-subtle flex items-center justify-between text-xs text-slate-400">
-                          <span className="font-semibold text-slate-200">
+                        <div className="px-3.5 py-2 border-b border-border-subtle flex items-center justify-between text-xs text-text-muted">
+                          <span className="font-semibold text-text-primary">
                             Example {idx + 1}
                           </span>
-                          <span className="font-mono text-[11px] text-slate-400">
+                          <span className="font-mono text-[11px] text-text-muted">
                             ID: {tc.id}
                           </span>
                         </div>
@@ -477,7 +477,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                           {/* Input Block */}
                           <div className="p-3.5 flex flex-col space-y-2 ">
                             <div className="flex items-center justify-between text-xs">
-                              <span className="font-semibold text-slate-300  text-[11px]">
+                              <span className="font-semibold text-text-secondary  text-[11px]">
                                 Input
                               </span>
                               <button
@@ -492,7 +492,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                                   'inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium transition-colors border',
                                   isInputCopied
                                     ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                                    : 'bg-surface-2 hover:bg-surface-3 text-slate-300 hover:text-white border-border-subtle'
+                                    : 'bg-surface-2 hover:bg-surface-3 text-text-secondary hover:text-text-primary border-border-subtle'
                                 )}
                               >
                                 {isInputCopied ? (
@@ -502,14 +502,14 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                                   </>
                                 ) : (
                                   <>
-                                    <Copy className="w-3 h-3 text-slate-400" />
+                                    <Copy className="w-3 h-3 text-text-muted" />
                                     <span>Copy Input</span>
                                   </>
                                 )}
                               </button>
                             </div>
 
-                            <pre className="p-3 rounded-md bg-surface-0 border border-border-subtle font-mono text-xs text-slate-200 select-all overflow-x-auto whitespace-pre leading-relaxed min-h-[50px]">
+                            <pre className="p-3 rounded-md bg-surface-0 border border-border-subtle font-mono text-xs text-text-primary select-all overflow-x-auto whitespace-pre leading-relaxed min-h-[50px]">
                               {tc.input}
                             </pre>
                           </div>
@@ -517,7 +517,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                           {/* Expected Output Block */}
                           <div className="p-3.5 flex flex-col space-y-2 ">
                             <div className="flex items-center justify-between text-xs">
-                              <span className="font-semibold text-slate-300  text-[11px]">
+                              <span className="font-semibold text-text-secondary  text-[11px]">
                                 Expected Output
                               </span>
                               <button
@@ -532,7 +532,7 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                                   'inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium transition-colors border',
                                   isOutputCopied
                                     ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                                    : 'bg-surface-2 hover:bg-surface-3 text-slate-300 hover:text-white border-border-subtle'
+                                    : 'bg-surface-2 hover:bg-surface-3 text-text-secondary hover:text-text-primary border-border-subtle'
                                 )}
                               >
                                 {isOutputCopied ? (
@@ -542,14 +542,14 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                                   </>
                                 ) : (
                                   <>
-                                    <Copy className="w-3 h-3 text-slate-400" />
+                                    <Copy className="w-3 h-3 text-text-muted" />
                                     <span>Copy Output</span>
                                   </>
                                 )}
                               </button>
                             </div>
 
-                            <pre className="p-3 rounded-md bg-surface-0 border border-border-subtle font-mono text-xs text-slate-200 select-all overflow-x-auto whitespace-pre leading-relaxed min-h-[50px]">
+                            <pre className="p-3 rounded-md bg-surface-0 border border-border-subtle font-mono text-xs text-text-primary select-all overflow-x-auto whitespace-pre leading-relaxed min-h-[50px]">
                               {tc.expectedOutput}
                             </pre>
                           </div>
@@ -634,12 +634,12 @@ function LearnTab({ problemId }: { problemId: string }) {
     }).catch(() => { if (!controller.signal.aborted) setError(true); });
     return () => controller.abort();
   }, [problemId, attempt]);
-  if (error) return <div role="alert" className="text-sm text-slate-300">Lesson unavailable. <button className="text-sky-400 underline" onClick={() => setAttempt(x => x + 1)}>Retry</button></div>;
-  if (!content) return <p role="status" className="text-sm text-slate-400">Loading lesson?</p>;
-  return <div className="max-w-3xl space-y-6 text-sm"><div><h2 className="text-lg font-semibold text-slate-100">Learn at your pace</h2><p className="mt-1 text-slate-400">Reveal a hint when you need one, then explore the full explanation.</p></div>
+  if (error) return <div role="alert" className="text-sm text-text-secondary">Lesson unavailable. <button className="text-accent underline" onClick={() => setAttempt(x => x + 1)}>Retry</button></div>;
+  if (!content) return <p role="status" className="text-sm text-text-muted">Loading lesson?</p>;
+  return <div className="max-w-3xl space-y-6 text-sm"><div><h2 className="text-lg font-semibold text-text-primary">Learn at your pace</h2><p className="mt-1 text-text-muted">Reveal a hint when you need one, then explore the full explanation.</p></div>
     <VisualExplanation visual={{ ...content.visual, diagram: content.diagram }} />
-    {content.hints.slice(0, hints).map((hint, index) => <section key={index} className="border-l-2 border-sky-500 pl-4"><h3 className="text-xs font-semibold text-sky-400 mb-2">Hint {index + 1}</h3><KaTeXRenderer content={lessonHtml(hint)} /></section>)}
-    {hints < 3 && <button onClick={() => setHints(hints + 1)} className="rounded border border-border-muted px-3 py-2 text-slate-200 hover:bg-surface-2">Reveal hint {hints + 1}</button>}
-    {!revealed ? <button onClick={() => setRevealed(true)} className="block rounded bg-sky-700 px-3 py-2 text-white hover:bg-sky-600">Reveal full explanation</button> : <div className="space-y-5">{(['analogy', 'example', 'algorithm', 'correctness', 'complexity'] as const).map(key => <section key={key}><h3 className="mb-2 text-sm font-semibold capitalize text-slate-100">{key}</h3><KaTeXRenderer content={lessonHtml(content[key])} /></section>)}</div>}
+    {content.hints.slice(0, hints).map((hint, index) => <section key={index} className="border-l-2 border-accent pl-4"><h3 className="text-xs font-semibold text-accent mb-2">Hint {index + 1}</h3><KaTeXRenderer content={lessonHtml(hint)} /></section>)}
+    {hints < 3 && <button onClick={() => setHints(hints + 1)} className="rounded border border-border-muted px-3 py-2 text-text-primary hover:bg-surface-2">Reveal hint {hints + 1}</button>}
+    {!revealed ? <button onClick={() => setRevealed(true)} className="block rounded bg-accent px-3 py-2 text-accent-foreground hover:opacity-90">Reveal full explanation</button> : <div className="space-y-5">{(['analogy', 'example', 'algorithm', 'correctness', 'complexity'] as const).map(key => <section key={key}><h3 className="mb-2 text-sm font-semibold capitalize text-text-primary">{key}</h3><KaTeXRenderer content={lessonHtml(content[key])} /></section>)}</div>}
   </div>;
 }

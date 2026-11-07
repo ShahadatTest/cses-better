@@ -425,8 +425,8 @@ export const NotesTab: React.FC<NotesTabProps> = ({
             className={cn(
               'flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium transition-colors cursor-pointer',
               mode === 'edit'
-                ? 'bg-surface-0 text-slate-100 shadow-xs'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-surface-0 text-text-primary shadow-xs'
+                : 'text-text-muted hover:text-text-primary'
             )}
             title="Editor only"
           >
@@ -439,8 +439,8 @@ export const NotesTab: React.FC<NotesTabProps> = ({
             className={cn(
               'flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium transition-colors cursor-pointer',
               mode === 'preview'
-                ? 'bg-surface-0 text-slate-100 shadow-xs'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-surface-0 text-text-primary shadow-xs'
+                : 'text-text-muted hover:text-text-primary'
             )}
             title="Compiled GitHub Markdown and Math preview"
           >
@@ -453,8 +453,8 @@ export const NotesTab: React.FC<NotesTabProps> = ({
             className={cn(
               'flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium transition-colors cursor-pointer',
               mode === 'split'
-                ? 'bg-surface-0 text-slate-100 shadow-xs'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-surface-0 text-text-primary shadow-xs'
+                : 'text-text-muted hover:text-text-primary'
             )}
             title="Side-by-side live editor & real-time compiled preview"
           >
@@ -466,10 +466,10 @@ export const NotesTab: React.FC<NotesTabProps> = ({
         {/* Right: Actions */}
         <div className="flex items-center gap-1.5 text-xs">
           {/* Auto-save status badge */}
-          <div className="flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded bg-surface-2/40 text-slate-400 border border-border-subtle">
+          <div className="flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded bg-surface-2/40 text-text-muted border border-border-subtle">
             {saveStatus === 'saving' ? (
               <>
-                <Loader2 className="w-3 h-3 text-sky-400 animate-spin" />
+                <Loader2 className="w-3 h-3 text-accent animate-spin" />
                 <span>Saving...</span>
               </>
             ) : saveStatus === 'cloud-saved' ? (
@@ -483,8 +483,8 @@ export const NotesTab: React.FC<NotesTabProps> = ({
                 <span className="text-emerald-400">Saved locally</span>
               </>
             ) : currentUser ? (
-              <span className="flex items-center gap-1 text-slate-400">
-                <Cloud className="w-3 h-3 text-sky-400" />
+              <span className="flex items-center gap-1 text-text-muted">
+                <Cloud className="w-3 h-3 text-accent" />
                 <span>Cloud Sync ON</span>
               </span>
             ) : (
@@ -497,12 +497,12 @@ export const NotesTab: React.FC<NotesTabProps> = ({
             <button
               type="button"
               onClick={() => setTemplateMenuOpen((prev) => !prev)}
-              className="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-2 hover:bg-surface-3 text-slate-200 border border-border-subtle transition-colors text-xs font-medium cursor-pointer"
+              className="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-2 hover:bg-surface-3 text-text-primary border border-border-subtle transition-colors text-xs font-medium cursor-pointer"
               title="Insert CSES Solution & Complexity Templates"
             >
               <Sparkles className="w-3 h-3 text-amber-400" />
               <span>Template</span>
-              <ChevronDown className="w-3 h-3 text-slate-400" />
+              <ChevronDown className="w-3 h-3 text-text-muted" />
             </button>
 
             {templateMenuOpen && (
@@ -510,30 +510,30 @@ export const NotesTab: React.FC<NotesTabProps> = ({
                 <button
                   type="button"
                   onClick={() => insertTemplate(COMPREHENSIVE_TEMPLATE)}
-                  className="w-full text-left px-3 py-2 rounded text-xs text-slate-200 hover:bg-surface-2 hover:text-white transition-colors"
+                  className="w-full text-left px-3 py-2 rounded text-xs text-text-primary hover:bg-surface-2 hover:text-text-primary transition-colors"
                 >
-                  <div className="font-semibold text-sky-400">Comprehensive Analysis</div>
-                  <div className="text-[10px] text-slate-400">
+                  <div className="font-semibold text-accent">Comprehensive Analysis</div>
+                  <div className="text-[10px] text-text-muted">
                     Intuition, Step-by-Step, $O(N \\log N)$, Invariants &amp; C++ Snippet
                   </div>
                 </button>
                 <button
                   type="button"
                   onClick={() => insertTemplate(DP_TEMPLATE)}
-                  className="w-full text-left px-3 py-2 rounded text-xs text-slate-200 hover:bg-surface-2 hover:text-white transition-colors"
+                  className="w-full text-left px-3 py-2 rounded text-xs text-text-primary hover:bg-surface-2 hover:text-text-primary transition-colors"
                 >
                   <div className="font-semibold text-emerald-400">Dynamic Programming</div>
-                  <div className="text-[10px] text-slate-400">
+                  <div className="text-[10px] text-text-muted">
                     States, Recurrences, Transitions &amp; Rolling Array Optimization
                   </div>
                 </button>
                 <button
                   type="button"
                   onClick={() => insertTemplate(GRAPH_TEMPLATE)}
-                  className="w-full text-left px-3 py-2 rounded text-xs text-slate-200 hover:bg-surface-2 hover:text-white transition-colors"
+                  className="w-full text-left px-3 py-2 rounded text-xs text-text-primary hover:bg-surface-2 hover:text-text-primary transition-colors"
                 >
                   <div className="font-semibold text-purple-400">Graph Theory &amp; Trees</div>
-                  <div className="text-[10px] text-slate-400">
+                  <div className="text-[10px] text-text-muted">
                     Adjacency lists, Dijkstra, Topo-sort, and Cycle Invariants
                   </div>
                 </button>
@@ -545,10 +545,10 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={handlePasteLlm}
-            className="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-2 hover:bg-surface-3 text-slate-200 border border-border-subtle transition-colors text-xs font-medium cursor-pointer"
+            className="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-2 hover:bg-surface-3 text-text-primary border border-border-subtle transition-colors text-xs font-medium cursor-pointer"
             title="Paste & auto-format response from ChatGPT, Claude, DeepSeek, or Gemini"
           >
-            <ClipboardPaste className="w-3 h-3 text-sky-400" />
+            <ClipboardPaste className="w-3 h-3 text-accent" />
             <span>Paste LLM</span>
           </button>
 
@@ -556,7 +556,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={handleOpenAllNotes}
-            className="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-2 hover:bg-surface-3 text-slate-200 border border-border-subtle transition-colors text-xs font-medium cursor-pointer"
+            className="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-2 hover:bg-surface-3 text-text-primary border border-border-subtle transition-colors text-xs font-medium cursor-pointer"
             title="Open CSES Notebook (All Problem Notes)"
           >
             <Layers className="w-3 h-3 text-purple-400" />
@@ -568,7 +568,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
             <button
               type="button"
               onClick={handleDownload}
-              className="p-1 rounded hover:bg-surface-2 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+              className="p-1 rounded hover:bg-surface-2 text-text-muted hover:text-text-primary transition-colors cursor-pointer"
               title="Download Note (.md)"
             >
               <Download className="w-3.5 h-3.5" />
@@ -580,7 +580,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
             <button
               type="button"
               onClick={handleCopy}
-              className="flex items-center gap-1 p-1 rounded hover:bg-surface-2 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+              className="flex items-center gap-1 p-1 rounded hover:bg-surface-2 text-text-muted hover:text-text-primary transition-colors cursor-pointer"
               title="Copy Markdown"
             >
               {copied ? (
@@ -596,7 +596,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
             <button
               type="button"
               onClick={handleClear}
-              className="p-1 rounded hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"
+              className="p-1 rounded hover:bg-rose-500/10 text-text-muted hover:text-rose-400 transition-colors cursor-pointer"
               title="Clear note"
             >
               <Trash2 className="w-3.5 h-3.5" />
@@ -607,12 +607,12 @@ export const NotesTab: React.FC<NotesTabProps> = ({
 
       {/* Rich Markdown & Formatting Toolbar (Shown in 'edit' or 'split' modes) */}
       {(mode === 'edit' || mode === 'split') && (
-        <div className="flex flex-wrap items-center gap-1 p-1 rounded-lg bg-surface-1 border border-border-subtle text-xs text-slate-300">
+        <div className="flex flex-wrap items-center gap-1 p-1 rounded-lg bg-surface-1 border border-border-subtle text-xs text-text-secondary">
           {/* Headings */}
           <button
             type="button"
             onClick={() => applyLinePrefix('# ')}
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors"
             title="Heading 1 (# text)"
           >
             <Heading1 className="w-3.5 h-3.5" />
@@ -620,7 +620,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => applyLinePrefix('## ')}
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors"
             title="Heading 2 (## text)"
           >
             <Heading2 className="w-3.5 h-3.5" />
@@ -628,7 +628,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => applyLinePrefix('### ')}
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors"
             title="Heading 3 (### text)"
           >
             <Heading3 className="w-3.5 h-3.5" />
@@ -640,7 +640,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => applyWrapFormat('**', '**', 'bold text')}
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors font-bold"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors font-bold"
             title="Bold (**text**) — Ctrl+B"
           >
             <Bold className="w-3.5 h-3.5" />
@@ -648,7 +648,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => applyWrapFormat('*', '*', 'italic text')}
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors italic"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors italic"
             title="Italic (*text*) — Ctrl+I"
           >
             <Italic className="w-3.5 h-3.5" />
@@ -656,7 +656,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => applyWrapFormat('`', '`', 'code')}
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors font-mono"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors font-mono"
             title="Inline Code (`code`)"
           >
             <Code2 className="w-3.5 h-3.5 text-amber-300" />
@@ -668,10 +668,10 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => applyWrapFormat('$', '$', 'O(N \\log N)')}
-            className="flex items-center gap-0.5 px-1.5 py-1 rounded hover:bg-surface-2 hover:text-white transition-colors font-mono text-[11px]"
+            className="flex items-center gap-0.5 px-1.5 py-1 rounded hover:bg-surface-2 hover:text-text-primary transition-colors font-mono text-[11px]"
             title="Inline LaTeX Math ($formula$)"
           >
-            <span className="font-serif italic font-bold text-sky-400">$</span>
+            <span className="font-serif italic font-bold text-accent">$</span>
             <span>Math</span>
           </button>
           <button
@@ -679,10 +679,10 @@ export const NotesTab: React.FC<NotesTabProps> = ({
             onClick={() =>
               applyWrapFormat('\n$$\n', '\n$$\n', 'dp[i][j] = \\min(dp[i-1][j], dp[i][j-w_i] + v_i)')
             }
-            className="flex items-center gap-0.5 px-1.5 py-1 rounded hover:bg-surface-2 hover:text-white transition-colors font-mono text-[11px]"
+            className="flex items-center gap-0.5 px-1.5 py-1 rounded hover:bg-surface-2 hover:text-text-primary transition-colors font-mono text-[11px]"
             title="Block LaTeX Math ($$formula$$)"
           >
-            <span className="font-serif italic font-bold text-sky-400">$$</span>
+            <span className="font-serif italic font-bold text-accent">$$</span>
             <span>Block</span>
           </button>
 
@@ -698,7 +698,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
                 'int main() {\n    return 0;\n}'
               )
             }
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors font-mono"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors font-mono"
             title="Fenced Code Block (```cpp ... ```)"
           >
             <Terminal className="w-3.5 h-3.5 text-emerald-400" />
@@ -708,7 +708,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => applyLinePrefix('- ')}
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors"
             title="Bullet List (- item)"
           >
             <List className="w-3.5 h-3.5" />
@@ -716,7 +716,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => applyLinePrefix('1. ')}
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors"
             title="Numbered List (1. item)"
           >
             <ListOrdered className="w-3.5 h-3.5" />
@@ -724,10 +724,10 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => applyLinePrefix('- [ ] ')}
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors"
             title="Task Checklist (- [ ] item)"
           >
-            <CheckSquare className="w-3.5 h-3.5 text-sky-400" />
+            <CheckSquare className="w-3.5 h-3.5 text-accent" />
           </button>
 
           <div className="w-[1px] h-4 bg-border-subtle mx-0.5" />
@@ -736,7 +736,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={insertTableTemplate}
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors"
             title="Insert Markdown Table"
           >
             <TableIcon className="w-3.5 h-3.5 text-amber-400" />
@@ -744,7 +744,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => applyLinePrefix('> ')}
-            className="p-1.5 rounded hover:bg-surface-2 hover:text-white transition-colors"
+            className="p-1.5 rounded hover:bg-surface-2 hover:text-text-primary transition-colors"
             title="Blockquote (> quote)"
           >
             <Quote className="w-3.5 h-3.5" />
@@ -754,7 +754,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => insertCalloutAlert('NOTE')}
-            className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-surface-2 hover:text-white text-[11px] text-sky-400 transition-colors"
+            className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-surface-2 hover:text-text-primary text-[11px] text-accent transition-colors"
             title="GitHub Callout Note (> [!NOTE])"
           >
             <AlertCircle className="w-3 h-3" />
@@ -763,7 +763,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           <button
             type="button"
             onClick={() => insertCalloutAlert('WARNING')}
-            className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-surface-2 hover:text-white text-[11px] text-amber-400 transition-colors"
+            className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-surface-2 hover:text-text-primary text-[11px] text-amber-400 transition-colors"
             title="GitHub Callout Warning (> [!WARNING])"
           >
             <span>Warn</span>
@@ -782,7 +782,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
               onBlur={handleBlur}
               onKeyDown={handleKeyDown}
               placeholder="Jot down algorithm ideas, mathematical observations, recurrence relations like $dp[i] = dp[i-1] + ...$, or tricky corner cases here. Notes persist automatically across all your devices when signed in."
-              className="w-full h-full min-h-[340px] p-3.5 rounded-lg bg-surface-0 border border-border-subtle text-slate-200 placeholder-slate-500 text-sm font-mono leading-relaxed focus:outline-hidden focus:border-sky-500/50 resize-y"
+              className="w-full h-full min-h-[340px] p-3.5 rounded-lg bg-surface-0 border border-border-subtle text-text-primary placeholder-slate-500 text-sm font-mono leading-relaxed focus:outline-hidden focus:border-accent/50 resize-y"
             />
           </div>
         )}
@@ -794,12 +794,12 @@ export const NotesTab: React.FC<NotesTabProps> = ({
           >
             {content.trim() ? (
               <div
-                className="prose prose-invert max-w-none text-slate-200 text-sm leading-relaxed"
+                className="prose prose-invert max-w-none text-text-primary text-sm leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: compiledHtml }}
               />
             ) : (
-              <div className="py-12 text-center text-slate-500 text-xs">
-                <BookOpen className="w-8 h-8 mx-auto mb-2 opacity-40 text-slate-500" />
+              <div className="py-12 text-center text-text-muted text-xs">
+                <BookOpen className="w-8 h-8 mx-auto mb-2 opacity-40 text-text-muted" />
                 No notes to preview yet. Switch to "Write" to start typing.
               </div>
             )}
@@ -817,7 +817,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
                 placeholder="Type markdown or paste LLM solution..."
-                className="w-full h-full min-h-[340px] p-3.5 rounded-lg bg-surface-0 border border-border-subtle text-slate-200 placeholder-slate-500 text-sm font-mono leading-relaxed focus:outline-hidden focus:border-sky-500/50 resize-y"
+                className="w-full h-full min-h-[340px] p-3.5 rounded-lg bg-surface-0 border border-border-subtle text-text-primary placeholder-slate-500 text-sm font-mono leading-relaxed focus:outline-hidden focus:border-accent/50 resize-y"
               />
             </div>
 
@@ -828,12 +828,12 @@ export const NotesTab: React.FC<NotesTabProps> = ({
             >
               {content.trim() ? (
                 <div
-                  className="prose prose-invert max-w-none text-slate-200 text-sm leading-relaxed"
+                  className="prose prose-invert max-w-none text-text-primary text-sm leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: compiledHtml }}
                 />
               ) : (
-                <div className="py-12 text-center text-slate-500 text-xs">
-                  <BookOpen className="w-7 h-7 mx-auto mb-2 opacity-40 text-slate-500" />
+                <div className="py-12 text-center text-text-muted text-xs">
+                  <BookOpen className="w-7 h-7 mx-auto mb-2 opacity-40 text-text-muted" />
                   Live preview will render here as you type.
                 </div>
               )}
@@ -843,15 +843,15 @@ export const NotesTab: React.FC<NotesTabProps> = ({
       </div>
 
       {/* Stats & Info Footer */}
-      <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-border-subtle">
+      <div className="flex items-center justify-between text-[11px] text-text-muted pt-1 border-t border-border-subtle">
         <div className="flex items-center gap-3 font-mono">
           <span>
             {wordCount} words · {charCount} chars
           </span>
-          <span className="text-slate-500">•</span>
-          <span className="text-slate-400">{readingTime}</span>
+          <span className="text-text-muted">•</span>
+          <span className="text-text-muted">{readingTime}</span>
         </div>
-        <span className="text-[11px] text-slate-400">
+        <span className="text-[11px] text-text-muted">
           Markdown and LaTeX ($formula$) supported
         </span>
       </div>

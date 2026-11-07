@@ -300,17 +300,17 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
         {/* Header Bar */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-border-subtle bg-surface-1/90">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400">
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 text-accent">
               <BookOpen className="w-4 h-4" />
             </div>
             <div>
-              <h2 id="all-notes-modal-title" className="text-sm font-semibold text-slate-100 flex items-center gap-2">
+              <h2 id="all-notes-modal-title" className="text-sm font-semibold text-text-primary flex items-center gap-2">
                 <span>CSES Notebook — All Problem Notes</span>
-                <span className="px-2 py-0.5 rounded-full text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
+                <span className="px-2 py-0.5 rounded-full text-[11px] font-mono bg-surface-2 text-text-secondary border border-border-subtle">
                   {enrichedNotes.length} {enrichedNotes.length === 1 ? 'note' : 'notes'}
                 </span>
               </h2>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-text-muted">
                 Browse, search, edit, and export your personal algorithm analyses and KaTeX mathematical models.
               </p>
             </div>
@@ -323,9 +323,9 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setExportDropdownOpen((prev) => !prev)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-2 hover:bg-surface-3 text-slate-200 border border-border-subtle text-xs font-medium transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-2 hover:bg-surface-3 text-text-primary border border-border-subtle text-xs font-medium transition-colors"
                 >
-                  <Download className="w-3.5 h-3.5 text-sky-400" />
+                  <Download className="w-3.5 h-3.5 text-accent" />
                   <span>Export Notes</span>
                 </button>
 
@@ -334,23 +334,23 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                     <button
                       type="button"
                       onClick={handleExportDigestMarkdown}
-                      className="w-full flex items-center gap-2 px-3 py-2 rounded text-xs text-slate-200 hover:bg-surface-2 hover:text-white transition-colors text-left"
+                      className="w-full flex items-center gap-2 px-3 py-2 rounded text-xs text-text-primary hover:bg-surface-2 hover:text-white transition-colors text-left"
                     >
                       <FileDown className="w-3.5 h-3.5 text-emerald-400" />
                       <div>
                         <div className="font-medium">Markdown Digest (.md)</div>
-                        <div className="text-[10px] text-slate-400">One comprehensive cheatsheet</div>
+                        <div className="text-[10px] text-text-muted">One comprehensive cheatsheet</div>
                       </div>
                     </button>
                     <button
                       type="button"
                       onClick={handleExportJson}
-                      className="w-full flex items-center gap-2 px-3 py-2 rounded text-xs text-slate-200 hover:bg-surface-2 hover:text-white transition-colors text-left"
+                      className="w-full flex items-center gap-2 px-3 py-2 rounded text-xs text-text-primary hover:bg-surface-2 hover:text-white transition-colors text-left"
                     >
                       <FileText className="w-3.5 h-3.5 text-amber-400" />
                       <div>
                         <div className="font-medium">Raw Backup (.json)</div>
-                        <div className="text-[10px] text-slate-400">Machine-readable JSON data</div>
+                        <div className="text-[10px] text-text-muted">Machine-readable JSON data</div>
                       </div>
                     </button>
                   </div>
@@ -361,7 +361,7 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-surface-2 transition-colors"
+              className="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-2 transition-colors"
               title="Close modal (Esc)"
             >
               <X className="w-4 h-4" />
@@ -373,19 +373,19 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-2.5 border-b border-border-subtle bg-surface-1/40 text-xs">
           {/* Search Box */}
           <div className="relative flex-1 min-w-[240px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-text-muted" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search across title, problem ID, category, or note content..."
-              className="w-full pl-9 pr-8 py-1.5 rounded-lg bg-surface-0 border border-border-subtle text-slate-200 placeholder-slate-500 text-xs focus:outline-hidden focus:border-sky-500/50"
+              className="w-full pl-9 pr-8 py-1.5 rounded-lg bg-surface-0 border border-border-subtle text-text-primary placeholder-slate-500 text-xs focus:outline-hidden focus:border-accent/50"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary"
               >
                 <X className="w-3 h-3" />
               </button>
@@ -394,11 +394,11 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
 
           {/* Category Filter */}
           <div className="flex items-center gap-2">
-            <Filter className="w-3.5 h-3.5 text-slate-400" />
+            <Filter className="w-3.5 h-3.5 text-text-muted" />
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-2.5 py-1.5 rounded-lg bg-surface-0 border border-border-subtle text-slate-200 text-xs focus:outline-hidden focus:border-sky-500/50"
+              className="px-2.5 py-1.5 rounded-lg bg-surface-0 border border-border-subtle text-text-primary text-xs focus:outline-hidden focus:border-accent/50"
             >
               <option value="all">All Categories ({enrichedNotes.length})</option>
               {availableCategories.map((cat) => (
@@ -415,17 +415,17 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
           {enrichedNotes.length === 0 ? (
             /* Empty State: No Notes */
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-              <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-surface-2 border border-border-subtle text-slate-500 mb-4">
+              <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-surface-2 border border-border-subtle text-text-muted mb-4">
                 <BookOpen className="w-7 h-7 stroke-[1.5]" />
               </div>
-              <h3 className="text-base font-semibold text-slate-200 mb-1">No notes recorded yet</h3>
-              <p className="text-xs text-slate-400 max-w-md mb-5 leading-relaxed">
+              <h3 className="text-base font-semibold text-text-primary mb-1">No notes recorded yet</h3>
+              <p className="text-xs text-text-muted max-w-md mb-5 leading-relaxed">
                 Take notes on your approaches, mathematical recurrences, and edge cases in the "Notes" tab of any problem pane. All notes automatically persist and sync here.
               </p>
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium transition-colors shadow-xs"
+                className="px-4 py-2 rounded-lg bg-accent hover:bg-accent text-white text-xs font-medium transition-colors shadow-xs"
               >
                 Return to Problem Set
               </button>
@@ -433,16 +433,16 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
           ) : filteredNotes.length === 0 ? (
             /* Empty State: Filter matched nothing */
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-              <Search className="w-8 h-8 text-slate-500 mb-2 opacity-50" />
-              <p className="text-sm font-medium text-slate-300">No notes matched your search</p>
-              <p className="text-xs text-slate-500 mt-1">Try searching for a different keyword or category.</p>
+              <Search className="w-8 h-8 text-text-muted mb-2 opacity-50" />
+              <p className="text-sm font-medium text-text-secondary">No notes matched your search</p>
+              <p className="text-xs text-text-muted mt-1">Try searching for a different keyword or category.</p>
               <button
                 type="button"
                 onClick={() => {
                   setSearchQuery('');
                   setSelectedCategory('all');
                 }}
-                className="mt-4 px-3 py-1.5 rounded-lg bg-surface-2 hover:bg-surface-3 text-slate-300 text-xs border border-border-subtle transition-colors"
+                className="mt-4 px-3 py-1.5 rounded-lg bg-surface-2 hover:bg-surface-3 text-text-secondary text-xs border border-border-subtle transition-colors"
               >
                 Clear Filters
               </button>
@@ -451,7 +451,7 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
             <>
               {/* Left Column: Note Cards List */}
               <div className="w-80 sm:w-96 shrink-0 border-r border-border-subtle overflow-y-auto p-3 space-y-2.5 bg-surface-1/30">
-                <div className="text-[11px] font-medium text-slate-400 px-1 flex items-center justify-between">
+                <div className="text-[11px] font-medium text-text-muted px-1 flex items-center justify-between">
                   <span>
                     Showing {filteredNotes.length} of {enrichedNotes.length} notes
                   </span>
@@ -474,37 +474,37 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                       className={cn(
                         'group p-3 rounded-lg border text-left cursor-pointer transition-all',
                         isSelected
-                          ? 'bg-surface-2 border-sky-500/60 shadow-xs ring-1 ring-sky-500/30'
+                          ? 'bg-surface-2 border-accent/60 shadow-xs ring-1 ring-accent/30'
                           : 'bg-surface-0/60 hover:bg-surface-2/60 border-border-subtle hover:border-slate-600'
                       )}
                     >
                       {/* Top Badges */}
                       <div className="flex items-center justify-between gap-1.5 mb-1.5">
                         <div className="flex items-center gap-1.5">
-                          <span className="font-mono font-semibold text-xs text-sky-400">
+                          <span className="font-mono font-semibold text-xs text-accent">
                             #{note.problemId}
                           </span>
-                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-3/80 text-slate-300 font-medium">
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-3/80 text-text-secondary font-medium">
                             {note.category}
                           </span>
                         </div>
-                        <span className="text-[10px] text-slate-500 font-mono">
+                        <span className="text-[10px] text-text-muted font-mono">
                           {note.wordCount} w
                         </span>
                       </div>
 
                       {/* Title */}
-                      <h4 className="text-xs font-semibold text-slate-200 line-clamp-1 mb-1 group-hover:text-white">
+                      <h4 className="text-xs font-semibold text-text-primary line-clamp-1 mb-1 group-hover:text-white">
                         {note.problemTitle}
                       </h4>
 
                       {/* Snippet */}
-                      <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+                      <p className="text-[11px] text-text-muted line-clamp-2 leading-relaxed">
                         {snippet || 'No written content.'}
                       </p>
 
                       {/* Footer Actions */}
-                      <div className="flex items-center justify-between pt-2 mt-2 border-t border-border-subtle/50 text-[10px] text-slate-500">
+                      <div className="flex items-center justify-between pt-2 mt-2 border-t border-border-subtle/50 text-[10px] text-text-muted">
                         <span className="flex items-center gap-1">
                           <Clock className="w-2.5 h-2.5" />
                           <span>
@@ -525,7 +525,7 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                               onSelectProblem(note.problemId);
                               onClose();
                             }}
-                            className="flex items-center gap-1 text-slate-400 hover:text-sky-400 transition-colors"
+                            className="flex items-center gap-1 text-text-muted hover:text-accent transition-colors"
                             title="Jump to problem"
                           >
                             <span>Open</span>
@@ -546,15 +546,15 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                     <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-b border-border-subtle bg-surface-1/50">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-mono font-bold text-sm text-sky-400">
+                          <span className="font-mono font-bold text-sm text-accent">
                             #{activeNote.problemId}
                           </span>
-                          <h3 className="text-sm font-semibold text-slate-100">
+                          <h3 className="text-sm font-semibold text-text-primary">
                             {activeNote.problemTitle}
                           </h3>
                         </div>
-                        <div className="flex items-center gap-3 text-[11px] text-slate-400 mt-0.5">
-                          <span className="text-slate-400">{activeNote.category}</span>
+                        <div className="flex items-center gap-3 text-[11px] text-text-muted mt-0.5">
+                          <span className="text-text-muted">{activeNote.category}</span>
                           <span>•</span>
                           <span>{activeNote.wordCount} words</span>
                           <span>•</span>
@@ -572,8 +572,8 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                             className={cn(
                               'flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium transition-colors',
                               activeViewMode === 'preview'
-                                ? 'bg-surface-0 text-slate-100 shadow-xs'
-                                : 'text-slate-400 hover:text-slate-200'
+                                ? 'bg-surface-0 text-text-primary shadow-xs'
+                                : 'text-text-muted hover:text-text-primary'
                             )}
                           >
                             <Eye className="w-3 h-3" />
@@ -585,8 +585,8 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                             className={cn(
                               'flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium transition-colors',
                               activeViewMode === 'edit'
-                                ? 'bg-surface-0 text-slate-100 shadow-xs'
-                                : 'text-slate-400 hover:text-slate-200'
+                                ? 'bg-surface-0 text-text-primary shadow-xs'
+                                : 'text-text-muted hover:text-text-primary'
                             )}
                           >
                             <Edit3 className="w-3 h-3" />
@@ -598,7 +598,7 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                         <button
                           type="button"
                           onClick={() => handleCopyNote(activeNote.content)}
-                          className="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-2 hover:bg-surface-3 text-slate-300 border border-border-subtle transition-colors"
+                          className="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-2 hover:bg-surface-3 text-text-secondary border border-border-subtle transition-colors"
                           title="Copy markdown text"
                         >
                           {isCopied ? (
@@ -613,7 +613,7 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                         <button
                           type="button"
                           onClick={() => handleDownloadSingleNote(activeNote)}
-                          className="p-1.5 rounded hover:bg-surface-2 text-slate-400 hover:text-slate-200 transition-colors"
+                          className="p-1.5 rounded hover:bg-surface-2 text-text-muted hover:text-text-primary transition-colors"
                           title="Download note as .md"
                         >
                           <Download className="w-3.5 h-3.5" />
@@ -623,7 +623,7 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                         <button
                           type="button"
                           onClick={() => handleDeleteNote(activeNote.problemId, activeNote.problemTitle)}
-                          className="p-1.5 rounded hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 transition-colors"
+                          className="p-1.5 rounded hover:bg-rose-500/10 text-text-muted hover:text-rose-400 transition-colors"
                           title="Delete note"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -637,7 +637,7 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                               onSelectProblem(activeNote.problemId);
                               onClose();
                             }}
-                            className="flex items-center gap-1 px-3 py-1 rounded bg-sky-600 hover:bg-sky-500 text-white font-medium transition-colors shadow-xs ml-1"
+                            className="flex items-center gap-1 px-3 py-1 rounded bg-accent hover:bg-accent text-white font-medium transition-colors shadow-xs ml-1"
                           >
                             <span>Open Problem</span>
                             <ExternalLink className="w-3 h-3" />
@@ -651,7 +651,7 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                       {activeViewMode === 'preview' ? (
                         <div
                           onClick={handlePreviewContainerClick}
-                          className="prose prose-invert max-w-none text-slate-200 text-sm leading-relaxed"
+                          className="prose prose-invert max-w-none text-text-primary text-sm leading-relaxed"
                           dangerouslySetInnerHTML={{
                             __html: compileGfmToHtml(activeNote.content),
                           }}
@@ -661,7 +661,7 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                           <textarea
                             value={editContent}
                             onChange={(e) => setEditContent(e.target.value)}
-                            className="w-full flex-1 min-h-[350px] p-4 rounded-lg bg-surface-1 border border-border-subtle text-slate-200 font-mono text-xs leading-relaxed focus:outline-hidden focus:border-sky-500/50 resize-y"
+                            className="w-full flex-1 min-h-[350px] p-4 rounded-lg bg-surface-1 border border-border-subtle text-text-primary font-mono text-xs leading-relaxed focus:outline-hidden focus:border-accent/50 resize-y"
                           />
                           <div className="flex items-center justify-end gap-2">
                             <button
@@ -670,14 +670,14 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                                 setEditContent(activeNote.content);
                                 setActiveViewMode('preview');
                               }}
-                              className="px-3 py-1.5 rounded-lg bg-surface-2 hover:bg-surface-3 text-slate-300 text-xs border border-border-subtle transition-colors"
+                              className="px-3 py-1.5 rounded-lg bg-surface-2 hover:bg-surface-3 text-text-secondary text-xs border border-border-subtle transition-colors"
                             >
                               Cancel
                             </button>
                             <button
                               type="button"
                               onClick={handleSaveInlineEdit}
-                              className="px-4 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium transition-colors shadow-xs"
+                              className="px-4 py-1.5 rounded-lg bg-accent hover:bg-accent text-white text-xs font-medium transition-colors shadow-xs"
                             >
                               Save Changes
                             </button>
@@ -687,7 +687,7 @@ export const AllNotesModal: React.FC<AllNotesModalProps> = ({
                     </div>
                   </>
                 ) : (
-                  <div className="flex-1 flex items-center justify-center text-slate-500 text-xs">
+                  <div className="flex-1 flex items-center justify-center text-text-muted text-xs">
                     Select a note from the left to view details.
                   </div>
                 )}

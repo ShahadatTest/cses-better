@@ -288,12 +288,12 @@ export const TestBench: React.FC<TestBenchProps> = ({
 
   return (
     <div
-      className={`flex flex-col h-full bg-slate-950 border border-border-subtle rounded-xl overflow-hidden shadow-2xl font-sans text-slate-200 ${className}`}
+      className={`flex flex-col h-full bg-surface-0 border border-border-subtle rounded-xl overflow-hidden shadow-2xl font-sans text-text-primary ${className}`}
     >
       {/* Top Header / View Switcher */}
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2 bg-surface-2 border-b border-border-subtle">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold  text-slate-400">
+          <span className="text-xs font-bold  text-text-muted">
             Test Bench
           </span>
           {overallStatus && overallStatus !== 'IDLE' && (
@@ -308,8 +308,8 @@ export const TestBench: React.FC<TestBenchProps> = ({
               onClick={() => setViewMode('cases')}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-colors ${
                 viewMode === 'cases'
-                  ? 'bg-slate-700 text-white font-medium shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-surface-3 text-text-primary font-medium shadow-sm'
+                  : 'text-text-muted hover:text-text-primary'
               }`}
             >
               <FileCode2 className="w-3.5 h-3.5" />
@@ -320,8 +320,8 @@ export const TestBench: React.FC<TestBenchProps> = ({
               onClick={() => setViewMode('submission')}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-colors ${
                 viewMode === 'submission'
-                  ? 'bg-slate-700 text-cyan-300 font-medium shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-surface-3 text-accent font-medium shadow-sm'
+                  : 'text-text-muted hover:text-text-primary'
               }`}
             >
               <LayoutGrid className="w-3.5 h-3.5" />
@@ -335,7 +335,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
 
       {/* Main View Mode: Submission Results Matrix */}
       {viewMode === 'submission' && submissionResults && submissionResults.length > 0 ? (
-        <div className="flex-1 flex flex-col p-4 overflow-y-auto space-y-4 bg-slate-950">
+        <div className="flex-1 flex flex-col p-4 overflow-y-auto space-y-4 bg-surface-0">
           {/* Summary Card */}
           <div className="flex flex-col gap-3 p-4 rounded-xl border border-border-subtle bg-surface-2">
             <div className="flex flex-wrap items-center justify-between gap-4">
@@ -354,8 +354,8 @@ export const TestBench: React.FC<TestBenchProps> = ({
                   size="lg"
                 />
                 <div>
-                  <h4 className="text-sm font-semibold text-white">Submission Test Matrix</h4>
-                  <p className="text-xs text-slate-400">
+                  <h4 className="text-sm font-semibold text-text-primary">Submission Test Matrix</h4>
+                  <p className="text-xs text-text-muted">
                     {isEvaluating
                       ? `Running tests: ${completedCount} of ${submissionResults.length} completed (${passedCount} passed)...`
                       : `${passedCount} of ${submissionResults.length} test cases passed${
@@ -371,13 +371,13 @@ export const TestBench: React.FC<TestBenchProps> = ({
                     className={cn(
                       'flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium',
                       isPaused
-                        ? 'bg-amber-500/10 border-amber-400/40 text-amber-300'
+                        ? 'bg-verdict-tle-soft border-amber-400/40 text-verdict-tle'
                         : 'bg-cyan-500/10 border-cyan-400/40 text-cyan-300 animate-pulse'
                     )}
                   >
                     {isPaused ? (
                       <>
-                        <Pause className="w-4 h-4 fill-current text-amber-400" />
+                        <Pause className="w-4 h-4 fill-current text-verdict-tle" />
                         <span>
                           Paused: {completedCount} of {submissionResults.length} done ({passedCount} passed)
                         </span>
@@ -400,7 +400,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
                         'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border shadow-xs transition-colors cursor-pointer',
                         isPaused
                           ? 'bg-amber-500 text-zinc-950 hover:bg-amber-400 border-amber-400'
-                          : 'bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border-amber-500/40'
+                          : 'bg-verdict-tle-soft text-verdict-tle hover:bg-amber-500/30 border-amber-500/40'
                       )}
                       title={isPaused ? 'Resume test execution' : 'Pause test execution'}
                     >
@@ -422,7 +422,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
                     <button
                       type="button"
                       onClick={onCancel}
-                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 border border-rose-500/40 transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-verdict-wa-soft text-verdict-wa hover:bg-rose-500/30 border border-rose-500/40 transition-colors cursor-pointer"
                       title="Stop remaining test execution"
                     >
                       <Square className="w-3 h-3 fill-current" />
@@ -431,16 +431,16 @@ export const TestBench: React.FC<TestBenchProps> = ({
                   )}
                 </div>
               ) : allPassed ? (
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium">
-                  <Sparkles className="w-4 h-4 text-emerald-400" />
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-verdict-ac-soft border border-emerald-500/30 text-verdict-ac text-xs font-medium">
+                  <Sparkles className="w-4 h-4 text-verdict-ac" />
                   <span>
                     All Tests Passed! 🎉 ({passedCount} of {submissionResults.length} passed
                     {skippedCount > 0 ? ` • ${skippedCount} bypassed >100KB` : ''})
                   </span>
                 </div>
               ) : (
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-medium">
-                  <AlertOctagon className="w-4 h-4 text-rose-400" />
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-verdict-wa-soft border border-rose-500/30 text-verdict-wa text-xs font-medium">
+                  <AlertOctagon className="w-4 h-4 text-verdict-wa" />
                   <span>{submissionResults.length - passedCount} Failed</span>
                 </div>
               )}
@@ -475,7 +475,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
 
           {/* Test Grid Matrix */}
           <div>
-            <h5 className="text-xs font-semibold  text-slate-400 mb-2.5">
+            <h5 className="text-xs font-semibold  text-text-muted mb-2.5">
               Test Case Results
             </h5>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
@@ -487,18 +487,18 @@ export const TestBench: React.FC<TestBenchProps> = ({
                 // failing: WA, TLE, RE, CE, MLE
 
                 let containerClasses =
-                  'bg-rose-500/5 border-rose-500/25 hover:border-rose-500/50';
+                  'bg-verdict-wa-soft border-rose-500/25 hover:border-rose-500/50';
                 if (isRunningStatus) {
                   containerClasses =
                     'bg-cyan-500/10 border-cyan-400/60 shadow-[0_0_12px_rgba(6,182,212,0.3)] animate-pulse';
                 } else if (isIdleStatus) {
-                  containerClasses = 'bg-surface-2 border-border-subtle text-slate-500';
+                  containerClasses = 'bg-surface-2 border-border-subtle text-text-muted';
                 } else if (isSkippedStatus) {
                   containerClasses =
-                    'bg-amber-500/10 border-amber-500/30 hover:border-amber-500/60';
+                    'bg-verdict-tle-soft border-amber-500/30 hover:border-amber-500/60';
                 } else if (isAcStatus) {
                   containerClasses =
-                    'bg-emerald-500/5 border-emerald-500/25 hover:border-emerald-500/50';
+                    'bg-verdict-ac-soft border-emerald-500/25 hover:border-emerald-500/50';
                 }
 
                 return (
@@ -515,7 +515,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
                     <div className="flex items-center justify-between mb-1.5">
                       <span
                         className={`text-xs font-medium ${
-                          isIdleStatus ? 'text-slate-500' : 'text-slate-300'
+                          isIdleStatus ? 'text-text-muted' : 'text-text-secondary'
                         }`}
                       >
                         Test #{idx + 1}
@@ -526,11 +526,11 @@ export const TestBench: React.FC<TestBenchProps> = ({
                           <span>Running</span>
                         </span>
                       ) : isIdleStatus ? (
-                        <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-surface-2 text-slate-500 border border-border-subtle">
+                        <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-surface-2 text-text-muted border border-border-subtle">
                           Queued
                         </span>
                       ) : isSkippedStatus ? (
-                        <span className="text-[11px] font-semibold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                        <span className="text-[11px] font-semibold px-1.5 py-0.5 rounded bg-verdict-tle-soft text-verdict-tle border border-amber-500/40">
                           Passed (&gt;100KB)
                         </span>
                       ) : (
@@ -541,11 +541,11 @@ export const TestBench: React.FC<TestBenchProps> = ({
                       {isRunningStatus ? (
                         <span className="text-cyan-300">Executing...</span>
                       ) : isIdleStatus ? (
-                        <span className="text-slate-500">Waiting</span>
+                        <span className="text-text-muted">Waiting</span>
                       ) : isSkippedStatus ? (
-                        <span className="text-amber-300/80">0 ms • Bypassed</span>
+                        <span className="text-verdict-tle/80">0 ms • Bypassed</span>
                       ) : (
-                        <div className="text-slate-400 flex items-center justify-between w-full">
+                        <div className="text-text-muted flex items-center justify-between w-full">
                           <span>{res.executionTimeMs} ms</span>
                           <span>{formatMemory(res.memoryBytes)}</span>
                         </div>
@@ -574,8 +574,8 @@ export const TestBench: React.FC<TestBenchProps> = ({
                   onClick={() => onSelectTestCase(tc.id)}
                   className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
                     isActive
-                      ? 'bg-surface-2 text-white shadow-sm border border-border-subtle'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-surface-2'
+                      ? 'bg-surface-2 text-text-primary shadow-sm border border-border-subtle'
+                      : 'text-text-muted hover:text-text-primary hover:bg-surface-2'
                   }`}
                 >
                   <span className={`w-2 h-2 rounded-full shrink-0 ${dotClass}`} />
@@ -595,7 +595,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
                           onDeleteCustomTestCase(tc.id);
                         }
                       }}
-                      className="ml-0.5 p-0.5 rounded text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                      className="ml-0.5 p-0.5 rounded text-text-muted hover:text-verdict-wa hover:bg-verdict-wa-soft transition-colors"
                       title="Delete custom test case"
                     >
                       <X className="w-3 h-3" />
@@ -609,7 +609,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
             <button
               type="button"
               onClick={() => setIsAddingCustom(true)}
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-cyan-400 hover:bg-surface-2 transition-colors shrink-0 border border-dashed border-border-subtle hover:border-cyan-500/50"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-text-muted hover:text-cyan-400 hover:bg-surface-2 transition-colors shrink-0 border border-dashed border-border-subtle hover:border-cyan-500/50"
               title="Add custom test case"
             >
               <Plus className="w-3.5 h-3.5" />
@@ -622,13 +622,13 @@ export const TestBench: React.FC<TestBenchProps> = ({
                 type="button"
                 onClick={onLoadOfficialTests}
                 disabled={isLoadingOfficialTests}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-sky-400 hover:text-sky-300 hover:bg-sky-950/40 transition-colors shrink-0 border border-sky-800/60 hover:border-sky-600 disabled:opacity-50"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-accent hover:text-accent hover:bg-accent/40 transition-colors shrink-0 border border-accent/60 hover:border-accent disabled:opacity-50"
                 title="Load full official CSES test suite into the workbench"
               >
                 {isLoadingOfficialTests ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-400" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-accent" />
                 ) : (
-                  <Sparkles className="w-3.5 h-3.5 text-sky-400" />
+                  <Sparkles className="w-3.5 h-3.5 text-accent" />
                 )}
                 <span>Load Official Tests</span>
               </button>
@@ -639,10 +639,10 @@ export const TestBench: React.FC<TestBenchProps> = ({
               <a
                 href={`/api/tests/${problemId}`}
                 download={`cses_${problemId}_tests.zip`}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-surface-2 transition-colors shrink-0 border border-border-subtle hover:border-slate-500"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-text-muted hover:text-text-primary hover:bg-surface-2 transition-colors shrink-0 border border-border-subtle hover:border-slate-500"
                 title="Download official test cases zip archive"
               >
-                <Download className="w-3.5 h-3.5 text-slate-400" />
+                <Download className="w-3.5 h-3.5 text-text-muted" />
                 <span>Download .zip</span>
               </a>
             )}
@@ -660,7 +660,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsAddingCustom(false)}
-                    className="text-slate-400 hover:text-white"
+                    className="text-text-muted hover:text-text-primary"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -668,8 +668,8 @@ export const TestBench: React.FC<TestBenchProps> = ({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-medium text-slate-300 mb-1">
-                      Input (stdin) <span className="text-rose-400">*</span>
+                    <label className="block text-xs font-medium text-text-secondary mb-1">
+                      Input (stdin) <span className="text-verdict-wa">*</span>
                     </label>
                     <textarea
                       value={customInput}
@@ -677,12 +677,12 @@ export const TestBench: React.FC<TestBenchProps> = ({
                       placeholder="Enter test input data..."
                       rows={3}
                       required
-                      className="w-full bg-slate-950 border border-border-subtle rounded-lg p-2 font-mono text-xs text-slate-200 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
+                      className="w-full bg-surface-0 border border-border-subtle rounded-lg p-2 font-mono text-xs text-text-primary focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-slate-300 mb-1">
+                    <label className="block text-xs font-medium text-text-secondary mb-1">
                       Expected Output
                     </label>
                     <textarea
@@ -690,7 +690,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
                       onChange={(e) => setCustomExpected(e.target.value)}
                       placeholder="Enter expected stdout (optional)..."
                       rows={3}
-                      className="w-full bg-slate-950 border border-border-subtle rounded-lg p-2 font-mono text-xs text-slate-200 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
+                      className="w-full bg-surface-0 border border-border-subtle rounded-lg p-2 font-mono text-xs text-text-primary focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
                     />
                   </div>
                 </div>
@@ -699,13 +699,13 @@ export const TestBench: React.FC<TestBenchProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsAddingCustom(false)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-surface-2"
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium text-text-muted hover:text-text-primary hover:bg-surface-2"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-cyan-600 hover:bg-cyan-500 text-white shadow-sm"
+                    className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-accent hover:opacity-90 text-accent-foreground shadow-sm"
                   >
                     Add Test Case
                   </button>
@@ -719,25 +719,25 @@ export const TestBench: React.FC<TestBenchProps> = ({
             <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2 bg-surface-2 border-b border-border-subtle text-xs">
               <div className="flex items-center gap-3">
                 <VerdictBadge status={activeResult.status} size="sm" />
-                <div className="flex items-center gap-4 text-slate-400 font-mono text-[11px] md:text-xs">
+                <div className="flex items-center gap-4 text-text-muted font-mono text-[11px] md:text-xs">
                   <span className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-slate-500" />
+                    <Clock className="w-3.5 h-3.5 text-text-muted" />
                     <span>Time:</span>
-                    <strong className="text-slate-200 font-medium">
+                    <strong className="text-text-primary font-medium">
                       {activeResult.executionTimeMs} ms
                     </strong>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <HardDrive className="w-3.5 h-3.5 text-slate-500" />
+                    <HardDrive className="w-3.5 h-3.5 text-text-muted" />
                     <span>Memory:</span>
-                    <strong className="text-slate-200 font-medium">
+                    <strong className="text-text-primary font-medium">
                       {formatMemory(activeResult.memoryBytes)}
                     </strong>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Terminal className="w-3.5 h-3.5 text-slate-500" />
+                    <Terminal className="w-3.5 h-3.5 text-text-muted" />
                     <span>Exit Code:</span>
-                    <strong className="text-slate-200 font-medium">
+                    <strong className="text-text-primary font-medium">
                       {getExitCode(activeResult)}
                     </strong>
                   </span>
@@ -754,7 +754,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
               className={`px-3 py-2 text-xs font-medium border-b-2 -mb-px transition-colors ${
                 panelTab === 'input'
                   ? 'border-cyan-400 text-cyan-400'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+                  : 'border-transparent text-text-muted hover:text-text-primary'
               }`}
             >
               Test Case Input
@@ -765,7 +765,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
               className={`px-3 py-2 text-xs font-medium border-b-2 -mb-px transition-colors flex items-center gap-1.5 ${
                 panelTab === 'output'
                   ? 'border-cyan-400 text-cyan-400'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+                  : 'border-transparent text-text-muted hover:text-text-primary'
               }`}
             >
               <span>Output & Diff</span>
@@ -789,7 +789,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
               {/* Input Box */}
               <div className="rounded-lg border border-border-subtle bg-surface-2 overflow-hidden">
                 <div className="flex items-center justify-between px-3 py-2 bg-surface-2 border-b border-border-subtle text-xs">
-                  <span className="font-semibold text-slate-300 flex items-center gap-1.5">
+                  <span className="font-semibold text-text-secondary flex items-center gap-1.5">
                     Input (stdin)
                     {isCurrentCustom && (
                       <span className="text-[11px] bg-cyan-500/10 text-cyan-400 px-1.5 py-0.5 rounded border border-cyan-500/20">
@@ -800,12 +800,12 @@ export const TestBench: React.FC<TestBenchProps> = ({
                   <button
                     type="button"
                     onClick={() => handleCopy(currentActiveInput, setCopiedInput)}
-                    className="flex items-center gap-1 text-[11px] text-slate-400 hover:text-white transition-colors"
+                    className="flex items-center gap-1 text-[11px] text-text-muted hover:text-text-primary transition-colors"
                   >
                     {copiedInput ? (
                       <>
-                        <Check className="w-3 h-3 text-emerald-400" />
-                        <span className="text-emerald-400">Copied</span>
+                        <Check className="w-3 h-3 text-verdict-ac" />
+                        <span className="text-verdict-ac">Copied</span>
                       </>
                     ) : (
                       <>
@@ -818,8 +818,8 @@ export const TestBench: React.FC<TestBenchProps> = ({
 
                 {/* Large Input Warning & Toggle Banner */}
                 {currentActiveInput.length > 8000 && (
-                  <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 bg-amber-500/10 border-b border-amber-500/20 text-xs">
-                    <span className="text-amber-300 font-medium">
+                  <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 bg-verdict-tle-soft border-b border-amber-500/20 text-xs">
+                    <span className="text-verdict-tle font-medium">
                       ⚠️ Large Input Data ({(currentActiveInput.length / 1024).toFixed(1)} KB).{' '}
                       {!showFullInput
                         ? 'Previewing first 4,000 chars to ensure smooth browser performance.'
@@ -828,7 +828,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
                     <button
                       type="button"
                       onClick={() => setShowFullInput((prev) => !prev)}
-                      className="px-2.5 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 font-medium text-[11px] border border-amber-500/40 transition-colors"
+                      className="px-2.5 py-1 rounded bg-verdict-tle-soft hover:bg-amber-500/30 text-verdict-tle font-medium text-[11px] border border-amber-500/40 transition-colors"
                     >
                       {showFullInput ? 'Collapse' : 'Show Full Input'}
                     </button>
@@ -849,11 +849,11 @@ export const TestBench: React.FC<TestBenchProps> = ({
                       })
                     }
                     rows={4}
-                    className="w-full bg-slate-950 p-3 font-mono text-xs text-slate-200 focus:outline-none resize-y"
+                    className="w-full bg-surface-0 p-3 font-mono text-xs text-text-primary focus:outline-none resize-y"
                     placeholder="Enter custom input..."
                   />
                 ) : (
-                  <pre className="p-3 font-mono text-xs text-slate-200 bg-slate-950 overflow-x-auto whitespace-pre">
+                  <pre className="p-3 font-mono text-xs text-text-primary bg-surface-0 overflow-x-auto whitespace-pre">
                     {currentActiveInput.length > 8000 && !showFullInput
                       ? currentActiveInput.slice(0, 4000) +
                         '\n\n... [truncated preview — click "Show Full Input" above to expand]'
@@ -865,18 +865,18 @@ export const TestBench: React.FC<TestBenchProps> = ({
               {/* Expected Output Box */}
               <div className="rounded-lg border border-border-subtle bg-surface-2 overflow-hidden">
                 <div className="flex items-center justify-between px-3 py-2 bg-surface-2 border-b border-border-subtle text-xs">
-                  <span className="font-semibold text-slate-300">Expected Output</span>
+                  <span className="font-semibold text-text-secondary">Expected Output</span>
                   <button
                     type="button"
                     onClick={() =>
                       handleCopy(activeTestCase.expectedOutput, setCopiedExpected)
                     }
-                    className="flex items-center gap-1 text-[11px] text-slate-400 hover:text-white transition-colors"
+                    className="flex items-center gap-1 text-[11px] text-text-muted hover:text-text-primary transition-colors"
                   >
                     {copiedExpected ? (
                       <>
-                        <Check className="w-3 h-3 text-emerald-400" />
-                        <span className="text-emerald-400">Copied</span>
+                        <Check className="w-3 h-3 text-verdict-ac" />
+                        <span className="text-verdict-ac">Copied</span>
                       </>
                     ) : (
                       <>
@@ -886,7 +886,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
                     )}
                   </button>
                 </div>
-                <pre className="p-3 font-mono text-xs text-slate-200 bg-slate-950 overflow-x-auto whitespace-pre">
+                <pre className="p-3 font-mono text-xs text-text-primary bg-surface-0 overflow-x-auto whitespace-pre">
                   {activeTestCase.expectedOutput || (
                     <span className="text-slate-600">(none specified)</span>
                   )}
@@ -904,14 +904,14 @@ export const TestBench: React.FC<TestBenchProps> = ({
                   <p className="text-sm font-medium text-cyan-300">
                     Executing code in sandbox...
                   </p>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-text-muted">
                     Compiling and evaluating against test case
                   </p>
                 </div>
               ) : !activeResult || activeResult.status === 'IDLE' ? (
-                <div className="flex flex-col items-center justify-center py-12 text-center space-y-2 text-slate-500">
+                <div className="flex flex-col items-center justify-center py-12 text-center space-y-2 text-text-muted">
                   <Play className="w-8 h-8 text-slate-600" />
-                  <p className="text-sm font-medium text-slate-400">
+                  <p className="text-sm font-medium text-text-muted">
                     Test case has not been executed yet
                   </p>
                   <p className="text-xs text-slate-600">
@@ -924,10 +924,10 @@ export const TestBench: React.FC<TestBenchProps> = ({
                   {(activeResult.status === 'CE' ||
                     activeResult.status === 'RE' ||
                     activeResult.stderr) && (
-                    <div className="rounded-lg border border-rose-500/30 bg-slate-950 overflow-hidden shadow-sm">
-                      <div className="flex items-center justify-between px-3 py-2 bg-rose-500/10 border-b border-rose-500/20 text-xs font-semibold text-rose-300">
+                    <div className="rounded-lg border border-rose-500/30 bg-surface-0 overflow-hidden shadow-sm">
+                      <div className="flex items-center justify-between px-3 py-2 bg-verdict-wa-soft border-b border-rose-500/20 text-xs font-semibold text-verdict-wa">
                         <span className="flex items-center gap-1.5">
-                          <AlertOctagon className="w-4 h-4 text-rose-400" />
+                          <AlertOctagon className="w-4 h-4 text-verdict-wa" />
                           {activeResult.status === 'CE'
                             ? 'Compilation Diagnostic (stderr)'
                             : 'Runtime Error / Diagnostic (stderr)'}
@@ -938,12 +938,12 @@ export const TestBench: React.FC<TestBenchProps> = ({
                             onClick={() =>
                               handleCopy(activeResult.stderr || '', setCopiedStderr)
                             }
-                            className="flex items-center gap-1 text-[11px] font-normal text-rose-300 hover:text-white transition-colors"
+                            className="flex items-center gap-1 text-[11px] font-normal text-verdict-wa hover:text-text-primary transition-colors"
                           >
                             {copiedStderr ? (
                               <>
-                                <Check className="w-3 h-3 text-emerald-400" />
-                                <span className="text-emerald-400">Copied</span>
+                                <Check className="w-3 h-3 text-verdict-ac" />
+                                <span className="text-verdict-ac">Copied</span>
                               </>
                             ) : (
                               <>
@@ -954,8 +954,8 @@ export const TestBench: React.FC<TestBenchProps> = ({
                           </button>
                         )}
                       </div>
-                      <div className="p-3 max-h-60 overflow-y-auto overflow-x-auto bg-slate-950">
-                        <pre className="font-mono text-xs text-rose-300/90 whitespace-pre-wrap select-text leading-relaxed">
+                      <div className="p-3 max-h-60 overflow-y-auto overflow-x-auto bg-surface-0">
+                        <pre className="font-mono text-xs text-verdict-wa/90 whitespace-pre-wrap select-text leading-relaxed">
                           {activeResult.stderr ||
                             (activeResult.status === 'CE'
                               ? 'Compilation failed without diagnostic output.'
@@ -968,7 +968,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
                   {/* Wrong Answer (WA): Render DiffViewer */}
                   {activeResult.status === 'WA' && (
                     <div className="space-y-2">
-                      <div className="flex items-center gap-1.5 text-xs font-semibold  text-rose-400">
+                      <div className="flex items-center gap-1.5 text-xs font-semibold  text-verdict-wa">
                         <ChevronRight className="w-3.5 h-3.5" />
                         <span>Diff Inspector</span>
                       </div>
@@ -982,16 +982,16 @@ export const TestBench: React.FC<TestBenchProps> = ({
 
                   {/* Bypassed / Skipped (>100KB) Informational Card */}
                   {activeResult.status === 'SKIPPED' && (
-                    <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5 space-y-4">
-                      <div className="flex items-start gap-3 text-amber-400">
-                        <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-amber-400" />
+                    <div className="rounded-xl border border-amber-500/30 bg-verdict-tle-soft p-5 space-y-4">
+                      <div className="flex items-start gap-3 text-verdict-tle">
+                        <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-verdict-tle" />
                         <div className="space-y-1">
-                          <h4 className="text-sm font-semibold text-amber-300">
+                          <h4 className="text-sm font-semibold text-verdict-tle">
                             Input Exceeds Compiler Sandbox Limit (100 KB) — Marked as Done / Passed
                           </h4>
-                          <p className="text-xs text-amber-300/80 leading-relaxed">
+                          <p className="text-xs text-verdict-tle/80 leading-relaxed">
                             OnlineCompiler.io has a 100 KB payload limit, and this test input is{' '}
-                            <span className="font-mono font-medium text-amber-200">
+                            <span className="font-mono font-medium text-verdict-tle">
                               {(activeTestCase.input.length / 1024).toFixed(1)} KB
                             </span>
                             .
@@ -999,28 +999,28 @@ export const TestBench: React.FC<TestBenchProps> = ({
                         </div>
                       </div>
 
-                      <div className="p-3.5 rounded-lg bg-surface-2 border border-border-subtle text-xs text-slate-300 space-y-2.5">
+                      <div className="p-3.5 rounded-lg bg-surface-2 border border-border-subtle text-xs text-text-secondary space-y-2.5">
                         <p className="leading-relaxed">
                           This test was automatically marked as done/passed so the rest of your test cases can be graded without blocking your submission.
                         </p>
                         <div className="pt-2.5 border-t border-border-subtle flex flex-wrap items-center gap-2.5">
-                          <span className="text-[11px] text-slate-400">Action guidance:</span>
+                          <span className="text-[11px] text-text-muted">Action guidance:</span>
                           {problemId ? (
                             <a
                               href={`/api/tests/${problemId}`}
                               download={`cses_${problemId}_tests.zip`}
-                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-medium transition-colors"
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-verdict-tle-soft hover:bg-verdict-tle-soft text-verdict-tle border border-amber-500/30 text-xs font-medium transition-colors"
                             >
                               <Download className="w-3.5 h-3.5" />
                               <span>Download .zip for local offline testing</span>
                             </a>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-xs text-amber-300/90 font-medium">
+                            <span className="inline-flex items-center gap-1 text-xs text-verdict-tle/90 font-medium">
                               <Download className="w-3.5 h-3.5" />
                               <span>Download .zip for local offline testing</span>
                             </span>
                           )}
-                          <span className="text-xs text-slate-400">
+                          <span className="text-xs text-text-muted">
                             or use &quot;Download File&quot; in the editor toolbar to submit manually on{' '}
                             {problemId ? (
                               <a
@@ -1032,7 +1032,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
                                 cses.fi
                               </a>
                             ) : (
-                              <span className="text-slate-300 font-medium">cses.fi</span>
+                              <span className="text-text-secondary font-medium">cses.fi</span>
                             )}
                             .
                           </span>
@@ -1043,33 +1043,33 @@ export const TestBench: React.FC<TestBenchProps> = ({
 
                   {/* Accepted (AC): Clean Success Card */}
                   {activeResult.status === 'AC' && (
-                    <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4 space-y-3">
-                      <div className="flex items-center gap-2.5 text-emerald-400">
+                    <div className="rounded-xl border border-emerald-500/30 bg-verdict-ac-soft p-4 space-y-3">
+                      <div className="flex items-center gap-2.5 text-verdict-ac">
                         <CheckCircle2 className="w-5 h-5 shrink-0" />
                         <div>
-                          <h4 className="text-sm font-semibold text-emerald-300">
+                          <h4 className="text-sm font-semibold text-verdict-ac">
                             Accepted! Output Matched Expected
                           </h4>
-                          <p className="text-xs text-emerald-400/80">
+                          <p className="text-xs text-verdict-ac/80">
                             Output passed all verification rules and formatting checks.
                           </p>
                         </div>
                       </div>
 
-                      <div className="rounded-lg border border-border-subtle bg-slate-950 overflow-hidden">
-                        <div className="flex items-center justify-between px-3 py-1.5 bg-surface-2 border-b border-border-subtle text-xs font-medium text-slate-400">
+                      <div className="rounded-lg border border-border-subtle bg-surface-0 overflow-hidden">
+                        <div className="flex items-center justify-between px-3 py-1.5 bg-surface-2 border-b border-border-subtle text-xs font-medium text-text-muted">
                           <span>Execution Output</span>
                           <button
                             type="button"
                             onClick={() =>
                               handleCopy(activeResult.actualOutput, setCopiedActual)
                             }
-                            className="flex items-center gap-1 text-[11px] text-slate-400 hover:text-white transition-colors"
+                            className="flex items-center gap-1 text-[11px] text-text-muted hover:text-text-primary transition-colors"
                           >
                             {copiedActual ? (
                               <>
-                                <Check className="w-3 h-3 text-emerald-400" />
-                                <span className="text-emerald-400">Copied</span>
+                                <Check className="w-3 h-3 text-verdict-ac" />
+                                <span className="text-verdict-ac">Copied</span>
                               </>
                             ) : (
                               <>
@@ -1079,7 +1079,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
                             )}
                           </button>
                         </div>
-                        <pre className="p-3 font-mono text-xs text-slate-200 overflow-x-auto whitespace-pre">
+                        <pre className="p-3 font-mono text-xs text-text-primary overflow-x-auto whitespace-pre">
                           {activeResult.actualOutput || (
                             <span className="text-slate-600">(empty output)</span>
                           )}
@@ -1090,25 +1090,25 @@ export const TestBench: React.FC<TestBenchProps> = ({
 
                   {/* Time Limit Exceeded (TLE) Card */}
                   {activeResult.status === 'TLE' && (
-                    <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 space-y-3">
-                      <div className="flex items-center gap-2.5 text-amber-400">
+                    <div className="rounded-xl border border-amber-500/30 bg-verdict-tle-soft p-4 space-y-3">
+                      <div className="flex items-center gap-2.5 text-verdict-tle">
                         <Clock className="w-5 h-5 shrink-0" />
                         <div>
-                          <h4 className="text-sm font-semibold text-amber-300">
+                          <h4 className="text-sm font-semibold text-verdict-tle">
                             Time Limit Exceeded
                           </h4>
-                          <p className="text-xs text-amber-400/80">
+                          <p className="text-xs text-verdict-tle/80">
                             Execution took longer than the allocated limit. Check for infinite loops
                             or suboptimal algorithm complexity.
                           </p>
                         </div>
                       </div>
                       {activeResult.actualOutput && (
-                        <div className="rounded-lg border border-border-subtle bg-slate-950 overflow-hidden">
-                          <div className="px-3 py-1.5 bg-surface-2 border-b border-border-subtle text-xs font-medium text-slate-400">
+                        <div className="rounded-lg border border-border-subtle bg-surface-0 overflow-hidden">
+                          <div className="px-3 py-1.5 bg-surface-2 border-b border-border-subtle text-xs font-medium text-text-muted">
                             Partial Output Captured Before Timeout
                           </div>
-                          <pre className="p-3 font-mono text-xs text-slate-300 overflow-x-auto whitespace-pre">
+                          <pre className="p-3 font-mono text-xs text-text-secondary overflow-x-auto whitespace-pre">
                             {activeResult.actualOutput}
                           </pre>
                         </div>

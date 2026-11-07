@@ -10,50 +10,50 @@ describe('VerdictBadge Component', () => {
   it('renders AC verdict with emerald styling', () => {
     const html = renderToStaticMarkup(<VerdictBadge status="AC" />);
     expect(html).toContain('Accepted');
-    expect(html).toContain('text-emerald-400');
-    expect(html).toContain('bg-emerald-500/10');
+    expect(html).toContain('text-verdict-ac');
+    expect(html).toContain('bg-verdict-ac-soft');
   });
 
   it('renders WA verdict with rose styling', () => {
     const html = renderToStaticMarkup(<VerdictBadge status="WA" />);
     expect(html).toContain('Wrong Answer');
-    expect(html).toContain('text-rose-400');
-    expect(html).toContain('bg-rose-500/10');
+    expect(html).toContain('text-verdict-wa');
+    expect(html).toContain('bg-verdict-wa-soft');
   });
 
   it('renders TLE verdict with amber styling', () => {
     const html = renderToStaticMarkup(<VerdictBadge status="TLE" />);
     expect(html).toContain('Time Limit Exceeded');
-    expect(html).toContain('text-amber-400');
-    expect(html).toContain('bg-amber-500/10');
+    expect(html).toContain('text-verdict-tle');
+    expect(html).toContain('bg-verdict-tle-soft');
   });
 
   it('renders CE verdict with purple styling', () => {
     const html = renderToStaticMarkup(<VerdictBadge status="CE" />);
     expect(html).toContain('Compilation Error');
-    expect(html).toContain('text-purple-400');
-    expect(html).toContain('bg-purple-500/10');
+    expect(html).toContain('text-verdict-ce');
+    expect(html).toContain('bg-verdict-ce-soft');
   });
 
   it('renders RE verdict with red styling', () => {
     const html = renderToStaticMarkup(<VerdictBadge status="RE" />);
     expect(html).toContain('Runtime Error');
-    expect(html).toContain('text-red-400');
-    expect(html).toContain('bg-red-500/10');
+    expect(html).toContain('text-verdict-wa');
+    expect(html).toContain('bg-verdict-wa-soft');
   });
 
   it('renders RUNNING verdict with spinning animation', () => {
     const html = renderToStaticMarkup(<VerdictBadge status="RUNNING" />);
     expect(html).toContain('Running');
     expect(html).toContain('animate-spin');
-    expect(html).toContain('text-cyan-400');
+    expect(html).toContain('text-accent');
   });
 
   it('renders IDLE verdict with slate styling', () => {
     const html = renderToStaticMarkup(<VerdictBadge status="IDLE" />);
     expect(html).toContain('Idle');
-    expect(html).toContain('bg-slate-800');
-    expect(html).toContain('text-slate-400');
+    expect(html).toContain('bg-surface-2');
+    expect(html).toContain('text-text-muted');
   });
 
   it('supports size prop (sm, md, lg)', () => {

@@ -1,0 +1,3310 @@
+[
+  {
+    "id": "usaco-2011-december-gold-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Cow Photography ? visual walkthrough",
+      "caption": "In each photo one cow moves to the front. Pairwise majority order recovers the hidden line.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "In the five views, 10 precedes 20 in four views and follows it in one; repeat for every pair. The majority relations sort to 10,20,30,40,50."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5\n10 \n20 \n30 \n40 \n50\n20\n10\n30\n40\n50\n30\n10\n20\n40\n50\n40\n10\n20\n30\n50\n50\n10\n20\n30\n40"
+          },
+          {
+            "id": "worked-state",
+            "label": "Cow Photography ? worked state",
+            "text": "In the five views, 10 precedes 20 in four views and follows it in one; repeat for every pair. The majority relations sort to 10,20,30,40,50."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "10\n20\n30\n40\n50"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2011-december-gold-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Simplifying the Farm ? visual walkthrough",
+      "caption": "Minimum spanning trees must take both weight-1 links, then exactly one weight-2 bridge.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Edges 1?2 and 3?4 create two components at cost 2. Any of 1?3, 1?4, or 2?3 joins them for 2 more; total cost 4 with 3 choices."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4 5\n1 2 1\n3 4 1\n1 3 2\n1 4 2\n2 3 2"
+          },
+          {
+            "id": "worked-state",
+            "label": "Simplifying the Farm ? worked state",
+            "text": "Edges 1?2 and 3?4 create two components at cost 2. Any of 1?3, 1?4, or 2?3 joins them for 2 more; total cost 4 with 3 choices."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "4 3"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2011-december-gold-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Grass Planting ? visual walkthrough",
+      "caption": "The farm is a tree, so each path update increments a unique edge chain.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "P 2 3 increments 2?4 and 4?3. P 1 3 increments 1?4 and 4?3 again, leaving edge 3?4 at 2; the three queries output 2,1,2."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4 6\n1 4\n2 4\n3 4\nP 2 3\nP 1 3\nQ 3 4\nP 1 4\nQ 2 4\nQ 1 4"
+          },
+          {
+            "id": "worked-state",
+            "label": "Grass Planting ? worked state",
+            "text": "P 2 3 increments 2?4 and 4?3. P 1 3 increments 1?4 and 4?3 again, leaving edge 3?4 at 2; the three queries output 2,1,2."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "2\n1\n2"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2011-december-silver-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Cow Photography ? visual walkthrough",
+      "caption": "Five photo orders give pairwise votes; majority order is the intended sequence.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "For IDs 1?5, majority comparisons yield 1<2<3<4<5 even though each image moves a cow to the front. Output that order."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5\n10 \n20 \n30 \n40 \n50\n20\n10\n30\n40\n50\n30\n10\n20\n40\n50\n40\n10\n20\n30\n50\n50\n10\n20\n30\n40"
+          },
+          {
+            "id": "worked-state",
+            "label": "Cow Photography ? worked state",
+            "text": "For IDs 1?5, majority comparisons yield 1<2<3<4<5 even though each image moves a cow to the front. Output that order."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "10\n20\n30\n40\n50"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2011-december-silver-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Roadblock ? visual walkthrough",
+      "caption": "Double each edge on the baseline shortest route and recompute the shortest path.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Baseline 1?3?4?5 costs 1+3+2=6. Doubling 3?4 makes the route 9; the alternate 1?3?5 costs 8, so the largest increase is 2."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5 7\n2 1 5\n1 3 1\n3 2 8\n3 5 7\n3 4 3\n2 4 7\n4 5 2"
+          },
+          {
+            "id": "worked-state",
+            "label": "Roadblock ? worked state",
+            "text": "Baseline 1?3?4?5 costs 1+3+2=6. Doubling 3?4 makes the route 9; the alternate 1?3?5 costs 8, so the largest increase is 2."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "2"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2011-december-silver-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Umbrellas for Cows ? visual walkthrough",
+      "caption": "Sort cow locations and partition into umbrella-covered consecutive groups.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Sorted stalls are 1,2,4,8,11,12. Groups [1,2,4], [8], [11,12] have widths 4,1,2 and costs 4,2,3: total 9."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "6 12\n1\n2\n11\n8\n4\n12\n2\n3\n4\n4\n8\n9\n15\n16\n17\n18\n19\n19"
+          },
+          {
+            "id": "worked-state",
+            "label": "Umbrellas for Cows ? worked state",
+            "text": "Sorted stalls are 1,2,4,8,11,12. Groups [1,2,4], [8], [11,12] have widths 4,1,2 and costs 4,2,3: total 9."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "9"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2011-december-bronze-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Hay Bales ? visual walkthrough",
+      "caption": "Move only surplus hay to the common average height.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The heights sum to 20, so target is 5. Surpluses are 10?5=5 and 7?5=2; exactly 7 bales move."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4\n2\n10\n7\n1"
+          },
+          {
+            "id": "worked-state",
+            "label": "Hay Bales ? worked state",
+            "text": "The heights sum to 20, so target is 5. Surpluses are 10?5=5 and 7?5=2; exactly 7 bales move."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "7"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2011-december-bronze-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Cow Photography (Bronze Level) ? visual walkthrough",
+      "caption": "Vote on all cow pairs across the five images, then sort by the majority relation.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Four views put 1 before 2 and one reverses it; the complete majority ordering is 1,2,3,4,5."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5\n1 \n2 \n3 \n4 \n5\n2\n1\n3\n4\n5\n3\n1\n2\n4\n5\n4\n1\n2\n3\n5\n5\n1\n2\n3\n4"
+          },
+          {
+            "id": "worked-state",
+            "label": "Cow Photography (Bronze Level) ? worked state",
+            "text": "Four views put 1 before 2 and one reverses it; the complete majority ordering is 1,2,3,4,5."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "1\n2\n3\n4\n5"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2011-december-bronze-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Escaping the Farm ? visual walkthrough",
+      "caption": "The raft group is acceptable only if adding weights in base 10 creates no carries.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The official output details show a safe triple: 522, 6, 7311. Column sums are ones 2+6+1=9, tens 2+0+1=3, hundreds 5+0+3=8, thousands 7. No digit reaches 10, so 3 cows fit."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5\n522\n6\n84\n7311\n19"
+          },
+          {
+            "id": "worked-state",
+            "label": "Escaping the Farm ? worked state",
+            "text": "The official output details show a safe triple: 522, 6, 7311. Column sums are ones 2+6+1=9, tens 2+0+1=3, hundreds 5+0+3=8, thousands 7. No digit reaches 10, so 3 cows fit."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "3"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-december-gold-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Gangs of Instanbull/Cowstantinople ? visual walkthrough",
+      "caption": "Gang 1 must control the field at the end; among valid arrival orders, maximize its surviving cows and choose the lexicographically earliest.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The official sample output reports gang 1 as the winning controller and gives arrival order 1,3,2,3,1. Simulating pair-offs leaves gang 1 in control; the first output value after YES is the maximum surviving gang-1 count."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5 3\n2\n1\n2"
+          },
+          {
+            "id": "worked-state",
+            "label": "Gangs of Instanbull/Cowstantinople ? worked state",
+            "text": "The official sample output reports gang 1 as the winning controller and gives arrival order 1,3,2,3,1. Simulating pair-offs leaves gang 1 in control; the first output value after YES is the maximum surviving gang-1 count."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "YES\n1\n1\n3\n2\n3\n1"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-december-gold-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "First! ? visual walkthrough",
+      "caption": "A first string induces alphabet precedence constraints at every first differing character.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "For each candidate, compare it to every other word and add the required letter-order edge. Cyclic constraints disqualify a candidate; the survivors are omm and mom."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4\nomm\nmoo\nmom\nommnom"
+          },
+          {
+            "id": "worked-state",
+            "label": "First! ? worked state",
+            "text": "For each candidate, compare it to every other word and add the required letter-order edge. Cyclic constraints disqualify a candidate; the survivors are omm and mom."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "2\nomm\nmom"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-december-gold-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Running Away From the Barn ? visual walkthrough",
+      "caption": "Root the tree at pasture 1 and count vertices within distance L from each vertex.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The sample edges give root distances 0,4,7,5. Radius 5 counts are 3 from node 1, 2 from node 2, and 1 each from nodes 3 and 4."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4 5\n1 4\n2 3\n1 5"
+          },
+          {
+            "id": "worked-state",
+            "label": "Running Away From the Barn ? worked state",
+            "text": "The sample edges give root distances 0,4,7,5. Radius 5 counts are 3 from node 1, 2 from node 2, and 1 each from nodes 3 and 4."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "3\n2\n1\n1"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-december-silver-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Crazy Fences ? visual walkthrough",
+      "caption": "Fences divide the plane into walkable communities. The output is the largest number of cows sharing one region.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The official sample has four cow coordinates. After treating the closed square and its internal triangle fences as barriers, cows #2 and #4 lie in the same community; cows #1 and #3 each occupy a singleton community. Largest community size is 2."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "10 4\n0 0 10 0\n10 0 10 10\n0 0 0 10\n10 10 0 10\n8 8 9 8\n9 8 8 9\n8 9 8 8\n2 7 3 2\n3 2 7 5\n7 5 2 7\n15 3\n1 4\n4 5\n7 1"
+          },
+          {
+            "id": "worked-state",
+            "label": "Crazy Fences ? worked state",
+            "text": "The official sample has four cow coordinates. After treating the closed square and its internal triangle fences as barriers, cows #2 and #4 lie in the same community; cows #1 and #3 each occupy a singleton community. Largest community size is 2."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "2"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-december-silver-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Wifi Setup ? visual walkthrough",
+      "caption": "A WiFi station with radius r costs A+B?r; dynamic programming partitions the sorted cow positions.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Sort positions to 0,7,100. Cover 0 and 7 at radius 3.5 for 37.5; a second station at 100 costs 20. Total 57.5."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "3 20 5\n7\n0\n100"
+          },
+          {
+            "id": "worked-state",
+            "label": "Wifi Setup ? worked state",
+            "text": "Sort positions to 0,7,100. Cover 0 and 7 at radius 3.5 for 37.5; a second station at 100 costs 20. Total 57.5."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "57.5"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-december-silver-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Milk Routing ? visual walkthrough",
+      "caption": "A route cost is its delay plus milk amount divided by the route bottleneck flow.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the worked example on the official task page; no sample input block is published."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The statement compares direct 1?3 at 14+15/1=29 with 1?2?3 at 20+15/2=27.5. The latter is faster."
+        },
+        {
+          "label": "Read the result",
+          "detail": "This page has no published sample output block; the shown state is the official statement example."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "official-example",
+            "label": "Official route comparison",
+            "text": "Direct 1?3: 14+15/1=29. Route 1?2?3: 20+15/2=27.5."
+          },
+          {
+            "id": "worked-state",
+            "label": "Milk Routing ? worked state",
+            "text": "The statement compares direct 1?3 at 14+15/1=29 with 1?2?3 at 20+15/2=27.5. The latter is faster."
+          }
+        ],
+        "edges": [
+          {
+            "from": "official-example",
+            "to": "worked-state",
+            "label": "follow"
+          }
+        ]
+      },
+      "evidenceNote": "No official sample input block on task page; visual uses the concrete example printed in the official statement.",
+      "outputNote": "No official sample output block on task page."
+    }
+  },
+  {
+    "id": "usaco-2012-december-bronze-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Meet and Greet ? visual walkthrough",
+      "caption": "Advance both walkers one unit at a time and count reunions after they have separated.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The sample move sequences are Bessie: ?3,+5,?1,+2 and Elsie: +4,?4, then stop. Tracking positions and separation intervals gives 3 greetings."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4 5\n3 L\n5 R\n1 L\n2 R\n4 R\n1 L\n3 L\n4 R\n2 L"
+          },
+          {
+            "id": "worked-state",
+            "label": "Meet and Greet ? worked state",
+            "text": "The sample move sequences are Bessie: ?3,+5,?1,+2 and Elsie: +4,?4, then stop. Tracking positions and separation intervals gives 3 greetings."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "3"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-december-bronze-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Scrambled Letters ? visual walkthrough",
+      "caption": "Each scrambled name lies between its sorted-letter and reverse-sorted-letter forms.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Compute both lexical extremes for each input name, sort the lower and upper bounds, and report each original name?s possible rank interval: 2?3, 1?1, 4?4, 2?3."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4\nessieb\na\nxzy\nelsie"
+          },
+          {
+            "id": "worked-state",
+            "label": "Scrambled Letters ? worked state",
+            "text": "Compute both lexical extremes for each input name, sort the lower and upper bounds, and report each original name?s possible rank interval: 2?3, 1?1, 4?4, 2?3."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "2 3\n1 1\n4 4\n2 3"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-december-bronze-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Crazy Fences ? visual walkthrough",
+      "caption": "Axis-aligned fence segments split the farm into communities; count cows in each connected region.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "In the seven-segment sample, the horizontal/vertical fence loops separate the cow points into regions. Two cows share the largest region, so the maximum community size is 2."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "7 3\n0 0 10 0\n10 0 10 5\n12 5 10 5\n10 5 1 5\n12 5 12 7\n0 7 12 7\n0 7 0 0\n3 4\n6 6\n17 3"
+          },
+          {
+            "id": "worked-state",
+            "label": "Crazy Fences ? worked state",
+            "text": "In the seven-segment sample, the horizontal/vertical fence loops separate the cow points into regions. Two cows share the largest region, so the maximum community size is 2."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "2"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-january-gold-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Video Game ? visual walkthrough",
+      "caption": "A trie tracks combo suffixes; dynamic programming scores every combo completed by each button press.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The seven-press string ABABACB completes ABA at positions 1?3 and 3?5, ABACB at 3?7, and CB at 6?7: four combo completions total."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "3 7\nABA\nCB\nABACB"
+          },
+          {
+            "id": "worked-state",
+            "label": "Video Game ? worked state",
+            "text": "The seven-press string ABABACB completes ABA at positions 1?3 and 3?5, ABACB at 3?7, and CB at 6?7: four combo completions total."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "4"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-january-gold-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Cow Run ? visual walkthrough",
+      "caption": "FJ chooses a half of each round?s cards that guarantees the cows can return within K no matter which quarter Bessie chooses.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "For this sample FJ outputs T then B. With N=2, M=2 and K=0, round 1?s top-four contains [1,0,0,0]; Bessie?s T selects [1,0], giving no movement from R=0. Round 2?s bottom-four is [0,0,1,0], and Bessie?s T selects [0,0], again leaving the cows at the start."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "2 2 0\nTT\n1 0 0 0 0 0 0 1\n0 1 1 1 0 0 1 0"
+          },
+          {
+            "id": "worked-state",
+            "label": "Cow Run ? worked state",
+            "text": "For this sample FJ outputs T then B. With N=2, M=2 and K=0, round 1?s top-four contains [1,0,0,0]; Bessie?s T selects [1,0], giving no movement from R=0. Round 2?s bottom-four is [0,0,1,0], and Bessie?s T selects [0,0], again leaving the cows at the start."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "TB"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-january-gold-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Bovine Alliance ? visual walkthrough",
+      "caption": "Assign each existing trail to one endpoint farm, with no farm assigned more than one trail.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The path component 1?2?3 has 3 valid endpoint assignments; the parallel 4?5 trails have 2 assignments with distinct builders. Multiply 3?2=6."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5 4\n1 2\n3 2\n4 5\n4 5"
+          },
+          {
+            "id": "worked-state",
+            "label": "Bovine Alliance ? worked state",
+            "text": "The path component 1?2?3 has 3 valid endpoint assignments; the parallel 4?5 trails have 2 assignments with distinct builders. Multiply 3?2=6."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "6"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-january-silver-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Delivery Route ? visual walkthrough",
+      "caption": "Visit farms in numeric order and return to farm 1; each leg must avoid any farm that would be visited out of order.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The official route takes 2 minutes from farm 1 to 2, 5 minutes from 2 to 3 while going around farm 1, 3 minutes from 3 to 4, then 2 minutes back to farm 1. Total 12."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4\n2 2\n2 4\n2 1\n1 3"
+          },
+          {
+            "id": "worked-state",
+            "label": "Delivery Route ? worked state",
+            "text": "The official route takes 2 minutes from farm 1 to 2, 5 minutes from 2 to 3 while going around farm 1, 3 minutes from 3 to 4, then 2 minutes back to farm 1. Total 12."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "12"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-january-silver-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Bale Share ? visual walkthrough",
+      "caption": "Partition all bale weights into three piles while minimizing the largest pile.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The sample total is 77. A balanced assignment achieves pile sums 26,26,25; since ceil(77/3)=26, no solution can do better."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "8\n14\n2\n5\n15\n8\n9\n20\n4"
+          },
+          {
+            "id": "worked-state",
+            "label": "Bale Share ? worked state",
+            "text": "The sample total is 77. A balanced assignment achieves pile sums 26,26,25; since ceil(77/3)=26, no solution can do better."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "26"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-january-silver-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Mountain Climbing ? visual walkthrough",
+      "caption": "The two guides work concurrently: FJ orders climbs and FD orders descents, with cows waiting at the summit.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The official optimal order is cow 3, then cow 1, then cow 2 for both ascent and descent. Climb finishes at 2,8,16; descent finishes at 5,12,17. The last cow returns at time 17."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "3\n6 4\n8 1\n2 3"
+          },
+          {
+            "id": "worked-state",
+            "label": "Mountain Climbing ? worked state",
+            "text": "The official optimal order is cow 3, then cow 1, then cow 2 for both ascent and descent. Climb finishes at 2,8,16; descent finishes at 5,12,17. The last cow returns at time 17."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "17"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-january-bronze-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Gifts ? visual walkthrough",
+      "caption": "One gift gets half-price on its item price; shipping remains full price. Compare the coupon choice against the budget.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Use the coupon on cow 3: its total becomes 8/2+1=5. Cows 1, 2, and 4 cost 6, 2, and 9, so those four gifts total 22?24; adding cow 5 exceeds the budget. Answer 4."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5 24\n4 2\n2 0\n8 1\n6 3\n12 5"
+          },
+          {
+            "id": "worked-state",
+            "label": "Gifts ? worked state",
+            "text": "Use the coupon on cow 3: its total becomes 8/2+1=5. Cows 1, 2, and 4 cost 6, 2, and 9, so those four gifts total 22?24; adding cow 5 exceeds the budget. Answer 4."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "4"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-january-bronze-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Haybale Stacking ? visual walkthrough",
+      "caption": "Range-add updates produce a height array; select its middle element.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "After ranges 5..5, 2..4, 4..6, 3..5, heights are [0,1,2,3,3,1,0]. Sorted, the fourth of seven is 1."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "7 4\n5 5\n2 4\n4 6\n3 5"
+          },
+          {
+            "id": "worked-state",
+            "label": "Haybale Stacking ? worked state",
+            "text": "After ranges 5..5, 2..4, 4..6, 3..5, heights are [0,1,2,3,3,1,0]. Sorted, the fourth of seven is 1."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "1"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-january-bronze-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Grazing Patterns ? visual walkthrough",
+      "caption": "Two cows move simultaneously across the grassy cells, never colliding until they share the final remaining cell.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The sample?s unique pair of routes is Bessie: (1,1)?(2,1)?(2,2)?(1,2)?(1,3)?(2,3)?(2,4)?(1,4)?(1,5)?(2,5)?(3,5); Mildred: (5,5)?(5,4)?(5,3)?(5,2)?(5,1)?(4,1)?(4,2)?(4,3)?(4,4)?(4,5)?(3,5). They cover each grassy square once and meet only at the end."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4\n3 2\n3 3\n3 4\n3 1"
+          },
+          {
+            "id": "worked-state",
+            "label": "Grazing Patterns ? worked state",
+            "text": "The sample?s unique pair of routes is Bessie: (1,1)?(2,1)?(2,2)?(1,2)?(1,3)?(2,3)?(2,4)?(1,4)?(1,5)?(2,5)?(3,5); Mildred: (5,5)?(5,4)?(5,3)?(5,2)?(5,1)?(4,1)?(4,2)?(4,3)?(4,4)?(4,5)?(3,5). They cover each grassy square once and meet only at the end."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "1"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-february-gold-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Cow Coupons ? visual walkthrough",
+      "caption": "A coupon changes cost P to C. Greedy purchase order after selecting the discount maximizes the count under budget.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "With budget 7, use the one coupon on the best saving and buy costs 1,2,3 for total 6. Three cows fit; a fourth does not."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4 1 7\n3 2\n2 2\n8 1\n4 3"
+          },
+          {
+            "id": "worked-state",
+            "label": "Cow Coupons ? worked state",
+            "text": "With budget 7, use the one coupon on the best saving and buy costs 1,2,3 for total 6. Three cows fit; a fourth does not."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "3"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-february-gold-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Symmetry ? visual walkthrough",
+      "caption": "A square point set is preserved by reflections across its vertical, horizontal, and two diagonal axes.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The points (0,0),(0,1),(1,0),(1,1) are the four corners of a unit square. Its symmetry axes are x=1/2, y=1/2, y=x, and y=1?x: four lines."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4\n0 0\n0 1\n1 0\n1 1"
+          },
+          {
+            "id": "worked-state",
+            "label": "Symmetry ? worked state",
+            "text": "The points (0,0),(0,1),(1,0),(1,1) are the four corners of a unit square. Its symmetry axes are x=1/2, y=1/2, y=x, and y=1?x: four lines."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "4"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-february-gold-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Nearby Cows ? visual walkthrough",
+      "caption": "For each field, sum cows at tree distance at most K.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "In the six-node tree with K=2, node 1 reaches nodes 1,2,3,4,5, whose cow counts sum to 1+2+3+4+5=15. Continue from each root to obtain 15,21,16,10,8,11."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "6 2\n5 1\n3 6\n2 4\n2 1\n3 2\n1\n2\n3\n4\n5\n6"
+          },
+          {
+            "id": "worked-state",
+            "label": "Nearby Cows ? worked state",
+            "text": "In the six-node tree with K=2, node 1 reaches nodes 1,2,3,4,5, whose cow counts sum to 1+2+3+4+5=15. Continue from each root to obtain 15,21,16,10,8,11."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "15\n21\n16\n10\n8\n11"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-february-silver-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Overplanting (Silver) ? visual walkthrough",
+      "caption": "Sweep rectangle edges or compressed cells so overlap is counted once.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Rectangles [0,4]?[1,5] and [2,6]?[2,4] have areas 16 and 8, with overlap 2?2=4. Union = 16+8?4=20."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "2\n0 5 4 1\n2 4 6 2"
+          },
+          {
+            "id": "worked-state",
+            "label": "Overplanting (Silver) ? worked state",
+            "text": "Rectangles [0,4]?[1,5] and [2,6]?[2,4] have areas 16 and 8, with overlap 2?2=4. Union = 16+8?4=20."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "20"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-february-silver-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Cow IDs ? visual walkthrough",
+      "caption": "Unrank a fixed-weight binary string by counting how many valid suffixes begin with 0 or 1.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "For length 7 and three set bits, skip blocks by binomial counts until rank 7; the selected label is 10110 (with leading zero padding omitted per statement)."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "7 3"
+          },
+          {
+            "id": "worked-state",
+            "label": "Cow IDs ? worked state",
+            "text": "For length 7 and three set bits, skip blocks by binomial counts until rank 7; the selected label is 10110 (with leading zero padding omitted per statement)."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "10110"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-february-silver-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Relocation ? visual walkthrough",
+      "caption": "Choose a non-market town as home and find the shortest closed tour that visits all K markets in any order.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The official sample?s best home is town 5. The tour 5?1?2?3?2?1?5 has edge lengths 2+1+3+3+1+2=12; it visits all three markets and returns home."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5 6 3\n1\n2\n3\n1 2 1\n1 5 2\n3 2 3\n3 4 5\n4 2 7\n4 5 10"
+          },
+          {
+            "id": "worked-state",
+            "label": "Relocation ? worked state",
+            "text": "The official sample?s best home is town 5. The tour 5?1?2?3?2?1?5 has edge lengths 2+1+3+3+1+2=12; it visits all three markets and returns home."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "12"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-february-bronze-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Rope Folding ? visual walkthrough",
+      "caption": "A fold is valid when knot positions on the shorter side mirror onto knots on the other side.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Knots are at 0,2,4,6,10. Test each candidate fold by reflecting paired offsets around it; four candidate positions align all overlapping knots."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5 10\n0\n10\n6\n2\n4"
+          },
+          {
+            "id": "worked-state",
+            "label": "Rope Folding ? worked state",
+            "text": "Knots are at 0,2,4,6,10. Test each candidate fold by reflecting paired offsets around it; four candidate positions align all overlapping knots."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "4"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-february-bronze-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Overplanting (Bronze) ? visual walkthrough",
+      "caption": "The union of axis-aligned rectangles is counted cell-by-cell in this small version.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The two sample rectangles have areas 16 and 8, sharing a 2?2 overlap. Count that overlap once: 16+8?4=20."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "2\n0 5 4 1\n2 4 6 2"
+          },
+          {
+            "id": "worked-state",
+            "label": "Overplanting (Bronze) ? worked state",
+            "text": "The two sample rectangles have areas 16 and 8, sharing a 2?2 overlap. Count that overlap once: 16+8?4=20."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "20"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2012-february-bronze-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Moo ? visual walkthrough",
+      "caption": "The recursive Moo word is navigated by comparing the target index with each recursive block.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The requested index is 11. The sequence prefix shown by the recurrence is m o o m o o o m o o m, so position 11 is m."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "11"
+          },
+          {
+            "id": "worked-state",
+            "label": "Moo ? worked state",
+            "text": "The requested index is 11. The sequence prefix shown by the recurrence is m o o m o o o m o o m, so position 11 is m."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "m"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-december-gold-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Vacation Planning (gold) ? visual walkthrough",
+      "caption": "A valid vacation route must pass through one of the designated hubs; combine shortest paths into and out of each hub.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the worked example on the official task page; no sample input block is published."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The official page gives a route example where reaching a destination without an outgoing continuation strands the traveler. For each query minimize dist(s,h)+dist(h,t) over hubs; page has no sample block."
+        },
+        {
+          "label": "Read the result",
+          "detail": "This page has no published sample output block; the shown state is the official statement example."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "official-example",
+            "label": "Official flight example",
+            "text": "The statement?s example has 1?2?3 costing 20, but no flights leave farm 3, so the traveler is stranded there."
+          },
+          {
+            "id": "worked-state",
+            "label": "Vacation Planning (gold) ? worked state",
+            "text": "The official page gives a route example where reaching a destination without an outgoing continuation strands the traveler. For each query minimize dist(s,h)+dist(h,t) over hubs; page has no sample block."
+          }
+        ],
+        "edges": [
+          {
+            "from": "official-example",
+            "to": "worked-state",
+            "label": "follow"
+          }
+        ]
+      },
+      "evidenceNote": "No official sample input block on task page; visual uses the concrete example printed in the official statement.",
+      "outputNote": "No official sample output block on task page."
+    }
+  },
+  {
+    "id": "usaco-2013-december-gold-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Optimal Milking ? visual walkthrough",
+      "caption": "After each daily machine update, choose a maximum-weight subset with no adjacent machines; add that day?s maximum to the total.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Day 1 uses machines 2 and 4 for 2+4=6. After machine 5 changes to 2, day 2 earns 7+4=11. After machine 2 changes to 7 and machine 1 to 10 per the updates, day 3 earns 10+3+2=15; total 6+11+15=32."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5 3\n1\n2\n3\n4\n5\n5 2\n2 7\n1 10"
+          },
+          {
+            "id": "worked-state",
+            "label": "Optimal Milking ? worked state",
+            "text": "Day 1 uses machines 2 and 4 for 2+4=6. After machine 5 changes to 2, day 2 earns 7+4=11. After machine 2 changes to 7 and machine 1 to 10 per the updates, day 3 earns 10+3+2=15; total 6+11+15=32."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "32"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-december-gold-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "The Bessie Shuffle (gold) ? visual walkthrough",
+      "caption": "The shuffle is a permutation on positions; follow its cycles rather than repeating every round.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the worked example on the official task page; no sample input block is published."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The statement?s five-card example removes 2,1,3,5,4 and produces [4,5,3,1,2]. This concrete permutation is the state transition to exponentiate."
+        },
+        {
+          "label": "Read the result",
+          "detail": "This page has no published sample output block; the shown state is the official statement example."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "official-example",
+            "label": "Official shuffle example",
+            "text": "For five cards, the statement starts [2,3,1,4,5], places cards down in order 2,1,3,5,4, and produces [4,5,3,1,2]."
+          },
+          {
+            "id": "worked-state",
+            "label": "The Bessie Shuffle (gold) ? worked state",
+            "text": "The statement?s five-card example removes 2,1,3,5,4 and produces [4,5,3,1,2]. This concrete permutation is the state transition to exponentiate."
+          }
+        ],
+        "edges": [
+          {
+            "from": "official-example",
+            "to": "worked-state",
+            "label": "follow"
+          }
+        ]
+      },
+      "evidenceNote": "No official sample input block on task page; visual uses the concrete example printed in the official statement.",
+      "outputNote": "No official sample output block on task page."
+    }
+  },
+  {
+    "id": "usaco-2013-december-silver-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Milk Scheduling ? visual walkthrough",
+      "caption": "Schedule unit-time cows before deadlines, choosing the largest rewards for available slots.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Rewards/deadlines are (10,3),(7,5),(8,1),(2,1). Place rewards 8 at slot 1, 10 at slot 3, and 7 at slot 5; total milk is 25."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4\n10 3\n7 5\n8 1\n2 1"
+          },
+          {
+            "id": "worked-state",
+            "label": "Milk Scheduling ? worked state",
+            "text": "Rewards/deadlines are (10,3),(7,5),(8,1),(2,1). Place rewards 8 at slot 1, 10 at slot 3, and 7 at slot 5; total milk is 25."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "25"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-december-silver-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Vacation Planning ? visual walkthrough",
+      "caption": "A trip counts only if it has a directed route; sum the minimum costs of reachable trips.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the worked example on the official task page; no sample input block is published."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The output details show trip 3?2 costs 10+7=17, trip 1?2 costs 7, and trip 2?3 is unreachable. Thus 2 trips count and their cost sum is 17+7=24."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "official-example",
+            "label": "Official trip examples",
+            "text": "The output details give 3?2 at cost 10+7=17, 1?2 at cost 7, and 2?3 unreachable."
+          },
+          {
+            "id": "worked-state",
+            "label": "Vacation Planning ? worked state",
+            "text": "The output details show trip 3?2 costs 10+7=17, trip 1?2 costs 7, and trip 2?3 is unreachable. Thus 2 trips count and their cost sum is 17+7=24."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "2\n24"
+          }
+        ],
+        "edges": [
+          {
+            "from": "official-example",
+            "to": "worked-state",
+            "label": "follow"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "follow"
+          }
+        ]
+      },
+      "evidenceNote": "No official sample input block on task page; visual uses the concrete example printed in the official statement."
+    }
+  },
+  {
+    "id": "usaco-2013-december-silver-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "The Bessie Shuffle ? visual walkthrough",
+      "caption": "The official worked example gives the Bessie shuffle state after each removed card.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the worked example on the official task page; no sample input block is published."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Starting [2,3,1,4,5], the removed order is 2,1,3,5,4 and the resulting pile is [4,5,3,1,2]. Repeated shuffles are permutation cycles; no sample input/output block is provided."
+        },
+        {
+          "label": "Read the result",
+          "detail": "This page has no published sample output block; the shown state is the official statement example."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "official-example",
+            "label": "Official shuffle example",
+            "text": "The statement traces five cards from [2,3,1,4,5] to the final order [4,5,3,1,2]."
+          },
+          {
+            "id": "worked-state",
+            "label": "The Bessie Shuffle ? worked state",
+            "text": "Starting [2,3,1,4,5], the removed order is 2,1,3,5,4 and the resulting pile is [4,5,3,1,2]. Repeated shuffles are permutation cycles; no sample input/output block is provided."
+          }
+        ],
+        "edges": [
+          {
+            "from": "official-example",
+            "to": "worked-state",
+            "label": "follow"
+          }
+        ]
+      },
+      "evidenceNote": "No official sample input block on task page; visual uses the concrete example printed in the official statement.",
+      "outputNote": "No official sample output block on task page."
+    }
+  },
+  {
+    "id": "usaco-2013-december-bronze-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Record Keeping ? visual walkthrough",
+      "caption": "Normalize each hour?s three names as an unordered key, then count repeats.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "BESSIE, ELSIE, MATILDA appears in three records (order may differ). Sorting the names in each triple groups those records; maximum frequency is 3."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5\nBESSIE ELSIE MATILDA\nFRAN BESSIE INGRID\nBESSIE ELSIE MATILDA\nMATILDA INGRID FRAN\nELSIE BESSIE MATILDA"
+          },
+          {
+            "id": "worked-state",
+            "label": "Record Keeping ? worked state",
+            "text": "BESSIE, ELSIE, MATILDA appears in three records (order may differ). Sorting the names in each triple groups those records; maximum frequency is 3."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "3"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-december-bronze-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Cow Baseball ? visual walkthrough",
+      "caption": "Sort positions, then count triples where the second throw distance lies between one and two times the first.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Sorted positions are 1,3,4,7,10. For each start/middle pair, use the allowed endpoint interval [middle+gap,middle+2?gap]; four triples qualify."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5\n3\n1\n10\n7\n4"
+          },
+          {
+            "id": "worked-state",
+            "label": "Cow Baseball ? worked state",
+            "text": "Sorted positions are 1,3,4,7,10. For each start/middle pair, use the allowed endpoint interval [middle+gap,middle+2?gap]; four triples qualify."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "4"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-december-bronze-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Wormholes ? visual walkthrough",
+      "caption": "Pair the four wormholes in each of the three possible ways, and simulate the forced rightward step after teleporting.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Two pairings send a cow into a repeating teleport/right-move cycle; the third eventually exits. Infinite-loop pairing count is 2."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4\n0 0\n1 0\n1 1\n0 1"
+          },
+          {
+            "id": "worked-state",
+            "label": "Wormholes ? worked state",
+            "text": "Two pairings send a cow into a repeating teleport/right-move cycle; the third eventually exits. Infinite-loop pairing count is 2."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "2"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-january-gold-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Cow Lineup ? visual walkthrough",
+      "caption": "Choose up to K breed IDs to remove globally; the remaining sequence should contain the longest consecutive run of one breed.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "With K=1, remove breed 3 everywhere. The remaining lineup is 2,7,7,7,7,5,7; its longest consecutive block of 7s has length 4."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "9 1\n2\n7\n3\n7\n7\n3\n7\n5\n7"
+          },
+          {
+            "id": "worked-state",
+            "label": "Cow Lineup ? worked state",
+            "text": "With K=1, remove breed 3 everywhere. The remaining lineup is 2,7,7,7,7,5,7; its longest consecutive block of 7s has length 4."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "4"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-january-gold-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Island Travels ? visual walkthrough",
+      "caption": "Flood-fill X cells into islands, then use subset dynamic programming over minimum swim distances between islands.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The sample has three islands. The statement?s route goes from the top-left island to the middle island for 1 shallow-water step, then to the bottom-right island for 2 more: total swim distance 3."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5 4\nXX.S\n.S..\nSXSS\nS.SX\n..SX"
+          },
+          {
+            "id": "worked-state",
+            "label": "Island Travels ? worked state",
+            "text": "The sample has three islands. The statement?s route goes from the top-left island to the middle island for 1 shallow-water step, then to the bottom-right island for 2 more: total swim distance 3."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "3"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-january-gold-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Seating ? visual walkthrough",
+      "caption": "Find the leftmost run of p empty seats; departures free a range and the segment tree stores longest free runs.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "A6 occupies 1?6; L 2 4 frees seats 2?4. A5 fits nowhere (free runs are length 3 and 4), then A2 uses seats 7?8; one party is rejected."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "10 4\nA 6\nL 2 4\nA 5\nA 2"
+          },
+          {
+            "id": "worked-state",
+            "label": "Seating ? worked state",
+            "text": "A6 occupies 1?6; L 2 4 frees seats 2?4. A5 fits nowhere (free runs are length 3 and 4), then A2 uses seats 7?8; one party is rejected."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "1"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-january-silver-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Painting the Fence ? visual walkthrough",
+      "caption": "Each move paints an interval; sweep the endpoints and add spans whose coat count reaches two.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The sample walk is 0?2??4??3??11??10??8. Repeatedly painted spans are [0,2] (2 units), [?4,?3] (1), [?11,?10] (1), and [?10,?8] (2), totaling 6."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "6 2\n2 R\n6 L\n1 R\n8 L\n1 R\n2 R"
+          },
+          {
+            "id": "worked-state",
+            "label": "Painting the Fence ? worked state",
+            "text": "The sample walk is 0?2??4??3??11??10??8. Repeatedly painted spans are [0,2] (2 units), [?4,?3] (1), [?11,?10] (1), and [?10,?8] (2), totaling 6."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "6"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-january-silver-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Square Overlap ? visual walkthrough",
+      "caption": "The intersection of two same-size squares is the product of their overlapping side lengths.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "With side 6, centers (0,0) and (?2,1) overlap by 4 horizontally and 5 vertically: area 20, the maximum in the sample."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4 6\n0 0\n8 4\n-2 1\n0 7"
+          },
+          {
+            "id": "worked-state",
+            "label": "Square Overlap ? worked state",
+            "text": "With side 6, centers (0,0) and (?2,1) overlap by 4 horizontally and 5 vertically: area 20, the maximum in the sample."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "20"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-january-silver-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Party Invitations ? visual walkthrough",
+      "caption": "Start with cow 1 and repeatedly close each group: whenever all but one member are invited, add the last member.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Invite 1 ? group {1,3} forces 3. Then {3,4} forces 4. Now {1,2,3,4} has three of four, forcing 2. No further group reaches its k?1 threshold; total invited is 4."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "10 4\n2 1 3\n2 3 4\n6 1 2 3 4 6 7\n4 4 3 2 1"
+          },
+          {
+            "id": "worked-state",
+            "label": "Party Invitations ? worked state",
+            "text": "Invite 1 ? group {1,3} forces 3. Then {3,4} forces 4. Now {1,2,3,4} has three of four, forcing 2. No further group reaches its k?1 threshold; total invited is 4."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "4"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-january-bronze-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Mirrors ? visual walkthrough",
+      "caption": "Trace the ray from house through mirrors; flipping one mirror switches its reflection rule.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The official map has H=(0,0), B=(6,2), and five mirrors. With mirror 4 flipped, the reflected ray reaches B; the required index is 4."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5 6 2\n3 0 /\n0 2 /\n1 2 /\n3 2 \\\n1 3 \\"
+          },
+          {
+            "id": "worked-state",
+            "label": "Mirrors ? worked state",
+            "text": "The official map has H=(0,0), B=(6,2), and five mirrors. With mirror 4 flipped, the reflected ray reaches B; the required index is 4."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "4"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-january-bronze-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Painting the Fence ? visual walkthrough",
+      "caption": "Each move paints an interval; count unit spans that receive at least two coats.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The sample walk is 0?2??4??3??11??10??8. Repeated spans have lengths 2,1,1,2, for a total of 6."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "6\n2 R\n6 L\n1 R\n8 L\n1 R\n2 R"
+          },
+          {
+            "id": "worked-state",
+            "label": "Painting the Fence ? worked state",
+            "text": "The sample walk is 0?2??4??3??11??10??8. Repeated spans have lengths 2,1,1,2, for a total of 6."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "6"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-january-bronze-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Liars and Truth Tellers ? visual walkthrough",
+      "caption": "Each statement induces a parity relation between speaker truthfulness and the target?s truthfulness.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The first two statements can coexist. Adding the third relation (4 says 1 is truthful) conflicts with the earlier 1?4 claim, so the longest consistent prefix has length 2."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4 3\n1 4 L\n2 3 T\n4 1 T"
+          },
+          {
+            "id": "worked-state",
+            "label": "Liars and Truth Tellers ? worked state",
+            "text": "The first two statements can coexist. Adding the third relation (4 says 1 is truthful) conflicts with the earlier 1?4 claim, so the longest consistent prefix has length 2."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "2"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-february-gold-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Partitioning the Farm ? visual walkthrough",
+      "caption": "One horizontal and one vertical fence make four rectangles; minimize the maximum rectangle sum.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Cut the 3?3 grid after row 2 and column 2. Quadrant totals are 4,4,4,2, so the largest is 4."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "3 2\n1 1 2\n1 1 2\n2 2 4"
+          },
+          {
+            "id": "worked-state",
+            "label": "Partitioning the Farm ? worked state",
+            "text": "Cut the 3?3 grid after row 2 and column 2. Quadrant totals are 4,4,4,2, so the largest is 4."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "4"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-february-gold-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Taxi ? visual walkthrough",
+      "caption": "A backward customer trip of length d adds 2d to the taxi?s baseline 0-to-M route.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Baseline across the fence is 10; serving 6?5 adds one unit backward plus one to regain the route, so 10+2=12."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "2 10\n0 9\n6 5"
+          },
+          {
+            "id": "worked-state",
+            "label": "Taxi ? worked state",
+            "text": "Baseline across the fence is 10; serving 6?5 adds one unit backward plus one to regain the route, so 10+2=12."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "12"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-february-gold-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Route Design ? visual walkthrough",
+      "caption": "A tour is a sequence of sites joined by routes; its value is the sum of visited site values.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "The official sample?s optimal tour is left site 1 (value 1) ? right site 1 (value 2) ? left site 3 (value 5). Its route edges do not cross, and total value is 1+2+5=8."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "3 2 4\n1\n1\n5\n2\n2\n1 1\n2 1\n3 1\n2 2"
+          },
+          {
+            "id": "worked-state",
+            "label": "Route Design ? worked state",
+            "text": "The official sample?s optimal tour is left site 1 (value 1) ? right site 1 (value 2) ? left site 3 (value 5). Its route edges do not cross, and total value is 1+2+5=8."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "8"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-february-silver-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Perimeter ? visual walkthrough",
+      "caption": "Perimeter is the number of exposed unit sides around the connected bale shape; shared sides are internal.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Use the official eight-cell sample cluster and trace the exposed outer boundary edge by edge. The boundary walk totals 14 unit edges, matching the published perimeter; enclosed gaps do not add perimeter."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "8\n10005 200003\n10005 200004\n10008 200004\n10005 200005\n10006 200003\n10007 200003\n10007 200004\n10006 200005"
+          },
+          {
+            "id": "worked-state",
+            "label": "Perimeter ? worked state",
+            "text": "Use the official eight-cell sample cluster and trace the exposed outer boundary edge by edge. The boundary walk totals 14 unit edges, matching the published perimeter; enclosed gaps do not add perimeter."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "14"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-february-silver-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Tractor ? visual walkthrough",
+      "caption": "At threshold D, neighboring cells connect when elevation difference ?D; find the smallest D with a component of at least half the grid.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "In the 5?5 sample, D=3 connects the low plateau to enough height-3 cells for 13 of 25 cells. D=2 cannot; answer 3."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5\n0 0 0 3 3\n0 0 0 0 3\n0 9 9 3 3\n9 9 9 3 3\n9 9 9 9 3"
+          },
+          {
+            "id": "worked-state",
+            "label": "Tractor ? worked state",
+            "text": "In the 5?5 sample, D=3 connects the low plateau to enough height-3 cells for 13 of 25 cells. D=2 cannot; answer 3."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "3"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-february-silver-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Milk Scheduling ? visual walkthrough",
+      "caption": "Prerequisite edges form a DAG. Completion time is the longest weighted path ending at any cow.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Cow 3 takes 6 and must precede cow 2 (5), so that chain takes 11. Cow 1 takes 10 independently; overall completion is 11."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "3 1\n10\n5\n6\n3 2"
+          },
+          {
+            "id": "worked-state",
+            "label": "Milk Scheduling ? worked state",
+            "text": "Cow 3 takes 6 and must precede cow 2 (5), so that chain takes 11. Cow 1 takes 10 independently; overall completion is 11."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "11"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-february-bronze-1",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Message Relay ? visual walkthrough",
+      "caption": "Follow each cow?s single pointer until reaching 0 or revisiting a cow.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Pointers form terminating chain 3?1 of length 2 and cycle 2?4?5?4. The longest relay ending at 0 has length 2."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "5\n0\n4\n1\n5\n4"
+          },
+          {
+            "id": "worked-state",
+            "label": "Message Relay ? worked state",
+            "text": "Pointers form terminating chain 3?1 of length 2 and cycle 2?4?5?4. The longest relay ending at 0 has length 2."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "2"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-february-bronze-2",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Cow Crossings ? visual walkthrough",
+      "caption": "A cow is safe only if its crossing segment intersects no other cow?s segment.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "For the sample, cows #2 and #4 intersect each other; cows #1 and #3 intersect no route. Those two are safe, matching output 2."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "4\n-3 4\n7 8\n10 16\n3 9"
+          },
+          {
+            "id": "worked-state",
+            "label": "Cow Crossings ? worked state",
+            "text": "For the sample, cows #2 and #4 intersect each other; cows #1 and #3 intersect no route. Those two are safe, matching output 2."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "2"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "usaco-2013-february-bronze-3",
+    "visual": {
+      "kind": "worked-example",
+      "title": "Perimeter ? visual walkthrough",
+      "caption": "Perimeter is the number of exposed unit sides around the connected bale shape; shared sides are internal.",
+      "steps": [
+        {
+          "label": "Model the instance",
+          "detail": "Use the exact published sample below."
+        },
+        {
+          "label": "Trace the state",
+          "detail": "Use the official eight-cell sample cluster and trace the exposed outer boundary edge by edge. The boundary walk totals 14 unit edges, matching the published perimeter; enclosed gaps do not add perimeter."
+        },
+        {
+          "label": "Read the result",
+          "detail": "Compare the derived state with the published output."
+        }
+      ],
+      "diagram": {
+        "nodes": [
+          {
+            "id": "sample-input",
+            "label": "Official sample input",
+            "text": "8\n5 3\n5 4\n8 4\n5 5\n6 3\n7 3\n7 4\n6 5"
+          },
+          {
+            "id": "worked-state",
+            "label": "Perimeter ? worked state",
+            "text": "Use the official eight-cell sample cluster and trace the exposed outer boundary edge by edge. The boundary walk totals 14 unit edges, matching the published perimeter; enclosed gaps do not add perimeter."
+          },
+          {
+            "id": "sample-output",
+            "label": "Official sample output",
+            "text": "14"
+          }
+        ],
+        "edges": [
+          {
+            "from": "sample-input",
+            "to": "worked-state",
+            "label": "trace"
+          },
+          {
+            "from": "worked-state",
+            "to": "sample-output",
+            "label": "trace"
+          }
+        ]
+      }
+    }
+  }
+]

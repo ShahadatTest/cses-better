@@ -25,13 +25,24 @@ describe('Ask AI handoff', () => {
     await act(async () => { link.click(); });
     return link;
   };
-  it('opens Grok with the full context, keeps draft private by default, and also copies it', async () => {
+  it('opens ChatGPT with the full context, keeps draft private by default, and also copies it', async () => {
     render(); const link = await choose();
     expect(writeText).toHaveBeenCalledOnce();
     expect(writeText.mock.calls[0][0]).toContain('Find a path.');
     expect(writeText.mock.calls[0][0]).not.toContain('secret draft');
+    expect(new URL(link.href).searchParams.get('q')).toContain('Find a path.');
     expect(link.target).toBe('_blank'); expect(link.rel).toContain('noopener');
-    expect(host.querySelector('[role="status"]')?.textContent).toContain('Prompt copied');
+    expect(host.querySelector('[role="status"]')?.textContent).toContain('Prompt opened in ChatGPT');
+  });
+  it('prefills verified provider links and leaves Gemini on its base URL', () => {
+    render();
+    const params = { ChatGPT: 'q', Claude: 'q', Grok: 'q' };
+    for (const [name, parameter] of Object.entries(params)) {
+      const link = [...host.querySelectorAll<HTMLAnchorElement>('a')].find(anchor => anchor.textContent?.includes(name))!;
+      expect(new URL(link.href).searchParams.get(parameter)).toContain('Find a path.');
+    }
+    const gemini = [...host.querySelectorAll<HTMLAnchorElement>('a')].find(anchor => anchor.textContent?.includes('Gemini'))!;
+    expect(gemini.href).toBe('https://gemini.google.com/app');
   });
   it('adds code to Grok only when selected and retains the full copied prompt', async () => {
     render();

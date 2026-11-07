@@ -7,36 +7,64 @@ import {
 } from './types';
 
 const CSES_CRED_KEY = 'cses_user_credentials';
+const CSES_CRED_VERSION = 2;
+let transientAccount: StoredCsesAccount | null = null;
 
 export function getStoredCsesCredentials(): StoredCsesAccount | null {
   if (typeof window === 'undefined') return null;
   try {
     const raw = localStorage.getItem(CSES_CRED_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed?.version !== CSES_CRED_VERSION) {
+        const safe = sanitizeStoredAccount(parsed);
+        if (safe) localStorage.setItem(CSES_CRED_KEY, JSON.stringify({ ...safe, version: CSES_CRED_VERSION }));
+        else localStorage.removeItem(CSES_CRED_KEY);
+        return safe;
+      }
+      return sanitizeStoredAccount(parsed);
+    }
+    return transientAccount;
   } catch {
     return null;
   }
 }
 
+function sanitizeStoredAccount(value: any): StoredCsesAccount | null {
+  if (!value || typeof value.nick !== 'string' || !value.nick.trim()) return null;
+  return {
+    nick: value.nick.trim(), userId: typeof value.userId === 'string' ? value.userId : undefined,
+    lastSyncedAt: typeof value.lastSyncedAt === 'number' ? value.lastSyncedAt : undefined,
+    solvedCount: typeof value.solvedCount === 'number' ? value.solvedCount : undefined,
+    sessionCookie: value.version === CSES_CRED_VERSION && value.remember === true && typeof value.sessionCookie === 'string' ? value.sessionCookie : undefined,
+    remember: value.version === CSES_CRED_VERSION && value.remember === true,
+  };
+}
+
 export function saveStoredCsesCredentials(creds: Partial<StoredCsesAccount> & { nick: string }): void {
   if (typeof window === 'undefined') return;
   try {
-    if (creds.remember !== false) {
+    if (creds.remember === true) {
       const previous = getStoredCsesCredentials();
       const existing = previous?.nick.toLocaleLowerCase() === creds.nick.trim().toLocaleLowerCase()
         ? previous : ({} as StoredCsesAccount);
       const updated: StoredCsesAccount = {
         nick: creds.nick.trim(),
         userId: creds.userId || existing.userId,
-        pass: creds.pass !== undefined ? creds.pass : existing.pass,
         sessionCookie: creds.sessionCookie || existing.sessionCookie,
         lastSyncedAt: creds.lastSyncedAt || existing.lastSyncedAt,
         solvedCount: creds.solvedCount !== undefined ? creds.solvedCount : existing.solvedCount,
         remember: true,
       };
-      localStorage.setItem(CSES_CRED_KEY, JSON.stringify(updated));
+      transientAccount = updated;
+      localStorage.setItem(CSES_CRED_KEY, JSON.stringify({ ...updated, version: CSES_CRED_VERSION }));
       window.dispatchEvent(new Event('cses-account-changed'));
     } else {
+      transientAccount = {
+        nick: creds.nick.trim(), userId: creds.userId,
+        sessionCookie: creds.sessionCookie, lastSyncedAt: creds.lastSyncedAt,
+        solvedCount: creds.solvedCount, remember: false,
+      };
       localStorage.removeItem(CSES_CRED_KEY);
       window.dispatchEvent(new Event('cses-account-changed'));
     }
@@ -48,6 +76,7 @@ export function saveStoredCsesCredentials(creds: Partial<StoredCsesAccount> & { 
 export function clearStoredCsesCredentials(): void {
   if (typeof window === 'undefined') return;
   try {
+    transientAccount = null;
     localStorage.removeItem(CSES_CRED_KEY);
     window.dispatchEvent(new Event('cses-account-changed'));
   } catch {
@@ -86,6 +115,7 @@ export async function testCsesAuth(
 export async function syncCsesAccount(credentials?: {
   nick?: string;
   pass?: string;
+  remember?: boolean;
   sessionCookie?: string;
   userId?: string;
 }): Promise<{
@@ -103,7 +133,7 @@ export async function syncCsesAccount(credentials?: {
     const stored = getStoredCsesCredentials();
     const payload = {
       nick: credentials?.nick || stored?.nick,
-      pass: credentials?.pass || stored?.pass,
+      pass: credentials?.pass,
       sessionCookie: credentials?.sessionCookie || stored?.sessionCookie,
       userId: credentials?.userId || stored?.userId,
     };
@@ -123,11 +153,10 @@ export async function syncCsesAccount(credentials?: {
       saveStoredCsesCredentials({
         nick: data.nick,
         userId: data.userId,
-        pass: payload.pass,
         sessionCookie: data.sessionCookie,
         lastSyncedAt: data.syncedAt || Date.now(),
         solvedCount: data.solvedCount,
-        remember: true,
+        remember: credentials?.remember ?? (stored?.remember === true),
       });
     }
     return data;

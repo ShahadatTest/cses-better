@@ -70,16 +70,16 @@ describe('CSES Client Credentials Storage', () => {
     clearStoredCsesCredentials();
   });
 
-  it('saves user credentials when remember is true', () => {
+  it('remembers only session and nonsensitive metadata with explicit consent', () => {
     saveStoredCsesCredentials({
       nick: 'tourist',
-      pass: 'secret',
       remember: true,
     });
     const stored = getStoredCsesCredentials();
     expect(stored).not.toBeNull();
     expect(stored?.nick).toBe('tourist');
-    expect(stored?.pass).toBe('secret');
+    expect(stored?.remember).toBe(true);
+    expect(JSON.parse(localStorage.getItem('cses_user_credentials') || '{}')).not.toHaveProperty('pass');
   });
 
   it('stores and retrieves CSES session cookie', () => {
@@ -91,14 +91,28 @@ describe('CSES Client Credentials Storage', () => {
     expect(getStoredCsesSessionCookie()).toBe('PHPSESSID=abcdef123456');
   });
 
-  it('does not save credentials when remember is false', () => {
+  it('migrates legacy credentials while removing saved passwords and session tokens', () => {
+    localStorage.setItem('cses_user_credentials', JSON.stringify({
+      nick: 'tourist', userId: '1016', solvedCount: 123, pass: 'old-secret',
+      sessionCookie: 'PHPSESSID=legacy-token', remember: true,
+    }));
+    const account = getStoredCsesCredentials();
+    expect(account).toMatchObject({ nick: 'tourist', userId: '1016', solvedCount: 123 });
+    expect(account?.sessionCookie).toBeUndefined();
+    expect(JSON.parse(localStorage.getItem('cses_user_credentials') || '{}')).not.toHaveProperty('pass');
+    expect(JSON.parse(localStorage.getItem('cses_user_credentials') || '{}')).not.toHaveProperty('sessionCookie');
+  });
+
+  it('keeps a session in memory only when remember is false', () => {
     saveStoredCsesCredentials({
       nick: 'tourist',
-      pass: 'secret',
+      sessionCookie: 'PHPSESSID=temporary',
       remember: false,
     });
     const stored = getStoredCsesCredentials();
-    expect(stored).toBeNull();
+    expect(stored?.nick).toBe('tourist');
+    expect(getStoredCsesSessionCookie()).toBe('PHPSESSID=temporary');
+    expect(localStorage.getItem('cses_user_credentials')).toBeNull();
   });
 
   it('syncs CSES account and persists session and solved statistics', async () => {
@@ -115,7 +129,7 @@ describe('CSES Client Credentials Storage', () => {
       }),
     } as any);
 
-    const result = await syncCsesAccount({ nick: 'tourist', pass: 'secret' });
+    const result = await syncCsesAccount({ nick: 'tourist', pass: 'secret', remember: true });
     expect(result.success).toBe(true);
     expect(result.solvedCount).toBe(300);
     expect(result.solvedProblemIds).toHaveLength(3);

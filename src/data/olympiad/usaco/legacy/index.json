@@ -1,0 +1,1010 @@
+﻿[
+    {
+        "id":  "usaco-2011-december-gold-1",
+        "contestId":  "usaco",
+        "year":  2011,
+        "round":  "December",
+        "taskId":  "gold-1",
+        "title":  "Cow Photography",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=100",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec11problems",
+        "division":  "gold",
+        "cpid":  100,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2011-december-gold-2",
+        "contestId":  "usaco",
+        "year":  2011,
+        "round":  "December",
+        "taskId":  "gold-2",
+        "title":  "Simplifying the Farm",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=101",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec11problems",
+        "division":  "gold",
+        "cpid":  101,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2011-december-gold-3",
+        "contestId":  "usaco",
+        "year":  2011,
+        "round":  "December",
+        "taskId":  "gold-3",
+        "title":  "Grass Planting",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=102",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec11problems",
+        "division":  "gold",
+        "cpid":  102,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2011-december-silver-1",
+        "contestId":  "usaco",
+        "year":  2011,
+        "round":  "December",
+        "taskId":  "silver-1",
+        "title":  "Cow Photography",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=97",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec11problems",
+        "division":  "silver",
+        "cpid":  97,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2011-december-silver-2",
+        "contestId":  "usaco",
+        "year":  2011,
+        "round":  "December",
+        "taskId":  "silver-2",
+        "title":  "Roadblock",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=98",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec11problems",
+        "division":  "silver",
+        "cpid":  98,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2011-december-silver-3",
+        "contestId":  "usaco",
+        "year":  2011,
+        "round":  "December",
+        "taskId":  "silver-3",
+        "title":  "Umbrellas for Cows",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=99",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec11problems",
+        "division":  "silver",
+        "cpid":  99,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2011-december-bronze-1",
+        "contestId":  "usaco",
+        "year":  2011,
+        "round":  "December",
+        "taskId":  "bronze-1",
+        "title":  "Hay Bales",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=94",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec11problems",
+        "division":  "bronze",
+        "cpid":  94,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2011-december-bronze-2",
+        "contestId":  "usaco",
+        "year":  2011,
+        "round":  "December",
+        "taskId":  "bronze-2",
+        "title":  "Cow Photography (Bronze Level)",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=95",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec11problems",
+        "division":  "bronze",
+        "cpid":  95,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2011-december-bronze-3",
+        "contestId":  "usaco",
+        "year":  2011,
+        "round":  "December",
+        "taskId":  "bronze-3",
+        "title":  "Escaping the Farm",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=96",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec11problems",
+        "division":  "bronze",
+        "cpid":  96,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-december-gold-1",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "December",
+        "taskId":  "gold-1",
+        "title":  "Gangs of Instanbull/Cowstantinople",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=211",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec12problems",
+        "division":  "gold",
+        "cpid":  211,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-december-gold-2",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "December",
+        "taskId":  "gold-2",
+        "title":  "First!",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=212",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec12problems",
+        "division":  "gold",
+        "cpid":  212,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-december-gold-3",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "December",
+        "taskId":  "gold-3",
+        "title":  "Running Away From the Barn",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=213",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec12problems",
+        "division":  "gold",
+        "cpid":  213,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-december-silver-1",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "December",
+        "taskId":  "silver-1",
+        "title":  "Crazy Fences",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=208",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec12problems",
+        "division":  "silver",
+        "cpid":  208,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-december-silver-2",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "December",
+        "taskId":  "silver-2",
+        "title":  "Wifi Setup",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=209",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec12problems",
+        "division":  "silver",
+        "cpid":  209,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-december-silver-3",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "December",
+        "taskId":  "silver-3",
+        "title":  "Milk Routing",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=210",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec12problems",
+        "division":  "silver",
+        "cpid":  210,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-december-bronze-1",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "December",
+        "taskId":  "bronze-1",
+        "title":  "Meet and Greet",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=205",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec12problems",
+        "division":  "bronze",
+        "cpid":  205,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-december-bronze-2",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "December",
+        "taskId":  "bronze-2",
+        "title":  "Scrambled Letters",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=206",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec12problems",
+        "division":  "bronze",
+        "cpid":  206,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-december-bronze-3",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "December",
+        "taskId":  "bronze-3",
+        "title":  "Crazy Fences",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=207",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec12problems",
+        "division":  "bronze",
+        "cpid":  207,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-january-gold-1",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "January",
+        "taskId":  "gold-1",
+        "title":  "Video Game",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=109",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan12problems",
+        "division":  "gold",
+        "cpid":  109,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-january-gold-2",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "January",
+        "taskId":  "gold-2",
+        "title":  "Cow Run",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=110",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan12problems",
+        "division":  "gold",
+        "cpid":  110,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-january-gold-3",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "January",
+        "taskId":  "gold-3",
+        "title":  "Bovine Alliance",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=111",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan12problems",
+        "division":  "gold",
+        "cpid":  111,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-january-silver-1",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "January",
+        "taskId":  "silver-1",
+        "title":  "Delivery Route",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=106",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan12problems",
+        "division":  "silver",
+        "cpid":  106,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-january-silver-2",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "January",
+        "taskId":  "silver-2",
+        "title":  "Bale Share",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=107",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan12problems",
+        "division":  "silver",
+        "cpid":  107,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-january-silver-3",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "January",
+        "taskId":  "silver-3",
+        "title":  "Mountain Climbing",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=108",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan12problems",
+        "division":  "silver",
+        "cpid":  108,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-january-bronze-1",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "January",
+        "taskId":  "bronze-1",
+        "title":  "Gifts",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=103",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan12problems",
+        "division":  "bronze",
+        "cpid":  103,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-january-bronze-2",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "January",
+        "taskId":  "bronze-2",
+        "title":  "Haybale Stacking",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=104",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan12problems",
+        "division":  "bronze",
+        "cpid":  104,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-january-bronze-3",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "January",
+        "taskId":  "bronze-3",
+        "title":  "Grazing Patterns",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=105",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan12problems",
+        "division":  "bronze",
+        "cpid":  105,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-february-gold-1",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "February",
+        "taskId":  "gold-1",
+        "title":  "Cow Coupons",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=118",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb12problems",
+        "division":  "gold",
+        "cpid":  118,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-february-gold-2",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "February",
+        "taskId":  "gold-2",
+        "title":  "Symmetry",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=119",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb12problems",
+        "division":  "gold",
+        "cpid":  119,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-february-gold-3",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "February",
+        "taskId":  "gold-3",
+        "title":  "Nearby Cows",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=120",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb12problems",
+        "division":  "gold",
+        "cpid":  120,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-february-silver-1",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "February",
+        "taskId":  "silver-1",
+        "title":  "Overplanting (Silver)",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=115",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb12problems",
+        "division":  "silver",
+        "cpid":  115,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-february-silver-2",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "February",
+        "taskId":  "silver-2",
+        "title":  "Cow IDs",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=116",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb12problems",
+        "division":  "silver",
+        "cpid":  116,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-february-silver-3",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "February",
+        "taskId":  "silver-3",
+        "title":  "Relocation",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=117",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb12problems",
+        "division":  "silver",
+        "cpid":  117,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-february-bronze-1",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "February",
+        "taskId":  "bronze-1",
+        "title":  "Rope Folding",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=112",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb12problems",
+        "division":  "bronze",
+        "cpid":  112,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-february-bronze-2",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "February",
+        "taskId":  "bronze-2",
+        "title":  "Overplanting (Bronze)",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=113",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb12problems",
+        "division":  "bronze",
+        "cpid":  113,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2012-february-bronze-3",
+        "contestId":  "usaco",
+        "year":  2012,
+        "round":  "February",
+        "taskId":  "bronze-3",
+        "title":  "Moo",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=114",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb12problems",
+        "division":  "bronze",
+        "cpid":  114,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-december-gold-1",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "December",
+        "taskId":  "gold-1",
+        "title":  "Vacation Planning (gold)",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=364",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec13problems",
+        "division":  "gold",
+        "cpid":  364,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-december-gold-2",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "December",
+        "taskId":  "gold-2",
+        "title":  "Optimal Milking",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=365",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec13problems",
+        "division":  "gold",
+        "cpid":  365,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-december-gold-3",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "December",
+        "taskId":  "gold-3",
+        "title":  "The Bessie Shuffle (gold)",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=366",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec13problems",
+        "division":  "gold",
+        "cpid":  366,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-december-silver-1",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "December",
+        "taskId":  "silver-1",
+        "title":  "Milk Scheduling",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=361",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec13problems",
+        "division":  "silver",
+        "cpid":  361,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-december-silver-2",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "December",
+        "taskId":  "silver-2",
+        "title":  "Vacation Planning",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=362",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec13problems",
+        "division":  "silver",
+        "cpid":  362,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-december-silver-3",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "December",
+        "taskId":  "silver-3",
+        "title":  "The Bessie Shuffle",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=363",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec13problems",
+        "division":  "silver",
+        "cpid":  363,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-december-bronze-1",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "December",
+        "taskId":  "bronze-1",
+        "title":  "Record Keeping",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=358",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec13problems",
+        "division":  "bronze",
+        "cpid":  358,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-december-bronze-2",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "December",
+        "taskId":  "bronze-2",
+        "title":  "Cow Baseball",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=359",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec13problems",
+        "division":  "bronze",
+        "cpid":  359,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-december-bronze-3",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "December",
+        "taskId":  "bronze-3",
+        "title":  "Wormholes",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=360",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=dec13problems",
+        "division":  "bronze",
+        "cpid":  360,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-january-gold-1",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "January",
+        "taskId":  "gold-1",
+        "title":  "Cow Lineup",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=229",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan13problems",
+        "division":  "gold",
+        "cpid":  229,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-january-gold-2",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "January",
+        "taskId":  "gold-2",
+        "title":  "Island Travels",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=230",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan13problems",
+        "division":  "gold",
+        "cpid":  230,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-january-gold-3",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "January",
+        "taskId":  "gold-3",
+        "title":  "Seating",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=231",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan13problems",
+        "division":  "gold",
+        "cpid":  231,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-january-silver-1",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "January",
+        "taskId":  "silver-1",
+        "title":  "Painting the Fence",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=226",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan13problems",
+        "division":  "silver",
+        "cpid":  226,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-january-silver-2",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "January",
+        "taskId":  "silver-2",
+        "title":  "Square Overlap",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=227",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan13problems",
+        "division":  "silver",
+        "cpid":  227,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-january-silver-3",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "January",
+        "taskId":  "silver-3",
+        "title":  "Party Invitations",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=228",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan13problems",
+        "division":  "silver",
+        "cpid":  228,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-january-bronze-1",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "January",
+        "taskId":  "bronze-1",
+        "title":  "Mirrors",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=223",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan13problems",
+        "division":  "bronze",
+        "cpid":  223,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-january-bronze-2",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "January",
+        "taskId":  "bronze-2",
+        "title":  "Painting the Fence",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=224",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan13problems",
+        "division":  "bronze",
+        "cpid":  224,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-january-bronze-3",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "January",
+        "taskId":  "bronze-3",
+        "title":  "Liars and Truth Tellers",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=225",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=jan13problems",
+        "division":  "bronze",
+        "cpid":  225,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-february-gold-1",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "February",
+        "taskId":  "gold-1",
+        "title":  "Partitioning the Farm",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=247",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb13problems",
+        "division":  "gold",
+        "cpid":  247,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-february-gold-2",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "February",
+        "taskId":  "gold-2",
+        "title":  "Taxi",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=248",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb13problems",
+        "division":  "gold",
+        "cpid":  248,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-february-gold-3",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "February",
+        "taskId":  "gold-3",
+        "title":  "Route Design",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=249",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb13problems",
+        "division":  "gold",
+        "cpid":  249,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-february-silver-1",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "February",
+        "taskId":  "silver-1",
+        "title":  "Perimeter",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=244",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb13problems",
+        "division":  "silver",
+        "cpid":  244,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-february-silver-2",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "February",
+        "taskId":  "silver-2",
+        "title":  "Tractor",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=245",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb13problems",
+        "division":  "silver",
+        "cpid":  245,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-february-silver-3",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "February",
+        "taskId":  "silver-3",
+        "title":  "Milk Scheduling",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=246",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb13problems",
+        "division":  "silver",
+        "cpid":  246,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-february-bronze-1",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "February",
+        "taskId":  "bronze-1",
+        "title":  "Message Relay",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=241",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb13problems",
+        "division":  "bronze",
+        "cpid":  241,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-february-bronze-2",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "February",
+        "taskId":  "bronze-2",
+        "title":  "Cow Crossings",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=242",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb13problems",
+        "division":  "bronze",
+        "cpid":  242,
+        "tags":  [
+
+                 ]
+    },
+    {
+        "id":  "usaco-2013-february-bronze-3",
+        "contestId":  "usaco",
+        "year":  2013,
+        "round":  "February",
+        "taskId":  "bronze-3",
+        "title":  "Perimeter",
+        "sourceUrl":  "https://www.usaco.org/index.php?page=viewproblem2\u0026cpid=243",
+        "statementAvailability":  "official-link",
+        "archivePage":  "https://www.usaco.org/index.php?page=feb13problems",
+        "division":  "bronze",
+        "cpid":  243,
+        "tags":  [
+
+                 ]
+    }
+]

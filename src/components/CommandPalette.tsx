@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Search, CheckCircle2, ArrowRight, CornerDownLeft, X, Layers } from 'lucide-react';
 import { Problem } from '../core/types';
+import { COMMAND_CATALOG, formatShortcut } from '../core/commands';
 
 export interface CommandPaletteProps {
   isOpen: boolean;
@@ -10,6 +11,8 @@ export interface CommandPaletteProps {
   problems: Problem[];
   onSelectProblem: (id: string) => void;
   solvedIds: Set<string>;
+  commands?: Record<string, { shortcut: string | null; run: () => void; available?: boolean }>;
+  initialView?: 'problems' | 'commands';
 }
 
 export function CommandPalette({
@@ -18,9 +21,12 @@ export function CommandPalette({
   problems,
   onSelectProblem,
   solvedIds,
+  commands = {},
+  initialView = 'problems',
 }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [view, setView] = useState<'problems' | 'commands'>('problems');
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -30,11 +36,12 @@ export function CommandPalette({
     if (isOpen) {
       setQuery('');
       setActiveIndex(0);
+      setView(initialView);
       setTimeout(() => {
         inputRef.current?.focus();
       }, 50);
     }
-  }, [isOpen]);
+  }, [isOpen, initialView]);
 
   // Filter problems by query (id, title, category)
   const filteredProblems = useMemo(() => {
@@ -53,6 +60,11 @@ export function CommandPalette({
       })
       .slice(0, 50); // limit to 50 for instantaneous rendering
   }, [problems, query]);
+  const filteredCommands = useMemo(() => COMMAND_CATALOG.filter(command => {
+    if (commands[command.id]?.available === false) return false;
+    const q = query.trim().toLowerCase();
+    return !q || `${command.label} ${command.description}`.toLowerCase().includes(q);
+  }), [commands, query]);
 
   // Keep active index in bounds
   useEffect(() => {
@@ -70,21 +82,24 @@ export function CommandPalette({
 
   // Keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowDown') {
+    if (e.key === 'Tab') { e.preventDefault(); setView(v => v === 'problems' ? 'commands' : 'problems'); setActiveIndex(0); }
+    else if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setActiveIndex((prev) =>
-        prev < filteredProblems.length - 1 ? prev + 1 : 0
-      );
+      const length = view === 'problems' ? filteredProblems.length : filteredCommands.length;
+      setActiveIndex((prev) => prev < length - 1 ? prev + 1 : 0);
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setActiveIndex((prev) =>
-        prev > 0 ? prev - 1 : filteredProblems.length - 1
-      );
+      const length = view === 'problems' ? filteredProblems.length : filteredCommands.length;
+      setActiveIndex((prev) => prev > 0 ? prev - 1 : length - 1);
     } else if (e.key === 'Enter') {
       e.preventDefault();
       const selected = filteredProblems[activeIndex];
-      if (selected) {
+      if (view === 'problems' && selected) {
         onSelectProblem(selected.id);
+        onClose();
+      } else if (view === 'commands') {
+        const command = filteredCommands[activeIndex];
+        commands[command?.id]?.run();
         onClose();
       }
     } else if (e.key === 'Escape') {
@@ -103,7 +118,7 @@ export function CommandPalette({
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Search problems"
+        aria-label="Search problems and commands"
         className="w-full max-w-2xl bg-surface-1 border border-border-muted rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[75vh] animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleKeyDown}
@@ -111,12 +126,12 @@ export function CommandPalette({
         {/* Search Input Bar */}
         <div className="flex items-center px-4 py-3.5 border-b border-border-subtle bg-surface-1">
           <Search className="w-5 h-5 text-slate-400 mr-3 flex-shrink-0" />
-          <input
+          <div className="mr-3 flex shrink-0 gap-1 text-[10px]"><button onClick={() => { setView('problems'); setActiveIndex(0); }} className={view === 'problems' ? 'text-sky-300' : 'text-slate-500'}>Problems</button><button onClick={() => { setView('commands'); setActiveIndex(0); }} className={view === 'commands' ? 'text-sky-300' : 'text-slate-500'}>Commands</button></div><input
             ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search problems by name, ID (#1068), or category..."
+            placeholder={view === 'problems' ? 'Search problems by name, ID (#1068), or category...' : 'Search commands...'}
             className="w-full bg-transparent text-sm text-slate-100 placeholder-slate-500 focus:outline-none"
           />
           {query && (
@@ -134,11 +149,11 @@ export function CommandPalette({
         {/* Results Count Header */}
         <div className="px-4 py-2 text-[11px] font-semibold text-slate-400 bg-surface-0/60 border-b border-border-subtle flex items-center justify-between">
           <span>
-            {query.trim()
+            {view === 'commands' ? `${filteredCommands.length} commands` : query.trim()
               ? `Found ${filteredProblems.length} matches`
               : `Showing top ${filteredProblems.length} of ${problems.length} problems`}
           </span>
-          <span className="text-[10px] text-slate-500">CSES Problem Set</span>
+          <span className="text-[10px] text-slate-500">Tab to switch view</span>
         </div>
 
         {/* Results List */}
@@ -147,7 +162,7 @@ export function CommandPalette({
           className="flex-1 overflow-y-auto divide-y divide-border-subtle/50 p-1.5 focus:outline-none"
           tabIndex={-1}
         >
-          {filteredProblems.length === 0 ? (
+          {view === 'commands' ? (filteredCommands.length === 0 ? <div className="py-12 text-center text-sm text-slate-500">No commands found.</div> : filteredCommands.map((command, idx) => <div key={command.id} onClick={() => { commands[command.id]?.run(); onClose(); }} onMouseEnter={() => setActiveIndex(idx)} className={`group px-3 py-2.5 rounded-lg cursor-pointer flex items-center justify-between ${idx === activeIndex ? 'bg-sky-500/15 text-white' : 'text-slate-300 hover:bg-surface-2'}`}><div><div className="text-sm font-medium">{command.label}</div><div className="text-xs text-slate-500">{command.description}</div></div><kbd className="rounded border border-border-muted bg-surface-2 px-1.5 py-0.5 font-mono text-[10px]">{formatShortcut(Object.prototype.hasOwnProperty.call(commands, command.id) ? commands[command.id].shortcut : command.defaultShortcut)}</kbd></div>)) : filteredProblems.length === 0 ? (
             <div className="py-12 text-center text-sm text-slate-500">
               No problems found matching &quot;{query}&quot;
             </div>

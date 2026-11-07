@@ -14,12 +14,11 @@ import {
   CheckCircle2,
   Check,
   Layers,
-  Database,
   User as UserIcon,
-  Award,
   KeyRound,
   Star,
-  BookOpen,
+  MoreHorizontal,
+  HelpCircle,
 } from 'lucide-react';
 import { Problem, Category, UserProfile } from '../core/types';
 import { getStoredCsesCredentials } from '../core/cses-client';
@@ -50,7 +49,12 @@ export interface HeaderProps {
   onOpenContestBank?: () => void;
   onOpenCsesProfile?: (nick?: string) => void;
   onOpenCsesAccount?: () => void;
+  onOpenHelp?: () => void;
+  onCopyProblemLink?: () => void;
+  syncStatus?: 'idle' | 'pending' | 'synced' | 'failed';
+  onRetrySync?: () => void;
   initialProblemOpen?: boolean;
+  commandPaletteShortcut?: string | null;
 }
 
 export function Header({
@@ -76,7 +80,12 @@ export function Header({
   onOpenContestBank,
   onOpenCsesProfile,
   onOpenCsesAccount,
+  onOpenHelp,
+  onCopyProblemLink,
+  syncStatus = 'idle',
+  onRetrySync,
   initialProblemOpen,
+  commandPaletteShortcut = 'Mod+K',
 }: HeaderProps) {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isProblemOpen, setIsProblemOpen] = useState(initialProblemOpen ?? false);
@@ -84,11 +93,14 @@ export function Header({
   const [savedCsesNick, setSavedCsesNick] = useState<string | null>(null);
   const [savedCsesUserId, setSavedCsesUserId] = useState<string | null>(null);
   const activeStarredIds = starredProblemIds ?? getStarredProblems();
+  const paletteShortcutLabel = commandPaletteShortcut
+    ? commandPaletteShortcut.split('+').map((part) => part === 'Mod' ? (isMac ? '⌘' : 'Ctrl') : part).join(isMac ? '' : '+')
+    : 'Unassigned';
 
   useEffect(() => {
     const updateCreds = () => {
       const creds = getStoredCsesCredentials();
-      if (creds?.nick) {
+      if (creds?.nick && creds.sessionCookie) {
         setSavedCsesNick(creds.nick);
         if (creds.userId) setSavedCsesUserId(creds.userId);
       } else {
@@ -98,11 +110,40 @@ export function Header({
     };
     updateCreds();
     window.addEventListener('storage', updateCreds);
-    return () => window.removeEventListener('storage', updateCreds);
+    window.addEventListener('cses-account-changed', updateCreds);
+    return () => {
+      window.removeEventListener('storage', updateCreds);
+      window.removeEventListener('cses-account-changed', updateCreds);
+    };
   }, []);
 
   const categoryRef = useRef<HTMLDivElement>(null);
   const problemRef = useRef<HTMLDivElement>(null);
+  const moreRef = useRef<HTMLDetailsElement>(null);
+  const accountRef = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    const dismiss = (event: MouseEvent | KeyboardEvent) => {
+      if (event instanceof KeyboardEvent && event.key === 'Escape' && moreRef.current?.open) {
+        const hadFocusInside = moreRef.current.contains(document.activeElement);
+        moreRef.current.removeAttribute('open');
+        if (hadFocusInside) moreRef.current.querySelector('summary')?.focus();
+      }
+      if (event instanceof KeyboardEvent && event.key === 'Escape' && accountRef.current?.open) {
+        const hadFocusInside = accountRef.current.contains(document.activeElement);
+        accountRef.current.removeAttribute('open');
+        if (hadFocusInside) accountRef.current.querySelector('summary')?.focus();
+      }
+      if (event instanceof MouseEvent && !moreRef.current?.contains(event.target as Node)) moreRef.current?.removeAttribute('open');
+      if (event instanceof MouseEvent && !accountRef.current?.contains(event.target as Node)) accountRef.current?.removeAttribute('open');
+    };
+    document.addEventListener('mousedown', dismiss);
+    document.addEventListener('keydown', dismiss);
+    return () => {
+      document.removeEventListener('mousedown', dismiss);
+      document.removeEventListener('keydown', dismiss);
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -177,16 +218,16 @@ export function Header({
       <div className="flex items-center space-x-3.5 min-w-0">
         {/* Brand Logo & Name */}
         <div className="flex items-center space-x-2.5 flex-shrink-0 mr-1">
-          <div className="w-8 h-8 rounded-lg bg-surface-3 p-0.5 shadow-md shadow-sky-500/10 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-surface-3 p-0.5 shadow-md shadow-accent/10 flex items-center justify-center">
             <div className="w-full h-full bg-surface-0 rounded-[7px] flex items-center justify-center">
-              <Code2 className="w-4 h-4 text-sky-400" />
+              <Code2 className="w-4 h-4 text-accent" />
             </div>
           </div>
           <div className="hidden xl:flex items-baseline space-x-1.5">
-            <span className="font-extrabold tracking-tight text-white text-base">
+            <span className="font-extrabold tracking-tight text-text-primary text-base">
               CSES
             </span>
-            <span className="text-xs font-semibold  text-slate-300">
+            <span className="text-xs font-semibold  text-text-secondary">
               Better
             </span>
           </div>
@@ -196,26 +237,26 @@ export function Header({
         <span className="text-slate-600 hidden sm:inline">/</span>
 
         {/* Category Dropdown */}
-        <div className="relative hidden xl:block" ref={categoryRef}>
+        <div className="relative hidden 2xl:block" ref={categoryRef}>
           <button
             type="button"
             onClick={() => {
               setIsCategoryOpen(!isCategoryOpen);
               setIsProblemOpen(false);
             }}
-            className="flex items-center space-x-1.5 text-xs text-slate-300 hover:text-white px-2 py-1 rounded-md hover:bg-surface-2/80 transition-colors"
+            className="flex items-center space-x-1.5 text-xs text-text-secondary hover:text-text-primary px-2 py-1 rounded-md hover:bg-surface-2/80 transition-colors"
             title="Browse Categories"
           >
-            <Layers className="w-3.5 h-3.5 text-slate-400" />
+            <Layers className="w-3.5 h-3.5 text-text-muted" />
             <span className="font-medium truncate max-w-[150px]">
               {currentCategoryObj ? currentCategoryObj.name : currentProblem.category}
             </span>
-            <ChevronDown className="w-3 h-3 text-slate-400" />
+            <ChevronDown className="w-3 h-3 text-text-muted" />
           </button>
 
           {isCategoryOpen && (
             <div className="absolute left-0 mt-1.5 w-64 max-h-80 overflow-y-auto rounded-lg bg-surface-1 border border-border-muted shadow-2xl py-1.5 z-50">
-              <div className="px-3 py-1.5 text-[11px] font-semibold text-slate-400  border-b border-border-subtle">
+              <div className="px-3 py-1.5 text-[11px] font-semibold text-text-muted  border-b border-border-subtle">
                 Categories ({categories.filter((c) => c.taskCount > 0).length})
               </div>
               {categories
@@ -232,12 +273,12 @@ export function Header({
                     }}
                     className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-surface-2 transition-colors ${
                       currentCategoryObj?.id === cat.id
-                        ? 'text-sky-400 bg-sky-500/10 font-semibold'
-                        : 'text-slate-200'
+                        ? 'text-accent bg-accent/10 font-semibold'
+                        : 'text-text-primary'
                     }`}
                   >
                     <span className="truncate">{cat.name}</span>
-                    <span className="text-[11px] text-slate-400 font-mono ml-2">
+                    <span className="text-[11px] text-text-muted font-mono ml-2">
                       {cat.taskCount}
                     </span>
                   </button>
@@ -249,12 +290,12 @@ export function Header({
         <span className="text-slate-600 hidden xl:inline">›</span>
 
         {/* Problem Selector Dropdown + Prev/Next buttons */}
-        <div className="hidden xl:flex items-center space-x-1 min-w-0" ref={problemRef}>
+        <div className="flex items-center space-x-1 min-w-0" ref={problemRef}>
           <button
             type="button"
             onClick={handlePrevProblem}
             disabled={!hasPrev}
-            className="p-1 rounded hover:bg-surface-2 text-slate-400 hover:text-slate-200 disabled:opacity-30 disabled:hover:bg-transparent"
+            className="p-1 rounded hover:bg-surface-2 text-text-muted hover:text-text-primary disabled:opacity-30 disabled:hover:bg-transparent"
             title="Previous Problem"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -267,22 +308,22 @@ export function Header({
                 setIsProblemOpen(!isProblemOpen);
                 setIsCategoryOpen(false);
               }}
-              className="flex items-center space-x-1.5 text-xs text-white px-2 py-1 rounded-md bg-surface-2/60 hover:bg-surface-2 border border-border-subtle transition-colors max-w-[220px] sm:max-w-[280px]"
+              className="flex items-center space-x-1.5 text-xs text-text-primary px-2 py-1 rounded-md bg-surface-2/60 hover:bg-surface-2 border border-border-subtle transition-colors max-w-[110px] sm:max-w-[200px] 2xl:max-w-[280px]"
               title="Switch problem in this section"
             >
               {activeStarredIds.has(currentProblem.id) && (
                 <Star className="w-3 h-3 text-amber-400 fill-amber-400 shrink-0" />
               )}
-              <span className="text-sky-400 font-mono font-medium">
+              <span className="text-accent font-mono font-medium">
                 #{currentProblem.id}
               </span>
               <span className="truncate font-medium">{currentProblem.title}</span>
-              <ChevronDown className="w-3 h-3 text-slate-400 flex-shrink-0" />
+              <ChevronDown className="w-3 h-3 text-text-muted flex-shrink-0" />
             </button>
 
             {isProblemOpen && (
               <div className="absolute left-0 mt-1.5 w-84 max-h-80 overflow-y-auto rounded-lg bg-surface-1 border border-border-muted shadow-2xl py-1.5 z-50">
-                <div className="px-3 py-1.5 text-[11px] font-semibold text-slate-400  border-b border-border-subtle">
+                <div className="px-3 py-1.5 text-[11px] font-semibold text-text-muted  border-b border-border-subtle">
                   {currentCategoryObj?.name || 'Category'} Tasks (
                   {problemsInCurrentCategory.length})
                 </div>
@@ -299,8 +340,8 @@ export function Header({
                       }}
                       className={`w-full text-left px-3 py-2 text-xs flex items-center space-x-2.5 hover:bg-surface-2 transition-colors group ${
                         currentProblem.id === prob.id
-                          ? 'text-sky-400 bg-sky-500/10 font-semibold'
-                          : 'text-slate-200'
+                          ? 'text-accent bg-accent/10 font-semibold'
+                          : 'text-text-primary'
                       }`}
                     >
                       {/* Interactive completion tick box */}
@@ -345,12 +386,12 @@ export function Header({
                         <Star
                           className={cn(
                             'w-3.5 h-3.5',
-                            isStarred ? 'text-amber-400 fill-amber-400' : 'text-slate-500'
+                            isStarred ? 'text-amber-400 fill-amber-400' : 'text-text-muted'
                           )}
                         />
                       </span>
 
-                      <span className="font-mono text-slate-400 text-[11px] w-10 shrink-0">
+                      <span className="font-mono text-text-muted text-[11px] w-10 shrink-0">
                         #{prob.id}
                       </span>
                       <span className="truncate flex-1">{prob.title}</span>
@@ -365,7 +406,7 @@ export function Header({
             type="button"
             onClick={handleNextProblem}
             disabled={!hasNext}
-            className="p-1 rounded hover:bg-surface-2 text-slate-400 hover:text-slate-200 disabled:opacity-30 disabled:hover:bg-transparent"
+            className="p-1 rounded hover:bg-surface-2 text-text-muted hover:text-text-primary disabled:opacity-30 disabled:hover:bg-transparent"
             title="Next Problem"
           >
             <ChevronRight className="w-4 h-4" />
@@ -374,18 +415,18 @@ export function Header({
       </div>
 
       {/* Center / Right: Search Bar Button */}
-      <div className="flex shrink-0 items-center space-x-2 sm:space-x-3 whitespace-nowrap">
+      <div className="flex shrink-0 items-center gap-1 sm:gap-2 whitespace-nowrap">
         {/* Command Palette Trigger */}
         <button
           type="button"
           onClick={onOpenCommandPalette}
-          className="flex items-center space-x-2 text-xs text-slate-400 hover:text-slate-200 bg-surface-2/60 hover:bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 transition-colors group"
+          className="flex items-center space-x-2 text-xs text-text-muted hover:text-text-primary bg-surface-2/60 hover:bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 transition-colors group"
           title="Search all 400 CSES problems"
         >
-          <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-400 transition-colors" />
-          <span className="hidden 2xl:inline">Search 400 problems...</span>
-          <kbd className="hidden 2xl:inline-flex items-center gap-0.5 rounded border border-border-muted bg-surface-0 px-1.5 py-0.5 text-[11px] font-mono text-slate-400 font-semibold shadow-sm">
-            {isMac ? '⌘K' : 'Ctrl+K'}
+          <Search className="w-3.5 h-3.5 text-text-muted group-hover:text-accent transition-colors" />
+          <span className="hidden md:inline">Search</span>
+          <kbd className="hidden 2xl:inline-flex items-center gap-0.5 rounded border border-border-muted bg-surface-0 px-1.5 py-0.5 text-[11px] font-mono text-text-muted font-semibold shadow-sm">
+            {paletteShortcutLabel}
           </kbd>
         </button>
 
@@ -403,141 +444,51 @@ export function Header({
           </span>
         </div>
 
-        <StreakIndicator owner={currentUser?.id || 'guest'} onConnect={onOpenCsesAccount} />
-        {onOpenLists && <button type="button" onClick={onOpenLists} className="text-xs text-slate-200 border border-border-muted rounded px-2.5 py-1.5 hover:bg-surface-2">Lists</button>}
-        {onOpenContestBank && <button type="button" onClick={onOpenContestBank} className="text-xs text-slate-200 border border-border-muted rounded px-2.5 py-1.5 hover:bg-surface-2">Olympiad bank</button>}
-        {/* Archive Button */}
-        {onOpenArchive && (
-          <button
-            type="button"
-            onClick={onOpenArchive}
-            className="hidden xl:flex items-center space-x-1.5 text-xs text-slate-300 hover:text-white hover:bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 transition-colors"
-            title="Browse CSES Continuous Mirror & Archive"
-          >
-            <Database className="w-3.5 h-3.5" />
-            <span>Archive</span>
-          </button>
-        )}
-
-        {/* Notebook / All Notes Button */}
-        {onOpenAllNotes && (
-          <button
-            type="button"
-            onClick={onOpenAllNotes}
-            className="hidden xl:flex items-center space-x-1.5 text-xs text-slate-300 hover:text-white hover:bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 transition-colors cursor-pointer"
-            title="Open CSES Notebook (All Problem Notes)"
-          >
-            <BookOpen className="w-3.5 h-3.5" />
-            <span>Notes</span>
-          </button>
-        )}
-
-        {/* CSES Account & Solves Sync Button */}
-        {(onOpenCsesAccount || onOpenCsesProfile) && (
-          <button
-            type="button"
-            onClick={onOpenCsesAccount || (() => onOpenCsesProfile?.(savedCsesUserId || savedCsesNick || undefined))}
-            className={cn(
-              'hidden xl:flex items-center space-x-1.5 text-xs rounded-lg px-2.5 py-1.5 transition-colors border',
-              savedCsesNick
-                ? 'text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30'
-                : 'text-zinc-400 hover:text-zinc-200 bg-zinc-800/80 hover:bg-zinc-800 border-zinc-700/60'
-            )}
-            title={
-              savedCsesNick
-                ? `Connected to CSES: @${savedCsesNick}${savedCsesUserId ? ` (#${savedCsesUserId})` : ''} - Click to sync completed problems`
-                : 'Connect official CSES account to sync solved problems and unlock queues'
+        <div className="hidden 2xl:block"><StreakIndicator owner={currentUser?.id || 'guest'} onConnect={onOpenCsesAccount} /></div>
+        {onOpenLists && <button type="button" onClick={onOpenLists} className="hidden lg:block text-xs text-text-primary border border-border-muted rounded px-2.5 py-1.5 hover:bg-surface-2">Lists</button>}
+        {(onOpenAuth || onOpenCsesAccount || onOpenCsesProfile) && (
+          <details className="relative" ref={accountRef} onClick={(event) => {
+            if ((event.target as HTMLElement).closest('button')) {
+              accountRef.current?.removeAttribute('open');
+              accountRef.current?.querySelector('summary')?.focus();
             }
-          >
-            {savedCsesNick ? (
-              <>
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span className="font-mono font-medium">CSES: @{savedCsesNick}</span>
-              </>
-            ) : (
-              <>
-                <KeyRound className="w-3.5 h-3.5 text-amber-400" />
-                <span>Connect CSES</span>
-              </>
-            )}
-          </button>
+          }}>
+            <summary aria-label="Account options" title={currentUser ? `Signed in as ${currentUser.username ? `@${currentUser.username}` : currentUser.displayName}` : 'Account options'} className="list-none cursor-pointer flex items-center gap-1.5 text-xs rounded-lg px-2 py-1.5 border border-border-muted bg-surface-2 hover:bg-surface-3 text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+              {currentUser?.avatarUrl ? <img src={currentUser.avatarUrl} alt="" className="w-5 h-5 rounded-full object-cover" /> : <UserIcon className="w-3.5 h-3.5 text-accent" />}
+              <span>Account</span>
+              <ChevronDown className="w-3 h-3 text-text-muted" />
+            </summary>
+            <div className="absolute right-0 top-full mt-2 z-50 w-56 rounded-md border border-border-muted bg-surface-1 p-1 shadow-xl">
+              {onOpenAuth && <button type="button" onClick={onOpenAuth} className="w-full flex items-center gap-2 text-left px-3 py-2 text-xs text-text-primary hover:bg-surface-2 rounded"><Github className="w-4 h-4" />{currentUser ? 'GitHub account' : 'Sign in with GitHub'}</button>}
+              {(onOpenCsesAccount || onOpenCsesProfile) && <button type="button" onClick={onOpenCsesAccount || (() => onOpenCsesProfile?.(savedCsesUserId || savedCsesNick || undefined))} className="w-full flex items-center gap-2 text-left px-3 py-2 text-xs text-text-primary hover:bg-surface-2 rounded"><KeyRound className="w-4 h-4" />{savedCsesNick ? `CSES: @${savedCsesNick}` : 'Connect CSES account'}</button>}
+            </div>
+          </details>
         )}
-
-        {/* User Account / Auth Modal Trigger */}
-        {onOpenAuth && (
-          <button
-            type="button"
-            onClick={onOpenAuth}
-            className="flex items-center space-x-1.5 text-xs rounded-lg px-2.5 py-1 transition-all border border-zinc-700/80 bg-zinc-800 hover:bg-zinc-700 text-zinc-200"
-            title={
-              currentUser
-                ? `Signed in as ${currentUser.username ? `@${currentUser.username}` : currentUser.displayName}`
-                : 'Sign in with GitHub'
-            }
-          >
-            {currentUser?.avatarUrl ? (
-              <img
-                src={currentUser.avatarUrl}
-                alt={currentUser.displayName || 'User'}
-                className="w-5 h-5 rounded-full object-cover border border-blue-500/50"
-              />
-            ) : (
-              <UserIcon className="w-3.5 h-3.5 text-blue-400" />
-            )}
-            <span className="hidden xl:inline max-w-[130px] truncate font-medium">
-              {currentUser
-                ? currentUser.username
-                  ? `@${currentUser.username}`
-                  : currentUser.displayName
-                : 'Sign In'}
-            </span>
-          </button>
-        )}
-
-        {/* Vertical divider */}
-        <div className="w-px h-5 bg-border-subtle" />
-
-        {/* Right Action Icons: Zen Mode, Settings, GitHub */}
-        <div className="flex items-center space-x-1">
-          {/* Zen Mode */}
-          <button
-            type="button"
-            onClick={onToggleZenMode}
-            className={`p-1.5 rounded-lg border transition-all ${
-              zenMode
-                ? 'bg-sky-500/15 border-sky-500/40 text-sky-300'
-                : 'text-slate-400 hover:text-white border-transparent hover:bg-surface-2'
-            }`}
-            title={zenMode ? 'Exit Zen Mode (Show Problem Pane)' : 'Zen Mode (Maximize Editor)'}
-          >
-            {zenMode ? (
-              <Minimize2 className="w-4 h-4" />
-            ) : (
-              <Maximize2 className="w-4 h-4" />
-            )}
-          </button>
-
-          {/* Settings Modal Button */}
-          <button
-            type="button"
-            onClick={onOpenSettings}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-2 transition-colors"
-            title="Open Settings"
-          >
-            <Settings className="w-4 h-4" />
-          </button>
-
-          {/* GitHub Link */}
-          <a
-            href="https://github.com/codewithpom/cses-better"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-2 transition-colors"
-            title="View on GitHub"
-          >
-            <Github className="w-4 h-4" />
-          </a>
-        </div>
+        <button type="button" onClick={onToggleZenMode} className={`hidden xl:block p-1.5 rounded-lg border transition-all ${zenMode ? 'bg-accent/15 border-accent/40 text-accent' : 'text-text-muted hover:text-text-primary border-transparent hover:bg-surface-2'}`} title={zenMode ? 'Exit Zen Mode' : 'Zen Mode'}>
+          {zenMode ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+        </button>
+        <details className="relative" ref={moreRef} onClick={(event) => {
+          if ((event.target as HTMLElement).closest('button, a')) {
+            moreRef.current?.removeAttribute('open');
+            moreRef.current?.querySelector('summary')?.focus();
+          }
+        }}>
+          <summary className="list-none cursor-pointer rounded-md border border-border-muted p-1.5 text-text-secondary hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" aria-label="More workspace actions" title="More"><MoreHorizontal className="w-4 h-4" /></summary>
+          <div className="absolute right-0 top-full mt-2 z-50 w-52 rounded-md border border-border-muted bg-surface-1 p-1 shadow-xl">
+            {onOpenArchive && <button type="button" onClick={onOpenArchive} className="w-full text-left px-3 py-2 text-xs text-text-primary hover:bg-surface-2 rounded">Archive</button>}
+            {onOpenAllNotes && <button type="button" onClick={onOpenAllNotes} className="w-full text-left px-3 py-2 text-xs text-text-primary hover:bg-surface-2 rounded">Notes</button>}
+            {onOpenContestBank && <button type="button" onClick={onOpenContestBank} className="w-full text-left px-3 py-2 text-xs text-text-primary hover:bg-surface-2 rounded">Contest bank</button>}
+            <button type="button" onClick={onOpenSettings} className="w-full text-left px-3 py-2 text-xs text-text-primary hover:bg-surface-2 rounded"><Settings className="inline w-3.5 h-3.5 mr-2"/>Settings &amp; appearance</button>
+            {onOpenHelp && <button type="button" onClick={onOpenHelp} className="w-full text-left px-3 py-2 text-xs text-text-primary hover:bg-surface-2 rounded"><HelpCircle className="inline w-3.5 h-3.5 mr-2"/>Keyboard shortcuts</button>}
+            {onCopyProblemLink && <button type="button" onClick={onCopyProblemLink} className="w-full text-left px-3 py-2 text-xs text-text-primary hover:bg-surface-2 rounded">Copy problem link</button>}
+            <a href="https://github.com/codewithpom/cses-better" target="_blank" rel="noopener noreferrer" className="block px-3 py-2 text-xs text-text-primary hover:bg-surface-2 rounded"><Github className="inline w-3.5 h-3.5 mr-2"/>GitHub</a>
+            <a href="https://github.com/codewithpom/cses-better/issues/new" target="_blank" rel="noopener noreferrer" className="block px-3 py-2 text-xs text-text-primary hover:bg-surface-2 rounded">Feedback</a>
+            <div className="px-3 py-2 text-[11px] text-text-muted">
+              {currentUser ? `Progress sync: ${syncStatus === 'pending' ? 'waiting' : syncStatus === 'synced' ? 'synced' : syncStatus === 'failed' ? 'needs retry' : 'not started'}` : 'Drafts and results saved on this device'}
+              {currentUser && syncStatus === 'failed' && onRetrySync && <button type="button" onClick={onRetrySync} className="ml-2 text-accent hover:text-accent">Retry</button>}
+            </div>
+          </div>
+        </details>
       </div>
     </header>
   );

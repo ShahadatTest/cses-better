@@ -33,58 +33,58 @@ interface VerdictConfig {
 const VERDICT_CONFIGS: Record<VerdictStatus, VerdictConfig> = {
   AC: {
     label: 'Accepted',
-    classes: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30',
+    classes: 'bg-verdict-ac-soft text-verdict-ac border border-emerald-500/30',
     icon: CheckCircle2,
   },
   WA: {
     label: 'Wrong Answer',
-    classes: 'bg-rose-500/10 text-rose-400 border border-rose-500/30',
+    classes: 'bg-verdict-wa-soft text-verdict-wa border border-rose-500/30',
     icon: XCircle,
   },
   TLE: {
     label: 'Time Limit Exceeded',
-    classes: 'bg-amber-500/10 text-amber-400 border border-amber-500/30',
+    classes: 'bg-verdict-tle-soft text-verdict-tle border border-amber-500/30',
     icon: Clock,
   },
   MLE: {
     label: 'Memory Limit Exceeded',
-    classes: 'bg-orange-500/10 text-orange-400 border border-orange-500/30',
+    classes: 'bg-verdict-tle-soft text-verdict-tle border border-orange-500/30',
     icon: Database,
   },
   OLE: {
     label: 'Output Limit Exceeded',
-    classes: 'bg-orange-500/10 text-orange-400 border border-orange-500/30',
+    classes: 'bg-verdict-tle-soft text-verdict-tle border border-orange-500/30',
     icon: AlertTriangle,
   },
   CE: {
     label: 'Compilation Error',
-    classes: 'bg-purple-500/10 text-purple-400 border border-purple-500/30',
+    classes: 'bg-verdict-ce-soft text-verdict-ce border border-purple-500/30',
     icon: AlertTriangle,
   },
   RE: {
     label: 'Runtime Error',
-    classes: 'bg-red-500/10 text-red-400 border border-red-500/30',
+    classes: 'bg-verdict-wa-soft text-verdict-wa border border-red-500/30',
     icon: AlertCircle,
   },
   RUNNING: {
     label: 'Running',
-    classes: 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30',
+    classes: 'bg-accent/10 text-accent border border-border-accent',
     icon: Loader2,
     spinIcon: true,
   },
   PAUSED: {
     label: 'Paused',
-    classes: 'bg-amber-500/10 text-amber-400 border border-amber-500/30',
+    classes: 'bg-verdict-tle-soft text-verdict-tle border border-amber-500/30',
     icon: PauseCircle,
   },
   IDLE: {
     label: 'Idle',
-    classes: 'bg-slate-800 text-slate-400 border border-slate-700',
+    classes: 'bg-surface-2 text-text-muted border border-border-subtle',
     icon: MinusCircle,
   },
   SKIPPED: {
     label: 'Passed (>100KB)',
-    classes: 'bg-amber-500/10 text-amber-300 border border-amber-500/30',
+    classes: 'bg-verdict-tle-soft text-verdict-tle border border-amber-500/30',
     icon: CheckCircle2,
   },
 };

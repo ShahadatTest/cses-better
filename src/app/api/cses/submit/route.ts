@@ -4,8 +4,6 @@ import {
   extractCsrfToken,
   mapLanguageToCsesOption,
   CSES_BASE_URL,
-  DEFAULT_CSES_BOT_NICK,
-  DEFAULT_CSES_BOT_PASS,
 } from '@/core/cses-network';
 import { registerUserMapping } from '@/core/cses-user-cache';
 
@@ -72,7 +70,7 @@ function getFileExtension(language: string): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { nick, pass, problemId, language, code, useDefaultBot } = await request.json();
+    const { nick, userId: expectedUserId, pass, sessionCookie: suppliedSessionCookie, problemId, language, code, useDefaultBot } = await request.json();
 
     if (!problemId || !code) {
       return NextResponse.json(
@@ -81,21 +79,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const effectiveNick = useDefaultBot || (!nick && !pass)
-      ? (process.env.CSES_BOT_NICK?.trim() || DEFAULT_CSES_BOT_NICK)
-      : (nick ? nick.trim() : '');
-    const effectivePass = useDefaultBot || (!nick && !pass)
-      ? (process.env.CSES_BOT_PASS || DEFAULT_CSES_BOT_PASS)
-      : pass;
+    const personalNick = typeof nick === 'string' ? nick.trim() : '';
+    const sessionCookie = !useDefaultBot && !pass && typeof suppliedSessionCookie === 'string'
+      ? suppliedSessionCookie.trim() : '';
+    if (sessionCookie && (!/^PHPSESSID=[A-Za-z0-9._~-]+(?:; [A-Za-z0-9_-]+=[A-Za-z0-9._~-]+)*$/.test(sessionCookie))) {
+      return NextResponse.json({ success: false, error: 'Invalid remembered CSES session. Reconnect your CSES account.' }, { status: 400 });
+    }
+    const effectiveNick = useDefaultBot ? process.env.CSES_BOT_NICK?.trim() : personalNick;
+    const effectivePass = useDefaultBot ? process.env.CSES_BOT_PASS : pass;
 
-    if (!effectiveNick || !effectivePass) {
+    if (!effectiveNick || (!sessionCookie && !effectivePass)) {
       return NextResponse.json(
-        { success: false, error: 'CSES username and password are required for official submission' },
+        { success: false, error: useDefaultBot ? 'Shared CSES bot is not configured. Set CSES_BOT_NICK and CSES_BOT_PASS on the server, or submit with your own CSES account.' : 'CSES username and password are required, or reconnect with a valid remembered CSES session.' },
         { status: 400 }
       );
     }
 
-    // 1. Authenticate with CSES to obtain valid session cookie
+    // 1. Use an explicitly selected personal session, or log in with the supplied account.
+    let activeSessionCookie = sessionCookie;
+    if (!activeSessionCookie) {
     const loginPageRes = await csesRequest(`${CSES_BASE_URL}/login`);
     const loginCsrf = extractCsrfToken(loginPageRes.body);
 
@@ -132,16 +134,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const sessionCookie = authRes.cookies || loginPageRes.cookies;
+    activeSessionCookie = authRes.cookies || loginPageRes.cookies;
+    }
 
     // 2. Fetch the problem submit page to extract task-specific CSRF token
     const taskPageUrl = `${CSES_BASE_URL}/problemset/task/${problemId}/`;
     const taskPageRes = await csesRequest(taskPageUrl, {
-      cookie: sessionCookie,
+      cookie: activeSessionCookie,
     });
 
     // Register user ID if visible in header
     const userMatch = taskPageRes.body.match(/<a class="account" href="\/user\/(\d+)">/i);
+    const accountNick = taskPageRes.body.match(/<a class="account" href="\/user\/\d+">([^<]+)<\/a>/i)?.[1]?.trim();
+    if (sessionCookie && (!userMatch || !accountNick)) {
+      return NextResponse.json(
+        { success: false, error: 'Your remembered CSES session has expired. Enter your CSES password to reconnect.' },
+        { status: 401 }
+      );
+    }
+    if (userMatch && accountNick && !useDefaultBot && accountNick.toLocaleLowerCase() !== personalNick.toLocaleLowerCase()) {
+      return NextResponse.json({ success: false, error: 'The CSES session belongs to a different account. Reconnect with the matching nickname.' }, { status: 403 });
+    }
+    if (userMatch && expectedUserId && userMatch[1] !== expectedUserId) {
+      return NextResponse.json({ success: false, error: 'The CSES session account did not match the saved account. Reconnect before submitting.' }, { status: 403 });
+    }
     if (userMatch && nick) {
       registerUserMapping(nick.trim(), userMatch[1]);
     }
@@ -151,12 +167,18 @@ export async function POST(request: NextRequest) {
     // Fallback: If not found on task page, try the direct submit page
     if (!taskCsrf) {
       const submitPageRes = await csesRequest(`${CSES_BASE_URL}/problemset/submit/${problemId}/`, {
-        cookie: sessionCookie,
+        cookie: activeSessionCookie,
       });
       taskCsrf = extractCsrfToken(submitPageRes.body);
     }
 
     if (!taskCsrf) {
+      if (sessionCookie) {
+        return NextResponse.json(
+          { success: false, error: 'Your remembered CSES session has expired. Enter your CSES password to reconnect.' },
+          { status: 401 }
+        );
+      }
       return NextResponse.json(
         { success: false, error: 'Failed to extract submission CSRF token from CSES' },
         { status: 502 }
@@ -203,7 +225,7 @@ export async function POST(request: NextRequest) {
         'Content-Length': body.length.toString(),
       },
       body,
-      cookie: sessionCookie,
+      cookie: activeSessionCookie,
       followRedirects: false, // We want to inspect the 302 location!
     });
 
@@ -241,18 +263,9 @@ export async function POST(request: NextRequest) {
       submissionId,
       resultUrl: `${CSES_BASE_URL}/problemset/result/${submissionId}/`,
       problemId,
-      sessionCookie,
+      sessionCookie: activeSessionCookie,
       owner: { nick: effectiveNick, userId: userMatch?.[1], isPersonal: !useDefaultBot },
     });
-
-    if (sessionCookie) {
-      response.cookies.set('cses_session', sessionCookie, {
-        path: '/',
-        httpOnly: false,
-        sameSite: 'lax',
-        maxAge: 86400 * 30,
-      });
-    }
 
     return response;
   } catch (err: any) {

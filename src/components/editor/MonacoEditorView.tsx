@@ -80,6 +80,7 @@ export const MonacoEditorView: React.FC<MonacoEditorViewProps> = ({
   const onCleanLlmCodeRef = useRef(onCleanLlmCode);
   const internalEditorRef = useRef<any>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [editorTheme, setEditorTheme] = useState('vs-dark');
 
   useEffect(() => {
     onRunRef.current = onRun;
@@ -103,12 +104,27 @@ export const MonacoEditorView: React.FC<MonacoEditorViewProps> = ({
       editorRef.current = editor;
     }
     setIsMounted(true);
+    const palettes: Record<string, { background: string; foreground: string; line: string; selection: string }> = {
+      dark: { background: '#090d16', foreground: '#f1f5f9', line: '#111827', selection: '#1e3a5f' },
+      dim: { background: '#171a21', foreground: '#f1f2f4', line: '#20242d', selection: '#39404c' },
+      light: { background: '#f8fafc', foreground: '#172033', line: '#eef2f7', selection: '#bfdbfe' },
+    };
+    for (const [name, colors] of Object.entries(palettes)) {
+      monaco.editor.defineTheme(`cses-${name}`, {
+        base: name === 'light' ? 'vs' : 'vs-dark', inherit: true,
+        rules: [], colors: { 'editor.background': colors.background, 'editor.foreground': colors.foreground, 'editorLineNumber.foreground': name === 'light' ? '#64748b' : '#94a3b8', 'editor.lineHighlightBackground': colors.line, 'editor.selectionBackground': colors.selection, 'editorCursor.foreground': name === 'light' ? '#172033' : '#f1f5f9' },
+      });
+    }
+    const updateEditorTheme = () => setEditorTheme(`cses-${document.documentElement.dataset.theme || 'dark'}`);
+    updateEditorTheme();
+    const themeObserver = new MutationObserver(updateEditorTheme);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    editor.onDidDispose(() => themeObserver.disconnect());
 
     // Register editor actions for Command Palette & Context Menu
     editor.addAction({
       id: 'cses-run-code',
       label: 'Run Code against Sample Cases',
-      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
       contextMenuGroupId: '1_cses',
       contextMenuOrder: 1,
       run: () => {
@@ -119,7 +135,6 @@ export const MonacoEditorView: React.FC<MonacoEditorViewProps> = ({
     editor.addAction({
       id: 'cses-submit-solution',
       label: 'Submit Solution to Judge',
-      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Enter],
       contextMenuGroupId: '1_cses',
       contextMenuOrder: 2,
       run: () => {
@@ -130,7 +145,6 @@ export const MonacoEditorView: React.FC<MonacoEditorViewProps> = ({
     editor.addAction({
       id: 'cses-clean-llm-code',
       label: 'Clean LLM Markdown Code (ChatGPT / Claude / DeepSeek)',
-      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.KeyV],
       contextMenuGroupId: '1_cses',
       contextMenuOrder: 3,
       run: () => {
@@ -140,14 +154,6 @@ export const MonacoEditorView: React.FC<MonacoEditorViewProps> = ({
       },
     });
 
-    // Also bind direct command fallbacks
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
-      onRunRef.current();
-    });
-
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
-      onSubmitRef.current();
-    });
   };
 
   // Intercept paste event when user pastes Markdown fences from ChatGPT / Claude / DeepSeek
@@ -191,7 +197,7 @@ export const MonacoEditorView: React.FC<MonacoEditorViewProps> = ({
       <Editor
         height="100%"
         width="100%"
-        theme="vs-dark"
+        theme={editorTheme}
         language={monacoLanguage}
         value={code}
         onChange={(val) => onChange(val ?? '')}

@@ -15,16 +15,10 @@ import {
   overlayPendingStars,
 } from './storage';
 
-const DEFAULT_SUPABASE_URL = 'https://oxxctjyrtdgicbhmlhfy.supabase.co';
-const DEFAULT_SUPABASE_ANON_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94eGN0anlydGRnaWNiaG1saGZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM1NTEwNjQsImV4cCI6MjEwOTEyNzA2NH0.YlPXSsdZEG0-WlwKDi-YMsTC7Ov2HeL0hSQD9OYJ1lo';
+const sanitizeEnv = (val?: string) => (val || "").replace(/^\uFEFF/, "").trim();
 
-const sanitizeEnv = (val?: string) => (val || '').replace(/^\uFEFF/, '').trim();
-
-const supabaseUrl =
-  sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_URL) || DEFAULT_SUPABASE_URL;
-const supabaseAnonKey =
-  sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) || DEFAULT_SUPABASE_ANON_KEY;
+const supabaseUrl = sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_URL);
+const supabaseAnonKey = sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl &&
@@ -251,13 +245,14 @@ export async function syncUserDataToCloud(
 
   try {
     // 1. Upsert profile record
-    await client.from('profiles').upsert(
+    const profileResult = await client.from('profiles').upsert(
       {
         id: userId,
         updated_at: new Date().toISOString(),
       },
       { onConflict: 'id' }
     );
+    if (profileResult.error) throw profileResult.error;
 
     // 2. Batch upsert solved problems
     if (data.solvedIds && data.solvedIds.length > 0) {
@@ -266,9 +261,10 @@ export async function syncUserDataToCloud(
         problem_id: problemId,
         solved_at: new Date().toISOString(),
       }));
-      await client.from('user_solved').upsert(solvedPayload, {
+      const solvedResult = await client.from('user_solved').upsert(solvedPayload, {
         onConflict: 'user_id,problem_id',
       });
+      if (solvedResult.error) throw solvedResult.error;
     }
 
     // 3. Batch upsert recent drafts
@@ -289,9 +285,10 @@ export async function syncUserDataToCloud(
         };
       });
 
-      await client.from('user_drafts').upsert(draftsPayload, {
+      const draftResult = await client.from('user_drafts').upsert(draftsPayload, {
         onConflict: 'user_id,problem_id,language',
       });
+      if (draftResult.error) throw draftResult.error;
     }
 
     // 4. Batch upsert notes
@@ -308,9 +305,10 @@ export async function syncUserDataToCloud(
           }));
 
         if (notesPayload.length > 0) {
-          await client.from('user_notes').upsert(notesPayload, {
+          const noteResult = await client.from('user_notes').upsert(notesPayload, {
             onConflict: 'user_id,problem_id',
           });
+          if (noteResult.error) throw noteResult.error;
         }
       }
     }
@@ -328,9 +326,10 @@ export async function syncUserDataToCloud(
         created_at: new Date(sub.timestamp || Date.now()).toISOString(),
       }));
 
-      await client.from('user_submissions').upsert(submissionsPayload, {
+      const submissionResult = await client.from('user_submissions').upsert(submissionsPayload, {
         onConflict: 'id',
       });
+      if (submissionResult.error) throw submissionResult.error;
     }
 
     // Stars use per-problem desired-state operations so removes are durable too.

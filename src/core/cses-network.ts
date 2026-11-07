@@ -126,9 +126,6 @@ export function extractCsrfToken(html: string): string | null {
 }
 
 // Shared server-side CSES session for stats and profile scraping
-export const DEFAULT_CSES_BOT_NICK = 'csesbetter99';
-export const DEFAULT_CSES_BOT_PASS = 'SecretPass12345!';
-
 let cachedSharedCookie = '';
 let sharedCookieExpiresAt = 0;
 let inFlightSessionPromise: Promise<string> | null = null;
@@ -150,8 +147,12 @@ export async function getSharedCsesSession(forceRefresh = false): Promise<string
 
   inFlightSessionPromise = (async () => {
     try {
-      const botNick = process.env.CSES_BOT_NICK?.trim() || DEFAULT_CSES_BOT_NICK;
-      const botPass = process.env.CSES_BOT_PASS || DEFAULT_CSES_BOT_PASS;
+      const botNick = process.env.CSES_BOT_NICK?.trim();
+      const botPass = process.env.CSES_BOT_PASS;
+      if (!botNick || !botPass) {
+        console.warn('[CSES Shared Session] Shared CSES bot is not configured. Set CSES_BOT_NICK and CSES_BOT_PASS.');
+        return '';
+      }
 
       const loginPage = await csesRequest(`${CSES_BASE_URL}/login`);
       const csrfToken = extractCsrfToken(loginPage.body);

@@ -138,7 +138,7 @@ export const KaTeXRenderer: React.FC<KaTeXRendererProps> = ({
     return (
       <span
         className={cn(
-          'inline-flex items-center align-baseline text-slate-100 [&_.katex]:text-slate-100',
+          'inline-flex items-center align-baseline text-text-primary [&_.katex]:text-text-primary',
           className
         )}
         dangerouslySetInnerHTML={{ __html: renderedHtml }}
@@ -149,21 +149,21 @@ export const KaTeXRenderer: React.FC<KaTeXRendererProps> = ({
   return (
     <div
       className={cn(
-        'katex-content text-slate-300 text-sm leading-relaxed',
+        'katex-content text-text-secondary text-sm leading-relaxed',
         // Headings
-        '[&_h1]:text-xs [&_h1]:font-semibold [&_h1]:uppercase [&_h1]:tracking-wider [&_h1]:text-slate-400 [&_h1]:mt-6 [&_h1]:mb-2 [&_h1]:pb-1.5 [&_h1]:border-b [&_h1]:border-border-subtle',
-        '[&_h2]:text-xs [&_h2]:font-semibold [&_h2]:uppercase [&_h2]:tracking-wider [&_h2]:text-slate-400 [&_h2]:mt-5 [&_h2]:mb-2',
+        '[&_h1]:text-xs [&_h1]:font-semibold [&_h1]:uppercase [&_h1]:tracking-wider [&_h1]:text-text-muted [&_h1]:mt-6 [&_h1]:mb-2 [&_h1]:pb-1.5 [&_h1]:border-b [&_h1]:border-border-subtle',
+        '[&_h2]:text-xs [&_h2]:font-semibold [&_h2]:uppercase [&_h2]:tracking-wider [&_h2]:text-text-muted [&_h2]:mt-5 [&_h2]:mb-2',
         // Paragraphs & Lists
-        '[&_p]:text-slate-300 [&_p]:leading-relaxed [&_p]:mb-3 [&_p]:text-sm',
-        '[&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_ul]:mb-3 [&_ul]:text-slate-300 [&_ul]:text-sm',
-        '[&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1 [&_ol]:mb-3 [&_ol]:text-slate-300 [&_ol]:text-sm',
-        '[&_li]:text-slate-300',
+        '[&_p]:text-text-secondary [&_p]:leading-relaxed [&_p]:mb-3 [&_p]:text-sm',
+        '[&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_ul]:mb-3 [&_ul]:text-text-secondary [&_ul]:text-sm',
+        '[&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1 [&_ol]:mb-3 [&_ol]:text-text-secondary [&_ol]:text-sm',
+        '[&_li]:text-text-secondary',
         // Pre & Code
-        '[&_pre]:bg-surface-0 [&_pre]:border [&_pre]:border-border-subtle [&_pre]:rounded-md [&_pre]:p-3 [&_pre]:font-mono [&_pre]:text-xs [&_pre]:text-slate-200 [&_pre]:overflow-x-auto [&_pre]:my-2.5',
-        '[&_code]:bg-surface-2 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-xs [&_code]:font-mono [&_code]:text-slate-200',
+        '[&_pre]:bg-surface-0 [&_pre]:border [&_pre]:border-border-subtle [&_pre]:rounded-md [&_pre]:p-3 [&_pre]:font-mono [&_pre]:text-xs [&_pre]:text-text-primary [&_pre]:overflow-x-auto [&_pre]:my-2.5',
+        '[&_code]:bg-surface-2 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-xs [&_code]:font-mono [&_code]:text-text-primary',
         // KaTeX specific alignment
         '[&_.katex-display]:my-3 [&_.katex-display]:py-1.5 [&_.katex-display]:overflow-x-auto [&_.katex-display]:text-center',
-        '[&_.katex]:text-slate-100',
+        '[&_.katex]:text-text-primary',
         className
       )}
       dangerouslySetInnerHTML={{ __html: renderedHtml }}

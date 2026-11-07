@@ -16,7 +16,6 @@ import {
 } from 'lucide-react';
 import {
   getStoredCsesCredentials,
-  saveStoredCsesCredentials,
   clearStoredCsesCredentials,
   syncCsesAccount,
 } from '@/core/cses-client';
@@ -36,7 +35,7 @@ export function CsesAccountModal({
   const [account, setAccount] = useState<StoredCsesAccount | null>(null);
   const [nick, setNick] = useState('');
   const [pass, setPass] = useState('');
-  const [remember, setRemember] = useState(true);
+  const [remember, setRemember] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -48,7 +47,10 @@ export function CsesAccountModal({
       setAccount(stored);
       if (stored) {
         setNick(stored.nick);
-        setPass(stored.pass || '');
+        setPass('');
+        setRemember(stored.remember === true);
+      } else {
+        setRemember(false);
       }
       setErrorMessage(null);
       setSuccessMessage(null);
@@ -72,6 +74,7 @@ export function CsesAccountModal({
       const res = await syncCsesAccount({
         nick: nick.trim(),
         pass: pass.trim(),
+        remember,
       });
 
       if (!res.success) {
@@ -93,12 +96,14 @@ export function CsesAccountModal({
     } catch (err: any) {
       setErrorMessage(err?.message || 'Network error connecting to CSES');
     } finally {
+      setPass('');
       setIsLoading(false);
     }
   };
 
   const handleDisconnect = () => {
     clearStoredCsesCredentials();
+    void fetch('/api/cses/disconnect', { method: 'POST' }).catch(() => {});
     setAccount(null);
     setNick('');
     setPass('');
@@ -202,7 +207,7 @@ export function CsesAccountModal({
                 <ul className="space-y-1.5 text-zinc-400 pl-4 list-disc text-[11px]">
                   <li>Live CSES submission queues unlocked for all problems you solved.</li>
                   <li>One-click direct submissions to the official judge.</li>
-                  <li>Cross-device synchronization of all completed problems.</li>
+                  <li>CSES session tokens stay in this browser; cloud progress sync is managed by your app account.</li>
                 </ul>
               </div>
 
@@ -213,7 +218,7 @@ export function CsesAccountModal({
                   className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-red-400 transition-colors"
                 >
                   <LogOut className="w-3.5 h-3.5" />
-                  <span>Disconnect Account</span>
+                  <span>Disconnect / Reconnect</span>
                 </button>
 
                 <button
@@ -266,7 +271,7 @@ export function CsesAccountModal({
                     className="w-3.5 h-3.5 rounded border-zinc-700 bg-zinc-800 text-amber-500 focus:ring-0"
                   />
                   <label htmlFor="rememberCses" className="text-xs text-zinc-400 select-none">
-                    Remember credentials for automatic CSES sync and submissions
+                    Remember this CSES session on this device (optional)
                   </label>
                 </div>
               </div>

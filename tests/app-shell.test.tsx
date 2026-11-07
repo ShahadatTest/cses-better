@@ -110,7 +110,7 @@ describe('Header Component', () => {
 
     // Search trigger
     expect(html).toContain('Ctrl+K');
-    expect(html).toContain('Search 400 problems');
+    expect(html).toContain('>Search</span>');
   });
 
   it('renders active zen mode button state when zenMode is true', () => {
@@ -188,6 +188,7 @@ describe('SettingsModal Component', () => {
         onClose={() => {}}
         settings={DEFAULT_APP_SETTINGS}
         onUpdateSettings={() => {}}
+        initialTab="compiler"
       />
     );
 

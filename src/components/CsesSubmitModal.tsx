@@ -75,7 +75,7 @@ export function CsesSubmitModal({
 }: CsesSubmitModalProps) {
   const [nick, setNick] = useState('');
   const [pass, setPass] = useState('');
-  const [remember, setRemember] = useState(true);
+  const [remember, setRemember] = useState(false);
   const [useBot, setUseBot] = useState(false);
 
   const [stage, setStage] = useState<SubmissionStage>('IDLE');
@@ -92,8 +92,8 @@ export function CsesSubmitModal({
       const stored = getStoredCsesCredentials();
       if (stored) {
         setNick(stored.nick);
-        setPass(stored.pass || '');
-        setRemember(true);
+        setPass('');
+        setRemember(stored.remember === true);
       }
       setStage('IDLE');
       setErrorMessage(null);
@@ -117,8 +117,11 @@ export function CsesSubmitModal({
   if (!isOpen) return null;
 
   const handleSubmitToCses = async () => {
-    if (!useBot && (!nick.trim() || !pass)) {
-      setErrorMessage('Please enter both your CSES nickname and password, or use the Shared Bot.');
+    const storedCsesAccount = getStoredCsesCredentials();
+    const sameStoredAccount = storedCsesAccount?.nick.trim().toLocaleLowerCase() === nick.trim().toLocaleLowerCase();
+    const sessionCookie = !pass && sameStoredAccount ? storedCsesAccount?.sessionCookie : undefined;
+    if (!useBot && (!nick.trim() || (!pass && !sessionCookie))) {
+      setErrorMessage('Enter your CSES nickname and password, or connect a remembered CSES session.');
       return;
     }
 
@@ -126,25 +129,19 @@ export function CsesSubmitModal({
     setStage('AUTHENTICATING');
     const generation = ++requestGeneration.current;
 
-    if (!useBot) {
-      // Save or clear credentials
-      saveStoredCsesCredentials({
-        nick: nick.trim(),
-        pass,
-        remember,
-      });
-    }
-
     try {
       setStage('TRANSMITTING');
       const submitRes = await submitToCses({
         nick: useBot ? undefined : nick.trim(),
+        userId: useBot || !sameStoredAccount ? undefined : storedCsesAccount?.userId,
         pass: useBot ? undefined : pass,
+        sessionCookie: useBot ? undefined : sessionCookie,
         problemId,
         language,
         code,
         useDefaultBot: useBot,
       });
+      setPass('');
       if (generation !== requestGeneration.current) return;
 
       if (!submitRes.success || !submitRes.submissionId) {
@@ -157,7 +154,6 @@ export function CsesSubmitModal({
         saveStoredCsesCredentials({
           nick: nick.trim(),
           userId: submitRes.owner?.userId,
-          pass,
           sessionCookie: submitRes.sessionCookie,
           remember,
         });
@@ -167,6 +163,7 @@ export function CsesSubmitModal({
       setSubmissionOwner(submitRes.owner);
       await checkCsesResult(submitRes.submissionId, submitRes.sessionCookie, submitRes.owner);
     } catch (err: any) {
+      setPass('');
       if (generation !== requestGeneration.current) return;
       setStage('ERROR');
       setErrorMessage(err?.message || 'Failed to submit to CSES');
@@ -341,7 +338,7 @@ export function CsesSubmitModal({
                 <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-xs text-emerald-300 leading-relaxed space-y-1">
                   <p className="font-semibold text-emerald-400">Submitting with Shared Bot</p>
                   <p>
-                    Your solution will be judged directly by CSES.fi under the verified bot account <code>csesbetter99</code> (User #520654). No personal CSES credentials required.
+                    Your solution will be submitted to the official CSES judge using the shared bot account, when the server operator has configured it.
                   </p>
                 </div>
               ) : (
@@ -390,7 +387,7 @@ export function CsesSubmitModal({
                       htmlFor="rememberCreds"
                       className="text-xs text-zinc-400 select-none cursor-pointer"
                     >
-                      Remember credentials in this browser
+                      Remember this CSES session in this browser (optional)
                     </label>
                   </div>
                 </div>

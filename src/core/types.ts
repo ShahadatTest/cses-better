@@ -173,6 +173,9 @@ export interface AppSettings {
   defaultEditor: 'monaco' | 'inbuilt';
   fontSize: number;
   tabSize: 2 | 4;
+  theme: 'dark' | 'dim' | 'light' | 'system';
+  accent: 'blue' | 'teal' | 'green' | 'orange' | 'pink';
+  shortcutOverrides?: Record<string, string | null>;
 }
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
@@ -182,6 +185,8 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
   defaultEditor: 'monaco',
   fontSize: 14,
   tabSize: 4,
+  theme: 'dark',
+  accent: 'blue',
 };
 
 // --- Multi-Tenant Public User & Auth ---
@@ -208,7 +213,6 @@ export interface CsesCredentials {
 
 export interface StoredCsesAccount {
   nick: string;
-  pass?: string;
   userId?: string;
   sessionCookie?: string;
   lastSyncedAt?: number;
@@ -232,7 +236,9 @@ export interface CsesSubmissionSummary {
 
 export interface CsesSubmitPayload {
   nick?: string;
+  userId?: string;
   pass?: string;
+  sessionCookie?: string;
   problemId: string;
   language: LanguageId;
   code: string;

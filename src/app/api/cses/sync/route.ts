@@ -130,15 +130,6 @@ export async function POST(request: NextRequest) {
       syncedAt: Date.now(),
     });
 
-    if (sessionCookie) {
-      response.cookies.set('cses_session', sessionCookie, {
-        path: '/',
-        httpOnly: false,
-        sameSite: 'lax',
-        maxAge: 86400 * 30,
-      });
-    }
-
     return response;
   } catch (err: any) {
     console.error('[CSES Sync] Error:', err);

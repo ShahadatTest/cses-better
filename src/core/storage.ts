@@ -9,6 +9,7 @@ import {
   ProblemList,
 } from './types';
 import { clearOfficialStreakStorage, listOfficialStreaks, mergeImportedOfficialStreaks } from './official-streak-storage';
+import { COMMAND_CATALOG, validateShortcut, type CommandId } from './commands';
 
 const DRAFT_PREFIX = 'cses_draft_';
 const NOTE_PREFIX = 'cses_notes_';
@@ -686,10 +687,14 @@ export function getSettings(): AppSettings {
   if (!raw) return { ...DEFAULT_APP_SETTINGS };
   try {
     const parsed = JSON.parse(raw);
+    const parsedSettings = parsed && typeof parsed === 'object' ? parsed : {};
     return {
       ...DEFAULT_APP_SETTINGS,
-      ...parsed,
-      widgetKey: parsed.widgetKey || DEFAULT_APP_SETTINGS.widgetKey,
+      ...parsedSettings,
+      theme: ['dark', 'dim', 'light', 'system'].includes(parsedSettings.theme) ? parsedSettings.theme : DEFAULT_APP_SETTINGS.theme,
+      accent: ['blue', 'teal', 'green', 'orange', 'pink'].includes(parsedSettings.accent) ? parsedSettings.accent : DEFAULT_APP_SETTINGS.accent,
+      shortcutOverrides: validateShortcutOverrides(parsedSettings.shortcutOverrides),
+      widgetKey: parsedSettings.widgetKey || DEFAULT_APP_SETTINGS.widgetKey,
     };
   } catch {
     return { ...DEFAULT_APP_SETTINGS };
@@ -700,7 +705,31 @@ export function getSettings(): AppSettings {
  * Persists app settings.
  */
 export function saveSettings(settings: AppSettings): void {
-  setItem(SETTINGS_KEY, JSON.stringify(settings));
+  const current = getSettings();
+  const next: AppSettings = {
+    ...current,
+    ...settings,
+    theme: ['dark', 'dim', 'light', 'system'].includes(settings.theme) ? settings.theme : current.theme,
+    accent: ['blue', 'teal', 'green', 'orange', 'pink'].includes(settings.accent) ? settings.accent : current.accent,
+    shortcutOverrides: validateShortcutOverrides(settings.shortcutOverrides ?? current.shortcutOverrides),
+  };
+  setItem(SETTINGS_KEY, JSON.stringify(next));
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event('cses-settings-changed'));
+}
+
+function validateShortcutOverrides(value: unknown): Record<string, string | null> | undefined {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
+  const entries = Object.entries(value as Record<string, unknown>);
+  const known = new Set<string>(COMMAND_CATALOG.map(command => command.id));
+  const sanitized: Record<string, string | null> = {};
+  for (const [key, binding] of entries) if (known.has(key) && binding === null) sanitized[key] = null;
+  for (const [key, binding] of entries) {
+    if (!known.has(key) || (binding !== null && typeof binding !== 'string')) continue;
+    if (binding === null) continue;
+    const validation = validateShortcut(binding, key as CommandId, sanitized);
+    if (validation.valid && validation.normalized) sanitized[key] = validation.normalized;
+  }
+  return sanitized;
 }
 
 /**

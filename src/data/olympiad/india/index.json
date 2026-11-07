@@ -16,7 +16,7 @@
     "visual": {
       "kind": "grid-path",
       "title": "Visualize The Nilgiri Tahr",
-      "caption": "Reachable rocks form a grid graph; connect orthogonal neighbors only when their heights differ by at most one. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Reachable rocks form a grid graph; connect orthogonal neighbors only when their heights differ by at most one.",
       "steps": [
         {
           "label": "Encode the task",
@@ -443,7 +443,7 @@
     "visual": {
       "kind": "audience-overlap",
       "title": "Find the largest audience from entry and exit intervals",
-      "caption": "Each record is one interval during which a person is in the hall. The number of overlapping intervals is the audience size.",
+      "caption": "Each entry and exit pair is one audience interval; the largest overlap is the maximum audience. Interval endpoints in the diagram are schematic, not task input values.",
       "steps": [
         {
           "label": "Represent each record",
@@ -690,7 +690,7 @@
     "visual": {
       "kind": "two-agent-grid",
       "title": "Visualize Twin robots",
-      "caption": "Track the two robot positions together as one state; transitions advance both under the movement constraints. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Track the two robot positions together as one state; transitions advance both under the movement constraints.",
       "steps": [
         {
           "label": "Encode the task",
@@ -744,7 +744,7 @@
     "visual": {
       "kind": "coordinate-cross",
       "title": "Visualize Counting triangles",
-      "caption": "For each point as a right-angle corner, pair other points sharing its x and y coordinates. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "For each point as a right-angle corner, pair other points sharing its x and y coordinates.",
       "steps": [
         {
           "label": "Encode the task",
@@ -894,38 +894,38 @@
     "visual": {
       "kind": "cyclic-table",
       "title": "Rotate one row against a fixed row",
-      "caption": "Each shift pairs fixed column values with a cyclically shifted sequence and reports the largest column sum. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "For each cyclic shift of the second row, the table score is the maximum column sum. Output one score for every shift.",
       "steps": [
         {
-          "label": "Rotate the row",
-          "detail": "Treat the second row as circular so every shift is one alignment."
+          "label": "Form each rotation",
+          "detail": "The fixed first row is paired with each of the N cyclic rotations of the second row."
         },
         {
-          "label": "Score each shift",
-          "detail": "For each alignment, add paired cells and take the maximum column total."
+          "label": "Score that table",
+          "detail": "For one rotation, add the two values in each column and take the largest column sum."
         },
         {
-          "label": "Slide the alignment",
-          "detail": "Slide the alignment by one position and update the affected pairs."
+          "label": "Report all rotations",
+          "detail": "Output the score for every rotation in its prescribed order; do not maximize across rotations."
         }
       ],
       "diagram": {
         "type": "table",
         "columns": [
-          "Row A",
-          "Row B (cyclic shift)",
-          "Column total"
+          "Rotation k",
+          "Column sums",
+          "Output"
         ],
         "rows": [
           [
-            "a_i",
-            "b_(i+s)",
-            "a_i+b_(i+s)"
+            "k = 1..N",
+            "A[i] + B[(i+k-1) mod N]",
+            "max column sum for this k"
           ],
           [
-            "fixed",
-            "rotate s",
-            "maximize total"
+            "all N rotations",
+            "one score per rotation",
+            "output all N scores"
           ]
         ]
       }
@@ -990,19 +990,19 @@
     "visual": {
       "kind": "timeline",
       "title": "Match a contest to teleport times",
-      "caption": "A feasible trip uses one inbound time no later than its start and one outbound time no earlier than its finish. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "caption": "Choose one contest, one available inbound V time, and one outbound W time. Minimize the elapsed time t2 - t1 + 1 while arriving no later than the contest start and leaving no earlier than its end. Diagram positions are schematic.",
       "steps": [
         {
-          "label": "Find feasible times",
-          "detail": "Sort each time list once so the nearest feasible V and W times are easy to locate."
+          "label": "Choose a contest",
+          "detail": "For a contest [S,E], arrival at the centre must be at or before S and departure must be at or after E."
         },
         {
-          "label": "Pair the contest",
-          "detail": "For every contest, pair its start with the latest inbound time that can reach it and its end with the earliest outbound time after it."
+          "label": "Choose wormhole times",
+          "detail": "Use an inbound V time t1 <= S and an outbound W time t2 >= E."
         },
         {
-          "label": "Minimize duration",
-          "detail": "Compare trip durations and retain the shortest feasible choice."
+          "label": "Minimize time away",
+          "detail": "Minimize t2 - t1 + 1 over all feasible contest and wormhole choices."
         }
       ],
       "diagram": {
@@ -1043,20 +1043,20 @@
     ],
     "visual": {
       "kind": "nested-intervals",
-      "title": "Keep bracket types nested",
-      "caption": "Each opening bracket starts an interval; only the matching type can close the top interval.",
+      "title": "Measure alternating depth and typed matched spans",
+      "caption": "The sequence uses () and []; nested type changes determine alternating depth, while each bracket type has its own maximum matched-span length.",
       "steps": [
         {
-          "label": "Push opener",
-          "detail": "Push each opening bracket together with its type and position."
+          "label": "Match typed brackets",
+          "detail": "Push each opening bracket with its type and position; a close must match the stack top."
         },
         {
-          "label": "Match type",
-          "detail": "A closing bracket must match the stack top, so crossing spans are rejected."
+          "label": "Track alternating depth",
+          "detail": "Along nested pairs, count the maximum number of switches between bracket types."
         },
         {
-          "label": "Measure spans",
-          "detail": "Track nesting and each matched intervalâ€™s length while scanning."
+          "label": "Track both span maxima",
+          "detail": "Record the largest matched () span and largest matched [] span separately."
         }
       ],
       "diagram": {
@@ -1277,7 +1277,7 @@
     "visual": {
       "kind": "sorted-pairs",
       "title": "Count pair differences after sorting",
-      "caption": "Sorting places strengths in order, letting each valueâ€™s total distance to earlier teams be accumulated without listing every match. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "For sorted team strengths, each pair contributes the difference between its larger and smaller strength. The table shows the aggregated pair contribution.",
       "steps": [
         {
           "label": "Sort values",
@@ -1295,17 +1295,17 @@
       "diagram": {
         "type": "table",
         "columns": [
-          "Sorted item",
-          "Contribution"
+          "Sorted strengths",
+          "Pair contribution"
         ],
         "rows": [
           [
-            "x_j",
-            "j*x_j - sum(x_i for i<j)"
+            "x1 <= x2 <= ... <= xN",
+            "xj - xi for each i < j"
           ],
           [
-            "all j",
-            "sum contributions"
+            "all pairs",
+            "sum over i < j of (xj - xi)"
           ]
         ]
       }
@@ -1328,7 +1328,7 @@
     "visual": {
       "kind": "grid-path",
       "title": "Build a safe monotone path",
-      "caption": "A charm protects cells in a Manhattan-radius diamond; legal paths move only right or down and collect cell berries. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "A charm protects cells in a Manhattan-radius diamond; legal paths move only right or down and collect cell berries.",
       "steps": [
         {
           "label": "Mark safe cells",
@@ -1424,7 +1424,7 @@
     "visual": {
       "kind": "time-grid",
       "title": "Treat time as part of each grid state",
-      "caption": "Find the least time to reach the ship while moving right/down and avoiding blasters, their cells, and time-dependent pulses. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Find the least time to reach the ship while moving right/down and avoiding blasters, their cells, and time-dependent pulses.",
       "steps": [
         {
           "label": "Track time and position",
@@ -1478,7 +1478,7 @@
     "visual": {
       "kind": "direction-run-grid",
       "title": "Add direction and run length to each intersection",
-      "caption": "A move continues straight only until the run limit; obstacles remove intersections from the route. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "A move continues straight only until the run limit; obstacles remove intersections from the route.",
       "steps": [
         {
           "label": "Track direction",
@@ -1532,7 +1532,7 @@
     "visual": {
       "kind": "distance-matrix",
       "title": "Find the most expensive cheapest route",
-      "caption": "For every city pair, compare the cost of its cheapest route; choose the pair whose shortest distance is largest. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "For every city pair, compare the cost of its cheapest route; choose the pair whose shortest distance is largest.",
       "steps": [
         {
           "label": "Compute shortest routes",
@@ -1586,7 +1586,7 @@
     "visual": {
       "kind": "crane-state",
       "title": "Simulate the crane state one command at a time",
-      "caption": "The crane has a current stack position and carries either zero or one box; ignored commands leave state unchanged. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "The crane has a current stack position and carries either zero or one box; ignored commands leave state unchanged.",
       "steps": [
         {
           "label": "Initialize crane",
@@ -1685,7 +1685,7 @@
     "visual": {
       "kind": "price-sweep",
       "title": "Revenue changes only at customer budgets",
-      "caption": "At price p, every customer with budget at least p buys, so revenue is p times the number of eligible budgets. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "At price p, customers with budget at least p buy the app. Revenue is p times that eligible-customer count.",
       "steps": [
         {
           "label": "Sort budgets",
@@ -1703,20 +1703,20 @@
       "diagram": {
         "type": "table",
         "columns": [
-          "Sorted budget",
-          "Candidate price",
+          "Candidate price p",
+          "Eligible customers",
           "Revenue"
         ],
         "rows": [
           [
-            "b_i",
-            "p = b_i",
-            "p * (N-i)"
+            "p",
+            "count(budget >= p)",
+            "p * count(budget >= p)"
           ],
           [
-            "all i",
-            "arg max p",
-            "maximum"
+            "all candidate p",
+            "customers who can afford p",
+            "maximum revenue"
           ]
         ]
       }
@@ -1823,19 +1823,19 @@
     "visual": {
       "kind": "periodic-word",
       "title": "A periodic word repeats a shorter root",
-      "caption": "A length-N binary string is periodic if it is formed by repeating a proper divisor-length block at least twice.",
+      "caption": "Count binary strings of length N that cannot be formed by repeating a shorter block two or more times, modulo M.",
       "steps": [
         {
-          "label": "List root lengths",
-          "detail": "List proper divisors of N as possible root lengths."
+          "label": "Count all strings",
+          "detail": "There are 2^N binary strings of length N."
         },
         {
-          "label": "Remove repeated words",
-          "detail": "Count words whose minimal repeating root is each divisor rather than counting the same word repeatedly."
+          "label": "Identify periodic strings",
+          "detail": "A periodic string repeats a shorter block whose length divides N. Count such strings without double-counting strings with multiple periods."
         },
         {
-          "label": "Count primitive strings",
-          "detail": "Use divisor/MÃ¶bius-style inclusion-exclusion and reduce modulo M."
+          "label": "Subtract and reduce",
+          "detail": "Subtract the periodic-string count from 2^N, then report the result modulo M."
         }
       ],
       "diagram": {
@@ -1949,7 +1949,7 @@
     "visual": {
       "kind": "interval-hitting",
       "title": "Place a point at the earliest finishing interval",
-      "caption": "A chosen integer covers an interval when it lies inside it; choosing the right endpoint covers as many upcoming intervals as possible. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "caption": "A chosen integer covers an interval when it lies inside it; choosing the right endpoint covers as many upcoming intervals as possible.",
       "steps": [
         {
           "label": "Sort by right edge",
@@ -2003,7 +2003,7 @@
     "visual": {
       "kind": "histogram-rectangle",
       "title": "Each point caps the rectangle height to its left",
-      "caption": "For a fixed horizontal span, the rectangleâ€™s height is limited by the lowest point inside that span. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "For a fixed horizontal span, the rectangleâ€™s height is limited by the lowest point inside that span.",
       "steps": [
         {
           "label": "Sweep point barriers",
@@ -2161,7 +2161,7 @@
     "visual": {
       "kind": "two-shelves",
       "title": "Only the largest books determine the skew",
-      "caption": "After up to K exchanges, minimize the sum of the two shelf maximum heights while keeping N books on each shelf. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "After up to K exchanges, minimize the sum of the two shelf maximum heights while keeping N books on each shelf.",
       "steps": [
         {
           "label": "Locate controlling books",
@@ -2210,34 +2210,27 @@
     "visual": {
       "kind": "arithmetic-progression",
       "title": "Pick a longest equally spaced set of lengths",
-      "caption": "The installation uses a subset whose sorted lengths have a constant difference. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Choose a subset of distinct shoot lengths that can be ordered with one constant positive difference.",
       "steps": [
         {
-          "label": "Count lengths",
-          "detail": "Count available shoots at each length."
+          "label": "Use distinct lengths",
+          "detail": "Every shoot length in the input is different."
         },
         {
-          "label": "Extend each step",
-          "detail": "For each start length and positive step, extend while the next length exists."
+          "label": "Choose a constant step",
+          "detail": "An installation is an increasing arithmetic progression from the available lengths."
         },
         {
-          "label": "Keep the longest run",
-          "detail": "Keep the longest progression, accounting for repeated values only when allowed by the set."
+          "label": "Maximize its size",
+          "detail": "Find the largest subset that forms such a progression."
         }
       ],
       "diagram": {
-        "type": "table",
-        "columns": [
-          "Progression",
-          "Common difference",
-          "Count"
-        ],
-        "rows": [
-          [
-            "x1, x2, ..., xn",
-            "x(i+1) - x(i)",
-            "frequency by difference"
-          ]
+        "type": "sequence",
+        "items": [
+          "x1 < x2 < ... < xq",
+          "x(i+1) - x(i) = d",
+          "maximize q"
         ]
       }
     }
@@ -2259,7 +2252,7 @@
     "visual": {
       "kind": "component-perimeter",
       "title": "Fence only the exposed sides of potato patches",
-      "caption": "Cultivated four-neighbor components are patches; report the perimeter of the largest patch. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Four-neighbor connected potato fields form patches. Count exposed sides for each patch and report the largest perimeter.",
       "steps": [
         {
           "label": "Find each patch",
@@ -2279,17 +2272,17 @@
         "rows": [
           [
             ".",
-            "field",
+            "P",
             "."
           ],
           [
-            "field",
-            "field",
+            "P",
+            "P",
             "."
           ],
           [
             ".",
-            "field",
+            "P",
             "."
           ]
         ]
@@ -2312,27 +2305,39 @@
     "visual": {
       "kind": "training-states",
       "title": "Each city offers training or a battle",
-      "caption": "Training changes strength; battle converts current strength into experience using that cityâ€™s value.",
+      "caption": "In each city, Ash chooses training or a battle. Training raises strength by (sum of its decimal digits)^3; battling adds current strength times that city?s E[i] to experience.",
       "steps": [
         {
-          "label": "Track strength",
-          "detail": "Maintain the best experience reachable for each relevant strength."
+          "label": "Track strength and experience",
+          "detail": "State values are Pikachu strength S and accumulated experience XV."
         },
         {
-          "label": "Choose train or battle",
-          "detail": "At a city, branch into the training transition or the battle transition."
+          "label": "Choose one action per city",
+          "detail": "Training changes S to S + (digitSum(S))^3; battling changes XV to XV + S*E[i]."
         },
         {
-          "label": "Maximize experience",
-          "detail": "After all cities, take the greatest experience value."
+          "label": "Maximize final experience",
+          "detail": "Process cities in order and choose actions giving the largest XV after city N."
         }
       ],
       "diagram": {
-        "type": "sequence",
-        "items": [
-          "city i, strength s",
-          "train: f(s)",
-          "work: experience + s * E_i"
+        "type": "table",
+        "columns": [
+          "Action in city i",
+          "Strength after action",
+          "Experience change"
+        ],
+        "rows": [
+          [
+            "train",
+            "S + digitSum(S)^3",
+            "0"
+          ],
+          [
+            "battle",
+            "S",
+            "S * E[i]"
+          ]
         ]
       }
     }
@@ -2354,7 +2359,7 @@
     "visual": {
       "kind": "four-sum-pairs",
       "title": "Pair sums reduce four choices to two lookups",
-      "caption": "Group two indices into a left pair sum and the other two into a complementary right pair sum. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Group two indices into a left pair sum and the other two into a complementary right pair sum.",
       "steps": [
         {
           "label": "Build pair sums",
@@ -2372,15 +2377,20 @@
       "diagram": {
         "type": "table",
         "columns": [
-          "Pair one",
-          "Pair two",
-          "Target"
+          "Indices",
+          "Pair sums",
+          "Match condition"
         ],
         "rows": [
           [
-            "S_i + S_j",
-            "S_k + S_l",
-            "T"
+            "i < j",
+            "S[i] + S[j]",
+            "(S[i]+S[j]) + (S[k]+S[l]) = T"
+          ],
+          [
+            "k < l",
+            "S[k] + S[l]",
+            "quadruple indices satisfy the statement constraints"
           ]
         ]
       }
@@ -2403,7 +2413,7 @@
     "visual": {
       "kind": "ray-grid",
       "title": "A row scan needs only the next stopping wall",
-      "caption": "A ray crosses empty cells, stops at a black cell, or stops on its second white cell. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Each empty cell launches a rightward ray. It stops on a black cell or at the boundary; absent a black cell, it can pass one white cell and stops on the second. Sum inclusive travel lengths.",
       "steps": [
         {
           "label": "Scan each row",
@@ -2431,13 +2441,14 @@
           ],
           [
             "ray ->",
-            "",
-            "",
-            "",
-            "",
-            "stop at W"
+            "cross W1",
+            "...",
+            "cross W2",
+            "stop",
+            ""
           ]
-        ]
+        ],
+        "caption": "A ray crosses at most one W and stops at the second W unless a B stops it earlier."
       }
     }
   },
@@ -2453,59 +2464,34 @@
     "tags": [
       "graphs",
       "connected-components",
-      "game"
+      "game",
+      "greedy"
     ],
     "visual": {
-      "kind": "component-selection",
-      "title": "A road trip consumes an entire connected component",
-      "caption": "Each trip visits one whole connected component; maximize museums over exactly K months, returning âˆ’1 if fewer than K components exist. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "kind": "alternating-component-picks",
+      "title": "Alternate between largest and smallest unvisited components",
+      "caption": "A road trip visits an entire connected component. Lavanya chooses a component with the most museums; Nikhil chooses one with the fewest. They alternate for K months.",
       "steps": [
         {
-          "label": "Find road components",
-          "detail": "Compute each connected component and sum its city museum counts."
+          "label": "Build component totals",
+          "detail": "Find connected road components and sum the museums in each component."
         },
         {
-          "label": "Choose one new component per month",
-          "detail": "A trip visits all cities in its component, which cannot be selected again."
+          "label": "Alternate choices",
+          "detail": "Lavanya picks the unvisited component with the most museums; Nikhil picks the unvisited component with the fewest."
         },
         {
-          "label": "Maximize K-month total",
-          "detail": "Choose K component totals with the greatest sum; if fewer than K components exist, output âˆ’1."
+          "label": "Complete K trips",
+          "detail": "Add the selected totals in turn. If fewer than K components remain, output -1."
         }
       ],
       "diagram": {
-        "type": "graph",
-        "nodes": [
-          {
-            "id": "A",
-            "label": "Road component A",
-            "x": 15,
-            "y": 50
-          },
-          {
-            "id": "B",
-            "label": "Road component B",
-            "x": 50,
-            "y": 20
-          },
-          {
-            "id": "C",
-            "label": "Road component C",
-            "x": 85,
-            "y": 50
-          }
-        ],
-        "edges": [
-          {
-            "from": "A",
-            "to": "B",
-            "label": "road"
-          },
-          {
-            "from": "B",
-            "to": "C",
-            "label": "road"
-          }
+        "type": "sequence",
+        "items": [
+          "component totals: c1 <= c2 <= ... <= cN",
+          "Lavanya: take largest",
+          "Nikhil: take smallest",
+          "alternate for K trips"
         ]
       }
     }
@@ -2527,7 +2513,7 @@
     "visual": {
       "kind": "two-grid-paths",
       "title": "Keep two nonintersecting paths around the scored region",
-      "caption": "Each path moves upward and at most K times diagonally left; the score is the cells between the paths. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Each path moves upward and at most K times diagonally left; the score is the cells between the paths.",
       "steps": [
         {
           "label": "Track both paths",
@@ -2581,7 +2567,7 @@
     "visual": {
       "kind": "interval-overlap",
       "title": "Shared cakes are interval overlaps",
-      "caption": "Two children conflict exactly when their closed intervals share a cake; one allowed edit may relocate one equal-length interval. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "caption": "Two children conflict exactly when their closed intervals share a cake; one allowed edit may relocate one equal-length interval.",
       "steps": [
         {
           "label": "Detect conflicts",
@@ -2630,7 +2616,7 @@
     "visual": {
       "kind": "substring-window",
       "title": "Charge each good substring to the windows it touches",
-      "caption": "Good substrings start at X, end at Z, and have length divisible by three; a K-windowâ€™s importance counts those intersecting it. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "caption": "Good substrings start at X, end at Z, and have length divisible by three; a K-windowâ€™s importance counts those intersecting it.",
       "steps": [
         {
           "label": "Find good substrings",
@@ -2679,7 +2665,7 @@
     "visual": {
       "kind": "job-timeline",
       "title": "Public jobs must cover their interrupt instants",
-      "caption": "Each public job occupies one continuous interval containing its assigned signal time; classified jobs must retain their order. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "caption": "Each public job occupies one continuous interval containing its assigned signal time; classified jobs must retain their order.",
       "steps": [
         {
           "label": "Place signal jobs",
@@ -2727,33 +2713,56 @@
     "statementAvailability": "official-link",
     "tags": [
       "arrays",
-      "binary-search",
-      "subsequence"
+      "nonincreasing-values",
+      "index-distance",
+      "optimization"
     ],
     "visual": {
-      "kind": "spaced-subsequence",
-      "title": "Test whether L values can stay far apart and nonincreasing",
-      "caption": "A valid index sequence has nonincreasing values; its cost is the smallest adjacent index gap.",
+      "kind": "index-sequence-distance",
+      "title": "Maximize the minimum adjacent index gap",
+      "caption": "Choose L indices in any order, allowing an index to repeat, so their A-values are nonincreasing. The cost is the minimum absolute gap between adjacent indices.",
       "steps": [
         {
-          "label": "Test a candidate gap",
-          "detail": "Binary-search a candidate minimum gap d."
+          "label": "Choose an index sequence",
+          "detail": "A sequence has length L; indices may repeat and have no required ordering."
         },
         {
-          "label": "Extend a value chain",
-          "detail": "Check whether a length-L nonincreasing value chain can be chosen with consecutive indices at least d apart."
+          "label": "Enforce value order",
+          "detail": "The selected values must satisfy A[i1] >= A[i2] >= ... >= A[iL]."
         },
         {
-          "label": "Maximize the gap",
-          "detail": "The largest feasible d is the answer."
+          "label": "Maximize its cost",
+          "detail": "For each valid sequence, take the minimum |ij - i(j+1)|; maximize that minimum over all sequences."
         }
       ],
       "diagram": {
-        "type": "sequence",
-        "items": [
-          "indices i1 < ... < iL",
-          "A[i1] >= ... >= A[iL]",
-          "|i_j-i_(j+1)| >= d"
+        "type": "table",
+        "columns": [
+          "Position in sequence",
+          "Index",
+          "Required value relation"
+        ],
+        "rows": [
+          [
+            "1",
+            "i1",
+            "A[i1]"
+          ],
+          [
+            "2",
+            "i2",
+            "A[i1] >= A[i2]"
+          ],
+          [
+            "...",
+            "...",
+            "..."
+          ],
+          [
+            "L",
+            "iL",
+            "cost = min adjacent |ij-i(j+1)|"
+          ]
         ]
       }
     }
@@ -2811,58 +2820,45 @@
     "statementAvailability": "official-link",
     "tags": [
       "trees",
-      "combinatorics",
-      "subtree-sizes"
+      "department-parity",
+      "levels"
     ],
     "visual": {
       "kind": "department-tree",
       "title": "Department parity constrains the head ID",
-      "caption": "A department is a rooted employee tree; size parity determines whether its head has the smallest or largest ID, and its strength is the sum of employee levels. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "caption": "Each connected tree is a department. Even-sized departments require the head to have the smallest ID; odd-sized departments require the largest. Team strength is the sum of employee levels.",
       "steps": [
         {
-          "label": "Build departments",
-          "detail": "Each connected component is one department; choose its head using the component-size parity rule."
+          "label": "Find each department head",
+          "detail": "A department is a tree; its size parity determines whether its head has the minimum or maximum employee ID."
         },
         {
           "label": "Assign employee levels",
-          "detail": "The head is level 1 and each subordinate is one level below the manager."
+          "detail": "The head is level 1; each employee is one level below their manager."
         },
         {
-          "label": "Add parity totals",
-          "detail": "Sum all employee levels into the even-size or odd-size department total."
+          "label": "Sum by department type",
+          "detail": "Add levels separately for employees in even-sized and odd-sized departments."
         }
       ],
       "diagram": {
-        "type": "graph",
-        "nodes": [
-          {
-            "id": "A",
-            "label": "department",
-            "x": 50,
-            "y": 12
-          },
-          {
-            "id": "B",
-            "label": "child unit",
-            "x": 25,
-            "y": 42
-          },
-          {
-            "id": "C",
-            "label": "subtree",
-            "x": 75,
-            "y": 42
-          }
+        "type": "table",
+        "columns": [
+          "Department size",
+          "Head ID rule",
+          "Team strength"
         ],
-        "edges": [
-          {
-            "from": "A",
-            "to": "B"
-          },
-          {
-            "from": "A",
-            "to": "C"
-          }
+        "rows": [
+          [
+            "even",
+            "minimum ID",
+            "sum of employee levels"
+          ],
+          [
+            "odd",
+            "maximum ID",
+            "sum of employee levels"
+          ]
         ]
       }
     }
@@ -2884,7 +2880,7 @@
     "visual": {
       "kind": "tiling-frontier",
       "title": "Only the unfinished frontier affects the next column",
-      "caption": "Tiles span up to three columns, so a column mask records cells already occupied by tiles extending from the left. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Tiles span up to three columns, so a column mask records cells already occupied by tiles extending from the left.",
       "steps": [
         {
           "label": "Track the open cells",
@@ -2983,16 +2979,16 @@
       "caption": "An accusation requires opposite roles; a vouch requires equal roles, independent of whether the speaker is truthful or lying. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
       "steps": [
         {
-          "label": "Add parity edges",
-          "detail": "Create a graph edge for each statement, tagged equal or opposite."
+          "label": "Encode each statement",
+          "detail": "An accusation means the two astronauts have opposite roles; a vouch means they have the same role."
         },
         {
-          "label": "Propagate roles",
-          "detail": "Propagate role parity through each connected component and detect contradictions."
+          "label": "Check consistency",
+          "detail": "Propagate same/opposite constraints through each connected component; any contradiction makes the statements inconsistent."
         },
         {
           "label": "Maximize parasites",
-          "detail": "Count or report role assignments according to the taskâ€™s requested output."
+          "detail": "Among consistent role assignments, report the largest possible number of parasites."
         }
       ],
       "diagram": {
@@ -3049,7 +3045,7 @@
     "visual": {
       "kind": "balanced-segments",
       "title": "Prefix balance reveals segment imbalance",
-      "caption": "A segment is valid when the change in the zero-minus-one prefix count has magnitude at most K. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "A segment is valid when the change in the zero-minus-one prefix count has magnitude at most K.",
       "steps": [
         {
           "label": "Track prefix balance",
@@ -3268,7 +3264,7 @@
     "visual": {
       "kind": "ordered-groups",
       "title": "Lists are grouped by their sum",
-      "caption": "Enumerate positive-integer lists by increasing total, then lexicographically within each total. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Enumerate positive-integer lists by increasing total, then lexicographically within each total.",
       "steps": [
         {
           "label": "Skip earlier groups",
@@ -3365,7 +3361,7 @@
     "visual": {
       "kind": "frequency-groups",
       "title": "Choose exactly K represented badge groups",
-      "caption": "Students are distinct positions; selected students must contain exactly K different badge numbers. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Students are distinct positions; selected students must contain exactly K different badge numbers.",
       "steps": [
         {
           "label": "Group by badge",
@@ -3419,7 +3415,7 @@
     "visual": {
       "kind": "interval-minimum-tree",
       "title": "Every interval specifies its minimum index",
-      "caption": "The supplied table names the index of the minimum value in every contiguous range; count consistent permutations. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "The supplied table names the index of the minimum value in every contiguous range; count consistent permutations.",
       "steps": [
         {
           "label": "Read interval minima",
@@ -3537,7 +3533,7 @@
     "visual": {
       "kind": "interval-game",
       "title": "A survivor must win both sides of an interval",
-      "caption": "Adjacent monsters battle by Fire/Water/Grass dominance; count indices that can survive each queried subrange. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Adjacent monsters battle by Fire/Water/Grass dominance; count indices that can survive each queried subrange.",
       "steps": [
         {
           "label": "Track survivor types",
@@ -3586,7 +3582,7 @@
     "visual": {
       "kind": "interval-union",
       "title": "Union trips in a consecutive trip range",
-      "caption": "A crop-duster trip fertilizes an interval of fields; each query selects consecutive trip IDs and asks how many fields are covered. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "caption": "A crop-duster trip fertilizes an interval of fields; each query selects consecutive trip IDs and asks how many fields are covered.",
       "steps": [
         {
           "label": "Select trip range",
@@ -3640,7 +3636,7 @@
     "visual": {
       "kind": "tree-pair-comparison",
       "title": "Compare the maximum edge on two unique paths",
-      "caption": "For each node pair, compare the maximum edge weight on its path in tree X with the corresponding maximum in tree Y using the relation specified in the official paper. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "For each unordered pair p < q, compare the maximum edge weight on its unique path in tree X with the corresponding maximum in tree Y. Count pairs satisfying costX(p,q) <= costY(p,q).",
       "steps": [
         {
           "label": "Choose node pair",
@@ -3689,7 +3685,7 @@
     "visual": {
       "kind": "upgrade-cost",
       "title": "Spend upgrades where water use drops most",
-      "caption": "Vegetable i needs Ai units at Bi water per unit; an upgrade lowers either factor by one, and each query limits upgrades. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Vegetable i needs Ai units at Bi water per unit; an upgrade lowers either factor by one, and each query limits upgrades.",
       "steps": [
         {
           "label": "Compare marginal savings",
@@ -3743,7 +3739,7 @@
     "visual": {
       "kind": "grid-distance",
       "title": "Find the farthest pair across two fruit classes",
-      "caption": "A query asks the largest shortest bee travel time between any U cell and any V cell; another operation changes one fieldâ€™s fruit. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "A query asks the largest shortest bee travel time between any U cell and any V cell; another operation changes one fieldâ€™s fruit.",
       "steps": [
         {
           "label": "Group cells by fruit",
@@ -3797,7 +3793,7 @@
     "visual": {
       "kind": "flow",
       "title": "Every element appears in half the subsets",
-      "caption": "Across the complete list of subset sums, each array value contributes exactly 2^(N-1) times. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "Across the complete list of subset sums, each array value contributes exactly 2^(N-1) times.",
       "steps": [
         {
           "label": "Enumerate subsets",
@@ -3851,7 +3847,7 @@
     "visual": {
       "kind": "sequence",
       "title": "Choose a consecutive target band",
-      "caption": "A beautiful sequence has one shared starting height; each next target rises by one. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "A beautiful sequence has one shared starting height; each next target rises by one.",
       "steps": [
         {
           "label": "Pick a start",
@@ -3921,33 +3917,23 @@
         }
       ],
       "diagram": {
-        "type": "graph",
-        "nodes": [
-          {
-            "id": "A",
-            "label": "s vertices",
-            "x": 20,
-            "y": 50
-          },
-          {
-            "id": "B",
-            "label": "edge weight w",
-            "x": 50,
-            "y": 50
-          },
-          {
-            "id": "C",
-            "label": "N-s vertices",
-            "x": 80,
-            "y": 50
-          }
+        "type": "table",
+        "columns": [
+          "Tree edge",
+          "Cut component sizes",
+          "Distance contribution"
         ],
-        "edges": [
-          {
-            "from": "A",
-            "to": "C",
-            "label": "cut by edge"
-          }
+        "rows": [
+          [
+            "edge e, weight w",
+            "s and N-s",
+            "w * s * (N-s)"
+          ],
+          [
+            "all edges",
+            "count crossing pairs",
+            "assign larger weights to larger factors"
+          ]
         ]
       }
     }
@@ -3969,7 +3955,7 @@
     "visual": {
       "kind": "frequency-bars",
       "title": "The most common color controls feasibility",
-      "caption": "A chosen multiset can be arranged with no equal adjacent colors exactly when its largest color group fits between the others. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "For a selected subset, let m be its largest color frequency and r the total number of other balls. It can be arranged without equal neighbors when m <= r+1; the statement also treats empty and one-ball subsets as valid.",
       "steps": [
         {
           "label": "Count selected colors",
@@ -4023,7 +4009,7 @@
     "visual": {
       "kind": "state-transition",
       "title": "Track whether the prefix is already larger",
-      "caption": "At each display, choose a digit and pay the number of lights that change; the final fixed-width number must exceed X. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "At each display, choose a digit and pay the number of lights that change; the final fixed-width number must exceed X.",
       "steps": [
         {
           "label": "Compare one position",
@@ -4124,19 +4110,19 @@
     "visual": {
       "kind": "sequence-shape",
       "title": "A valid profile rises to a peak, then falls",
-      "caption": "The forbidden pattern is a decrease followed later by an increase, which creates a valley.",
+      "caption": "A special tower sequence has no indices i < j < k with H[i] > H[j] and H[j] < H[k]. Each operation lowers one positive height by one; minimize operations, or return -1 if impossible.",
       "steps": [
         {
-          "label": "Read the trend",
-          "detail": "A valley occurs when some earlier height is larger than a middle height that is smaller than a later height."
+          "label": "Recognize the forbidden valley",
+          "detail": "A valley exists when an earlier height is above a middle height and a later height is above that middle height."
         },
         {
-          "label": "Keep the peak boundary",
-          "detail": "A no-valley sequence can be represented by a nondecreasing prefix followed by a nonincreasing suffix."
+          "label": "Only lower towers",
+          "detail": "Each operation decreases one positive H[i] by exactly one; heights cannot be increased."
         },
         {
-          "label": "Only lower values",
-          "detail": "Choose adjusted heights no greater than the originals, and minimize the total amount removed."
+          "label": "Minimize operations",
+          "detail": "Find the fewest decrements that remove every forbidden valley, or report -1 if no valid sequence is reachable."
         }
       ],
       "diagram": {
@@ -4144,7 +4130,8 @@
         "items": [
           "nondecreasing prefix",
           "peak / plateau",
-          "nonincreasing suffix"
+          "nonincreasing suffix",
+          "lower heights only"
         ]
       }
     }
@@ -4231,7 +4218,7 @@
     "visual": {
       "kind": "interval-coverage",
       "title": "Stars persist across consecutive nights",
-      "caption": "Each star contributes to a continuous interval of nights; nightly totals constrain but do not uniquely determine the star intervals. Schematic intervals only; positions show relationships, not task input values. Schematic intervals only; axis positions illustrate the relation and are not task input values.",
+      "caption": "Each star contributes to a continuous interval of nights; nightly totals constrain but do not uniquely determine the star intervals.",
       "steps": [
         {
           "label": "Plot nightly totals",
@@ -4285,7 +4272,7 @@
     "visual": {
       "kind": "subsequence-dag",
       "title": "Keep each adjacent value jump within K",
-      "caption": "The input is nondecreasing; count nonempty index subsequences whose consecutive selected values differ by at most K. Schematic structure only; vertices and edges represent the task relation, not an official sample. Schematic graph only; labels and edges show the task relation, not an official sample.",
+      "caption": "A subsequence is good when each chosen value differs from the previous chosen value by at most K. Count index subsequences, including distinct choices with equal values.",
       "steps": [
         {
           "label": "Create position nodes",
@@ -4354,7 +4341,7 @@
     "visual": {
       "kind": "residue-wheel",
       "title": "Mark residues that contain a prime",
-      "caption": "A residue m is good when some prime p has p mod N=m; sum each good residue once. Diagram values are symbolic unless the task statement defines them. Symbols express the task relationship; rows are not sample input. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "A residue m is good when some prime p has p mod N=m; sum each good residue once.",
       "steps": [
         {
           "label": "Make residue buckets",
@@ -4373,19 +4360,19 @@
         "type": "table",
         "columns": [
           "Prime p",
-          "Residue",
+          "Residue m",
           "Decision"
         ],
         "rows": [
           [
-            "p",
             "p mod N",
-            "mark reachable residue"
+            "m",
+            "mark if a prime p has this residue"
           ],
           [
-            "all residues",
-            "prime possible",
-            "sum marked values"
+            "all m from 0 to N-1",
+            "good residues",
+            "sum m"
           ]
         ]
       }
@@ -4408,7 +4395,7 @@
     "visual": {
       "kind": "range-overlays",
       "title": "Build a profile with interval maximum overlays",
-      "caption": "An operation sets each value in [L,R] to at least v; score each array by the fewest operations, then sum scores over subarrays. Diagram values are symbolic unless the task statement defines them. Symbolic layout only; cells are not an official sample. Diagram entries are symbolic and do not reproduce a statement sample.",
+      "caption": "An operation sets each value in [L,R] to at least v; score each array by the fewest operations, then sum scores over subarrays.",
       "steps": [
         {
           "label": "View interval layers",

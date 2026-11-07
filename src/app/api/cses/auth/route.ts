@@ -90,15 +90,6 @@ export async function POST(request: NextRequest) {
       sessionCookie,
     });
 
-    if (sessionCookie) {
-      response.cookies.set('cses_session', sessionCookie, {
-        path: '/',
-        httpOnly: false,
-        sameSite: 'lax',
-        maxAge: 86400 * 30,
-      });
-    }
-
     return response;
   } catch (error: any) {
     console.error('[CSES Auth] Error:', error);

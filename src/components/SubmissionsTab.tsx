@@ -98,35 +98,35 @@ function getStatusConfig(status: VerdictStatus) {
       return {
         label: 'Accepted',
         code: 'AC',
-        className: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+        className: 'bg-verdict-ac-soft text-verdict-ac border-emerald-500/30',
         icon: CheckCircle2,
       };
     case 'WA':
       return {
         label: 'Wrong Answer',
         code: 'WA',
-        className: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
+        className: 'bg-verdict-wa-soft text-verdict-wa border-rose-500/30',
         icon: XCircle,
       };
     case 'TLE':
       return {
         label: 'Time Limit',
         code: 'TLE',
-        className: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
+        className: 'bg-verdict-tle-soft text-verdict-tle border-amber-500/30',
         icon: Clock,
       };
     case 'MLE':
       return {
         label: 'Memory Limit',
         code: 'MLE',
-        className: 'bg-purple-500/15 text-purple-400 border-purple-500/30',
+        className: 'bg-purple-500/15 text-verdict-ce border-purple-500/30',
         icon: HardDrive,
       };
     case 'CE':
       return {
         label: 'Compile Error',
         code: 'CE',
-        className: 'bg-red-500/15 text-red-400 border-red-500/30',
+        className: 'bg-red-500/15 text-verdict-wa border-red-500/30',
         icon: AlertTriangle,
       };
     case 'RE':
@@ -140,7 +140,7 @@ function getStatusConfig(status: VerdictStatus) {
       return {
         label: 'Pending',
         code: 'PENDING',
-        className: 'bg-slate-500/15 text-slate-400 border-slate-500/30',
+        className: 'bg-slate-500/15 text-text-muted border-slate-500/30',
         icon: RotateCcw,
       };
   }
@@ -343,14 +343,14 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
             className={cn(
               'flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer',
               activeSubTab === 'cses_queue'
-                ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow-xs'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-surface-2'
+                ? 'bg-accent/20 text-accent border border-accent/40 shadow-xs'
+                : 'text-text-muted hover:text-text-primary hover:bg-surface-2'
             )}
           >
-            <Globe className="w-3.5 h-3.5 text-sky-400" />
+            <Globe className="w-3.5 h-3.5 text-accent" />
             <span>Official CSES Queue</span>
             {queueSubmissions.length > 0 && (
-              <span className="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-sky-500/30 text-sky-200 font-mono">
+              <span className="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-accent/30 text-accent font-mono">
                 {queueSubmissions.length}
               </span>
             )}
@@ -362,14 +362,14 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
             className={cn(
               'flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer',
               activeSubTab === 'local'
-                ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow-xs'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-surface-2'
+                ? 'bg-accent/20 text-accent border border-accent/40 shadow-xs'
+                : 'text-text-muted hover:text-text-primary hover:bg-surface-2'
             )}
           >
-            <Laptop className="w-3.5 h-3.5 text-slate-400" />
+            <Laptop className="w-3.5 h-3.5 text-text-muted" />
             <span>My Submissions & Runs</span>
             {(submissions.length + remoteCsesSubmissions.length) > 0 && (
-              <span className="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-surface-2 text-slate-300 font-mono">
+              <span className="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-surface-2 text-text-secondary font-mono">
                 {submissions.length + remoteCsesSubmissions.length}
               </span>
             )}
@@ -380,10 +380,10 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
           type="button"
           onClick={() => fetchQueue()}
           disabled={isLoadingQueue}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-slate-400 hover:text-sky-300 bg-surface-2/60 hover:bg-surface-2 border border-border-subtle transition-colors disabled:opacity-50 cursor-pointer"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-text-muted hover:text-accent bg-surface-2/60 hover:bg-surface-2 border border-border-subtle transition-colors disabled:opacity-50 cursor-pointer"
           title="Refresh CSES live queue and personal submissions"
         >
-          <RefreshCw className={cn('w-3 h-3', isLoadingQueue && 'animate-spin text-sky-400')} />
+          <RefreshCw className={cn('w-3 h-3', isLoadingQueue && 'animate-spin text-accent')} />
           <span>Refresh</span>
         </button>
       </div>
@@ -397,13 +397,13 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 {/* Search solver handle or ID */}
                 <div className="relative min-w-[140px] sm:min-w-[170px]">
-                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" />
                   <input
                     type="text"
                     value={searchUser}
                     onChange={(e) => setSearchUser(e.target.value)}
                     placeholder="Search solver..."
-                    className="w-full pl-8 pr-2.5 py-1.5 rounded-lg bg-surface-2 border border-border-subtle text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-sky-500"
+                    className="w-full pl-8 pr-2.5 py-1.5 rounded-lg bg-surface-2 border border-border-subtle text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent"
                   />
                 </div>
 
@@ -411,7 +411,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 <select
                   value={filterLang}
                   onChange={(e) => setFilterLang(e.target.value)}
-                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                 >
                   <option value="all">All Languages</option>
                   <option value="c++">C++</option>
@@ -427,7 +427,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 <select
                   value={filterVerdict}
                   onChange={(e) => setFilterVerdict(e.target.value)}
-                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                 >
                   <option value="all">All Verdicts</option>
                   <option value="ACCEPTED">Accepted (AC)</option>
@@ -438,7 +438,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                 >
                   <option value="time_desc">Sort: Newest First</option>
                   <option value="time_asc">Sort: Oldest First</option>
@@ -447,7 +447,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 </select>
               </div>
 
-              <div className="flex items-center gap-2 text-slate-400 text-[11px]">
+              <div className="flex items-center gap-2 text-text-muted text-[11px]">
                 <span>
                   Showing {filteredQueue.length} of {queueSubmissions.length}
                 </span>
@@ -460,7 +460,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                       setSearchUser('');
                       setSortBy('time_desc');
                     }}
-                    className="text-sky-400 hover:underline cursor-pointer"
+                    className="text-accent hover:underline cursor-pointer"
                   >
                     Reset Filters
                   </button>
@@ -469,21 +469,21 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
             </div>
           )}
 
-          {queueNotice && <p role="status" className="text-xs text-slate-300">{queueNotice}</p>}
-          {queueCursor && <button type="button" onClick={() => fetchQueue(queueCursor)} disabled={isLoadingQueue} className="rounded border border-border-muted px-3 py-2 text-xs text-sky-300 disabled:opacity-50">Load more historical submissions</button>}
+          {queueNotice && <p role="status" className="text-xs text-text-secondary">{queueNotice}</p>}
+          {queueCursor && <button type="button" onClick={() => fetchQueue(queueCursor)} disabled={isLoadingQueue} className="rounded border border-border-muted px-3 py-2 text-xs text-accent disabled:opacity-50">Load more historical submissions</button>}
           {isLoadingQueue ? (
             <div className="p-12 flex flex-col items-center justify-center space-y-3 rounded-xl border border-border-subtle bg-surface-1/40">
-              <Loader2 className="w-6 h-6 animate-spin text-sky-400" />
-              <span className="text-xs text-slate-400">Fetching live submissions queue from CSES.fi...</span>
+              <Loader2 className="w-6 h-6 animate-spin text-accent" />
+              <span className="text-xs text-text-muted">Fetching live submissions queue from CSES.fi...</span>
             </div>
           ) : queueSubmissions.length === 0 ? (
             isLocked ? (
-              <div className="p-8 text-center rounded-xl border border-amber-500/30 bg-amber-500/10 space-y-3">
-                <div className="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto border border-amber-500/30">
+              <div className="p-8 text-center rounded-xl border border-amber-500/30 bg-verdict-tle-soft space-y-3">
+                <div className="w-10 h-10 rounded-full bg-verdict-tle-soft text-verdict-tle flex items-center justify-center mx-auto border border-amber-500/30">
                   <Lock className="w-5 h-5" />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-sm font-semibold text-amber-200">CSES Queue Locked for Task #{problemId}</h4>
+                  <h4 className="text-sm font-semibold text-verdict-tle">CSES Queue Locked for Task #{problemId}</h4>
                   <p className="text-xs text-zinc-300 max-w-md mx-auto leading-relaxed">
                     {lockedMessage || 'Official CSES rules require solving this problem before viewing other solvers\' submissions.'}
                   </p>
@@ -512,11 +512,11 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
               </div>
             ) : (
               <div className="p-10 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-2">
-                <Code2 className="w-8 h-8 text-slate-500 mx-auto mb-1 opacity-50" />
-                <p className="text-sm font-medium text-slate-200">
+                <Code2 className="w-8 h-8 text-text-muted mx-auto mb-1 opacity-50" />
+                <p className="text-sm font-medium text-text-primary">
                   No submissions found in CSES queue for task #{problemId}.
                 </p>
-                <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                <p className="text-xs text-text-muted max-w-sm mx-auto">
                   Use the "Submit to CSES" action in the editor workbench to submit your code directly to the official CSES judges.
                 </p>
               </div>
@@ -525,7 +525,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
             <div className="overflow-x-auto rounded-xl border border-border-subtle bg-surface-1/60">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border-subtle bg-surface-0/40 text-slate-400 font-medium uppercase tracking-wider text-[11px]">
+                  <tr className="border-b border-border-subtle bg-surface-0/40 text-text-muted font-medium uppercase tracking-wider text-[11px]">
                     <th className="py-2.5 px-3.5">ID</th>
                     <th className="py-2.5 px-3.5">User</th>
                     <th className="py-2.5 px-3.5">Sent At</th>
@@ -549,10 +549,10 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                         key={sub.id}
                         className={cn(
                           'hover:bg-surface-2/30 transition-colors',
-                          isOwnSubmission && 'bg-sky-500/10 border-l-2 border-l-sky-400'
+                          isOwnSubmission && 'bg-accent/10 border-l-2 border-l-sky-400'
                         )}
                       >
-                        <td className="py-2.5 px-3.5 font-mono font-medium text-sky-400">
+                        <td className="py-2.5 px-3.5 font-mono font-medium text-accent">
                           #{sub.id}
                         </td>
                         <td className="py-2.5 px-3.5">
@@ -561,38 +561,38 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                               <button
                                 type="button"
                                 onClick={() => onSelectUser?.(sub.user || 'Unknown', sub.userId)}
-                                className="text-sky-400 hover:text-sky-300 hover:underline font-mono inline-flex items-center gap-1 font-medium cursor-pointer"
+                                className="text-accent hover:text-accent hover:underline font-mono inline-flex items-center gap-1 font-medium cursor-pointer"
                                 title={`Inspect official profile for ${sub.user}`}
                               >
                                 <span>{sub.user || 'User'}</span>
                                 {sub.userId && (
-                                  <span className="text-[10px] text-slate-500 font-normal">
+                                  <span className="text-[10px] text-text-muted font-normal">
                                     #{sub.userId}
                                   </span>
                                 )}
                               </button>
                             ) : (
-                              <span className="text-slate-500">Unknown</span>
+                              <span className="text-text-muted">Unknown</span>
                             )}
                             {isOwnSubmission && (
-                              <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                              <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider bg-accent/20 text-accent border border-accent/30">
                                 You
                               </span>
                             )}
                           </div>
                         </td>
-                        <td className="py-2.5 px-3.5 text-slate-400 font-mono text-[11px]">
+                        <td className="py-2.5 px-3.5 text-text-muted font-mono text-[11px]">
                           {sub.time}
                         </td>
                         <td className="py-2.5 px-3.5">
-                          <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
+                          <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-text-secondary border border-border-subtle">
                             {sub.language}
                           </span>
                         </td>
-                        <td className="py-2.5 px-3.5 font-mono text-emerald-400 font-semibold">
+                        <td className="py-2.5 px-3.5 font-mono text-verdict-ac font-semibold">
                           {sub.runtime || '—'}
                         </td>
-                        <td className="py-2.5 px-3.5 font-mono text-slate-300">
+                        <td className="py-2.5 px-3.5 font-mono text-text-secondary">
                           {sub.size || '—'}
                         </td>
                         <td className="py-2.5 px-3.5">
@@ -600,8 +600,8 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                             className={cn(
                               'px-2 py-0.5 rounded text-[10px] font-bold font-mono uppercase border',
                               sub.status === 'ACCEPTED'
-                                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                                : 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+                                ? 'bg-verdict-ac-soft text-verdict-ac border-emerald-500/30'
+                                : 'bg-verdict-wa-soft text-verdict-wa border-rose-500/30'
                             )}
                           >
                             {sub.status}
@@ -617,17 +617,17 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                                 className={cn(
                                   'inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-colors border cursor-pointer',
                                   loadedId === sub.id
-                                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                                    : 'bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30'
+                                    ? 'bg-verdict-ac-soft text-verdict-ac border-emerald-500/40'
+                                    : 'bg-accent/20 hover:bg-accent/30 text-accent border border-accent/30'
                                 )}
                                 title="Load this submission into the editor"
                               >
                                 {loadingCsesId === sub.id ? (
-                                  <Loader2 className="w-3 h-3 animate-spin text-sky-400" />
+                                  <Loader2 className="w-3 h-3 animate-spin text-accent" />
                                 ) : loadedId === sub.id ? (
-                                  <Check className="w-3 h-3 text-emerald-400" />
+                                  <Check className="w-3 h-3 text-verdict-ac" />
                                 ) : (
-                                  <RotateCcw className="w-3 h-3 text-sky-400" />
+                                  <RotateCcw className="w-3 h-3 text-accent" />
                                 )}
                                 <span>{loadedId === sub.id ? 'Loaded' : 'Load'}</span>
                               </button>
@@ -644,7 +644,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                                   scoreType: 'queue',
                                 })
                               }
-                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 text-xs font-medium transition-colors cursor-pointer"
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-accent/20 hover:bg-accent/30 text-accent border border-accent/30 text-xs font-medium transition-colors cursor-pointer"
                             >
                               <Eye className="w-3 h-3" />
                               <span>View Code</span>
@@ -673,8 +673,8 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 className={cn(
                   'px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer',
                   subFilter === 'all'
-                    ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow-xs'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-accent/20 text-accent border border-accent/40 shadow-xs'
+                    : 'text-text-muted hover:text-text-primary'
                 )}
               >
                 All ({submissions.length + remoteCsesSubmissions.length})
@@ -685,11 +685,11 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 className={cn(
                   'flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer',
                   subFilter === 'cses'
-                    ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow-xs'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-accent/20 text-accent border border-accent/40 shadow-xs'
+                    : 'text-text-muted hover:text-text-primary'
                 )}
               >
-                <Globe className="w-3 h-3 text-sky-400" />
+                <Globe className="w-3 h-3 text-accent" />
                 <span>Official CSES.fi</span>
                 <span className="font-mono text-[10px] ml-0.5">({remoteCsesSubmissions.length + submissionGroups[0].rows.length})</span>
               </button>
@@ -699,11 +699,11 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 className={cn(
                   'flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer',
                   subFilter === 'local'
-                    ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow-xs'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-accent/20 text-accent border border-accent/40 shadow-xs'
+                    : 'text-text-muted hover:text-text-primary'
                 )}
               >
-                <Laptop className="w-3 h-3 text-slate-400" />
+                <Laptop className="w-3 h-3 text-text-muted" />
                 <span>Local Workbench</span>
                 <span className="font-mono text-[10px] ml-0.5">({submissionGroups[1].rows.length})</span>
               </button>
@@ -715,7 +715,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 <button
                   type="button"
                   onClick={onOpenCsesAccount}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 border border-emerald-500/20 font-mono transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs bg-verdict-ac-soft text-verdict-ac hover:bg-verdict-ac-soft border border-emerald-500/20 font-mono transition-colors cursor-pointer"
                   title="Click to manage CSES account or sync solves"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
@@ -726,7 +726,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                   <button
                     type="button"
                     onClick={onOpenCsesAccount}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 border border-amber-500/30 transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-verdict-tle-soft text-verdict-tle hover:bg-amber-500/25 border border-amber-500/30 transition-colors cursor-pointer"
                   >
                     <KeyRound className="w-3 h-3" />
                     <span>Connect CSES Account</span>
@@ -740,12 +740,12 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
           {(subFilter === 'all' || subFilter === 'cses') && (
             <div className="space-y-2.5">
               {subFilter === 'all' && myCsesSubmissions.length > 0 && (
-                <div className="flex items-center justify-between text-xs font-semibold text-slate-300 px-1 pt-1">
+                <div className="flex items-center justify-between text-xs font-semibold text-text-secondary px-1 pt-1">
                   <div className="flex items-center gap-1.5">
-                    <Globe className="w-3.5 h-3.5 text-sky-400" />
+                    <Globe className="w-3.5 h-3.5 text-accent" />
                     <span>Official CSES.fi Submissions ({remoteCsesSubmissions.length})</span>
                   </div>
-                  <span className="text-[11px] text-slate-500">Recorded on official CSES servers</span>
+                  <span className="text-[11px] text-text-muted">Recorded on official CSES servers</span>
                 </div>
               )}
 
@@ -758,7 +758,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                   return (
                     <div
                       key={sub.id}
-                      className="rounded-lg border border-border-subtle bg-surface-1/70 transition-all hover:border-sky-500/40 overflow-hidden shadow-xs"
+                      className="rounded-lg border border-border-subtle bg-surface-1/70 transition-all hover:border-accent/40 overflow-hidden shadow-xs"
                     >
                       <div className="p-3.5 flex flex-wrap items-center justify-between gap-3">
                         {/* Left Side: Verdict badge, CSES.fi Official badge, and details */}
@@ -767,12 +767,12 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                             className={cn(
                               'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold font-mono border',
                               isAc
-                                ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                                ? 'bg-verdict-ac-soft text-verdict-ac border-emerald-500/30'
                                 : isWa
-                                ? 'bg-rose-500/15 text-rose-400 border-rose-500/30'
+                                ? 'bg-verdict-wa-soft text-verdict-wa border-rose-500/30'
                                 : isTle
-                                ? 'bg-amber-500/15 text-amber-400 border-amber-500/30'
-                                : 'bg-red-500/15 text-red-400 border-red-500/30'
+                                ? 'bg-verdict-tle-soft text-verdict-tle border-amber-500/30'
+                                : 'bg-red-500/15 text-verdict-wa border-red-500/30'
                             )}
                           >
                             {isAc ? (
@@ -787,34 +787,34 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                             href={sub.resultUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-sky-500/15 text-sky-300 border border-sky-500/30 hover:bg-sky-500/25 transition-colors"
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-accent/15 text-accent border border-accent/30 hover:bg-accent/25 transition-colors"
                             title="Open submission details on cses.fi"
                           >
-                            <Globe className="w-3 h-3 text-sky-400" />
+                            <Globe className="w-3 h-3 text-accent" />
                             <span>CSES.fi Official</span>
                             <ExternalLink className="w-2.5 h-2.5 opacity-70" />
                           </a>
 
-                          <span className="font-mono text-xs font-semibold text-sky-400">
+                          <span className="font-mono text-xs font-semibold text-accent">
                             #{sub.id}
                           </span>
 
-                          <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
+                          <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-text-secondary border border-border-subtle">
                             {sub.language}
                           </span>
                         </div>
 
                         {/* Right Side: Runtime, Size, Time, Actions */}
-                        <div className="flex items-center gap-3 text-xs text-slate-400">
-                          <span className="font-mono text-emerald-400 font-semibold">
+                        <div className="flex items-center gap-3 text-xs text-text-muted">
+                          <span className="font-mono text-verdict-ac font-semibold">
                             {sub.runtime || '—'}
                           </span>
                           {sub.size && (
-                            <span className="font-mono text-slate-300">
+                            <span className="font-mono text-text-secondary">
                               {sub.size}
                             </span>
                           )}
-                          <span className="font-mono text-[11px] text-slate-400">
+                          <span className="font-mono text-[11px] text-text-muted">
                             {sub.time}
                           </span>
 
@@ -826,24 +826,24 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                             className={cn(
                               'inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium transition-colors border cursor-pointer',
                               loadedId === sub.id
-                                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                                : 'bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30'
+                                ? 'bg-verdict-ac-soft text-verdict-ac border-emerald-500/40'
+                                : 'bg-accent/20 hover:bg-accent/30 text-accent border border-accent/30'
                             )}
                             title="Fetch source code from official CSES and load into editor"
                           >
                             {loadingCsesId === sub.id ? (
                               <>
-                                <Loader2 className="w-3 h-3 animate-spin text-sky-400" />
+                                <Loader2 className="w-3 h-3 animate-spin text-accent" />
                                 <span>Loading...</span>
                               </>
                             ) : loadedId === sub.id ? (
                               <>
-                                <Check className="w-3 h-3 text-emerald-400" />
+                                <Check className="w-3 h-3 text-verdict-ac" />
                                 <span>Loaded</span>
                               </>
                             ) : (
                               <>
-                                <RotateCcw className="w-3 h-3 text-sky-400" />
+                                <RotateCcw className="w-3 h-3 text-accent" />
                                 <span>Load in Editor</span>
                               </>
                             )}
@@ -862,10 +862,10 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                                 scoreType: 'queue',
                               })
                             }
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-surface-2 hover:bg-surface-3 text-slate-200 border border-border-subtle transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-surface-2 hover:bg-surface-3 text-text-primary border border-border-subtle transition-colors cursor-pointer"
                             title="Inspect submission source code and verdicts"
                           >
-                            <Eye className="w-3 h-3 text-slate-400" />
+                            <Eye className="w-3 h-3 text-text-muted" />
                             <span>View Code</span>
                           </button>
                         </div>
@@ -875,10 +875,10 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 })
               ) : subFilter === 'cses' && storedOfficialIds.size === 0 ? (
                 <div className="p-8 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-3">
-                  <Globe className="w-8 h-8 text-slate-500 mx-auto opacity-50" />
+                  <Globe className="w-8 h-8 text-text-muted mx-auto opacity-50" />
                   <div className="space-y-1">
-                    <h4 className="text-sm font-semibold text-slate-200">No Official CSES.fi Submissions Found</h4>
-                    <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+                    <h4 className="text-sm font-semibold text-text-primary">No Official CSES.fi Submissions Found</h4>
+                    <p className="text-xs text-text-muted max-w-sm mx-auto leading-relaxed">
                       {csesAccountInfo?.nick
                         ? `No submissions recorded on cses.fi for task #${problemId} under @${csesAccountInfo.nick}. Submit your solution via "Submit to CSES" to test on official servers.`
                         : 'Connect your official CSES account using the button above to automatically sync and display all submissions you made on cses.fi.'}
@@ -902,12 +902,12 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
           {submissionGroups.filter(group => subFilter === 'all' || subFilter === group.source).map(group => (
             <div key={group.source} className="space-y-2.5">
               {group.rows.length > 0 && (
-                <div className="flex items-center justify-between text-xs font-semibold text-slate-300 px-1 pt-2">
+                <div className="flex items-center justify-between text-xs font-semibold text-text-secondary px-1 pt-2">
                   <div className="flex items-center gap-1.5">
-                    {group.source === 'cses' ? <Globe className="w-3.5 h-3.5 text-sky-400" /> : <Laptop className="w-3.5 h-3.5 text-slate-400" />}
+                    {group.source === 'cses' ? <Globe className="w-3.5 h-3.5 text-accent" /> : <Laptop className="w-3.5 h-3.5 text-text-muted" />}
                     <span>{group.label} ({group.rows.length})</span>
                   </div>
-                  <span className="text-[11px] text-slate-500">{group.source === 'cses' ? 'Official judge results saved on this device' : 'In-browser testbench history'}</span>
+                  <span className="text-[11px] text-text-muted">{group.source === 'cses' ? 'Official judge results saved on this device' : 'In-browser testbench history'}</span>
                 </div>
               )}
 
@@ -938,24 +938,24 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                             <span>{statusConfig.label}</span>
                           </span>
 
-                          <span className="text-xs text-slate-300 font-medium">
+                          <span className="text-xs text-text-secondary font-medium">
                             {sub.source === 'cses' && !sub.totalCount ? 'Test breakdown unavailable' : `${sub.passedCount} / ${sub.totalCount} passed`}
                           </span>
 
-                          <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
+                          <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-text-secondary border border-border-subtle">
                             {langDisplay}
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-4 text-xs text-slate-400">
-                          <span className="font-mono text-emerald-400 font-medium">
+                        <div className="flex items-center gap-4 text-xs text-text-muted">
+                          <span className="font-mono text-verdict-ac font-medium">
                             {sub.source === 'cses' ? (sub.officialResult?.totalTime || '—') : `${sub.maxTimeMs} ms`}
                           </span>
-                          <span className="font-mono text-slate-400">
+                          <span className="font-mono text-text-muted">
                             {sub.source === 'cses' ? (sub.officialResult?.totalMemory || '—') : `${memoryMb} MB`}
                           </span>
                           {sub.charCount !== undefined && (
-                            <span className="font-mono text-slate-400">
+                            <span className="font-mono text-text-muted">
                               {sub.charCount} ch.
                             </span>
                           )}
@@ -969,19 +969,19 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                             className={cn(
                               'inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium transition-colors border cursor-pointer',
                               loadedId === sub.id
-                                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                                : 'bg-surface-2 hover:bg-surface-3 text-slate-200 hover:text-white border-border-subtle'
+                                ? 'bg-verdict-ac-soft text-verdict-ac border-emerald-500/40'
+                                : 'bg-surface-2 hover:bg-surface-3 text-text-primary hover:text-white border-border-subtle'
                             )}
                             title="Load this submission's code into the editor"
                           >
                             {loadedId === sub.id ? (
                               <>
-                                <Check className="w-3 h-3 text-emerald-400" />
+                                <Check className="w-3 h-3 text-verdict-ac" />
                                 <span>Loaded</span>
                               </>
                             ) : (
                               <>
-                                <RotateCcw className="w-3 h-3 text-sky-400" />
+                                <RotateCcw className="w-3 h-3 text-accent" />
                                 <span>Load Code</span>
                               </>
                             )}
@@ -990,7 +990,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                           <button
                             type="button"
                             onClick={() => setExpandedId(isExpanded ? null : sub.id)}
-                            className="p-1 rounded hover:bg-surface-2 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+                            className="p-1 rounded hover:bg-surface-2 text-text-muted hover:text-text-primary transition-colors cursor-pointer"
                             title={isExpanded ? 'Collapse code' : 'View code'}
                           >
                             {isExpanded ? (
@@ -1010,15 +1010,15 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                         return (
                           <div className="border-t border-border-subtle bg-surface-0/60 p-4 space-y-3">
                             {sub.officialResult && (
-                              <section className="space-y-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3">
+                              <section className="space-y-2 rounded-lg border border-emerald-500/20 bg-verdict-ac-soft p-3">
                                 <div className="flex flex-wrap justify-between gap-2 text-xs">
-                                  <strong className="text-emerald-300">Official CSES result · {sub.officialResult.rawStatusText}</strong>
-                                  <span className="text-slate-400">Time {sub.officialResult.totalTime || '—'} · Memory {sub.officialResult.totalMemory || '—'}</span>
+                                  <strong className="text-verdict-ac">Official CSES result · {sub.officialResult.rawStatusText}</strong>
+                                  <span className="text-text-muted">Time {sub.officialResult.totalTime || '—'} · Memory {sub.officialResult.totalMemory || '—'}</span>
                                 </div>
                                 {sub.officialResult.tests.length > 0 && (
                                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                                     {sub.officialResult.tests.map((test) => (
-                                      <div key={test.index} className="rounded border border-border-subtle bg-surface-0 px-2 py-1 text-[11px] text-slate-300">
+                                      <div key={test.index} className="rounded border border-border-subtle bg-surface-0 px-2 py-1 text-[11px] text-text-secondary">
                                         #{test.index} {test.verdict} · {test.time || '—'}
                                       </div>
                                     ))}
@@ -1028,25 +1028,25 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                                   <div className="space-y-1.5">
                                     {sub.officialResult.tests.filter((test) => test.input || test.expectedOutput || test.actualOutput).map((test) => (
                                       <details key={`official-${test.index}`} className="rounded border border-border-subtle px-2.5 py-2 text-xs">
-                                        <summary className="cursor-pointer text-slate-300">Test #{test.index} details shown by CSES</summary>
+                                        <summary className="cursor-pointer text-text-secondary">Test #{test.index} details shown by CSES</summary>
                                         {[['Input', test.input], ['Expected', test.expectedOutput], ['Your output', test.actualOutput]].map(([label, value]) => value && (
-                                          <pre key={label} className="mt-2 whitespace-pre-wrap break-words text-slate-400"><span className="text-slate-200">{label}: </span>{value}</pre>
+                                          <pre key={label} className="mt-2 whitespace-pre-wrap break-words text-text-muted"><span className="text-text-primary">{label}: </span>{value}</pre>
                                         ))}
-                                        {test.detailsUrl && <a href={test.detailsUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-sky-300 underline">Open CSES test detail</a>}
+                                        {test.detailsUrl && <a href={test.detailsUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-accent underline">Open CSES test detail</a>}
                                       </details>
                                     ))}
                                   </div>
                                 )}
                                 {sub.officialResult.compilerOutput && <pre className="max-h-40 overflow-auto whitespace-pre-wrap text-xs text-orange-200">{sub.officialResult.compilerOutput}</pre>}
-                                <a href={sub.officialResult.resultUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-sky-300 underline">Open official CSES result</a>
+                                <a href={sub.officialResult.resultUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-accent underline">Open official CSES result</a>
                               </section>
                             )}
                             <div className="flex items-center justify-between">
-                              <span className="text-xs font-medium text-slate-400 flex items-center gap-1.5">
-                                <FileCode2 className="w-3.5 h-3.5 text-sky-400" />
+                              <span className="text-xs font-medium text-text-muted flex items-center gap-1.5">
+                                <FileCode2 className="w-3.5 h-3.5 text-accent" />
                                 <span>Submitted Source Code ({effectiveCode.length} characters)</span>
                                 {isRestoredDraft && (
-                                  <span className="text-[10px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+                                  <span className="text-[10px] text-verdict-tle bg-verdict-tle-soft px-1.5 py-0.5 rounded border border-amber-500/20">
                                     Draft Code Recovery
                                   </span>
                                 )}
@@ -1056,12 +1056,12 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                                 <button
                                   type="button"
                                   onClick={() => handleCopyCode(sub.id, effectiveCode)}
-                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-surface-2 hover:bg-surface-3 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-surface-2 hover:bg-surface-3 text-text-secondary hover:text-white transition-colors cursor-pointer"
                                 >
                                   {copiedId === sub.id ? (
                                     <>
-                                      <Check className="w-3 h-3 text-emerald-400" />
-                                      <span className="text-emerald-400">Copied</span>
+                                      <Check className="w-3 h-3 text-verdict-ac" />
+                                      <span className="text-verdict-ac">Copied</span>
                                     </>
                                   ) : (
                                     <>
@@ -1074,7 +1074,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                                 <button
                                   type="button"
                                   onClick={() => handleLoadCode(sub.id, effectiveCode, sub.language)}
-                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 transition-colors cursor-pointer"
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-accent/20 hover:bg-accent/30 text-accent border border-accent/30 transition-colors cursor-pointer"
                                 >
                                   <RotateCcw className="w-3 h-3" />
                                   <span>{loadedId === sub.id ? 'Loaded!' : 'Load Code'}</span>
@@ -1082,7 +1082,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                               </div>
                             </div>
 
-                            <pre className="p-3.5 rounded-lg bg-surface-0 border border-border-subtle font-mono text-xs text-slate-200 overflow-x-auto whitespace-pre leading-relaxed select-all max-h-96">
+                            <pre className="p-3.5 rounded-lg bg-surface-0 border border-border-subtle font-mono text-xs text-text-primary overflow-x-auto whitespace-pre leading-relaxed select-all max-h-96">
                               {effectiveCode || '// No source code recorded for this run.'}
                             </pre>
                           </div>
@@ -1093,11 +1093,11 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 })
               ) : subFilter === 'local' && group.source === 'local' ? (
                 <div className="p-10 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-2">
-                  <Inbox className="w-8 h-8 text-slate-500 mx-auto mb-1 opacity-50" />
-                  <p className="text-sm font-semibold text-slate-200">
+                  <Inbox className="w-8 h-8 text-text-muted mx-auto mb-1 opacity-50" />
+                  <p className="text-sm font-semibold text-text-primary">
                     No Local Workbench Runs
                   </p>
-                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                  <p className="text-xs text-text-muted max-w-sm mx-auto">
                     Run testcases or submit your code in the editor to record local verdicts, memory benchmarks, and diff revisions.
                   </p>
                 </div>
@@ -1108,12 +1108,12 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
           {/* Empty state for All Submissions */}
           {subFilter === 'all' && myCsesSubmissions.length === 0 && submissions.length === 0 && (
             <div className="p-10 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-3">
-              <Inbox className="w-8 h-8 text-slate-500 mx-auto mb-1 opacity-50" />
+              <Inbox className="w-8 h-8 text-text-muted mx-auto mb-1 opacity-50" />
               <div className="space-y-1">
-                <p className="text-sm font-semibold text-slate-200">
+                <p className="text-sm font-semibold text-text-primary">
                   No submissions yet
                 </p>
-                <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                <p className="text-xs text-text-muted max-w-sm mx-auto">
                   Submit code directly via "Submit to CSES" or run your code in the workbench to track testcases and benchmarks.
                 </p>
               </div>

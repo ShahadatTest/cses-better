@@ -1,10 +1,10 @@
 import type { LanguageId, Problem } from './types';
 
 export const AI_PROVIDERS = [
-  { id: 'chatgpt', name: 'ChatGPT', url: 'https://chatgpt.com/' },
-  { id: 'claude', name: 'Claude', url: 'https://claude.ai/new' },
-  { id: 'gemini', name: 'Gemini', url: 'https://gemini.google.com/app' },
-  { id: 'grok', name: 'Grok', url: 'https://grok.com/' },
+  { id: 'chatgpt', name: 'ChatGPT', url: 'https://chatgpt.com/', promptParam: 'q' },
+  { id: 'claude', name: 'Claude', url: 'https://claude.ai/new', promptParam: 'q' },
+  { id: 'gemini', name: 'Gemini', url: 'https://gemini.google.com/app', promptParam: undefined },
+  { id: 'grok', name: 'Grok', url: 'https://grok.com/', promptParam: 'q' },
 ] as const;
 
 // Keep URLs conservative for browsers and intermediary limits. If the prompt
@@ -13,15 +13,19 @@ export const MAX_AI_PROMPT_URL_LENGTH = 8_000;
 export const CLAUDE_DESKTOP_URL = 'claude://claude.ai/new';
 
 export function buildAiProviderUrl(providerId: typeof AI_PROVIDERS[number]['id'] | 'claude-desktop', prompt: string): string {
-  if (providerId === 'grok') {
-    const url = `https://grok.com/?q=${encodeURIComponent(prompt)}`;
-    return url.length <= MAX_AI_PROMPT_URL_LENGTH ? url : 'https://grok.com/';
-  }
   if (providerId === 'claude-desktop') {
     const url = `${CLAUDE_DESKTOP_URL}?q=${encodeURIComponent(prompt)}`;
     return url.length <= MAX_AI_PROMPT_URL_LENGTH ? url : CLAUDE_DESKTOP_URL;
   }
-  return AI_PROVIDERS.find(provider => provider.id === providerId)!.url;
+  const provider = AI_PROVIDERS.find(candidate => candidate.id === providerId)!;
+  if (!provider.promptParam) return provider.url;
+  const url = `${provider.url}?${provider.promptParam}=${encodeURIComponent(prompt)}`;
+  return url.length <= MAX_AI_PROMPT_URL_LENGTH ? url : provider.url;
+}
+
+export function hasAiProviderPrompt(url: string): boolean {
+  const params = new URL(url).searchParams;
+  return Boolean(params.get('q') || params.get('prompt'));
 }
 
 export interface AiProblemContext {

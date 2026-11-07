@@ -13,21 +13,17 @@ export async function GET(request: NextRequest) {
 
   if (error) {
     console.warn('[OAuth Callback] Provider returned error:', error, errorDescription);
-    return NextResponse.redirect(`${origin}/?auth_error=${encodeURIComponent(errorDescription || error)}`);
+    return NextResponse.redirect(`${origin}/practice?auth_error=${encodeURIComponent(errorDescription || error)}`);
   }
 
   if (code) {
     const cookieStore = cookies();
     const sanitizeEnv = (val?: string) => (val || '').replace(/^\uFEFF/, '').trim();
-    const supabaseUrl =
-      sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_URL) ||
-      'https://oxxctjyrtdgicbhmlhfy.supabase.co';
-    const supabaseAnonKey =
-      sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) ||
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94eGN0anlydGRnaWNiaG1saGZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM1NTEwNjQsImV4cCI6MjEwOTEyNzA2NH0.YlPXSsdZEG0-WlwKDi-YMsTC7Ov2HeL0hSQD9OYJ1lo';
+    const supabaseUrl = sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_URL);
+    const supabaseAnonKey = sanitizeEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
     if (supabaseUrl && supabaseAnonKey) {
-      const response = NextResponse.redirect(`${origin}/?auth_success=true`);
+      const response = NextResponse.redirect(`${origin}/practice?auth_success=true`);
 
       const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
         cookies: {
@@ -53,13 +49,14 @@ export async function GET(request: NextRequest) {
           return response;
         }
         console.error('[OAuth Callback] Session exchange error:', exchangeError);
-        return NextResponse.redirect(`${origin}/?auth_error=${encodeURIComponent(exchangeError.message)}`);
+        return NextResponse.redirect(`${origin}/practice?auth_error=${encodeURIComponent(exchangeError.message)}`);
       } catch (err: any) {
         console.error('[OAuth Callback] Unexpected error during exchange:', err);
-        return NextResponse.redirect(`${origin}/?auth_error=${encodeURIComponent(err?.message || 'Exchange failed')}`);
+        return NextResponse.redirect(`${origin}/practice?auth_error=${encodeURIComponent(err?.message || 'Exchange failed')}`);
       }
     }
   }
 
-  return NextResponse.redirect(`${origin}/`);
+  const reason = code ? 'Cloud sign-in is not configured on this deployment.' : 'Cloud sign-in did not return an authorization code.';
+  return NextResponse.redirect(`${origin}/practice?auth_error=${encodeURIComponent(reason)}`);
 }

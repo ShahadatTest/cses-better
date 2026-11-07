@@ -290,7 +290,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
         );
       case 2:
         return (
-          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-slate-300/20 text-slate-200 font-bold text-xs border border-slate-300/40">
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-slate-300/20 text-text-primary font-bold text-xs border border-slate-300/40">
             2
           </span>
         );
@@ -302,7 +302,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
         );
       default:
         return (
-          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-surface-2 text-slate-400 font-medium text-xs">
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-surface-2 text-text-muted font-medium text-xs">
             {rank}
           </span>
         );
@@ -322,25 +322,25 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
         <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle bg-surface-1">
           <div className="flex items-center gap-2">
             {icon}
-            <h4 className="font-semibold text-xs text-slate-200 uppercase tracking-wider">
+            <h4 className="font-semibold text-xs text-text-primary uppercase tracking-wider">
               {title}
             </h4>
           </div>
-          <span className="text-[11px] font-mono text-slate-400">
+          <span className="text-[11px] font-mono text-text-muted">
             Top {entries.length} Solvers
           </span>
         </div>
 
         {/* Table Content */}
         {entries.length === 0 ? (
-          <div className="p-6 text-center text-xs text-slate-400">
+          <div className="p-6 text-center text-xs text-text-muted">
             No submissions recorded yet for this benchmark.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-border-subtle/80 bg-surface-0/30 text-slate-400 font-medium uppercase tracking-wider text-[11px]">
+                <tr className="border-b border-border-subtle/80 bg-surface-0/30 text-text-muted font-medium uppercase tracking-wider text-[11px]">
                   <th className="py-2.5 px-3.5 w-14">Rank</th>
                   <th className="py-2.5 px-3.5">User</th>
                   <th className="py-2.5 px-3.5">Language</th>
@@ -357,12 +357,12 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                     <td className="py-2.5 px-3.5 whitespace-nowrap">
                       {renderRankBadge(entry.rank)}
                     </td>
-                    <td className="py-2.5 px-3.5 font-medium text-slate-200">
+                    <td className="py-2.5 px-3.5 font-medium text-text-primary">
                       {onSelectUser ? (
                         <button
                           type="button"
                           onClick={() => onSelectUser(entry.user, entry.userId)}
-                          className="inline-flex items-center gap-1 text-slate-200 hover:text-amber-400 transition-colors group cursor-pointer text-left"
+                          className="inline-flex items-center gap-1 text-text-primary hover:text-amber-400 transition-colors group cursor-pointer text-left"
                           title={`Inspect ${entry.user}'s CSES Profile${entry.userId ? ` (#${entry.userId})` : ''}`}
                         >
                           <span className="truncate max-w-[110px] sm:max-w-[160px] underline decoration-zinc-600 underline-offset-2 group-hover:decoration-amber-400">
@@ -380,7 +380,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                       )}
                     </td>
                     <td className="py-2.5 px-3.5">
-                      <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
+                      <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-text-secondary border border-border-subtle">
                         {entry.language}
                       </span>
                     </td>
@@ -389,7 +389,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                         className={
                           scoreType === 'time'
                             ? 'text-emerald-400'
-                            : 'text-sky-400'
+                            : 'text-accent'
                         }
                       >
                         {entry.score}
@@ -398,7 +398,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                     <td className="py-2.5 px-3.5 text-right">
                       <button
                         onClick={() => openFastestAcceptedCode(entry)}
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded bg-surface-2 hover:bg-surface-3 text-sky-400 hover:text-sky-300 border border-border-subtle text-[11px] font-medium transition-colors"
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded bg-surface-2 hover:bg-surface-3 text-accent hover:text-accent border border-border-subtle text-[11px] font-medium transition-colors"
                         title={`View ${entry.user}'s code pattern & benchmarks`}
                       >
                         <Eye className="w-3 h-3" />
@@ -425,8 +425,8 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
             className={cn(
               'flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all',
               activeSubTab === 'hof'
-                ? 'bg-surface-0 text-slate-100 shadow-sm border border-border-subtle'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-surface-0 text-text-primary shadow-sm border border-border-subtle'
+                : 'text-text-muted hover:text-text-primary'
             )}
           >
             <Trophy className="w-3.5 h-3.5 text-amber-400" />
@@ -438,11 +438,11 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
             className={cn(
               'flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all',
               activeSubTab === 'queue'
-                ? 'bg-surface-0 text-slate-100 shadow-sm border border-border-subtle'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-surface-0 text-text-primary shadow-sm border border-border-subtle'
+                : 'text-text-muted hover:text-text-primary'
             )}
           >
-            <ListOrdered className="w-3.5 h-3.5 text-sky-400" />
+            <ListOrdered className="w-3.5 h-3.5 text-accent" />
             <span>Official Submissions Queue</span>
           </button>
         </div>
@@ -460,11 +460,11 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                 }
               }}
               disabled={isRefreshing || isLoadingQueue}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-2 hover:bg-surface-3 disabled:opacity-50 text-slate-200 hover:text-white rounded-lg text-xs font-medium border border-border-subtle transition-all active:scale-95"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-2 hover:bg-surface-3 disabled:opacity-50 text-text-primary hover:text-white rounded-lg text-xs font-medium border border-border-subtle transition-all active:scale-95"
               title="Pull latest live submissions from CSES"
             >
               <RefreshCw
-                className={cn('w-3.5 h-3.5 text-sky-400', (isRefreshing || isLoadingQueue) && 'animate-spin')}
+                className={cn('w-3.5 h-3.5 text-accent', (isRefreshing || isLoadingQueue) && 'animate-spin')}
               />
               <span>{isRefreshing || isLoadingQueue ? 'Refreshing...' : 'Refresh'}</span>
             </button>
@@ -484,10 +484,10 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div className="min-w-0">
-                  <div className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+                  <div className="text-xs font-medium text-text-muted uppercase tracking-wider">
                     Solved By
                   </div>
-                  <div className="text-lg font-bold text-slate-100 font-mono truncate">
+                  <div className="text-lg font-bold text-text-primary font-mono truncate">
                     {stats.solvedBy.toLocaleString()}
                   </div>
                 </div>
@@ -495,14 +495,14 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
 
               {/* Attempted By */}
               <div className="flex items-center gap-3.5 p-3.5 rounded-lg border border-border-subtle bg-surface-1/70 shadow-sm">
-                <div className="p-2.5 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/20 shrink-0">
+                <div className="p-2.5 rounded-md bg-accent/10 text-accent border border-accent/20 shrink-0">
                   <Users className="w-5 h-5" />
                 </div>
                 <div className="min-w-0">
-                  <div className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+                  <div className="text-xs font-medium text-text-muted uppercase tracking-wider">
                     Attempted By
                   </div>
-                  <div className="text-lg font-bold text-slate-100 font-mono truncate">
+                  <div className="text-lg font-bold text-text-primary font-mono truncate">
                     {stats.attemptedBy.toLocaleString()}
                   </div>
                 </div>
@@ -514,11 +514,11 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                   <Percent className="w-5 h-5" />
                 </div>
                 <div className="min-w-0">
-                  <div className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+                  <div className="text-xs font-medium text-text-muted uppercase tracking-wider">
                     Success Rate
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-slate-100 font-mono">
+                    <span className="text-lg font-bold text-text-primary font-mono">
                       {stats.successRate || '0.0%'}
                     </span>
                     <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30">
@@ -535,8 +535,8 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
             <div className="p-4 rounded-lg border border-border-muted bg-gradient-to-br from-surface-1 to-surface-2/60 shadow-md">
               <div className="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-border-subtle">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-sky-400" />
-                  <h3 className="text-sm font-semibold text-slate-200">
+                  <Sparkles className="w-4 h-4 text-accent" />
+                  <h3 className="text-sm font-semibold text-text-primary">
                     Personal Performance vs Hall of Fame
                   </h3>
                 </div>
@@ -546,7 +546,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                       'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border',
                       isSolved
                         ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                        : 'bg-slate-700/40 text-slate-300 border-border-subtle'
+                        : 'bg-slate-700/40 text-text-secondary border-border-subtle'
                     )}
                   >
                     {isSolved ? (
@@ -555,7 +555,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                       </>
                     ) : (
                       <>
-                        <CircleDot className="w-3.5 h-3.5 text-slate-400" /> Not Solved Yet
+                        <CircleDot className="w-3.5 h-3.5 text-text-muted" /> Not Solved Yet
                       </>
                     )}
                   </span>
@@ -565,24 +565,24 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Runtime Comparison */}
                 <div className="p-3 rounded-md bg-surface-0/60 border border-border-subtle">
-                  <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
-                    <span className="flex items-center gap-1 font-medium text-slate-300">
+                  <div className="flex items-center justify-between text-xs text-text-muted mb-1.5">
+                    <span className="flex items-center gap-1 font-medium text-text-secondary">
                       <Clock className="w-3.5 h-3.5 text-emerald-400" /> Runtime
                     </span>
                     {fastestEntry && (
-                      <span className="text-[11px] text-slate-400 font-mono">
+                      <span className="text-[11px] text-text-muted font-mono">
                         HOF #1: {fastestEntry.score} ({fastestEntry.user})
                       </span>
                     )}
                   </div>
 
                   <div className="flex items-baseline justify-between mb-2">
-                    <div className="text-base font-bold font-mono text-slate-100">
+                    <div className="text-base font-bold font-mono text-text-primary">
                       {userExecutionTimeMs !== undefined
                         ? `${userExecutionTimeMs} ms`
                         : '—'}
                     </div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-text-muted">
                       {userExecutionTimeMs !== undefined && fastestEntry
                         ? userExecutionTimeMs <= fastestMs
                           ? '⚡ Top Tier Speed'
@@ -601,24 +601,24 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
 
                 {/* Code Size Comparison */}
                 <div className="p-3 rounded-md bg-surface-0/60 border border-border-subtle">
-                  <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
-                    <span className="flex items-center gap-1 font-medium text-slate-300">
-                      <FileCode2 className="w-3.5 h-3.5 text-sky-400" /> Code Size
+                  <div className="flex items-center justify-between text-xs text-text-muted mb-1.5">
+                    <span className="flex items-center gap-1 font-medium text-text-secondary">
+                      <FileCode2 className="w-3.5 h-3.5 text-accent" /> Code Size
                     </span>
                     {shortestEntry && (
-                      <span className="text-[11px] text-slate-400 font-mono">
+                      <span className="text-[11px] text-text-muted font-mono">
                         HOF #1: {shortestEntry.score} ({shortestEntry.user})
                       </span>
                     )}
                   </div>
 
                   <div className="flex items-baseline justify-between mb-2">
-                    <div className="text-base font-bold font-mono text-slate-100">
+                    <div className="text-base font-bold font-mono text-text-primary">
                       {userCharCount !== undefined
                         ? `${userCharCount.toLocaleString()} chars`
                         : '—'}
                     </div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-text-muted">
                       {userCharCount !== undefined && shortestChars > 0
                         ? userCharCount <= shortestChars
                           ? '🎯 Code Golf Master'
@@ -629,7 +629,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
 
                   <div className="w-full bg-surface-3/50 h-2 rounded-full overflow-hidden">
                     <div
-                      className="bg-sky-400 h-full rounded-full transition-all duration-500"
+                      className="bg-accent h-full rounded-full transition-all duration-500"
                       style={{ width: `${sizeEfficiency ?? 0}%` }}
                     />
                   </div>
@@ -644,13 +644,13 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 {/* Search solver */}
                 <div className="relative min-w-[130px] sm:min-w-[160px]">
-                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" />
                   <input
                     type="text"
                     value={searchUser}
                     onChange={(e) => setSearchUser(e.target.value)}
                     placeholder="Search solver..."
-                    className="w-full pl-8 pr-2.5 py-1.5 rounded-lg bg-surface-2 border border-border-subtle text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-sky-500"
+                    className="w-full pl-8 pr-2.5 py-1.5 rounded-lg bg-surface-2 border border-border-subtle text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent"
                   />
                 </div>
 
@@ -658,7 +658,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                 <select
                   value={filterLang}
                   onChange={(e) => setFilterLang(e.target.value)}
-                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                 >
                   <option value="all">All Languages</option>
                   <option value="c++">C++</option>
@@ -674,7 +674,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                 >
                   <option value="rank_asc">Sort: Rank (Best First)</option>
                   <option value="score_asc">Sort: Score</option>
@@ -690,7 +690,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                     setSearchUser('');
                     setSortBy('rank_asc');
                   }}
-                  className="text-xs text-sky-400 hover:underline cursor-pointer"
+                  className="text-xs text-accent hover:underline cursor-pointer"
                 >
                   Reset Filters
                 </button>
@@ -710,7 +710,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
               )}
               {renderTable(
                 'Shortest Code',
-                <FileCode2 className="w-4 h-4 text-sky-400" />,
+                <FileCode2 className="w-4 h-4 text-accent" />,
                 filteredShortest,
                 'Characters',
                 'size'
@@ -718,8 +718,8 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
             </div>
           ) : (
             <div className="p-8 text-center rounded-lg border border-border-subtle bg-surface-1/40">
-              <Trophy className="w-8 h-8 text-slate-500 mx-auto mb-2 opacity-50" />
-              <p className="text-sm font-medium text-slate-300">
+              <Trophy className="w-8 h-8 text-text-muted mx-auto mb-2 opacity-50" />
+              <p className="text-sm font-medium text-text-secondary">
                 No Hall of Fame records for this problem yet
               </p>
             </div>
@@ -729,11 +729,11 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
         /* --- LIVE SUBMISSIONS QUEUE TAB --- */
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h4 className="font-semibold text-xs text-slate-200 uppercase tracking-wider flex items-center gap-2">
-              <Code2 className="w-4 h-4 text-sky-400" />
+            <h4 className="font-semibold text-xs text-text-primary uppercase tracking-wider flex items-center gap-2">
+              <Code2 className="w-4 h-4 text-accent" />
               <span>Official CSES Submissions Queue</span>
             </h4>
-            <span className="text-xs font-mono text-slate-400">
+            <span className="text-xs font-mono text-text-muted">
               {queueSubmissions.length} Submissions Loaded
             </span>
           </div>
@@ -743,20 +743,20 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
             <div className="flex flex-wrap items-center justify-between gap-2.5 p-2.5 rounded-xl border border-border-subtle bg-surface-1/80 text-xs shadow-xs">
               <div className="flex flex-wrap items-center gap-2">
                 <div className="relative min-w-[130px] sm:min-w-[160px]">
-                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" />
                   <input
                     type="text"
                     value={searchUser}
                     onChange={(e) => setSearchUser(e.target.value)}
                     placeholder="Search solver..."
-                    className="w-full pl-8 pr-2.5 py-1.5 rounded-lg bg-surface-2 border border-border-subtle text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-sky-500"
+                    className="w-full pl-8 pr-2.5 py-1.5 rounded-lg bg-surface-2 border border-border-subtle text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent"
                   />
                 </div>
 
                 <select
                   value={filterLang}
                   onChange={(e) => setFilterLang(e.target.value)}
-                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                 >
                   <option value="all">All Languages</option>
                   <option value="c++">C++</option>
@@ -770,7 +770,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                 <select
                   value={filterVerdict}
                   onChange={(e) => setFilterVerdict(e.target.value)}
-                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                 >
                   <option value="all">All Verdicts</option>
                   <option value="ACCEPTED">Accepted (AC)</option>
@@ -780,7 +780,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                 <select
                   value={queueSortBy}
                   onChange={(e) => setQueueSortBy(e.target.value as any)}
-                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="bg-surface-2 border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                 >
                   <option value="time_desc">Sort: Newest First</option>
                   <option value="time_asc">Sort: Oldest First</option>
@@ -795,10 +795,10 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                 </p>
               )}
 
-              <div className="flex items-center gap-2 text-slate-400 text-[11px]">
+              <div className="flex items-center gap-2 text-text-muted text-[11px]">
                 <span>Showing {filteredQueue.length} of {queueSubmissions.length}</span>
                 {queueCursor && (
-                  <button type="button" onClick={() => fetchQueue(queueCursor)} disabled={isLoadingQueue} className="text-sky-400 hover:underline disabled:opacity-50">
+                  <button type="button" onClick={() => fetchQueue(queueCursor)} disabled={isLoadingQueue} className="text-accent hover:underline disabled:opacity-50">
                     Load older
                   </button>
                 )}
@@ -811,7 +811,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                       setSearchUser('');
                       setQueueSortBy('time_desc');
                     }}
-                    className="text-sky-400 hover:underline cursor-pointer"
+                    className="text-accent hover:underline cursor-pointer"
                   >
                     Reset
                   </button>
@@ -822,16 +822,16 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
 
           {isLoadingQueue ? (
             <div className="p-12 text-center rounded-xl border border-border-subtle bg-surface-1/40 flex flex-col items-center justify-center space-y-2">
-              <Loader2 className="w-6 h-6 animate-spin text-sky-400" />
-              <span className="text-xs text-slate-400">Fetching original queue submissions from CSES.fi...</span>
+              <Loader2 className="w-6 h-6 animate-spin text-accent" />
+              <span className="text-xs text-text-muted">Fetching original queue submissions from CSES.fi...</span>
             </div>
           ) : queueSubmissions.length === 0 ? (
             <div className="p-8 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-1">
-              <Code2 className="w-8 h-8 text-slate-500 mx-auto mb-2 opacity-50" />
-              <p className="text-sm font-medium text-slate-300">
+              <Code2 className="w-8 h-8 text-text-muted mx-auto mb-2 opacity-50" />
+              <p className="text-sm font-medium text-text-secondary">
                 No previous submissions recorded on CSES for this problem.
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-text-muted">
                 Submit your solution using "Submit to CSES" to inspect your live queue status and code.
               </p>
             </div>
@@ -839,7 +839,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
             <div className="overflow-x-auto rounded-xl border border-border-subtle bg-surface-1/60">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border-subtle bg-surface-0/40 text-slate-400 font-medium uppercase tracking-wider text-[11px]">
+                  <tr className="border-b border-border-subtle bg-surface-0/40 text-text-muted font-medium uppercase tracking-wider text-[11px]">
                     <th className="py-2.5 px-3.5">ID</th>
                     <th className="py-2.5 px-3.5">User</th>
                     <th className="py-2.5 px-3.5">Timestamp</th>
@@ -853,7 +853,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                 <tbody className="divide-y divide-border-subtle/50">
                   {filteredQueue.map((sub) => (
                     <tr key={sub.id} className="hover:bg-surface-2/30 transition-colors">
-                      <td className="py-2.5 px-3.5 font-mono font-medium text-sky-400">
+                      <td className="py-2.5 px-3.5 font-mono font-medium text-accent">
                         #{sub.id}
                       </td>
                       <td className="py-2.5 px-3.5">
@@ -861,28 +861,28 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                           <button
                             type="button"
                             onClick={() => onSelectUser?.(sub.user || 'Unknown', sub.userId)}
-                            className="text-sky-400 hover:text-sky-300 hover:underline font-mono inline-flex items-center gap-1 font-medium cursor-pointer"
+                            className="text-accent hover:text-accent hover:underline font-mono inline-flex items-center gap-1 font-medium cursor-pointer"
                             title={`Inspect official profile for ${sub.user}`}
                           >
                             <span>{sub.user || 'User'}</span>
-                            {sub.userId && <span className="text-[10px] text-slate-500 font-normal">#{sub.userId}</span>}
+                            {sub.userId && <span className="text-[10px] text-text-muted font-normal">#{sub.userId}</span>}
                           </button>
                         ) : (
-                          <span className="text-slate-500">Unknown</span>
+                          <span className="text-text-muted">Unknown</span>
                         )}
                       </td>
-                      <td className="py-2.5 px-3.5 text-slate-400 font-mono text-[11px]">
+                      <td className="py-2.5 px-3.5 text-text-muted font-mono text-[11px]">
                         {sub.time}
                       </td>
                       <td className="py-2.5 px-3.5">
-                        <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
+                        <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-text-secondary border border-border-subtle">
                           {sub.language}
                         </span>
                       </td>
                       <td className="py-2.5 px-3.5 font-mono text-emerald-400 font-semibold">
                         {sub.runtime || '—'}
                       </td>
-                      <td className="py-2.5 px-3.5 font-mono text-slate-300">
+                      <td className="py-2.5 px-3.5 font-mono text-text-secondary">
                         {sub.size || '—'}
                       </td>
                       <td className="py-2.5 px-3.5">
@@ -909,7 +909,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                               scoreType: 'queue',
                             })
                           }
-                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 text-xs font-medium transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-accent/20 hover:bg-accent/30 text-accent border border-accent/30 text-xs font-medium transition-colors cursor-pointer"
                         >
                           <Eye className="w-3 h-3" />
                           <span>View Code</span>
