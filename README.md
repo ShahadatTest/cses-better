@@ -210,7 +210,7 @@ Deploy `supabase/migrations/20261104172357_user_problem_lists.sql` to the linked
 
 ### AI help, official submissions, and streaks
 
-Use **Ask AI** in either problem workspace to copy a hint-first prompt and open ChatGPT, Claude, Gemini, or Grok. Editor code is included only when selected. If clipboard access fails, the menu provides selectable prompt text.
+Use **Ask AI** in either problem workspace to open a hint-first prompt in Grok, or copy it and open ChatGPT, Claude, or Gemini. **Open Claude Desktop** is an optional link for the installed desktop app. Editor code is included only when selected. Grok may ask you to confirm before sending. If clipboard access fails, the menu provides selectable prompt text.
 
 Submission filters query CSES history. Leaderboard **See code** retrieves actual accepted source; incomplete searches are labeled as the fastest result found. Official verdicts and available test details appear separately from local workbench runs. An interrupted verdict check can be retried without submitting code again.
 

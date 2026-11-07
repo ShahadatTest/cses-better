@@ -7,6 +7,23 @@ export const AI_PROVIDERS = [
   { id: 'grok', name: 'Grok', url: 'https://grok.com/' },
 ] as const;
 
+// Keep URLs conservative for browsers and intermediary limits. If the prompt
+// does not fit, open the provider normally and rely on the clipboard fallback.
+export const MAX_AI_PROMPT_URL_LENGTH = 8_000;
+export const CLAUDE_DESKTOP_URL = 'claude://claude.ai/new';
+
+export function buildAiProviderUrl(providerId: typeof AI_PROVIDERS[number]['id'] | 'claude-desktop', prompt: string): string {
+  if (providerId === 'grok') {
+    const url = `https://grok.com/?q=${encodeURIComponent(prompt)}`;
+    return url.length <= MAX_AI_PROMPT_URL_LENGTH ? url : 'https://grok.com/';
+  }
+  if (providerId === 'claude-desktop') {
+    const url = `${CLAUDE_DESKTOP_URL}?q=${encodeURIComponent(prompt)}`;
+    return url.length <= MAX_AI_PROMPT_URL_LENGTH ? url : CLAUDE_DESKTOP_URL;
+  }
+  return AI_PROVIDERS.find(provider => provider.id === providerId)!.url;
+}
+
 export interface AiProblemContext {
   title: string;
   sourceUrl: string;
