@@ -207,3 +207,13 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 Lists are saved locally and included in JSON backups. Signing in imports guest lists once and synchronizes account lists separately. Changes remain available offline; use Retry sync in Lists if a sync fails. When two devices edit the same list, the cloud version is kept and the local version is saved as a recovered list. Deleted lists use tombstones so an older device cannot restore them accidentally. Learn lessons are bundled static files; hints and explanations are revealed on demand.
 
 Deploy `supabase/migrations/20261104172357_user_problem_lists.sql` to the linked Supabase project using `supabase db push` before enabling cloud list sync. The migration grants authenticated users access only to their own rows and enforces revision increments. Existing local lists continue to work if the migration has not been deployed.
+
+### AI help, official submissions, and streaks
+
+Use **Ask AI** in either problem workspace to copy a hint-first prompt and open ChatGPT, Claude, Gemini, or Grok. Editor code is included only when selected. If clipboard access fails, the menu provides selectable prompt text.
+
+Submission filters query CSES history. Leaderboard **See code** retrieves actual accepted source; incomplete searches are labeled as the fastest result found. Official verdicts and available test details appear separately from local workbench runs. An interrupted verdict check can be retried without submitting code again.
+
+Stars are stored per app account, with offline additions and removals retried during synchronization. The streak indicator counts verified personal CSES accepts, using the earliest retrieved acceptance per problem and a persisted timezone. Use **Import / continue history** to backfill older solves; **Pause import** saves progress. Coverage gaps remain visible until verified history is available. Shared-account submissions and manual solved marks do not add streak activity.
+
+Before enabling cloud streak synchronization, deploy `supabase/migrations/20261106190911_official_solve_streaks.sql` to the linked Supabase project with `supabase db push`. It adds owner-restricted solve history and timezone preferences, preserves the earliest acceptance during concurrent updates, and ensures bookmark table access. Local storage remains available while cloud synchronization is unavailable. JSON backups include stars and streak history.

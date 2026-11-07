@@ -242,6 +242,7 @@ export async function POST(request: NextRequest) {
       resultUrl: `${CSES_BASE_URL}/problemset/result/${submissionId}/`,
       problemId,
       sessionCookie,
+      owner: { nick: effectiveNick, userId: userMatch?.[1], isPersonal: !useDefaultBot },
     });
 
     if (sessionCookie) {

@@ -16,6 +16,7 @@ import {
   isLargeInput,
   UserProfile,
   ProblemStats,
+  CsesVerdictResult,
 } from '../core/types';
 import {
   getDraft,
@@ -28,6 +29,7 @@ import {
   getStarredProblems,
   saveStarredProblem,
   removeStarredProblem,
+  claimGuestStars,
   cleanEmptySubmissions,
   getSettings,
   saveSettings,
@@ -42,6 +44,7 @@ import {
   fetchUserDataFromCloud,
   syncUserDataToCloud,
   syncAllLocalProgressToCloud,
+  syncPendingStarredToCloud,
 } from '../core/supabase';
 import { getLanguageTemplate } from '../core/templates';
 import { executeCode } from '../core/compiler';
@@ -70,6 +73,7 @@ import { AllNotesModal } from '../components/AllNotesModal';
 import { ListsModal } from '../components/ListsModal';
 import { ContestBankModal } from '../components/ContestBankModal';
 import type { ContestProblem } from '../core/contest-types';
+import { recordOfficialSolve, syncOfficialSolves } from '../core/streaks';
 
 const allProblems = problemsData as Problem[];
 
@@ -122,6 +126,29 @@ export default function CSESBetterApp() {
   const [solvedIds, setSolvedIds] = useState<Set<string>>(new Set());
   const [starredIds, setStarredIds] = useState<Set<string>>(new Set());
   const [submissions, setSubmissions] = useState<SubmissionRecord[]>([]);
+
+  useEffect(() => {
+    const owner = currentUser?.id || 'guest';
+    let active = true;
+    const refresh = () => { if (active) setStarredIds(getStarredProblems(owner)); };
+    const synchronize = () => {
+      refresh();
+      if (owner !== 'guest') syncPendingStarredToCloud(owner).then(refresh).catch(() => {});
+    };
+    const onVisible = () => { if (document.visibilityState === 'visible') synchronize(); };
+    synchronize();
+    window.addEventListener('online', synchronize);
+    window.addEventListener('storage', refresh);
+    window.addEventListener('cses-stars-changed', refresh);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      active = false;
+      window.removeEventListener('online', synchronize);
+      window.removeEventListener('storage', refresh);
+      window.removeEventListener('cses-stars-changed', refresh);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [currentUser?.id]);
 
   // Testing & Execution State
   const [customTestCases, setCustomTestCases] = useState<Record<string, TestCase[]>>({});
@@ -287,6 +314,7 @@ export default function CSESBetterApp() {
           setCurrentUser(user);
           setListOwner(user.id);
           saveStoredUser(user);
+          if (user) claimGuestStars(user.id);
           // Sync once on initial mount if a valid session exists
           syncAllLocalProgressToCloud(user.id).then(() => {
             setSolvedIds(getSolvedProblems());
@@ -301,6 +329,7 @@ export default function CSESBetterApp() {
           setCurrentUser(user);
           setListOwner(user.id);
           saveStoredUser(user);
+          claimGuestStars(user.id);
           // Only sync on explicit SIGNED_IN event, never on TOKEN_REFRESHED or repeatedly on mount
           if (event === 'SIGNED_IN') {
             syncAllLocalProgressToCloud(user.id).then(() => {
@@ -323,34 +352,18 @@ export default function CSESBetterApp() {
 
   // Handler for when official CSES verdict is ACCEPTED
   const handleOfficialCsesAccepted = useCallback(
-    (pId: string, acceptedCode?: string, lang?: LanguageId) => {
-      const finalCode = acceptedCode || code;
-      const finalLang = lang || activeLanguage;
-
+    (pId: string, result?: CsesVerdictResult) => {
+      saveSolvedProblem(pId);
       setSolvedIds((prev) => {
         const updated = new Set(prev);
         updated.add(pId);
-        saveSolvedProblem(pId, finalLang, finalCode);
         return updated;
       });
-
-      // Save submission record so it appears with code in My Workbench Runs
-      if (finalCode && finalCode.trim()) {
-        const officialRecord: SubmissionRecord = {
-          id: `cses-sub-${Date.now()}`,
-          problemId: pId,
-          language: finalLang,
-          code: finalCode,
-          charCount: finalCode.length,
-          timestamp: Date.now(),
-          status: 'AC',
-          passedCount: 1,
-          totalCount: 1,
-          maxTimeMs: 0,
-          maxMemoryBytes: 1024 * 1024,
-        };
-        saveSubmission(officialRecord);
-        setSubmissions(getSubmissions(pId));
+      setSubmissions(getSubmissions(pId));
+      if (result?.owner?.isPersonal && result.owner.userId && result.timestamp) {
+        const owner = currentUser?.id || 'guest';
+        recordOfficialSolve(owner, result.owner.userId, pId, result.timestamp);
+        if (currentUser) void syncOfficialSolves(owner, result.owner.userId).catch(() => {});
       }
 
       try {
@@ -368,7 +381,7 @@ export default function CSESBetterApp() {
       // Immediately bypass cache and pull live CSES leaderboard containing the new submission
       handleFetchStats(pId, true);
     },
-    [currentUser, solvedIds, activeLanguage, code, submissions, handleFetchStats, queueDebouncedCloudSync]
+    [currentUser, handleFetchStats, queueDebouncedCloudSync]
   );
 
   // Manual toggle for problem solved status from tick boxes
@@ -404,24 +417,15 @@ export default function CSESBetterApp() {
   // Manual toggle for problem starred status
   const handleToggleStarred = useCallback(
     (pId: string) => {
-      setStarredIds((prev) => {
-        const updated = new Set(prev);
-        if (updated.has(pId)) {
-          updated.delete(pId);
-          removeStarredProblem(pId);
-        } else {
-          updated.add(pId);
-          saveStarredProblem(pId);
-        }
-
-        if (currentUser) {
-          queueDebouncedCloudSync(currentUser.id);
-        }
-
-        return updated;
-      });
+      const owner = currentUser?.id || 'guest';
+      if (getStarredProblems(owner).has(pId)) removeStarredProblem(pId, owner);
+      else saveStarredProblem(pId, owner);
+      setStarredIds(getStarredProblems(owner));
+      if (currentUser) void syncPendingStarredToCloud(owner).then(() => {
+        if (getStoredUser()?.id === owner) setStarredIds(getStarredProblems(owner));
+      }).catch(() => {});
     },
-    [currentUser, queueDebouncedCloudSync]
+    [currentUser]
   );
 
   const handleOpenCsesProfile = useCallback((nickOrId?: string, userId?: string) => {
@@ -1075,6 +1079,8 @@ export default function CSESBetterApp() {
           <div className="h-full w-full overflow-hidden bg-surface-1">
             <ProblemPane
               problem={currentProblem}
+              editorCode={code}
+              editorLanguage={activeLanguage}
               submissions={submissions}
               isSolved={solvedIds.has(currentProblem.id)}
               isStarred={starredIds.has(currentProblem.id)}
@@ -1188,6 +1194,7 @@ export default function CSESBetterApp() {
         onUserChange={(user) => {
           setCurrentUser(user);
           saveStoredUser(user);
+          if (user) claimGuestStars(user.id);
         }}
         solvedCount={solvedIds.size}
       />
@@ -1200,7 +1207,11 @@ export default function CSESBetterApp() {
         problemTitle={currentProblem.title}
         language={activeLanguage}
         code={code}
-        onAccepted={(pId) => handleOfficialCsesAccepted(pId, code, activeLanguage)}
+        onAccepted={handleOfficialCsesAccepted}
+        onCompleted={(record) => {
+          if (record.problemId === currentProblemId) setSubmissions(getSubmissions(currentProblemId));
+          if (currentUser) queueDebouncedCloudSync(currentUser.id);
+        }}
       />
 
       {/* CSES User Profile Inspector Modal */}

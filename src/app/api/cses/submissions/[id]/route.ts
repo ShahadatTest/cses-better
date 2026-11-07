@@ -2,200 +2,88 @@ import { NextRequest, NextResponse } from 'next/server';
 import { csesRequest, CSES_BASE_URL, getSharedCsesSession } from '@/core/cses-network';
 import { registerUserMapping } from '@/core/cses-user-cache';
 import { CsesSubmissionSummary } from '@/core/types';
+import { normalizeCsesLanguage, nextQueuePageLink, parseQueueRows } from '@/core/cses-history';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   const problemId = params.id;
-  if (!problemId || !/^\d+$/.test(problemId)) {
-    return NextResponse.json({ error: 'Valid numeric Problem ID is required' }, { status: 400 });
-  }
-
+  if (!/^\d{1,10}$/.test(problemId || '')) return NextResponse.json({ error: 'Valid numeric Problem ID is required' }, { status: 400 });
+  const headers = { 'Cache-Control': 'private, no-store' };
+  const requestedCursor = request.nextUrl.searchParams.get('cursor');
+  const cursorUrl = requestedCursor ? (() => { try { const parsed = new URL(requestedCursor); const page = parsed.pathname.match(new RegExp(`^/problemset/queue/${problemId}/(\\d+)/?$`))?.[1]; return parsed.origin === CSES_BASE_URL && !parsed.username && !parsed.password && Number(page) <= 20000 ? parsed.toString() : ''; } catch { return ''; } })() : '';
+  if (requestedCursor && !cursorUrl) return NextResponse.json({ error: 'Invalid history cursor' }, { status: 400, headers });
   try {
-    const userSessionCookie =
-      request.headers.get('x-cses-session') ||
-      request.cookies.get('cses_session')?.value;
-
-    const sessionCookie = userSessionCookie || (await getSharedCsesSession());
+    const userCookie = request.headers.get('x-cses-session') || request.cookies.get('cses_session')?.value;
+    const cookie = userCookie || await getSharedCsesSession();
+    const viewRes = userCookie ? await csesRequest(`${CSES_BASE_URL}/problemset/view/${problemId}/`, { cookie, timeout: 1500 }) : { statusCode: 0, body: '' };
     const submissions: CsesSubmissionSummary[] = [];
     const mySubmissions: CsesSubmissionSummary[] = [];
-    const seenIds = new Set<string>();
-
-    // 1. Fetch personal results from view page first to identify personal submissions & account details
-    const personalSubmissionsByTime = new Map<string, { id: string; user: string; userId: string; status: string }>();
-    let personalUser = 'You';
-    let personalUserId: string | undefined = undefined;
-
-    const viewUrl = `${CSES_BASE_URL}/problemset/view/${problemId}/`;
-    const viewRes = await csesRequest(viewUrl, { cookie: sessionCookie });
-
-    if (viewRes.statusCode === 200) {
-      const accountMatch = viewRes.body.match(/<a class="account" href="\/user\/(\d+)">([^<]+)<\/a>/i);
-      if (accountMatch) {
-        personalUserId = accountMatch[1].trim();
-        personalUser = accountMatch[2].trim();
-        registerUserMapping(personalUser, personalUserId);
-      }
-
-      const viewRowRegex =
-        /<tr>\s*<td[^>]*>([\d\s:-]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*class="[^"]*task-score[^"]*icon\s+([^"]+)"[^>]*><\/td>\s*<td[^>]*><a[^>]*href="\/problemset\/result\/(\d+)\/?"[^>]*>.*?<\/a><\/td>\s*<\/tr>/gi;
-
-      let vMatch: RegExpExecArray | null;
-      while ((vMatch = viewRowRegex.exec(viewRes.body)) !== null) {
-        const time = vMatch[1].trim();
-        const language = vMatch[2].trim();
-        const runtime = vMatch[3].replace(/&nbsp;/g, ' ').trim();
-        const size = vMatch[4].replace(/&nbsp;/g, ' ').trim();
-        const rawStatus = vMatch[5].trim();
-        const submissionId = vMatch[6].trim();
-
-        const status = rawStatus.includes('full')
-          ? 'ACCEPTED'
-          : rawStatus.includes('zero')
-          ? 'WRONG ANSWER'
-          : rawStatus.toUpperCase();
-
-        const personalRecord: CsesSubmissionSummary = {
-          id: submissionId,
-          user: personalUser,
-          userId: personalUserId,
-          time,
-          language,
-          runtime,
-          size,
-          status,
-          resultUrl: `${CSES_BASE_URL}/problemset/result/${submissionId}/`,
-        };
-
-        personalSubmissionsByTime.set(time, {
-          id: submissionId,
-          user: personalUser,
-          userId: personalUserId || '520654',
-          status,
-        });
-
-        mySubmissions.push(personalRecord);
-
-        if (!seenIds.has(submissionId)) {
-          seenIds.add(submissionId);
-          submissions.push(personalRecord);
-        }
-      }
-
-      // Also parse sidebar "Your submissions" list to ensure no historical submissions are missed
-      const sidebarRegex =
-        /<a[^>]*href="\/problemset\/result\/(\d+)\/?"[^>]*>([\d\s:-]+)\s*<span[^>]*class="[^"]*task-score[^"]*icon\s+([^"]+)"[^>]*><\/span><\/a>/gi;
-      let sMatch: RegExpExecArray | null;
-      while ((sMatch = sidebarRegex.exec(viewRes.body)) !== null) {
-        const submissionId = sMatch[1].trim();
-        const time = sMatch[2].trim();
-        const rawStatus = sMatch[3].trim();
-
-        if (!seenIds.has(submissionId)) {
-          seenIds.add(submissionId);
-          const status = rawStatus.includes('full')
-            ? 'ACCEPTED'
-            : rawStatus.includes('zero')
-            ? 'WRONG ANSWER'
-            : rawStatus.toUpperCase();
-
-          const rec: CsesSubmissionSummary = {
-            id: submissionId,
-            user: personalUser,
-            userId: personalUserId,
-            time,
-            language: 'C++',
-            runtime: '--',
-            size: '--',
-            status,
-            resultUrl: `${CSES_BASE_URL}/problemset/result/${submissionId}/`,
-          };
-          mySubmissions.push(rec);
-          submissions.push(rec);
-        }
-      }
+    let nick = 'You';
+    let userId: string | undefined;
+    const seen = new Set<string>();
+    const account = viewRes.body.match(/<a class="account" href="\/user\/(\d+)">([^<]+)<\/a>/i);
+    if (account) { userId = account[1]; nick = account[2].trim(); registerUserMapping(nick, userId); }
+    const rowRe = /<tr>\s*<td[^>]*>([\d\s:-]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*class="[^"]*task-score[^\"]*icon\s+([^\"]+)"[^>]*><\/td>\s*<td[^>]*><a[^>]*href="\/problemset\/result\/(\d+)\/?"[^>]*>.*?<\/a><\/td>/gi;
+    for (const m of viewRes.body.matchAll(rowRe)) {
+      const status = m[5].includes('full') ? 'ACCEPTED' : m[5].includes('zero') ? 'FAILED' : m[5].toUpperCase();
+      const id = m[6];
+      const entry: CsesSubmissionSummary = { id, user: nick, userId, time: m[1].trim(), language: m[2].trim(), runtime: m[3].replace(/&nbsp;/g, ' ').trim(), size: m[4].replace(/&nbsp;/g, ' ').trim(), status, resultUrl: `${CSES_BASE_URL}/problemset/result/${id}/`, isPersonal: true };
+      mySubmissions.push(entry); submissions.push(entry); seen.add(id);
     }
 
-    // 2. Fetch official CSES Queue (all users' live submissions)
-    const queueUrl = `${CSES_BASE_URL}/problemset/queue/${problemId}/1/`;
-    const queueRes = await csesRequest(queueUrl, { cookie: sessionCookie });
-
-    if (queueRes.statusCode === 200) {
-      const queueRowRegex =
-        /<tr>\s*<td[^>]*>([\d\s:-]+)<\/td>\s*<td[^>]*>(?:<a[^>]*href="\/user\/(\d+)\/?"[^>]*>([^<]+)<\/a>|([^<]+))<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*>([^<]+)<\/td>\s*<td[^>]*class="[^"]*task-score[^"]*icon\s+([^"]+)"[^>]*><\/td>\s*<td[^>]*>(?:<a[^>]*href="[^"]*(?:entry|result)\/(\d+)\/?"[^>]*>.*?<\/a>)?<\/td>\s*<\/tr>/gi;
-
-      let match: RegExpExecArray | null;
-      while ((match = queueRowRegex.exec(queueRes.body)) !== null) {
-        const time = match[1].trim();
-        const userId = match[2]?.trim();
-        const user = (match[3] || match[4] || 'Anonymous').trim();
-        const language = match[5].trim();
-        const runtime = match[6].replace(/&nbsp;/g, ' ').trim();
-        const size = match[7].replace(/&nbsp;/g, ' ').trim();
-        const rawStatus = match[8].trim();
-        let submissionId = match[9]?.trim();
-
-        if (userId && user) {
-          registerUserMapping(user, userId);
-        }
-
-        const status = rawStatus.includes('full')
-          ? 'ACCEPTED'
-          : rawStatus.includes('zero')
-          ? 'WRONG ANSWER'
-          : rawStatus.toUpperCase();
-
-        // Correlate with personal submissions if this queue item is from the current user
-        if (!submissionId && personalSubmissionsByTime.has(time)) {
-          submissionId = personalSubmissionsByTime.get(time)!.id;
-        }
-
-        if (submissionId) {
-          if (seenIds.has(submissionId)) {
-            // Already added from view page, skip duplicate
-            continue;
-          }
-          seenIds.add(submissionId);
-        }
-
-        submissions.push({
-          id: submissionId || `wa-${userId || 'anon'}-${time.replace(/[^\d]/g, '')}`,
-          user: user === personalUser && personalUser !== 'You' ? personalUser : user,
-          userId: userId || (user === personalUser ? personalUserId : undefined),
-          time,
-          language,
-          runtime,
-          size,
-          status,
-          resultUrl: submissionId
-            ? `${CSES_BASE_URL}/problemset/hack/${problemId}/entry/${submissionId}/`
-            : `${CSES_BASE_URL}/problemset/queue/${problemId}/1/`,
-        });
+    let queueAvailable = false;
+    let queueLocked = false;
+    const langId: Record<string, string> = { 'all': '0', 'assembly': '1', 'c': '2', 'c++': '3', 'haskell': '4', 'java': '5', 'node.js': '6', 'pascal': '7', 'python': '8', 'ruby': '9', 'rust': '10', 'scala': '11' };
+    const lang = request.nextUrl.searchParams.get('language')?.toLowerCase() || 'all';
+    const officialLang = langId[lang] || (lang.includes('c++') || lang.includes('cpp') ? '3' : lang.includes('python') || lang.includes('pypy') ? '8' : lang.includes('javascript') || lang.includes('node') ? '6' : '0');
+    const verdict = request.nextUrl.searchParams.get('verdict')?.toUpperCase() || 'ALL';
+    const sort = request.nextUrl.searchParams.get('sort') || 'time_desc';
+    if (!['time_desc', 'time_asc', 'runtime_asc', 'size_asc'].includes(sort) || !['all', 'accepted', 'pending', 'skipped', 'failed', 'wrong answer'].includes(verdict.toLowerCase()) || lang.length > 40) return NextResponse.json({ error: 'Invalid queue filter' }, { status: 400, headers });
+    const formQuery = new URLSearchParams({ lang: officialLang, status: verdict === 'ACCEPTED' ? '2' : verdict === 'PENDING' ? '1' : verdict === 'SKIPPED' ? '4' : verdict === 'FAILED' || verdict === 'WRONG ANSWER' ? '3' : '0', by: sort === 'runtime_asc' ? '1' : sort === 'size_asc' ? '2' : '0', order: sort.endsWith('_asc') ? '0' : '1' });
+    const filterUser = request.nextUrl.searchParams.get('user')?.trim().slice(0, 100);
+    if (filterUser) formQuery.set('user', filterUser);
+    const firstQueueUrl = `${CSES_BASE_URL}/problemset/queue/${problemId}/1?${formQuery}`;
+    if (cursorUrl) { const next = new URL(cursorUrl); next.search = formQuery.toString(); next.hash = ''; }
+    const pending = [cursorUrl ? (() => { const next = new URL(cursorUrl); next.search = formQuery.toString(); next.hash = ''; return next.toString(); })() : firstQueueUrl];
+    const visited = new Set<string>();
+    const bestOnly = verdict === 'ACCEPTED' && sort === 'runtime_asc' && Boolean(filterUser);
+    while (pending.length && visited.size < (bestOnly ? 1 : 3)) {
+      const url = pending.shift()!;
+      if (visited.has(url)) continue;
+      visited.add(url);
+      const res = await csesRequest(url, { cookie, timeout: 1500 });
+      if (res.statusCode === 404) queueLocked = true;
+      if (res.statusCode !== 200 || /<form[^>]+action="\/login"|name="nick"[^>]+name="pass"/i.test(res.body)) continue;
+      queueAvailable = true;
+      for (const item of parseQueueRows(res.body, problemId)) {
+        if (item.userId) registerUserMapping(item.user, item.userId);
+        const personal = mySubmissions.find(s => item.userId && item.userId === userId && s.time === item.time && s.language === item.language);
+        const id = item.id || personal?.id;
+        if (id && seen.has(id)) continue;
+        if (id) seen.add(id);
+        submissions.push({ ...item, id: id || `unlinked-${item.time.replace(/\D/g, '')}`, userId: item.userId, resultUrl: id ? item.resultUrl : url });
+      }
+      const link = nextQueuePageLink(res.body, url, problemId);
+      if (link) {
+        const next = new URL(link);
+        next.search = formQuery.toString();
+        if (!visited.has(next.toString()) && !pending.includes(next.toString())) pending.push(next.toString());
       }
     }
-
-    const isLocked = queueRes.statusCode === 404 && viewRes.statusCode === 404 && submissions.length === 0;
-
-    return NextResponse.json({
-      problemId,
-      count: submissions.length,
-      submissions,
-      mySubmissions,
-      currentUser: personalUser !== 'You' ? { nick: personalUser, userId: personalUserId } : undefined,
-      isLocked,
-      message: isLocked
-        ? "CSES locks the submission queue until this problem is solved. Solve and submit this problem on CSES (or connect a CSES account that solved it) to unlock live submissions."
-        : undefined,
-    });
+    const filterLang = lang;
+    const filterVerdict = verdict;
+    const normalizedUser = filterUser?.toLowerCase();
+    let filtered = submissions.filter(s => (!filterLang || filterLang === 'all' || normalizeCsesLanguage(s.language) === normalizeCsesLanguage(filterLang)) && (!filterVerdict || filterVerdict === 'ALL' || s.status.toUpperCase() === filterVerdict) && (!normalizedUser || s.user?.toLowerCase().includes(normalizedUser) || s.userId?.toLowerCase() === normalizedUser));
+    if (sort === 'time_asc') filtered.sort((a, b) => a.time.localeCompare(b.time));
+    else if (sort === 'time_desc') filtered.sort((a, b) => b.time.localeCompare(a.time));
+    else if (sort === 'runtime_asc') filtered.sort((a, b) => parseFloat(a.runtime?.replace(/[^\d.]/g, '') || '999') - parseFloat(b.runtime?.replace(/[^\d.]/g, '') || '999'));
+    else if (sort === 'size_asc') filtered.sort((a, b) => parseInt(a.size?.replace(/\D/g, '') || '999999', 10) - parseInt(b.size?.replace(/\D/g, '') || '999999', 10));
+    const isLocked = queueLocked && (viewRes.statusCode === 404 || viewRes.statusCode === 0) && submissions.length === 0;
+    return NextResponse.json({ problemId, count: filtered.length, submissions: filtered, mySubmissions, currentUser: userId ? { nick, userId } : undefined, isLocked, message: isLocked ? 'CSES locks the submissions queue until an accepted solution exists for this problem.' : undefined, historicalCoverage: queueAvailable ? (pending.length ? 'partial' : 'available') : 'unavailable', historyCursor: pending[0] || null }, { headers });
   } catch (err: any) {
     console.error(`[CSES Submissions ${problemId}] Error:`, err);
-    return NextResponse.json(
-      { error: err?.message || 'Failed to fetch CSES submissions for problem' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: err?.message || 'Failed to fetch CSES submissions for problem' }, { status: 500, headers });
   }
 }

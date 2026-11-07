@@ -26,11 +26,15 @@ import { SubmissionsTab } from './SubmissionsTab';
 import { NotesTab } from './NotesTab';
 import { cn } from '@/lib/utils';
 import { VisualExplanation } from './VisualExplanation';
+import { AskAiMenu } from './AskAiMenu';
+import { csesAiContext } from '@/core/ai-prompt';
 
 export type ProblemTab = 'statement' | 'leaderboard' | 'submissions' | 'notes' | 'learn';
 
 export interface ProblemPaneProps {
   problem: Problem;
+  editorCode?: string;
+  editorLanguage?: LanguageId;
   submissions?: SubmissionRecord[];
   isSolved?: boolean;
   isStarred?: boolean;
@@ -84,6 +88,8 @@ function cleanStatementHtml(
 
 export const ProblemPane: React.FC<ProblemPaneProps> = ({
   problem,
+  editorCode,
+  editorLanguage,
   submissions = [],
   isSolved = false,
   isStarred,
@@ -321,10 +327,12 @@ export const ProblemPane: React.FC<ProblemPaneProps> = ({
                 </button>
 
                 {onAddToList && <button type="button" onClick={onAddToList} className="px-2.5 py-1 rounded-md text-xs font-semibold border border-border-subtle text-slate-300 hover:bg-surface-2">Add to list</button>}
+                <AskAiMenu problem={csesAiContext(problem)} code={editorCode} language={editorLanguage} />
                 {/* Star / Bookmark Button */}
                 <button
                   type="button"
                   onClick={handleToggleStar}
+                  aria-pressed={activeStarred}
                   className={cn(
                     'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border transition-all cursor-pointer',
                     activeStarred

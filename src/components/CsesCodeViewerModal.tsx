@@ -13,7 +13,6 @@ import {
   Download,
   AlertCircle,
   Terminal,
-  Trophy,
 } from 'lucide-react';
 import { LanguageId } from '@/core/types';
 import { getStoredCsesSessionCookie } from '@/core/cses-client';
@@ -31,11 +30,12 @@ export interface CsesCodeViewerModalProps {
   statusText?: string;
   scoreType?: 'time' | 'size' | 'queue';
   initialCode?: string;
+  coverage?: 'available' | 'partial' | 'unavailable';
   onLoadIntoEditor?: (code: string, lang: LanguageId) => void;
 }
 
-function detectLanguageId(langStr?: string): LanguageId {
-  if (!langStr) return 'cpp';
+function detectLanguageId(langStr?: string): LanguageId | null {
+  if (!langStr) return null;
   const lower = langStr.toLowerCase();
   if (lower.includes('c++') || lower.includes('cpp')) return 'cpp';
   if (lower.includes('python') || lower.includes('pypy')) return 'python';
@@ -45,298 +45,7 @@ function detectLanguageId(langStr?: string): LanguageId {
   if (lower.includes('javascript') || lower.includes('node')) return 'javascript';
   if (lower.includes('typescript')) return 'typescript';
   if (lower === 'c') return 'c';
-  return 'cpp';
-}
-
-function generateLanguageStarter(lang: string, problemId?: string, solverName?: string, score?: string): string {
-  const lower = (lang || '').toLowerCase();
-  const pid = problemId || '1068';
-
-  // Pascal solution
-  if (lower.includes('pascal')) {
-    if (pid === '1068') {
-      return `// CSES Problem 1068: Weird Algorithm
-// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
-// Language: Pascal
-program WeirdAlgorithm;
-var
-  n: int64;
-begin
-  read(n);
-  while n <> 1 do
-  begin
-    write(n, ' ');
-    if (n and 1) = 1 then
-      n := 3 * n + 1
-    else
-      n := n div 2;
-  end;
-  writeln(1);
-end.
-`;
-    }
-    return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-// Problem #${pid}
-// Language: Pascal
-program CSESSolution;
-var
-  n: int64;
-begin
-  // Benchmark solution pattern for Pascal
-  read(n);
-  writeln(n);
-end.
-`;
-  }
-
-  // Python solution
-  if (lower.includes('python') || lower.includes('pypy')) {
-    if (pid === '1068') {
-      return `# CSES Problem 1068: Weird Algorithm
-# Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
-# Language: Python 3
-import sys
-
-def main():
-    input_data = sys.stdin.read().split()
-    if not input_data:
-        return
-    n = int(input_data[0])
-    res = []
-    while n != 1:
-        res.append(str(n))
-        if n % 2 == 0:
-            n //= 2
-        else:
-            n = 3 * n + 1
-    res.append("1")
-    print(" ".join(res))
-
-if __name__ == '__main__':
-    main()
-`;
-    }
-    return `# CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-# Problem #${pid}
-# Language: Python 3
-import sys
-
-def main():
-    input_data = sys.stdin.read().split()
-    if not input_data:
-        return
-    # Read inputs and process
-    pass
-
-if __name__ == '__main__':
-    main()
-`;
-  }
-
-  // Rust solution
-  if (lower.includes('rust')) {
-    if (pid === '1068') {
-      return `// CSES Problem 1068: Weird Algorithm
-// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
-// Language: Rust
-use std::io::{self, Read};
-
-fn main() {
-    let mut input = String::new();
-    io::stdin().read_to_string(&mut input).unwrap();
-    if let Some(token) = input.split_whitespace().next() {
-        let mut n: i64 = token.parse().unwrap();
-        let mut out = String::new();
-        while n != 1 {
-            out.push_str(&format!("{} ", n));
-            if n % 2 == 0 {
-                n /= 2;
-            } else {
-                n = 3 * n + 1;
-            }
-        }
-        out.push_str("1\\n");
-        print!("{}", out);
-    }
-}
-`;
-    }
-    return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-// Problem #${pid}
-// Language: Rust
-use std::io::{self, Read};
-
-fn main() {
-    let mut input = String::new();
-    io::stdin().read_to_string(&mut input).unwrap();
-}
-`;
-  }
-
-  // Java solution
-  if (lower.includes('java')) {
-    if (pid === '1068') {
-      return `// CSES Problem 1068: Weird Algorithm
-// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
-// Language: Java
-import java.io.*;
-import java.util.*;
-
-public class Solution {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String line = br.readLine();
-        if (line == null) return;
-        long n = Long.parseLong(line.trim());
-        StringBuilder sb = new StringBuilder();
-        while (n != 1) {
-            sb.append(n).append(" ");
-            if (n % 2 == 0) n /= 2;
-            else n = 3 * n + 1;
-        }
-        sb.append("1\\n");
-        System.out.print(sb);
-    }
-}
-`;
-    }
-    return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-// Problem #${pid}
-// Language: Java
-import java.io.*;
-import java.util.*;
-
-public class Solution {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    }
-}
-`;
-  }
-
-  // Go solution
-  if (lower.includes('go')) {
-    if (pid === '1068') {
-      return `// CSES Problem 1068: Weird Algorithm
-// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
-// Language: Go
-package main
-
-import (
-    "bufio"
-    "fmt"
-    "os"
-)
-
-func main() {
-    reader := bufio.NewReader(os.Stdin)
-    writer := bufio.NewWriter(os.Stdout)
-    defer writer.Flush()
-
-    var n int64
-    if _, err := fmt.Fscan(reader, &n); err != nil {
-        return
-    }
-    for n != 1 {
-        fmt.Fprintf(writer, "%d ", n)
-        if n%2 == 0 {
-            n /= 2
-        } else {
-            n = 3*n + 1
-        }
-    }
-    fmt.Fprintln(writer, 1)
-}
-`;
-    }
-    return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-// Problem #${pid}
-// Language: Go
-package main
-
-import (
-    "bufio"
-    "fmt"
-    "os"
-)
-
-func main() {
-    reader := bufio.NewReader(os.Stdin)
-    _ = reader
-}
-`;
-  }
-
-  // C solution
-  if (lower === 'c') {
-    if (pid === '1068') {
-      return `// CSES Problem 1068: Weird Algorithm
-// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
-// Language: C
-#include <stdio.h>
-
-int main() {
-    long long n;
-    if (scanf("%lld", &n) != 1) return 0;
-    while (n != 1) {
-        printf("%lld ", n);
-        if (n & 1) n = 3 * n + 1;
-        else n >>= 1;
-    }
-    printf("1\\n");
-    return 0;
-}
-`;
-    }
-    return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-// Problem #${pid}
-// Language: C
-#include <stdio.h>
-
-int main() {
-    return 0;
-}
-`;
-  }
-
-  // Default C++ solution
-  if (pid === '1068') {
-    return `// CSES Problem 1068: Weird Algorithm
-// Solver: ${solverName || 'Hall of Fame'} (${score || '0.00 s'})
-// Language: C++
-#pragma GCC optimize("O3,unroll-loops")
-#include <iostream>
-using namespace std;
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
-    long long n;
-    if (!(cin >> n)) return 0;
-    while (n != 1) {
-        cout << n << ' ';
-        if (n & 1) n = 3 * n + 1;
-        else n >>= 1;
-    }
-    cout << "1\\n";
-    return 0;
-}
-`;
-  }
-
-  return `// CSES Benchmark Record: ${solverName || 'Hall of Fame'} (${score || ''})
-// Problem #${pid}
-// Language: C++
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    return 0;
-}
-`;
+  return null;
 }
 
 export function CsesCodeViewerModal({
@@ -351,6 +60,7 @@ export function CsesCodeViewerModal({
   statusText: initialStatus,
   scoreType = 'time',
   initialCode,
+  coverage,
   onLoadIntoEditor,
 }: CsesCodeViewerModalProps) {
   const [code, setCode] = useState<string>(initialCode || '');
@@ -366,10 +76,11 @@ export function CsesCodeViewerModal({
 
   useEffect(() => {
     if (!isOpen) return;
-
-    if (initialStatus) {
-      setStatusText(initialStatus);
-    }
+    let active = true;
+    const controller = new AbortController();
+    setCode(''); setError(null); setIsLoading(false); setResolvedLanguage(language);
+    setStatusText(initialStatus || 'ACCEPTED'); setCopied(false);
+    setTotalTime(score); setTotalMemory(undefined); setCompilerOutput(undefined); setFailedTestSummary(undefined);
 
     if (initialCode) {
       setCode(initialCode);
@@ -382,24 +93,8 @@ export function CsesCodeViewerModal({
         // Non-numeric ID (e.g. public queue submission where CSES keeps non-accepted code private to submitter)
         const verdictLabel = initialStatus || 'WRONG ANSWER';
         setStatusText(verdictLabel);
-        setCode(
-          `// Official CSES Submission Record\n` +
-          `// Problem: #${problemId || 'Unknown'}\n` +
-          `// Solver: ${solverName}\n` +
-          `// Verdict: ${verdictLabel}\n` +
-          `// Language: ${language}\n\n` +
-          `/*\n` +
-          ` * CSES Contest Privacy Policy Notice:\n` +
-          ` * Official CSES rules only expose source code for ACCEPTED solutions via the hack entry system\n` +
-          ` * (/problemset/hack/...).\n` +
-          ` *\n` +
-          ` * Source code for WRONG ANSWER or non-accepted submissions by other contestants is strictly kept\n` +
-          ` * private on CSES servers to prevent leaking ongoing contest attempts.\n` +
-          ` *\n` +
-          ` * If this is your own submission, connect your CSES account using the 'Connect CSES' button in the\n` +
-          ` * header to authenticate and unlock your personal submissions.\n` +
-          ` */`
-        );
+        setCode('');
+        setError(`CSES source is private for this unlinked submission (${verdictLabel}).`);
         return;
       }
 
@@ -412,19 +107,21 @@ export function CsesCodeViewerModal({
         headers['x-cses-session'] = sessionCookie;
       }
 
-      fetch(`/api/cses/result/${submissionId}${queryParam}`, { headers })
+      setIsLoading(true);
+      fetch(`/api/cses/result/${submissionId}${queryParam}`, { headers, signal: controller.signal })
         .then((res) => {
           if (!res.ok) throw new Error('Submission code not available');
           return res.json();
         })
         .then((data) => {
+          if (!active) return;
           if (data.code) {
             setCode(data.code);
           } else {
-            setCode('// Source code is not publicly visible for this submission on CSES.');
+            setCode(''); setError('CSES did not expose source code for this submission.');
           }
           if (data.language) setResolvedLanguage(data.language);
-          if (data.rawStatusText) setStatusText(data.rawStatusText);
+          if (data.rawStatusText && data.rawStatusText !== 'UNKNOWN') setStatusText(data.rawStatusText);
           if (data.totalTime) setTotalTime(data.totalTime);
           if (data.totalMemory) setTotalMemory(data.totalMemory);
           if (data.compilerOutput) setCompilerOutput(data.compilerOutput);
@@ -436,17 +133,15 @@ export function CsesCodeViewerModal({
           }
         })
         .catch((err) => {
-          setError(err?.message || 'Failed to fetch submission source code');
+          if (active && err?.name !== 'AbortError') setError(err?.message || 'Failed to fetch submission source code');
         })
         .finally(() => {
-          setIsLoading(false);
+          if (active) setIsLoading(false);
         });
     } else {
-      // Language-accurate reference starter for Hall of Fame benchmark entry
-      const starter = generateLanguageStarter(language, problemId, solverName, score);
-      setCode(starter);
-      setResolvedLanguage(language);
+      setError('No verified CSES submission ID is available for this leaderboard entry.');
     }
+    return () => { active = false; controller.abort(); };
   }, [isOpen, submissionId, initialCode, initialStatus, language, solverName, problemId, score]);
 
   if (!isOpen) return null;
@@ -462,15 +157,9 @@ export function CsesCodeViewerModal({
 
   const handleLoad = () => {
     if (!code || !onLoadIntoEditor) return;
-    let codeToLoad = code;
-    let langId = detectLanguageId(resolvedLanguage);
-    if (resolvedLanguage.toLowerCase().includes('pascal')) {
-      // The judge compiles C++, Python, Java, Rust, Go, JS, TS, C.
-      // Auto-provide compilable C++ benchmark equivalent so user can run it immediately.
-      langId = 'cpp';
-      codeToLoad = generateLanguageStarter('C++', problemId, solverName, score);
-    }
-    onLoadIntoEditor(codeToLoad, langId);
+    const lang = detectLanguageId(resolvedLanguage);
+    if (!lang) return;
+    onLoadIntoEditor(code, lang);
     onClose();
   };
 
@@ -565,7 +254,7 @@ export function CsesCodeViewerModal({
               {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
               <span>{copied ? 'Copied!' : 'Copy Code'}</span>
             </button>
-            {onLoadIntoEditor && (
+            {onLoadIntoEditor && detectLanguageId(resolvedLanguage) && (
               <button
                 onClick={handleLoad}
                 className="flex items-center gap-1.5 px-3 py-1 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-medium shadow transition-colors"
@@ -580,26 +269,18 @@ export function CsesCodeViewerModal({
 
         {/* Code Content Body */}
         <div className="flex-1 p-4 overflow-y-auto bg-zinc-950/80 font-mono text-xs">
-          {!submissionId && !initialCode && (
-            <div className="p-3.5 mb-3 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-start gap-3 text-amber-200">
-              <Trophy className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-              <div className="text-xs space-y-1">
-                <div className="font-semibold text-amber-300">
-                  Official CSES Leaderboard Benchmark Entry
-                </div>
-                <p className="text-zinc-300 leading-relaxed font-sans text-[11px]">
-                  CSES ranks top solvers by runtime ({score}) and language ({resolvedLanguage}), but hides original submission IDs and source code for Hall of Fame records.
-                  To inspect verified source codes, explore the <span className="font-semibold text-sky-400">Official CSES Queue</span> on the Submissions tab or load this {resolvedLanguage} template into your editor.
-                </p>
-              </div>
-            </div>
-          )}
 
           {failedTestSummary && (
             <div className="p-3 mb-3 bg-rose-500/10 border border-rose-500/25 rounded-xl flex items-center gap-2.5 text-xs text-rose-300">
               <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
               <span className="font-medium">{failedTestSummary}</span>
             </div>
+          )}
+
+          {coverage === 'partial' && (
+            <p className="mb-3 text-[11px] text-amber-300" role="status">
+              CSES has more matching queue pages. This source was selected from the first page of results ordered by maximum time; the rest of the history was not loaded.
+            </p>
           )}
 
           {compilerOutput && (

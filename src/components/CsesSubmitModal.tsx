@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   X,
   Send,
@@ -20,6 +20,7 @@ import {
   CsesVerdictResult,
   LanguageId,
   VerdictStatus,
+  SubmissionRecord,
 } from '@/core/types';
 import { saveSubmission } from '@/core/storage';
 import {
@@ -36,7 +37,8 @@ interface CsesSubmitModalProps {
   problemTitle: string;
   language: LanguageId;
   code: string;
-  onAccepted?: (problemId: string) => void;
+  onAccepted?: (problemId: string, result?: CsesVerdictResult) => void;
+  onCompleted?: (record: SubmissionRecord) => void;
 }
 
 type SubmissionStage =
@@ -45,8 +47,21 @@ type SubmissionStage =
   | 'CSRF_HANDSHAKE'
   | 'TRANSMITTING'
   | 'POLLING'
+  | 'UNRESOLVED'
   | 'COMPLETED'
   | 'ERROR';
+
+function officialMetric(value?: string, kind: 'time' | 'memory' = 'time'): number {
+  if (!value) return 0;
+  const match = value.match(/[\d.]+\s*(ms|s|KiB|MiB|GiB|KB|MB|GB|B)?/i);
+  if (!match) return 0;
+  const amount = Number.parseFloat(match[0]);
+  const unit = (match[1] || '').toLowerCase();
+  if (!Number.isFinite(amount)) return 0;
+  if (kind === 'time') return unit === 'ms' ? Math.round(amount) : unit === 's' ? Math.round(amount * 1000) : 0;
+  const powers: Record<string, number> = { b: 1, kb: 1000, mb: 1e6, gb: 1e9, kib: 1024, mib: 1024 ** 2, gib: 1024 ** 3 };
+  return Math.round(amount * (powers[unit] || 0));
+}
 
 export function CsesSubmitModal({
   isOpen,
@@ -56,6 +71,7 @@ export function CsesSubmitModal({
   language,
   code,
   onAccepted,
+  onCompleted,
 }: CsesSubmitModalProps) {
   const [nick, setNick] = useState('');
   const [pass, setPass] = useState('');
@@ -65,6 +81,10 @@ export function CsesSubmitModal({
   const [stage, setStage] = useState<SubmissionStage>('IDLE');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [verdictResult, setVerdictResult] = useState<CsesVerdictResult | null>(null);
+  const [submissionId, setSubmissionId] = useState<string | null>(null);
+  const [submissionOwner, setSubmissionOwner] = useState<{ nick?: string; userId?: string; isPersonal?: boolean } | undefined>();
+  const pollController = useRef<AbortController | null>(null);
+  const requestGeneration = useRef(0);
 
   // Load stored credentials on mount or modal open
   useEffect(() => {
@@ -78,8 +98,21 @@ export function CsesSubmitModal({
       setStage('IDLE');
       setErrorMessage(null);
       setVerdictResult(null);
+      setSubmissionId(null);
+      setSubmissionOwner(undefined);
     }
   }, [isOpen]);
+
+  useEffect(() => () => {
+    requestGeneration.current += 1;
+    pollController.current?.abort();
+  }, [isOpen, problemId]);
+
+  const closeModal = () => {
+    requestGeneration.current += 1;
+    pollController.current?.abort();
+    onClose();
+  };
 
   if (!isOpen) return null;
 
@@ -91,6 +124,7 @@ export function CsesSubmitModal({
 
     setErrorMessage(null);
     setStage('AUTHENTICATING');
+    const generation = ++requestGeneration.current;
 
     if (!useBot) {
       // Save or clear credentials
@@ -111,6 +145,7 @@ export function CsesSubmitModal({
         code,
         useDefaultBot: useBot,
       });
+      if (generation !== requestGeneration.current) return;
 
       if (!submitRes.success || !submitRes.submissionId) {
         setStage('ERROR');
@@ -121,75 +156,64 @@ export function CsesSubmitModal({
       if (submitRes.sessionCookie && !useBot) {
         saveStoredCsesCredentials({
           nick: nick.trim(),
+          userId: submitRes.owner?.userId,
           pass,
           sessionCookie: submitRes.sessionCookie,
           remember,
         });
       }
 
-      setStage('POLLING');
-
-      // Poll live CSES result passing the authenticated session cookie and problemId
-      const finalResult = await pollCsesVerdict(
-        submitRes.submissionId,
-        (partial) => {
-          setVerdictResult(partial);
-        },
-        40,
-        1500,
-        submitRes.sessionCookie,
-        problemId
-      );
-
-      setVerdictResult(finalResult);
-      setStage('COMPLETED');
-
-      // Persist real submission record with source code into local history
-      try {
-        const statusMap: Record<string, VerdictStatus> = {
-          'ACCEPTED': 'AC',
-          'WRONG ANSWER': 'WA',
-          'TIME LIMIT EXCEEDED': 'TLE',
-          'OUTPUT LIMIT EXCEEDED': 'TLE',
-          'COMPILE ERROR': 'CE',
-          'RUNTIME ERROR': 'RE',
-        };
-        const mappedVerdict: VerdictStatus =
-          statusMap[finalResult.status] || (finalResult.status === 'ACCEPTED' ? 'AC' : 'WA');
-        const passedCount = finalResult.tests
-          ? finalResult.tests.filter((t) => t.verdict === 'ACCEPTED').length
-          : finalResult.status === 'ACCEPTED'
-          ? 1
-          : 0;
-        const totalCount = finalResult.tests?.length || 1;
-        const maxTimeMs = finalResult.totalTime
-          ? Math.round(parseFloat(finalResult.totalTime) * 1000)
-          : 10;
-
-        saveSubmission({
-          id: `cses-${submitRes.submissionId || Date.now()}`,
-          problemId,
-          language,
-          code,
-          charCount: code.length,
-          timestamp: Date.now(),
-          status: mappedVerdict,
-          passedCount,
-          totalCount,
-          maxTimeMs,
-          maxMemoryBytes: 1024 * 1024,
-        });
-      } catch (saveErr) {
-        console.warn('Could not save CSES submission locally:', saveErr);
-      }
-
-      if (finalResult.status === 'ACCEPTED' && onAccepted) {
-        onAccepted(problemId);
-      }
+      setSubmissionId(submitRes.submissionId);
+      setSubmissionOwner(submitRes.owner);
+      await checkCsesResult(submitRes.submissionId, submitRes.sessionCookie, submitRes.owner);
     } catch (err: any) {
+      if (generation !== requestGeneration.current) return;
       setStage('ERROR');
       setErrorMessage(err?.message || 'Failed to submit to CSES');
       setStage('ERROR');
+    }
+  };
+
+  const checkCsesResult = async (id: string, sessionCookie?: string, owner = submissionOwner) => {
+    pollController.current?.abort();
+    const controller = new AbortController();
+    pollController.current = controller;
+    setStage('POLLING');
+    try {
+      const polled = await pollCsesVerdict(id, (partial) => setVerdictResult({ ...partial, owner }), 40, 1500, sessionCookie, problemId, controller.signal);
+      if (controller.signal.aborted) return;
+      const result = { ...polled, owner };
+      setVerdictResult(result);
+      const final = !['PENDING', 'TESTING', 'UNKNOWN'].includes(result.status) &&
+        (result.lifecycleStatus === 'FINISHED' || result.lifecycleStatus === undefined);
+      if (!final) {
+        setStage('UNRESOLVED');
+        return;
+      }
+      setStage('COMPLETED');
+      const statusMap: Record<string, VerdictStatus> = {
+        'ACCEPTED': 'AC', 'WRONG ANSWER': 'WA', 'TIME LIMIT EXCEEDED': 'TLE',
+        'MEMORY LIMIT EXCEEDED': 'MLE', 'OUTPUT LIMIT EXCEEDED': 'OLE',
+        'COMPILE ERROR': 'CE', 'RUNTIME ERROR': 'RE',
+      };
+      const passedCount = result.tests.filter((t) => /ACCEPTED/i.test(t.verdict)).length;
+      const record: SubmissionRecord = {
+        id: `cses-${id}`, problemId, language, code, charCount: code.length,
+        timestamp: result.timestamp ?? Date.now(), status: statusMap[result.status] || 'PAUSED',
+        passedCount, totalCount: result.tests.length,
+        maxTimeMs: officialMetric(result.totalTime),
+        maxMemoryBytes: officialMetric(result.totalMemory, 'memory'),
+        source: 'cses', officialResult: result, officialSubmissionId: id,
+        officialOwner: result.owner?.nick,
+      };
+      saveSubmission(record);
+      onCompleted?.(record);
+      if (result.status === 'ACCEPTED') onAccepted?.(problemId, result);
+    } catch (err: any) {
+      if (!controller.signal.aborted) {
+        setStage('UNRESOLVED');
+        setErrorMessage(err?.message || 'Could not check the CSES result.');
+      }
     }
   };
 
@@ -216,6 +240,10 @@ export function CsesSubmitModal({
             <span>TIME LIMIT EXCEEDED</span>
           </div>
         );
+      case 'MEMORY LIMIT EXCEEDED':
+        return <div className="rounded-lg border border-purple-500/30 bg-purple-500/15 px-3 py-1 text-sm font-bold text-purple-300">MEMORY LIMIT EXCEEDED</div>;
+      case 'OUTPUT LIMIT EXCEEDED':
+        return <div className="rounded-lg border border-amber-500/30 bg-amber-500/15 px-3 py-1 text-sm font-bold text-amber-300">OUTPUT LIMIT EXCEEDED</div>;
       case 'COMPILE ERROR':
         return (
           <div className="flex items-center gap-1.5 px-3 py-1 bg-orange-500/15 text-orange-400 border border-orange-500/30 rounded-lg font-bold text-sm">
@@ -255,7 +283,7 @@ export function CsesSubmitModal({
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={closeModal}
             className="p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
@@ -375,6 +403,7 @@ export function CsesSubmitModal({
             stage === 'CSRF_HANDSHAKE' ||
             stage === 'TRANSMITTING' ||
             stage === 'POLLING' ||
+            stage === 'UNRESOLVED' ||
             stage === 'COMPLETED') && (
             <div className="space-y-4">
               <div className="p-4 bg-zinc-800/60 border border-zinc-700/60 rounded-xl space-y-3">
@@ -401,7 +430,7 @@ export function CsesSubmitModal({
                     {stage === 'TRANSMITTING' && (
                       <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-400" />
                     )}
-                    {['POLLING', 'COMPLETED'].includes(stage) ? (
+                    {['POLLING', 'UNRESOLVED', 'COMPLETED'].includes(stage) ? (
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                     ) : (
                       <div className="w-3.5 h-3.5 rounded-full border border-zinc-600" />
@@ -417,6 +446,8 @@ export function CsesSubmitModal({
                     )}
                     {stage === 'COMPLETED' ? (
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    ) : stage === 'UNRESOLVED' ? (
+                      <Clock className="w-3.5 h-3.5 text-amber-400" />
                     ) : (
                       <div className="w-3.5 h-3.5 rounded-full border border-zinc-600" />
                     )}
@@ -446,11 +477,30 @@ export function CsesSubmitModal({
                       >
                         <span className="font-mono">#{t.index}</span>
                         <span className="font-semibold text-[11px]">{t.verdict}</span>
-                        <span className="text-[10px] opacity-75">{t.time}</span>
+                        <span className="text-[10px] opacity-75">{t.time}{t.memory ? ` · ${t.memory}` : ''}</span>
                       </div>
                     ))}
                   </div>
+                  {verdictResult.tests.some((t) => t.input || t.expectedOutput || t.actualOutput) && (
+                    <div className="space-y-1.5">
+                      {verdictResult.tests.filter((t) => t.input || t.expectedOutput || t.actualOutput).map((test) => (
+                        <details key={`detail-${test.index}`} className="rounded border border-zinc-700 bg-zinc-800/50 px-2.5 py-2 text-xs">
+                          <summary className="cursor-pointer text-zinc-300">Test #{test.index} details shown by CSES</summary>
+                          {[['Input', test.input], ['Expected', test.expectedOutput], ['Your output', test.actualOutput]].map(([label, value]) => value && (
+                            <pre key={label} className="mt-2 whitespace-pre-wrap break-words text-zinc-400"><span className="text-zinc-200">{label}: </span>{value}</pre>
+                          ))}
+                          {test.detailsUrl && <a className="mt-2 inline-block text-blue-300 underline" href={test.detailsUrl} target="_blank" rel="noopener noreferrer">Open CSES test detail</a>}
+                        </details>
+                      ))}
+                    </div>
+                  )}
                 </div>
+              )}
+
+              {verdictResult && <div className="text-xs text-zinc-400">Official result: <span className="text-zinc-200">{verdictResult.rawStatusText}</span> · Time {verdictResult.totalTime || '—'} · Memory {verdictResult.totalMemory || '—'}</div>}
+              {verdictResult?.compilerOutput && <pre className="max-h-40 overflow-auto whitespace-pre-wrap rounded bg-zinc-950 p-3 text-xs text-orange-200">{verdictResult.compilerOutput}</pre>}
+              {stage === 'UNRESOLVED' && submissionId && (
+                <button type="button" onClick={() => checkCsesResult(submissionId)} className="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-sm font-medium">Check official result again</button>
               )}
 
               {/* Direct Link to CSES Result */}
@@ -474,7 +524,7 @@ export function CsesSubmitModal({
           {stage === 'IDLE' && (
             <>
               <button
-                onClick={onClose}
+                onClick={closeModal}
                 className="px-4 py-2 text-zinc-400 hover:text-zinc-200 text-sm font-medium transition-colors"
               >
                 Cancel
@@ -491,12 +541,14 @@ export function CsesSubmitModal({
 
           {stage === 'COMPLETED' && (
             <button
-              onClick={onClose}
+              onClick={closeModal}
               className="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-sm font-medium rounded-xl border border-zinc-700 transition-colors"
             >
               Done
             </button>
           )}
+
+          {stage === 'UNRESOLVED' && <button onClick={closeModal} className="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-sm font-medium rounded-xl border border-zinc-700 transition-colors">Close and check later</button>}
 
           {stage === 'ERROR' && (
             <button

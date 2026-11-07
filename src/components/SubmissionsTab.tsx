@@ -164,6 +164,9 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
   const [isLocked, setIsLocked] = useState<boolean>(false);
   const [lockedMessage, setLockedMessage] = useState<string | null>(null);
   const [isLoadingQueue, setIsLoadingQueue] = useState<boolean>(false);
+  const [queueCursor, setQueueCursor] = useState<string | null>(null);
+  const [queueNotice, setQueueNotice] = useState('');
+  const queueController = React.useRef<AbortController | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [loadedId, setLoadedId] = useState<string | null>(null);
@@ -190,9 +193,14 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
     }
   }, []);
 
-  const fetchQueue = useCallback(async () => {
+  const fetchQueue = useCallback(async (cursor?: string) => {
     if (!problemId) return;
+    queueController.current?.abort();
+    const controller = new AbortController();
+    queueController.current = controller;
     setIsLoadingQueue(true);
+    if (!cursor) { setQueueSubmissions([]); setQueueCursor(null); }
+    setQueueNotice('');
     try {
       const sessionCookie = getStoredCsesSessionCookie();
       const headers: Record<string, string> = {};
@@ -200,10 +208,16 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
         headers['x-cses-session'] = sessionCookie;
       }
 
-      const res = await fetch(`/api/cses/submissions/${problemId}`, { headers });
+      const query = new URLSearchParams({ language: filterLang, verdict: filterVerdict, user: searchUser.trim(), sort: sortBy });
+      if (cursor) query.set('cursor', cursor);
+      const res = await fetch(`/api/cses/submissions/${problemId}?${query}`, { headers, signal: controller.signal });
+      if (!res.ok) { const data = await res.json(); throw new Error(data.error || 'Could not read CSES submissions.'); }
       if (res.ok) {
         const data = await res.json();
-        setQueueSubmissions(data.submissions || []);
+        if (controller.signal.aborted) return;
+        setQueueSubmissions(previous => cursor ? [...new Map([...previous, ...(data.submissions || [])].map(row => [row.id, row])).values()] : data.submissions || []);
+        setQueueCursor(data.historyCursor || null);
+        setQueueNotice(data.historicalCoverage === 'partial' ? 'More historical submissions are available. Load older pages below.' : data.historicalCoverage === 'unavailable' ? 'CSES did not expose the queue. Personal submissions are shown when available.' : '');
         setMyCsesSubmissions(data.mySubmissions || []);
         if (data.currentUser) {
           setCsesAccountInfo(data.currentUser);
@@ -212,16 +226,15 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
         setLockedMessage(data.message || null);
       }
     } catch (err) {
-      console.warn('[Queue fetch] Failed to load official submissions queue:', err);
+      if (!controller.signal.aborted) setQueueNotice(err instanceof Error ? err.message : 'Could not read CSES submissions.');
     } finally {
-      setIsLoadingQueue(false);
+      if (!controller.signal.aborted) setIsLoadingQueue(false);
     }
-  }, [problemId]);
+  }, [problemId, filterLang, filterVerdict, searchUser, sortBy]);
 
   useEffect(() => {
-    if (problemId) {
-      fetchQueue();
-    }
+    const timer = setTimeout(() => { if (problemId) void fetchQueue(); }, 250);
+    return () => { clearTimeout(timer); queueController.current?.abort(); };
   }, [problemId, fetchQueue]);
 
   const handleLoadCsesSubmission = async (id: string, langName?: string) => {
@@ -253,10 +266,10 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
   const filteredQueue = useMemo(() => {
     let list = [...queueSubmissions];
     if (filterLang !== 'all') {
-      list = list.filter((s) => s.language?.toLowerCase().includes(filterLang.toLowerCase()));
+      list = list.filter((s) => filterLang === 'c' ? /^c(?:$|\s|\d)/i.test(s.language) : s.language?.toLowerCase().includes(filterLang.toLowerCase()));
     }
     if (filterVerdict !== 'all') {
-      list = list.filter((s) => s.status?.toUpperCase() === filterVerdict.toUpperCase());
+      list = list.filter((s) => filterVerdict === 'FAILED' ? !['ACCEPTED', 'PENDING', 'SKIPPED'].includes(s.status.toUpperCase()) : s.status?.toUpperCase() === filterVerdict.toUpperCase());
     }
     if (searchUser.trim()) {
       const q = searchUser.trim().toLowerCase();
@@ -269,9 +282,9 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
     }
     if (sortBy === 'runtime_asc') {
       list.sort((a, b) => {
-        const tA = parseFloat(a.runtime?.replace(/[^\d.]/g, '') || '999');
-        const tB = parseFloat(b.runtime?.replace(/[^\d.]/g, '') || '999');
-        return tA - tB;
+        const tA = parseFloat(a.runtime || '');
+        const tB = parseFloat(b.runtime || '');
+        return (Number.isFinite(tA) ? tA : Infinity) - (Number.isFinite(tB) ? tB : Infinity);
       });
     } else if (sortBy === 'size_asc') {
       list.sort((a, b) => {
@@ -286,6 +299,13 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
     }
     return list;
   }, [queueSubmissions, filterLang, filterVerdict, searchUser, sortBy]);
+
+  const storedOfficialIds = new Set(submissions.filter(sub => sub.source === 'cses').map(sub => sub.officialSubmissionId));
+  const remoteCsesSubmissions = myCsesSubmissions.filter(sub => !storedOfficialIds.has(sub.id));
+  const submissionGroups = [
+    { source: 'cses', label: 'Saved Official CSES Results', rows: submissions.filter(sub => sub.source === 'cses') },
+    { source: 'local', label: 'Local Workbench Runs', rows: submissions.filter(sub => sub.source !== 'cses') },
+  ];
 
   const handleCopyCode = async (id: string, code: string) => {
     try {
@@ -348,9 +368,9 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
           >
             <Laptop className="w-3.5 h-3.5 text-slate-400" />
             <span>My Submissions & Runs</span>
-            {(submissions.length + myCsesSubmissions.length) > 0 && (
+            {(submissions.length + remoteCsesSubmissions.length) > 0 && (
               <span className="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-surface-2 text-slate-300 font-mono">
-                {submissions.length + myCsesSubmissions.length}
+                {submissions.length + remoteCsesSubmissions.length}
               </span>
             )}
           </button>
@@ -358,7 +378,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
 
         <button
           type="button"
-          onClick={fetchQueue}
+          onClick={() => fetchQueue()}
           disabled={isLoadingQueue}
           className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-slate-400 hover:text-sky-300 bg-surface-2/60 hover:bg-surface-2 border border-border-subtle transition-colors disabled:opacity-50 cursor-pointer"
           title="Refresh CSES live queue and personal submissions"
@@ -372,7 +392,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
       {activeSubTab === 'cses_queue' && (
         <div className="space-y-3">
           {/* CSES Queue Sort & Filter Toolbar */}
-          {queueSubmissions.length > 0 && !isLocked && (
+          {!isLocked && (
             <div className="flex flex-wrap items-center justify-between gap-2.5 p-2.5 rounded-xl border border-border-subtle bg-surface-1/80 text-xs shadow-xs">
               <div className="flex flex-wrap items-center gap-2">
                 {/* Search solver handle or ID */}
@@ -411,7 +431,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 >
                   <option value="all">All Verdicts</option>
                   <option value="ACCEPTED">Accepted (AC)</option>
-                  <option value="WRONG ANSWER">Wrong Answer (WA)</option>
+                  <option value="FAILED">Failed</option>
                 </select>
 
                 {/* Sort Option */}
@@ -449,6 +469,8 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
             </div>
           )}
 
+          {queueNotice && <p role="status" className="text-xs text-slate-300">{queueNotice}</p>}
+          {queueCursor && <button type="button" onClick={() => fetchQueue(queueCursor)} disabled={isLoadingQueue} className="rounded border border-border-muted px-3 py-2 text-xs text-sky-300 disabled:opacity-50">Load more historical submissions</button>}
           {isLoadingQueue ? (
             <div className="p-12 flex flex-col items-center justify-center space-y-3 rounded-xl border border-border-subtle bg-surface-1/40">
               <Loader2 className="w-6 h-6 animate-spin text-sky-400" />
@@ -655,7 +677,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                     : 'text-slate-400 hover:text-slate-200'
                 )}
               >
-                All ({submissions.length + myCsesSubmissions.length})
+                All ({submissions.length + remoteCsesSubmissions.length})
               </button>
               <button
                 type="button"
@@ -669,7 +691,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
               >
                 <Globe className="w-3 h-3 text-sky-400" />
                 <span>Official CSES.fi</span>
-                <span className="font-mono text-[10px] ml-0.5">({myCsesSubmissions.length})</span>
+                <span className="font-mono text-[10px] ml-0.5">({remoteCsesSubmissions.length + submissionGroups[0].rows.length})</span>
               </button>
               <button
                 type="button"
@@ -683,7 +705,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
               >
                 <Laptop className="w-3 h-3 text-slate-400" />
                 <span>Local Workbench</span>
-                <span className="font-mono text-[10px] ml-0.5">({submissions.length})</span>
+                <span className="font-mono text-[10px] ml-0.5">({submissionGroups[1].rows.length})</span>
               </button>
             </div>
 
@@ -721,16 +743,16 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 <div className="flex items-center justify-between text-xs font-semibold text-slate-300 px-1 pt-1">
                   <div className="flex items-center gap-1.5">
                     <Globe className="w-3.5 h-3.5 text-sky-400" />
-                    <span>Official CSES.fi Submissions ({myCsesSubmissions.length})</span>
+                    <span>Official CSES.fi Submissions ({remoteCsesSubmissions.length})</span>
                   </div>
                   <span className="text-[11px] text-slate-500">Recorded on official CSES servers</span>
                 </div>
               )}
 
-              {myCsesSubmissions.length > 0 ? (
-                myCsesSubmissions.map((sub) => {
+              {remoteCsesSubmissions.length > 0 ? (
+                remoteCsesSubmissions.map((sub) => {
                   const isAc = sub.status === 'ACCEPTED';
-                  const isWa = sub.status === 'WRONG ANSWER';
+                  const isWa = sub.status === 'WRONG ANSWER' || sub.status === 'FAILED';
                   const isTle = sub.status.includes('TIME');
 
                   return (
@@ -851,7 +873,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                     </div>
                   );
                 })
-              ) : subFilter === 'cses' ? (
+              ) : subFilter === 'cses' && storedOfficialIds.size === 0 ? (
                 <div className="p-8 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-3">
                   <Globe className="w-8 h-8 text-slate-500 mx-auto opacity-50" />
                   <div className="space-y-1">
@@ -877,25 +899,25 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
             </div>
           )}
 
-          {/* Section 2: Local Workbench Runs */}
-          {(subFilter === 'all' || subFilter === 'local') && (
-            <div className="space-y-2.5">
-              {subFilter === 'all' && submissions.length > 0 && (
+          {submissionGroups.filter(group => subFilter === 'all' || subFilter === group.source).map(group => (
+            <div key={group.source} className="space-y-2.5">
+              {group.rows.length > 0 && (
                 <div className="flex items-center justify-between text-xs font-semibold text-slate-300 px-1 pt-2">
                   <div className="flex items-center gap-1.5">
-                    <Laptop className="w-3.5 h-3.5 text-slate-400" />
-                    <span>Local Workbench Runs ({submissions.length})</span>
+                    {group.source === 'cses' ? <Globe className="w-3.5 h-3.5 text-sky-400" /> : <Laptop className="w-3.5 h-3.5 text-slate-400" />}
+                    <span>{group.label} ({group.rows.length})</span>
                   </div>
-                  <span className="text-[11px] text-slate-500">In-browser testbench history</span>
+                  <span className="text-[11px] text-slate-500">{group.source === 'cses' ? 'Official judge results saved on this device' : 'In-browser testbench history'}</span>
                 </div>
               )}
 
-              {submissions.length > 0 ? (
-                submissions.map((sub) => {
+              {group.rows.length > 0 ? (
+                group.rows.map((sub) => {
                   const statusConfig = getStatusConfig(sub.status);
                   const StatusIcon = statusConfig.icon;
                   const isExpanded = expandedId === sub.id;
-                  const memoryMb = (sub.maxMemoryBytes / (1024 * 1024)).toFixed(1);
+                  const memoryMb = sub.source === 'cses' && !sub.officialResult?.totalMemory
+                    ? '—' : (sub.maxMemoryBytes / (1024 * 1024)).toFixed(1);
                   const langDisplay = LANGUAGE_LABELS[sub.language] || sub.language;
 
                   return (
@@ -917,7 +939,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                           </span>
 
                           <span className="text-xs text-slate-300 font-medium">
-                            {sub.passedCount} / {sub.totalCount} passed
+                            {sub.source === 'cses' && !sub.totalCount ? 'Test breakdown unavailable' : `${sub.passedCount} / ${sub.totalCount} passed`}
                           </span>
 
                           <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-2 text-slate-300 border border-border-subtle">
@@ -927,10 +949,10 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
 
                         <div className="flex items-center gap-4 text-xs text-slate-400">
                           <span className="font-mono text-emerald-400 font-medium">
-                            {sub.maxTimeMs} ms
+                            {sub.source === 'cses' ? (sub.officialResult?.totalTime || '—') : `${sub.maxTimeMs} ms`}
                           </span>
                           <span className="font-mono text-slate-400">
-                            {memoryMb} MB
+                            {sub.source === 'cses' ? (sub.officialResult?.totalMemory || '—') : `${memoryMb} MB`}
                           </span>
                           {sub.charCount !== undefined && (
                             <span className="font-mono text-slate-400">
@@ -987,6 +1009,38 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
 
                         return (
                           <div className="border-t border-border-subtle bg-surface-0/60 p-4 space-y-3">
+                            {sub.officialResult && (
+                              <section className="space-y-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3">
+                                <div className="flex flex-wrap justify-between gap-2 text-xs">
+                                  <strong className="text-emerald-300">Official CSES result · {sub.officialResult.rawStatusText}</strong>
+                                  <span className="text-slate-400">Time {sub.officialResult.totalTime || '—'} · Memory {sub.officialResult.totalMemory || '—'}</span>
+                                </div>
+                                {sub.officialResult.tests.length > 0 && (
+                                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                                    {sub.officialResult.tests.map((test) => (
+                                      <div key={test.index} className="rounded border border-border-subtle bg-surface-0 px-2 py-1 text-[11px] text-slate-300">
+                                        #{test.index} {test.verdict} · {test.time || '—'}
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                                {sub.officialResult.tests.some((test) => test.input || test.expectedOutput || test.actualOutput) && (
+                                  <div className="space-y-1.5">
+                                    {sub.officialResult.tests.filter((test) => test.input || test.expectedOutput || test.actualOutput).map((test) => (
+                                      <details key={`official-${test.index}`} className="rounded border border-border-subtle px-2.5 py-2 text-xs">
+                                        <summary className="cursor-pointer text-slate-300">Test #{test.index} details shown by CSES</summary>
+                                        {[['Input', test.input], ['Expected', test.expectedOutput], ['Your output', test.actualOutput]].map(([label, value]) => value && (
+                                          <pre key={label} className="mt-2 whitespace-pre-wrap break-words text-slate-400"><span className="text-slate-200">{label}: </span>{value}</pre>
+                                        ))}
+                                        {test.detailsUrl && <a href={test.detailsUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-sky-300 underline">Open CSES test detail</a>}
+                                      </details>
+                                    ))}
+                                  </div>
+                                )}
+                                {sub.officialResult.compilerOutput && <pre className="max-h-40 overflow-auto whitespace-pre-wrap text-xs text-orange-200">{sub.officialResult.compilerOutput}</pre>}
+                                <a href={sub.officialResult.resultUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-sky-300 underline">Open official CSES result</a>
+                              </section>
+                            )}
                             <div className="flex items-center justify-between">
                               <span className="text-xs font-medium text-slate-400 flex items-center gap-1.5">
                                 <FileCode2 className="w-3.5 h-3.5 text-sky-400" />
@@ -1037,7 +1091,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                     </div>
                   );
                 })
-              ) : subFilter === 'local' ? (
+              ) : subFilter === 'local' && group.source === 'local' ? (
                 <div className="p-10 text-center rounded-xl border border-border-subtle bg-surface-1/40 space-y-2">
                   <Inbox className="w-8 h-8 text-slate-500 mx-auto mb-1 opacity-50" />
                   <p className="text-sm font-semibold text-slate-200">
@@ -1049,7 +1103,7 @@ export const SubmissionsTab: React.FC<SubmissionsTabProps> = ({
                 </div>
               ) : null}
             </div>
-          )}
+          ))}
 
           {/* Empty state for All Submissions */}
           {subFilter === 'all' && myCsesSubmissions.length === 0 && submissions.length === 0 && (

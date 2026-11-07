@@ -8,6 +8,9 @@ import {
   removeStarredProblem,
   toggleStarredProblem,
   persistStarredProblems,
+  getPendingStarredChanges,
+  acknowledgeStarredChange,
+  claimGuestStars,
   clearAllStorage,
   exportUserData,
   importUserData,
@@ -107,6 +110,29 @@ describe('Starred Problems Storage Unit Tests', () => {
     expect(starred.size).toBe(3);
   });
 
+  it('scopes stars by account and only acknowledges the exact pending operation', () => {
+    saveStarredProblem('1068', 'account-a');
+    const add = getPendingStarredChanges('account-a')['1068'];
+    expect(getStarredProblems('account-a').has('1068')).toBe(true);
+    expect(getStarredProblems('account-b').has('1068')).toBe(false);
+    removeStarredProblem('1068', 'account-a');
+    const remove = getPendingStarredChanges('account-a')['1068'];
+    expect(remove.starred).toBe(false);
+    acknowledgeStarredChange('account-a', '1068', add.operation);
+    expect(getPendingStarredChanges('account-a')['1068']).toEqual(remove);
+    acknowledgeStarredChange('account-a', '1068', remove.operation);
+    expect(getPendingStarredChanges('account-a')['1068']).toBeUndefined();
+  });
+
+  it('moves guest stars to only the first claimed account', () => {
+    saveStarredProblem('guest-star', 'guest');
+    claimGuestStars('account-a');
+    claimGuestStars('account-b');
+    expect(getStarredProblems('account-a').has('guest-star')).toBe(true);
+    expect(getStarredProblems('account-b').has('guest-star')).toBe(false);
+    expect(getStarredProblems('guest').has('guest-star')).toBe(false);
+  });
+
   it('exports and imports starred problems seamlessly in UserDataExport', () => {
     saveStarredProblem('1068');
     saveStarredProblem('1083');
@@ -144,7 +170,7 @@ describe('Supabase Cloud Sync with Starred Problems', () => {
     SupabaseModule.setSupabaseInstance(null);
   });
 
-  it('passes starredIds in syncUserDataToCloud payload', async () => {
+  it('does not bulk upsert stars because desired state changes sync per problem', async () => {
     const mockUpsert = vi.fn().mockResolvedValue({ error: null });
     const mockFrom = vi.fn().mockReturnValue({
       upsert: mockUpsert,
@@ -161,14 +187,7 @@ describe('Supabase Cloud Sync with Starred Problems', () => {
     });
 
     expect(res).toBe(true);
-    expect(mockFrom).toHaveBeenCalledWith('user_starred');
-    expect(mockUpsert).toHaveBeenCalledWith(
-      expect.arrayContaining([
-        expect.objectContaining({ user_id: 'user-123', problem_id: '1068' }),
-        expect.objectContaining({ user_id: 'user-123', problem_id: '1083' }),
-      ]),
-      expect.any(Object)
-    );
+    expect(mockFrom).not.toHaveBeenCalledWith('user_starred');
   });
 
   it('pulls and restores starredIds in fetchUserDataFromCloud', async () => {

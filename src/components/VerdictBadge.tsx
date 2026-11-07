@@ -51,6 +51,11 @@ const VERDICT_CONFIGS: Record<VerdictStatus, VerdictConfig> = {
     classes: 'bg-orange-500/10 text-orange-400 border border-orange-500/30',
     icon: Database,
   },
+  OLE: {
+    label: 'Output Limit Exceeded',
+    classes: 'bg-orange-500/10 text-orange-400 border border-orange-500/30',
+    icon: AlertTriangle,
+  },
   CE: {
     label: 'Compilation Error',
     classes: 'bg-purple-500/10 text-purple-400 border border-purple-500/30',

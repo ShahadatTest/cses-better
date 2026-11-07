@@ -1,203 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { csesRequest, CSES_BASE_URL, getSharedCsesSession } from '@/core/cses-network';
-import { CsesVerdictResult, CsesTestDetail } from '@/core/types';
+import { parseCsesResult, trustedCsesDetailUrl } from '@/core/cses-result-parser';
+import { CsesVerdictResult } from '@/core/types';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+const privateHeaders = { 'Cache-Control': 'private, no-store' };
+const inaccessible = (html: string) => /<form\b[^>]*action=["'][^"']*\/login|<title[^>]*>\s*login\b|name=["']pass["']|submission not found|access denied|not allowed to view|not permitted to view|private submission|you need to log in/i.test(html);
 
-function unescapeHtml(text: string): string {
-  return text
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, ' ');
-}
-
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   const submissionId = params.id;
-  if (!submissionId || !/^\d+$/.test(submissionId)) {
-    return NextResponse.json({ error: 'Valid numeric submission ID is required' }, { status: 400 });
-  }
-
+  if (!/^\d+$/.test(submissionId)) return NextResponse.json({ error: 'Valid numeric submission ID is required' }, { status: 400, headers: privateHeaders });
   const problemId = request.nextUrl.searchParams.get('problemId') || '';
+  if (problemId && !/^[a-z\d_-]{1,80}$/i.test(problemId)) return NextResponse.json({ error: 'Invalid problem ID' }, { status: 400, headers: privateHeaders });
 
   try {
-    const userSessionCookie =
-      request.headers.get('x-cses-session') ||
-      request.cookies.get('cses_session')?.value;
-
-    let sessionCookie = userSessionCookie || (await getSharedCsesSession());
-    let html = '';
+    const personalCookie = request.headers.get('x-cses-session') || request.cookies.get('cses_session')?.value;
+    const cookie = personalCookie || await getSharedCsesSession();
     let url = `${CSES_BASE_URL}/problemset/result/${submissionId}/`;
-    let language: string | undefined;
-    let totalTime: string | undefined;
-    let totalMemory: string | undefined;
-    let status: CsesVerdictResult['status'] = 'ACCEPTED';
-    let rawStatusText = 'ACCEPTED';
+    let response = await csesRequest(url, { cookie });
+    let html = response.statusCode === 200 ? response.body : '';
 
-    // 1. Query official result page first (provides real-time judge testing, verdict, test details, compiler logs)
-    let res = await csesRequest(url, { cookie: sessionCookie });
-    if (res.statusCode === 200 && !res.body.includes('Submission not found')) {
-      html = res.body;
-    } else if (problemId) {
-      // 2. If result page returned 404/403 (e.g. inspecting another solver's submission), query hack entry endpoint
-      const hackUrl = `${CSES_BASE_URL}/problemset/hack/${problemId}/entry/${submissionId}/`;
-      let hackRes = await csesRequest(hackUrl, { cookie: sessionCookie });
-
-      // Fallback: if user session couldn't read hack entry, try shared bot session
-      if (hackRes.statusCode !== 200 && userSessionCookie) {
-        try {
-          const sharedCookie = await getSharedCsesSession();
-          if (sharedCookie && sharedCookie !== sessionCookie) {
-            hackRes = await csesRequest(hackUrl, { cookie: sharedCookie });
-          }
-        } catch {}
-      }
-
-      if (
-        hackRes.statusCode === 200 &&
-        (hackRes.body.includes('<pre') || hackRes.body.includes('prettyprint'))
-      ) {
-        html = hackRes.body;
-        url = hackUrl;
-
-        // Parse hack page table (time, victim/author, lang, max time)
-        const tableMatch = html.match(/<table[^>]*>([\s\S]*?)<\/table>/i);
-        if (tableMatch) {
-          const cells = [...tableMatch[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map((c) =>
-            c[1].replace(/<[^>]+>/g, '').trim()
-          );
-          if (cells.length >= 3) {
-            language = cells[2];
-          }
-          if (cells.length >= 4) {
-            totalTime = cells[3];
-          }
-        }
-      }
+    // CSES serves login and private-result pages with HTTP 200.
+    if (inaccessible(html)) html = '';
+    if (!html && problemId) {
+      url = `${CSES_BASE_URL}/problemset/hack/${problemId}/entry/${submissionId}/`;
+      response = await csesRequest(url, { cookie });
+      const candidate = response.statusCode === 200 ? response.body : '';
+      if (!inaccessible(candidate) && /<pre\b/i.test(candidate)) html = candidate;
     }
+    if (!html) return NextResponse.json({ error: 'CSES submission is unavailable or private. Connect the submitting account to inspect it.' }, { status: 404, headers: privateHeaders });
 
-    if (!html) {
-      return NextResponse.json(
-        { error: 'CSES submission not found, private, or locked. Connect your CSES account to inspect.' },
-        { status: 404 }
-      );
-    }
-
-    // Parse status
-    const statusMatch = html.match(/Result:<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>/i);
-    if (statusMatch) {
-      rawStatusText = statusMatch[1].replace(/<[^>]+>/g, '').trim();
-    } else {
-      const genericStatusMatch = html.match(/class="status\s+([^"]+)"/i);
-      if (genericStatusMatch) {
-        rawStatusText = genericStatusMatch[1].toUpperCase();
-      }
-    }
-
-    const upperRaw = rawStatusText.toUpperCase();
-    if (upperRaw.includes('READY') || upperRaw.includes('PENDING')) {
-      status = 'PENDING';
-    } else if (upperRaw.includes('TESTING')) {
-      status = 'TESTING';
-    } else if (upperRaw.includes('ACCEPTED')) {
-      status = 'ACCEPTED';
-    } else if (upperRaw.includes('WRONG ANSWER')) {
-      status = 'WRONG ANSWER';
-    } else if (upperRaw.includes('TIME LIMIT')) {
-      status = 'TIME LIMIT EXCEEDED';
-    } else if (upperRaw.includes('OUTPUT LIMIT')) {
-      status = 'OUTPUT LIMIT EXCEEDED';
-    } else if (upperRaw.includes('COMPILE ERROR') || upperRaw.includes('COMPILATION')) {
-      status = 'COMPILE ERROR';
-    } else if (upperRaw.includes('RUNTIME ERROR')) {
-      status = 'RUNTIME ERROR';
-    } else {
-      status = upperRaw as any;
-    }
-
-    // Parse Language if not parsed already
-    if (!language) {
-      const langMatch = html.match(/Language:<\/td>\s*<td[^>]*>([^<]+)<\/td>/i);
-      if (langMatch) language = langMatch[1].trim();
-    }
-
-    // Parse Total Time & Memory if not parsed already
-    if (!totalTime) {
-      const timeMatch = html.match(/Total time:<\/td>\s*<td[^>]*>([^<]+)<\/td>/i);
-      if (timeMatch) totalTime = timeMatch[1].trim();
-    }
-
-    if (!totalMemory) {
-      const memMatch = html.match(/Total memory:<\/td>\s*<td[^>]*>([^<]+)<\/td>/i);
-      if (memMatch) totalMemory = memMatch[1].trim();
-    }
-
-    // Parse Source Code
-    let code: string | undefined;
-    const codeMatch =
-      html.match(/<pre[^>]*class="[^"]*prettyprint[^"]*"[^>]*>([\s\S]*?)<\/pre>/i) ||
-      html.match(/<pre[^>]*class="[^"]*linenums[^"]*"[^>]*>([\s\S]*?)<\/pre>/i) ||
-      html.match(/<h3>Code<\/h3>\s*<pre[^>]*>([\s\S]*?)<\/pre>/i) ||
-      html.match(/<pre[^>]*>([\s\S]*?)<\/pre>/i);
-
-    if (codeMatch) {
-      code = unescapeHtml(codeMatch[1]).trim();
-    }
-
-    // Parse compiler diagnostics
-    let compilerOutput: string | undefined;
-    const compilerMatch =
-      html.match(/<pre class="compiler-output">([\s\S]*?)<\/pre>/i) ||
-      html.match(/<h3>Compiler message<\/h3>\s*<pre>([\s\S]*?)<\/pre>/i);
-    if (compilerMatch) {
-      compilerOutput = compilerMatch[1].trim();
-    }
-
-    // Parse test breakdown
-    const tests: CsesTestDetail[] = [];
-    const tableRowRegex =
-      /<tr>\s*<td[^>]*>#?(\d+)<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>\s*(?:<td[^>]*>[\s\S]*?<\/td>\s*)?<\/tr>/gi;
-    let rowMatch;
-
-    while ((rowMatch = tableRowRegex.exec(html)) !== null) {
-      const idx = parseInt(rowMatch[1], 10);
-      const verdict = rowMatch[2].replace(/<[^>]+>/g, '').trim();
-      const time = rowMatch[3].replace(/<[^>]+>/g, '').trim();
-
-      if (!isNaN(idx) && verdict) {
-        tests.push({
-          index: idx,
-          verdict,
-          time,
-        });
-      }
-    }
-
+    const parsed = parseCsesResult(html);
     const result: CsesVerdictResult = {
-      submissionId,
-      status,
-      rawStatusText,
-      totalTime,
-      totalMemory,
-      compilerOutput,
-      code,
-      language,
-      tests,
-      resultUrl: url,
+      submissionId, ...parsed,
+      tests: parsed.tests.map((test) => ({ ...test, detailsUrl: trustedCsesDetailUrl(test.detailsUrl, CSES_BASE_URL) })),
+      resultUrl: url, problemId: problemId || undefined,
+      source: 'cses',
     };
-
-    return NextResponse.json(result);
+    return NextResponse.json(result, { headers: privateHeaders });
   } catch (error: any) {
     console.error(`[CSES Result ${submissionId}] Error:`, error);
-    return NextResponse.json(
-      { error: error?.message || 'Failed to fetch CSES submission result' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error?.message || 'Failed to fetch CSES submission result' }, { status: 500, headers: privateHeaders });
   }
 }

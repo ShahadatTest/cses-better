@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   Trophy,
   Zap,
@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { ProblemStats, LeaderboardEntry, LanguageId, CsesSubmissionSummary } from '@/core/types';
 import { getStoredCsesSessionCookie } from '@/core/cses-client';
+import { normalizeCsesLanguage } from '@/core/cses-history';
 import { cn } from '@/lib/utils';
 import { CsesCodeViewerModal } from './CsesCodeViewerModal';
 
@@ -59,6 +60,10 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
   const [activeSubTab, setActiveSubTab] = useState<'hof' | 'queue'>('hof');
   const [queueSubmissions, setQueueSubmissions] = useState<CsesSubmissionSummary[]>([]);
   const [isLoadingQueue, setIsLoadingQueue] = useState<boolean>(false);
+  const [queueCoverage, setQueueCoverage] = useState<'available' | 'partial' | 'unavailable' | null>(null);
+  const [queueCursor, setQueueCursor] = useState<string | null>(null);
+  const queueController = useRef<AbortController | null>(null);
+  const codeLookup = useRef<AbortController | null>(null);
   const [selectedCodeEntry, setSelectedCodeEntry] = useState<{
     solverName?: string;
     submissionId?: string;
@@ -67,6 +72,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
     statusText?: string;
     scoreType?: 'time' | 'size' | 'queue';
     initialCode?: string;
+    coverage?: 'available' | 'partial' | 'unavailable';
   } | null>(null);
 
   // Sorting and Filtering State
@@ -76,31 +82,46 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
   const [sortBy, setSortBy] = useState<'rank_asc' | 'score_asc' | 'user_asc'>('rank_asc');
   const [queueSortBy, setQueueSortBy] = useState<'time_desc' | 'time_asc' | 'runtime_asc' | 'size_asc'>('time_desc');
 
-  const fetchQueue = useCallback(async () => {
+  useEffect(() => () => codeLookup.current?.abort(), []);
+
+  const fetchQueue = useCallback(async (cursor?: string) => {
     if (!problemId) return;
+    queueController.current?.abort();
+    const controller = new AbortController();
+    queueController.current = controller;
     setIsLoadingQueue(true);
+    if (!cursor) { setQueueSubmissions([]); setQueueCursor(null); setQueueCoverage(null); }
     try {
       const sessionCookie = getStoredCsesSessionCookie();
       const headers: Record<string, string> = {};
       if (sessionCookie) {
         headers['x-cses-session'] = sessionCookie;
       }
-      const res = await fetch(`/api/cses/submissions/${problemId}`, { headers });
+      const query = new URLSearchParams({ language: filterLang, verdict: filterVerdict, user: searchUser.trim(), sort: queueSortBy });
+      if (cursor) query.set('cursor', cursor);
+      const res = await fetch(`/api/cses/submissions/${problemId}?${query}`, { headers, signal: controller.signal });
       if (res.ok) {
         const data = await res.json();
-        setQueueSubmissions(data.submissions || []);
+        if (!controller.signal.aborted) {
+          setQueueSubmissions(previous => cursor ? [...new Map([...previous, ...(data.submissions || [])].map(row => [row.id, row])).values()] : data.submissions || []);
+          setQueueCoverage(data.historicalCoverage || 'unavailable');
+          setQueueCursor(data.historyCursor || null);
+        }
       }
     } catch (err) {
+      if (controller.signal.aborted) return;
       console.warn('[Queue fetch] Failed to load official submissions queue:', err);
+      setQueueSubmissions([]);
+      setQueueCoverage('unavailable');
     } finally {
-      setIsLoadingQueue(false);
+      if (!controller.signal.aborted) setIsLoadingQueue(false);
     }
-  }, [problemId]);
+  }, [problemId, filterLang, filterVerdict, searchUser, queueSortBy]);
 
   useEffect(() => {
-    if (activeSubTab === 'queue' && problemId) {
-      fetchQueue();
-    }
+    if (activeSubTab !== 'queue' || !problemId) return;
+    const timer = setTimeout(() => fetchQueue(), 250);
+    return () => { clearTimeout(timer); queueController.current?.abort(); };
   }, [activeSubTab, problemId, fetchQueue]);
 
   const filterAndSortEntries = useCallback(
@@ -178,6 +199,33 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
     }
     return list;
   }, [queueSubmissions, filterLang, filterVerdict, searchUser, queueSortBy]);
+
+  const openFastestAcceptedCode = async (entry: LeaderboardEntry) => {
+    if (!problemId) return;
+    codeLookup.current?.abort();
+    const controller = new AbortController();
+    codeLookup.current = controller;
+    const headers: Record<string, string> = {};
+    const sessionCookie = getStoredCsesSessionCookie();
+    if (sessionCookie) headers['x-cses-session'] = sessionCookie;
+    const params = new URLSearchParams({ language: entry.language, verdict: 'ACCEPTED', user: entry.user, sort: 'runtime_asc' });
+    try {
+      const response = await fetch(`/api/cses/submissions/${problemId}?${params}`, { headers, signal: controller.signal });
+      if (!response.ok) throw new Error('Could not inspect this solver’s accepted submissions.');
+      const data = await response.json();
+      const match = (data.submissions || []).find((submission: CsesSubmissionSummary) =>
+        submission.status === 'ACCEPTED' && Boolean(submission.id.match(/^\d+$/)) &&
+        (entry.userId ? submission.userId === entry.userId : submission.user?.toLowerCase() === entry.user.toLowerCase()) &&
+        normalizeCsesLanguage(submission.language) === normalizeCsesLanguage(entry.language)
+      );
+      if (!controller.signal.aborted) setSelectedCodeEntry({ solverName: entry.user, submissionId: match?.id, language: match?.language || entry.language, score: match?.runtime || entry.score, scoreType: 'time', statusText: match ? 'ACCEPTED' : undefined, coverage: data.historicalCoverage });
+    } catch (error) {
+      if (!controller.signal.aborted) {
+        console.warn('[Leaderboard code] Failed to find official accepted submission:', error);
+        setSelectedCodeEntry({ solverName: entry.user, language: entry.language, score: entry.score, scoreType: 'time' });
+      }
+    }
+  };
 
   const hasStats =
     stats &&
@@ -349,14 +397,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                     </td>
                     <td className="py-2.5 px-3.5 text-right">
                       <button
-                        onClick={() =>
-                          setSelectedCodeEntry({
-                            solverName: entry.user,
-                            language: entry.language,
-                            score: entry.score,
-                            scoreType,
-                          })
-                        }
+                        onClick={() => openFastestAcceptedCode(entry)}
                         className="inline-flex items-center gap-1 px-2 py-1 rounded bg-surface-2 hover:bg-surface-3 text-sky-400 hover:text-sky-300 border border-border-subtle text-[11px] font-medium transition-colors"
                         title={`View ${entry.user}'s code pattern & benchmarks`}
                       >
@@ -733,7 +774,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                 >
                   <option value="all">All Verdicts</option>
                   <option value="ACCEPTED">Accepted (AC)</option>
-                  <option value="WRONG ANSWER">Wrong Answer (WA)</option>
+                  <option value="FAILED">Failed</option>
                 </select>
 
                 <select
@@ -748,8 +789,19 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
                 </select>
               </div>
 
+              {queueCoverage && queueCoverage !== 'available' && (
+                <p className="text-[11px] text-amber-300" role="status">
+                  {queueCoverage === 'partial' ? 'Showing only the historical queue pages CSES exposed in this request; this is not a complete history.' : 'CSES did not expose a readable submissions queue for this problem.'}
+                </p>
+              )}
+
               <div className="flex items-center gap-2 text-slate-400 text-[11px]">
                 <span>Showing {filteredQueue.length} of {queueSubmissions.length}</span>
+                {queueCursor && (
+                  <button type="button" onClick={() => fetchQueue(queueCursor)} disabled={isLoadingQueue} className="text-sky-400 hover:underline disabled:opacity-50">
+                    Load older
+                  </button>
+                )}
                 {(filterLang !== 'all' || filterVerdict !== 'all' || searchUser.trim() || queueSortBy !== 'time_desc') && (
                   <button
                     type="button"
@@ -886,6 +938,7 @@ export const LeaderboardTab: React.FC<LeaderboardTabProps> = ({
           statusText={selectedCodeEntry.statusText}
           scoreType={selectedCodeEntry.scoreType}
           initialCode={selectedCodeEntry.initialCode}
+          coverage={selectedCodeEntry.coverage}
           onLoadIntoEditor={onSelectCode}
         />
       )}

@@ -22,7 +22,9 @@ export function saveStoredCsesCredentials(creds: Partial<StoredCsesAccount> & { 
   if (typeof window === 'undefined') return;
   try {
     if (creds.remember !== false) {
-      const existing = getStoredCsesCredentials() || ({} as StoredCsesAccount);
+      const previous = getStoredCsesCredentials();
+      const existing = previous?.nick.toLocaleLowerCase() === creds.nick.trim().toLocaleLowerCase()
+        ? previous : ({} as StoredCsesAccount);
       const updated: StoredCsesAccount = {
         nick: creds.nick.trim(),
         userId: creds.userId || existing.userId,
@@ -33,8 +35,10 @@ export function saveStoredCsesCredentials(creds: Partial<StoredCsesAccount> & { 
         remember: true,
       };
       localStorage.setItem(CSES_CRED_KEY, JSON.stringify(updated));
+      window.dispatchEvent(new Event('cses-account-changed'));
     } else {
       localStorage.removeItem(CSES_CRED_KEY);
+      window.dispatchEvent(new Event('cses-account-changed'));
     }
   } catch {
     // ignore
@@ -45,6 +49,7 @@ export function clearStoredCsesCredentials(): void {
   if (typeof window === 'undefined') return;
   try {
     localStorage.removeItem(CSES_CRED_KEY);
+    window.dispatchEvent(new Event('cses-account-changed'));
   } catch {
     // ignore
   }
@@ -159,7 +164,8 @@ export async function pollCsesVerdict(
   maxAttempts = 40,
   intervalMs = 1500,
   sessionCookie?: string,
-  problemId?: string
+  problemId?: string,
+  signal?: AbortSignal
 ): Promise<CsesVerdictResult> {
   const headers: Record<string, string> = {};
   const activeCookie = sessionCookie || getStoredCsesSessionCookie();
@@ -168,31 +174,57 @@ export async function pollCsesVerdict(
   }
 
   const queryParam = problemId ? `?problemId=${encodeURIComponent(problemId)}` : '';
+  let lastTransportError: string | undefined;
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    if (signal?.aborted) break;
     try {
-      const res = await fetch(`/api/cses/result/${submissionId}${queryParam}`, { headers });
+      const res = await fetch(`/api/cses/result/${encodeURIComponent(submissionId)}${queryParam}`, { headers, signal });
+      if (res.status === 401 || res.status === 403) {
+        return {
+          submissionId, status: 'UNKNOWN', lifecycleStatus: 'UNKNOWN',
+          rawStatusText: `CSES result access denied (HTTP ${res.status}). Reconnect your CSES account and check again.`,
+          tests: [], resultUrl: `https://cses.fi/problemset/result/${submissionId}/`,
+        };
+      }
       if (res.ok) {
+        lastTransportError = undefined;
         const result: CsesVerdictResult = await res.json();
+        if (signal?.aborted) break;
         if (onUpdate) onUpdate(result);
 
-        // Check if finished
-        if (result.status !== 'PENDING' && result.status !== 'TESTING') {
+        const hasFinalVerdict = !['PENDING', 'TESTING', 'UNKNOWN'].includes(result.status);
+        if (hasFinalVerdict && (result.lifecycleStatus === 'FINISHED' || result.lifecycleStatus === undefined)) {
           return result;
         }
+      } else {
+        lastTransportError = `CSES result check failed (HTTP ${res.status}).`;
       }
     } catch (e) {
-      console.warn(`[CSES Poller] Attempt ${attempt} failed:`, e);
+      if (signal?.aborted) break;
+      lastTransportError = `Could not reach the CSES result endpoint: ${e instanceof Error ? e.message : String(e)}`;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, intervalMs));
+    if (attempt + 1 < maxAttempts && !signal?.aborted) {
+      await new Promise<void>((resolve) => {
+        let timer: ReturnType<typeof setTimeout>;
+        const finish = () => {
+          clearTimeout(timer);
+          signal?.removeEventListener('abort', finish);
+          resolve();
+        };
+        timer = setTimeout(finish, intervalMs);
+        signal?.addEventListener('abort', finish, { once: true });
+        if (signal?.aborted) finish();
+      });
+    }
   }
 
   // Fallback timeout result
   return {
     submissionId,
     status: 'UNKNOWN',
-    rawStatusText: 'Timed out waiting for CSES judge',
+    rawStatusText: lastTransportError || 'Timed out waiting for the CSES judge; check again later.',
     tests: [],
     resultUrl: `https://cses.fi/problemset/result/${submissionId}/`,
   };

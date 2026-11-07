@@ -25,6 +25,7 @@ import { Problem, Category, UserProfile } from '../core/types';
 import { getStoredCsesCredentials } from '../core/cses-client';
 import { getStarredProblems, toggleStarredProblem } from '../core/storage';
 import { cn } from '../lib/utils';
+import StreakIndicator from './StreakIndicator';
 
 export interface HeaderProps {
   currentProblem: Problem;
@@ -373,7 +374,7 @@ export function Header({
       </div>
 
       {/* Center / Right: Search Bar Button */}
-      <div className="flex items-center space-x-2 sm:space-x-3">
+      <div className="flex shrink-0 items-center space-x-2 sm:space-x-3 whitespace-nowrap">
         {/* Command Palette Trigger */}
         <button
           type="button"
@@ -382,8 +383,8 @@ export function Header({
           title="Search all 400 CSES problems"
         >
           <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-400 transition-colors" />
-          <span className="hidden xl:inline">Search 400 problems...</span>
-          <kbd className="hidden xl:inline-flex items-center gap-0.5 rounded border border-border-muted bg-surface-0 px-1.5 py-0.5 text-[11px] font-mono text-slate-400 font-semibold shadow-sm">
+          <span className="hidden 2xl:inline">Search 400 problems...</span>
+          <kbd className="hidden 2xl:inline-flex items-center gap-0.5 rounded border border-border-muted bg-surface-0 px-1.5 py-0.5 text-[11px] font-mono text-slate-400 font-semibold shadow-sm">
             {isMac ? '⌘K' : 'Ctrl+K'}
           </kbd>
         </button>
@@ -402,6 +403,7 @@ export function Header({
           </span>
         </div>
 
+        <StreakIndicator owner={currentUser?.id || 'guest'} onConnect={onOpenCsesAccount} />
         {onOpenLists && <button type="button" onClick={onOpenLists} className="text-xs text-slate-200 border border-border-muted rounded px-2.5 py-1.5 hover:bg-surface-2">Lists</button>}
         {onOpenContestBank && <button type="button" onClick={onOpenContestBank} className="text-xs text-slate-200 border border-border-muted rounded px-2.5 py-1.5 hover:bg-surface-2">Olympiad bank</button>}
         {/* Archive Button */}

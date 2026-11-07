@@ -31,6 +31,7 @@ export interface LeaderboardEntry {
   userId?: string;
   language: string;
   score: string;
+  submissionId?: string;
 }
 
 export interface ProblemStats {
@@ -65,6 +66,7 @@ export type VerdictStatus =
   | 'WA'
   | 'TLE'
   | 'MLE'
+  | 'OLE'
   | 'CE'
   | 'RE'
   | 'RUNNING'
@@ -112,6 +114,10 @@ export interface SubmissionRecord {
   totalCount: number;
   maxTimeMs: number;
   maxMemoryBytes: number;
+  source?: 'local' | 'cses';
+  officialSubmissionId?: string;
+  officialOwner?: string;
+  officialResult?: CsesVerdictResult;
 }
 
 export interface ExecutionOptions {
@@ -141,6 +147,7 @@ export interface NoteEntry {
 }
 
 export interface UserDataExport {
+  officialStreaks?: Record<string, string>;
   lists?: ProblemList[];
   version: number;
   drafts: Record<string, string>;
@@ -219,6 +226,8 @@ export interface CsesSubmissionSummary {
   size?: string;
   status: string;
   resultUrl: string;
+  acceptedAt?: string;
+  isPersonal?: boolean;
 }
 
 export interface CsesSubmitPayload {
@@ -236,6 +245,7 @@ export interface CsesSubmitResponse {
   resultUrl?: string;
   problemId?: string;
   sessionCookie?: string;
+  owner?: { nick?: string; userId?: string; isPersonal?: boolean };
   error?: string;
 }
 
@@ -243,11 +253,19 @@ export interface CsesTestDetail {
   index: number;
   verdict: string;
   time: string;
+  memory?: string;
+  input?: string;
+  expectedOutput?: string;
+  actualOutput?: string;
+  detailsUrl?: string;
 }
 
 export interface CsesVerdictResult {
   submissionId: string;
-  status: 'PENDING' | 'TESTING' | 'ACCEPTED' | 'WRONG ANSWER' | 'TIME LIMIT EXCEEDED' | 'COMPILE ERROR' | 'OUTPUT LIMIT EXCEEDED' | 'RUNTIME ERROR' | 'UNKNOWN';
+  status: 'PENDING' | 'TESTING' | 'ACCEPTED' | 'WRONG ANSWER' | 'TIME LIMIT EXCEEDED' | 'MEMORY LIMIT EXCEEDED' | 'COMPILE ERROR' | 'OUTPUT LIMIT EXCEEDED' | 'RUNTIME ERROR' | 'UNKNOWN';
+  lifecycleStatus?: 'READY' | 'PENDING' | 'TESTING' | 'FINISHED' | 'UNKNOWN';
+  source?: 'cses';
+  owner?: { nick?: string; userId?: string; isPersonal?: boolean };
   rawStatusText: string;
   totalTime?: string;
   totalMemory?: string;

@@ -8,6 +8,7 @@ import {
   UserProfile,
   ProblemList,
 } from './types';
+import { clearOfficialStreakStorage, listOfficialStreaks, mergeImportedOfficialStreaks } from './official-streak-storage';
 
 const DRAFT_PREFIX = 'cses_draft_';
 const NOTE_PREFIX = 'cses_notes_';
@@ -15,6 +16,10 @@ const SUBMISSIONS_KEY = 'cses_submissions';
 const SOLVED_PROBLEMS_KEY = 'cses_solved_problem_ids';
 const UNSOLVED_PROBLEMS_KEY = 'cses_unsolved_problem_ids';
 export const STARRED_PROBLEMS_KEY = 'cses_starred_problem_ids';
+const STARRED_PREFIX = 'cses_starred_problem_ids_';
+const STARRED_PENDING_PREFIX = 'cses_starred_pending_';
+const STARRED_GUEST_MIGRATED = 'cses_starred_guest_migrated';
+const STARRED_GUEST_CLAIMED = 'cses_starred_guest_claimed';
 const SETTINGS_KEY = 'cses_settings';
 const USER_PROFILE_KEY = 'cses_user_profile';
 const LISTS_PREFIX = 'cses_lists_';
@@ -388,64 +393,122 @@ export function removeSolvedProblem(problemId: string): void {
 /**
  * Returns a Set of problem IDs that have been starred/bookmarked by the user.
  */
-export function getStarredProblems(): Set<string> {
-  const starred = new Set<string>();
+function starOwner(owner?: string): string { return owner ?? getStoredUser()?.id ?? 'guest'; }
+
+function migrateLegacyStars(): void {
+  if (getItem(STARRED_GUEST_MIGRATED)) return;
   const raw = getItem(STARRED_PROBLEMS_KEY);
   if (raw) {
     try {
-      const arr = JSON.parse(raw);
-      if (Array.isArray(arr)) {
-        for (const id of arr) {
-          if (typeof id === 'string' && id) starred.add(id);
-        }
+      const old = JSON.parse(raw);
+      if (Array.isArray(old)) {
+        const owner = getStoredUser()?.id ?? 'guest';
+        const ids = [...new Set(old.filter((id): id is string => typeof id === 'string' && !!id))];
+        setItem(STARRED_PREFIX + owner, JSON.stringify(ids));
+        const pending = getPendingStarredChanges(owner);
+        for (const id of ids) pending[id] = { starred: true, operation: `${Date.now()}-${Math.random()}` };
+        setItem(STARRED_PENDING_PREFIX + owner, JSON.stringify(pending));
       }
-    } catch {}
+    } catch { /* Ignore malformed legacy data. */ }
   }
-  return starred;
+  setItem(STARRED_GUEST_MIGRATED, '1');
+  removeItem(STARRED_PROBLEMS_KEY);
 }
 
-/**
- * Persists an array or set of starred problem IDs directly.
- */
-export function persistStarredProblems(starredIds: Set<string> | string[]): void {
-  const arr = Array.from(starredIds);
-  setItem(STARRED_PROBLEMS_KEY, JSON.stringify(arr));
+function getStarredSnapshot(owner: string): Set<string> {
+  try { const raw = JSON.parse(getItem(STARRED_PREFIX + owner) || '[]'); return new Set(Array.isArray(raw) ? raw.filter((id: unknown) => typeof id === 'string' && !!id) : []); }
+  catch { return new Set(); }
+}
+
+export interface PendingStarChange { starred: boolean; operation: string }
+export function getPendingStarredChanges(owner = starOwner()): Record<string, PendingStarChange> {
+  try {
+    const value = JSON.parse(getItem(STARRED_PENDING_PREFIX + owner) || '{}');
+    return value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).filter(([, change]) => {
+      if (!change || typeof change !== 'object') return false;
+      const candidate = change as Partial<PendingStarChange>;
+      return typeof candidate.starred === 'boolean' && typeof candidate.operation === 'string';
+    })) as Record<string, PendingStarChange> : {};
+  }
+  catch { return {}; }
+}
+export function acknowledgeStarredChange(owner: string, id: string, operation: string): void {
+  const pending = getPendingStarredChanges(owner);
+  if (pending[id]?.operation === operation) { delete pending[id]; setItem(STARRED_PENDING_PREFIX + owner, JSON.stringify(pending)); }
+}
+export function overlayPendingStars(ids: string[], owner: string): Set<string> {
+  const merged = new Set(ids);
+  for (const [id, change] of Object.entries(getPendingStarredChanges(owner))) change.starred ? merged.add(id) : merged.delete(id);
+  return merged;
+}
+
+export function getStarredProblems(owner = starOwner()): Set<string> {
+  if (owner === 'guest' || owner === getStoredUser()?.id) migrateLegacyStars();
+  return getStarredSnapshot(owner);
+}
+
+/** Persists a complete desired set and records each changed problem for cloud sync. */
+export function persistStarredProblems(starredIds: Set<string> | string[], owner = starOwner()): void {
+  const ids = new Set(starredIds);
+  const before = getStarredSnapshot(owner);
+  setItem(STARRED_PREFIX + owner, JSON.stringify([...ids]));
+  const pending = getPendingStarredChanges(owner);
+  for (const id of new Set([...before, ...ids])) {
+    if (before.has(id) !== ids.has(id)) pending[id] = { starred: ids.has(id), operation: `${Date.now()}-${Math.random()}` };
+  }
+  setItem(STARRED_PENDING_PREFIX + owner, JSON.stringify(pending));
+}
+
+export function replaceStarredProblemsFromCloud(starredIds: Set<string> | string[], owner: string): void {
+  setItem(STARRED_PREFIX + owner, JSON.stringify([...new Set(starredIds)]));
+}
+
+/** Transfers pre-auth guest stars to the first signed-in account once. */
+export function claimGuestStars(owner: string): void {
+  if (!owner || owner === 'guest' || getItem(STARRED_GUEST_CLAIMED)) return;
+  const guest = getStarredProblems('guest');
+  const account = getStarredProblems(owner);
+  for (const id of guest) account.add(id);
+  persistStarredProblems(account, owner);
+  removeItem(STARRED_PREFIX + 'guest');
+  removeItem(STARRED_PENDING_PREFIX + 'guest');
+  setItem(STARRED_GUEST_CLAIMED, owner);
 }
 
 /**
  * Saves a problem ID as starred/bookmarked.
  */
-export function saveStarredProblem(id: string): void {
+export function saveStarredProblem(id: string, owner = starOwner()): void {
   if (!id) return;
-  const current = getStarredProblems();
+  const current = getStarredProblems(owner);
   current.add(id);
-  persistStarredProblems(current);
+  persistStarredProblems(current, owner);
 }
 
 /**
  * Removes a problem ID from starred/bookmarked.
  */
-export function removeStarredProblem(id: string): void {
+export function removeStarredProblem(id: string, owner = starOwner()): void {
   if (!id) return;
-  const current = getStarredProblems();
+  const current = getStarredProblems(owner);
   current.delete(id);
-  persistStarredProblems(current);
+  persistStarredProblems(current, owner);
 }
 
 /**
  * Toggles the starred/bookmarked status for a problem ID.
  * Returns true if the problem is now starred, or false if unstarred.
  */
-export function toggleStarredProblem(id: string): boolean {
+export function toggleStarredProblem(id: string, owner = starOwner()): boolean {
   if (!id) return false;
-  const current = getStarredProblems();
+  const current = getStarredProblems(owner);
   if (current.has(id)) {
     current.delete(id);
-    persistStarredProblems(current);
+    persistStarredProblems(current, owner);
     return false;
   } else {
     current.add(id);
-    persistStarredProblems(current);
+    persistStarredProblems(current, owner);
     return true;
   }
 }
@@ -476,6 +539,8 @@ export function cleanEmptySubmissions(): void {
 export function exportUserData(): string {
   const keys = getAllKeys();
   const drafts: Record<string, string> = {};
+  const owner = getStoredUser()?.id ?? 'guest';
+  const officialStreaks: Record<string, string> = {};
 
   for (const k of keys) {
     if (k.startsWith(DRAFT_PREFIX)) {
@@ -487,13 +552,16 @@ export function exportUserData(): string {
     }
   }
 
-  const exportPayload: UserDataExport = {
-    lists: getProblemLists(getStoredUser()?.id),
+  Object.assign(officialStreaks, listOfficialStreaks(owner));
+
+  const exportPayload: UserDataExport & { officialStreaks?: Record<string, string> } = {
+    lists: getProblemLists(owner),
     version: 1,
     drafts,
     submissions: getSubmissions(),
     notes: getAllNotes(),
     starredIds: Array.from(getStarredProblems()),
+    officialStreaks,
     exportedAt: Date.now(),
   };
 
@@ -506,7 +574,7 @@ export function exportUserData(): string {
  */
 export function importUserData(jsonStr: string): boolean {
   try {
-    const data: Partial<UserDataExport> = JSON.parse(jsonStr);
+    const data: Partial<UserDataExport> & { officialStreaks?: Record<string, string> } = JSON.parse(jsonStr);
     if (!data || typeof data !== 'object') {
       return false;
     }
@@ -563,6 +631,17 @@ export function importUserData(jsonStr: string): boolean {
       persistStarredProblems(currentStarred);
     }
 
+    if (data.officialStreaks && typeof data.officialStreaks === 'object') {
+      const owner = getStoredUser()?.id ?? 'guest';
+      for (const [csesUserId, raw] of Object.entries(data.officialStreaks)) {
+        if (typeof raw !== 'string' || !/^[a-zA-Z0-9_.-]{1,100}$/.test(csesUserId)) continue;
+        const state = JSON.parse(raw);
+        if (!state || typeof state !== 'object' || !state.solves || typeof state.solves !== 'object') continue;
+        mergeImportedOfficialStreaks(owner, csesUserId, state);
+      }
+      if (typeof window !== 'undefined') window.dispatchEvent(new Event('cses-streaks-changed'));
+    }
+
     return true;
   } catch {
     return false;
@@ -573,6 +652,7 @@ export function importUserData(jsonStr: string): boolean {
  * Helper to clear all storage state (useful for test resets).
  */
 export function clearAllStorage(): void {
+  clearOfficialStreakStorage();
   const keys = getAllKeys();
   for (const k of keys) {
     if (
@@ -586,12 +666,16 @@ export function clearAllStorage(): void {
       k === SOLVED_PROBLEMS_KEY ||
       k === UNSOLVED_PROBLEMS_KEY ||
       k === STARRED_PROBLEMS_KEY ||
+      k.startsWith(STARRED_PREFIX) || k.startsWith(STARRED_PENDING_PREFIX) || k === STARRED_GUEST_MIGRATED ||
+      k === STARRED_GUEST_CLAIMED ||
+      k.startsWith('cses_official_streak_') ||
       k === USER_PROFILE_KEY
     ) {
       removeItem(k);
     }
   }
   memoryStorage.clear();
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event('cses-storage-cleared'));
 }
 
 /**

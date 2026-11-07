@@ -9,7 +9,10 @@ import {
   saveSubmission,
   getSubmissions,
   getStarredProblems,
-  saveStarredProblem,
+  replaceStarredProblemsFromCloud,
+  getPendingStarredChanges,
+  acknowledgeStarredChange,
+  overlayPendingStars,
 } from './storage';
 
 const DEFAULT_SUPABASE_URL = 'https://oxxctjyrtdgicbhmlhfy.supabase.co';
@@ -32,6 +35,8 @@ export const isSupabaseConfigured = Boolean(
 let supabaseInstance: SupabaseClient | null = null;
 
 let lastSyncTimestamp = 0;
+const starSyncRunning = new Map<string, Promise<boolean>>();
+const starSyncQueued = new Set<string>();
 export const SYNC_COOLDOWN_MS = 60000;
 
 /**
@@ -328,21 +333,7 @@ export async function syncUserDataToCloud(
       });
     }
 
-    // 6. Batch upsert starred problems
-    if (data.starredIds && data.starredIds.length > 0) {
-      try {
-        const starredPayload = data.starredIds.map((problemId) => ({
-          user_id: userId,
-          problem_id: problemId,
-          starred_at: new Date().toISOString(),
-        }));
-        await client.from('user_starred').upsert(starredPayload, {
-          onConflict: 'user_id,problem_id',
-        });
-      } catch (err) {
-        console.warn('[Supabase Sync] Starred sync notice:', err);
-      }
-    }
+    // Stars use per-problem desired-state operations so removes are durable too.
 
     lastSyncTimestamp = Date.now();
     return true;
@@ -378,7 +369,9 @@ export async function fetchUserDataFromCloud(userId: string): Promise<{
     const solvedIds: string[] = (solvedRes?.data || []).map((row: any) => row.problem_id);
     const drafts: Record<string, string> = {};
     const notes: Record<string, string> = {};
-    const starredIds: string[] = (starredRes?.data || []).map((row: any) => row.problem_id);
+    if (!Array.isArray(starredRes?.data)) return null;
+    const starredIds: string[] = starredRes.data.map((row: any) => row.problem_id);
+    if (solvedRes?.error || draftsRes?.error || notesRes?.error || starredRes?.error) return null;
 
     if (draftsRes?.data) {
       for (const d of draftsRes.data) {
@@ -417,13 +410,14 @@ export async function saveUserStarredToCloud(
 
   try {
     if (!starred) {
-      await client
+      const { error } = await client
         .from('user_starred')
         .delete()
         .eq('user_id', userId)
         .eq('problem_id', problemId);
+      if (error) throw error;
     } else {
-      await client.from('user_starred').upsert(
+      const { error } = await client.from('user_starred').upsert(
         {
           user_id: userId,
           problem_id: problemId,
@@ -431,12 +425,42 @@ export async function saveUserStarredToCloud(
         },
         { onConflict: 'user_id,problem_id' }
       );
+      if (error) throw error;
     }
     return true;
   } catch (err) {
     console.warn('[Supabase Cloud Starred] Upsert error:', err);
     return false;
   }
+}
+
+/** Replays desired star states, then pulls the cloud set under the pending local overlay. */
+export function syncPendingStarredToCloud(userId: string): Promise<boolean> {
+  const running = starSyncRunning.get(userId);
+  if (running) { starSyncQueued.add(userId); return running; }
+  const promise = (async () => {
+    let success = false;
+    do { starSyncQueued.delete(userId); success = await syncPendingStarredOnce(userId); } while (starSyncQueued.has(userId));
+    return success;
+  })().finally(() => { starSyncRunning.delete(userId); starSyncQueued.delete(userId); });
+  starSyncRunning.set(userId, promise);
+  return promise;
+}
+
+async function syncPendingStarredOnce(userId: string): Promise<boolean> {
+  const pending = getPendingStarredChanges(userId);
+  let allSynced = true;
+  for (const [problemId, operation] of Object.entries(pending)) {
+    if (await saveUserStarredToCloud(userId, problemId, operation.starred)) {
+      acknowledgeStarredChange(userId, problemId, operation.operation);
+    } else allSynced = false;
+  }
+  const cloud = await fetchUserDataFromCloud(userId);
+  if (!cloud) return false;
+  replaceStarredProblemsFromCloud(overlayPendingStars(cloud.starredIds, userId), userId);
+  const latest = getPendingStarredChanges(userId);
+  if (Object.entries(latest).some(([id, change]) => pending[id]?.operation !== change.operation)) starSyncQueued.add(userId);
+  return allSynced;
 }
 
 /**
@@ -459,11 +483,12 @@ export async function syncAllLocalProgressToCloud(
   const localSolved = Array.from(getSolvedProblems());
   const localNotes = getAllNotes();
   const localStarred = Array.from(getStarredProblems());
+  const starsSynced = await syncPendingStarredToCloud(userId);
 
   const now = Date.now();
   if (!force && now - lastSyncTimestamp < SYNC_COOLDOWN_MS) {
     return {
-      success: true,
+      success: starsSynced,
       syncedNotes: Object.keys(localNotes).length,
       syncedSolves: localSolved.length,
       syncedStarred: localStarred.length,
@@ -531,17 +556,9 @@ export async function syncAllLocalProgressToCloud(
     }
     syncedNotes = Math.max(syncedNotes, Object.keys(cloudData.notes).length);
 
-    // Merge cloud starred problems into local storage
-    if (cloudData.starredIds && Array.isArray(cloudData.starredIds)) {
-      for (const pId of cloudData.starredIds) {
-        if (!localStarred.includes(pId)) {
-          saveStarredProblem(pId);
-        }
-      }
-      syncedStarred = Math.max(syncedStarred, cloudData.starredIds.length);
-    }
+    syncedStarred = Math.max(syncedStarred, cloudData.starredIds.length);
   }
 
   lastSyncTimestamp = Date.now();
-  return { success: pushOk, syncedNotes, syncedSolves, syncedStarred };
+  return { success: pushOk && starsSynced, syncedNotes, syncedSolves, syncedStarred };
 }
