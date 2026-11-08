@@ -5,74 +5,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 182951,
-    "attemptedBy": 191022,
-    "successRate": "95.77%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "mitcute",
-        "language": "Pascal",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "dtdungvnt",
-        "language": "Pascal",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "rickroll121",
-        "language": "Pascal",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "thaitp2009",
-        "language": "Pascal",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "phanlevu",
-        "language": "Pascal",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "deodeo",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "cjtsai",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Benutzer125",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 4,
-        "user": "holaceitunA",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 5,
-        "user": "michaelhan6",
-        "language": "Ruby",
-        "score": "16 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.054Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:37.829Z"
   },
   {
     "problemId": "1083",
@@ -80,74 +18,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 157817,
-    "attemptedBy": 164899,
-    "successRate": "95.71%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "mm678",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "ExtremeGamer2025",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "dhimasardinata",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "Godelian",
-        "language": "Assembly",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "cjtsai",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "spar10",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "ExtremeGamer2025",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 4,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 5,
-        "user": "ethandacat",
-        "language": "Ruby",
-        "score": "16 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:38.161Z"
   },
   {
     "problemId": "1069",
@@ -155,74 +31,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 137004,
-    "attemptedBy": 142100,
-    "successRate": "96.41%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "dhimasardinata",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "Godelian",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "Rashed22",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "obtl",
-        "language": "Rust",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "kunnan9999",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "ethandacat",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 4,
-        "user": "Kiruthees5",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 5,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:38.494Z"
   },
   {
     "problemId": "1094",
@@ -230,74 +44,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 129316,
-    "attemptedBy": 133566,
-    "successRate": "96.82%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "dhimasardinata",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "Yeason",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "CharviRamanathan",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "trying_my_luck",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "ethandacat",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "your mama",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "Jams.Ramen",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:38.827Z"
   },
   {
     "problemId": "1070",
@@ -305,74 +57,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 112929,
-    "attemptedBy": 116171,
-    "successRate": "97.21%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "dhimasardinata",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "T0wel",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "unvariant",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "zephyr_o2",
-        "language": "Assembly",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "ethandacat",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "zephyr_o2",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 4,
-        "user": "kilobyte144",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 5,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:39.156Z"
   },
   {
     "problemId": "1071",
@@ -380,74 +70,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 80354,
-    "attemptedBy": 87066,
-    "successRate": "92.29%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "dhimasardinata",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "Cross",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "isaac.dsa",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "unvariant",
-        "language": "Assembly",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 3,
-        "user": "den1z",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "rsh_raj",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "ducksaysquack",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:39.502Z"
   },
   {
     "problemId": "1072",
@@ -455,74 +83,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 62042,
-    "attemptedBy": 63842,
-    "successRate": "97.18%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "Yeason",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "veryshyjelly",
-        "language": "Rust",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "psucoder",
-        "language": "Rust",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "thepriyansh",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "coldpath",
-        "language": "Rust",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Alimdar",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "Firuzovna",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "potato1",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:39.840Z"
   },
   {
     "problemId": "1092",
@@ -530,74 +96,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 67392,
-    "attemptedBy": 72068,
-    "successRate": "93.51%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "T0wel",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "unvariant",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "Loay_Ghreeb",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "Rixu",
-        "language": "C",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "ethandacat",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "T0wel",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 4,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "gmester",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:40.165Z"
   },
   {
     "problemId": "1617",
@@ -605,74 +109,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 76526,
-    "attemptedBy": 80514,
-    "successRate": "95.05%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "mitcute",
-        "language": "Pascal",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "huyytd",
-        "language": "Pascal",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "Bindu",
-        "language": "Pascal",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "kiendz",
-        "language": "Pascal",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "benjaminkleyn",
-        "language": "Assembly",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "Dreamyashin",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Wewo",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 4,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "xshubhx",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:40.492Z"
   },
   {
     "problemId": "1618",
@@ -680,74 +122,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 70859,
-    "attemptedBy": 75128,
-    "successRate": "94.32%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "Pascalkasa",
-        "language": "Pascal",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "unvariant",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "ramcivil18",
-        "language": "Pascal",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "thaitp2009",
-        "language": "Pascal",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "phanlevu",
-        "language": "Pascal",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "Dreamyashin",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "Qzalex",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "ramcivil18",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:40.828Z"
   },
   {
     "problemId": "1754",
@@ -755,74 +135,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 63132,
-    "attemptedBy": 68608,
-    "successRate": "92.02%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "OriYadid",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "ble",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "thanhle5",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "coldpath",
-        "language": "Rust",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "Erri4",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "ShadmaN1028",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "Aaeria",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:41.572Z"
   },
   {
     "problemId": "1755",
@@ -830,74 +148,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 58737,
-    "attemptedBy": 61754,
-    "successRate": "95.11%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "Godelian",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "cannonman",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "unvariant",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "Yeason",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 3,
-        "user": "queqbr",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "ExtremeGamer2025",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "jmc_",
-        "language": "Python3",
-        "score": "34 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:41.912Z"
   },
   {
     "problemId": "2205",
@@ -905,74 +161,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 40207,
-    "attemptedBy": 44783,
-    "successRate": "89.78%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "unvariant",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "RojasMathias",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "sarvel",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "benjaminkleyn",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "Genius3435",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Varun_171",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "AdamD",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "GeeTransit",
-        "language": "Ruby",
-        "score": "32 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:42.236Z"
   },
   {
     "problemId": "2165",
@@ -980,74 +174,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 37596,
-    "attemptedBy": 39014,
-    "successRate": "96.37%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "M_SQRT",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "benjaminkleyn",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "kholdstare",
-        "language": "Rust",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "baba08",
-        "language": "C++",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "Genius3435",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 3,
-        "user": "GeeTransit",
-        "language": "Ruby",
-        "score": "32 ch."
-      },
-      {
-        "rank": 4,
-        "user": "jmc_",
-        "language": "Python3",
-        "score": "34 ch."
-      },
-      {
-        "rank": 5,
-        "user": "Ench Lolz",
-        "language": "Ruby",
-        "score": "67 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:42.566Z"
   },
   {
     "problemId": "1622",
@@ -1055,74 +187,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 49449,
-    "attemptedBy": 50642,
-    "successRate": "97.64%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "Yeason",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "kholdstare",
-        "language": "Rust",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "dimaum",
-        "language": "C",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "ExtremeGamer2025",
-        "language": "C++",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "daniel0810",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "ExtremeGamer2025",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "GeeTransit",
-        "language": "Ruby",
-        "score": "32 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:42.891Z"
   },
   {
     "problemId": "1623",
@@ -1130,74 +200,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 50391,
-    "attemptedBy": 56391,
-    "successRate": "89.36%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "M_SQRT",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "userabc",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "vjudge5",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "sa1",
-        "language": "Rust",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "ZukkGnojarz",
-        "language": "C",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 3,
-        "user": "ruo",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "hereisEmmaMfs",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "erni23578",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:43.229Z"
   },
   {
     "problemId": "1624",
@@ -1205,74 +213,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 30664,
-    "attemptedBy": 31174,
-    "successRate": "98.36%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "benjaminkleyn",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "Gedicht",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "omikron",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "eyalzus",
-        "language": "C++",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "daniel0810",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "roger2025",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 4,
-        "user": "Genius3435",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "Shrimb",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:43.593Z"
   },
   {
     "problemId": "3399",
@@ -1280,74 +226,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 8505,
-    "attemptedBy": 9479,
-    "successRate": "89.72%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "EnDeRBeaT",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "north_calm",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "yanirioi",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "Anyo",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "jmc_",
-        "language": "Python3",
-        "score": "34 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Genius3435",
-        "language": "Ruby",
-        "score": "125 ch."
-      },
-      {
-        "rank": 4,
-        "user": "north_calm",
-        "language": "Ruby",
-        "score": "143 ch."
-      },
-      {
-        "rank": 5,
-        "user": "ntarsis",
-        "language": "Python3",
-        "score": "157 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:43.947Z"
   },
   {
     "problemId": "3419",
@@ -1355,74 +239,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 8203,
-    "attemptedBy": 8596,
-    "successRate": "95.43%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "NicklasPlugin",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "mooc.fi~2837184",
-        "language": "C",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "ronr",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "c0deTiger",
-        "language": "C++",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "cjtsai",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "jmc_",
-        "language": "Python3",
-        "score": "34 ch."
-      },
-      {
-        "rank": 4,
-        "user": "Argentum47",
-        "language": "Python3",
-        "score": "44 ch."
-      },
-      {
-        "rank": 5,
-        "user": "Genius3435",
-        "language": "Ruby",
-        "score": "44 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:44.272Z"
   },
   {
     "problemId": "3217",
@@ -1430,74 +252,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 8299,
-    "attemptedBy": 8485,
-    "successRate": "97.81%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "jeffilluminati",
-        "language": "Rust",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "legkamran",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "edi6",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 5,
-        "user": "tahsintnrkl",
-        "language": "C++",
-        "score": "0.04 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "jmc_",
-        "language": "Python3",
-        "score": "34 ch."
-      },
-      {
-        "rank": 3,
-        "user": "korrykatti",
-        "language": "Python3",
-        "score": "44 ch."
-      },
-      {
-        "rank": 4,
-        "user": "ericshen19555",
-        "language": "Python3",
-        "score": "152 ch."
-      },
-      {
-        "rank": 5,
-        "user": "legkamran",
-        "language": "Python3",
-        "score": "161 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:44.601Z"
   },
   {
     "problemId": "3311",
@@ -1505,74 +265,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 7004,
-    "attemptedBy": 7240,
-    "successRate": "96.74%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "theNewSon",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "wefej63394",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "glykon",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "koen",
-        "language": "C++",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "jmc_",
-        "language": "Python3",
-        "score": "34 ch."
-      },
-      {
-        "rank": 3,
-        "user": "pacybwoah",
-        "language": "Python3",
-        "score": "44 ch."
-      },
-      {
-        "rank": 4,
-        "user": "korrykatti",
-        "language": "Python3",
-        "score": "44 ch."
-      },
-      {
-        "rank": 5,
-        "user": "wjliangtpe",
-        "language": "C++",
-        "score": "118 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:44.940Z"
   },
   {
     "problemId": "2431",
@@ -1580,74 +278,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 21483,
-    "attemptedBy": 24541,
-    "successRate": "87.54%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "Gedicht",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "BernardHdzHdz",
-        "language": "Rust",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "_Muhammad",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 5,
-        "user": "vjudge1",
-        "language": "C++",
-        "score": "0.00 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "Genius3435",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 3,
-        "user": "HVMarci",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "ihceker",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "jmc_",
-        "language": "Python3",
-        "score": "34 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:45.265Z"
   },
   {
     "problemId": "1743",
@@ -1655,74 +291,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 6190,
-    "attemptedBy": 7055,
-    "successRate": "87.74%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "ammojamo",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "ihaievyi",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "bababoi123",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "legkamran",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "jmc_",
-        "language": "Python3",
-        "score": "34 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Genius3435",
-        "language": "Python3",
-        "score": "149 ch."
-      },
-      {
-        "rank": 4,
-        "user": "anlybt",
-        "language": "Python3",
-        "score": "149 ch."
-      },
-      {
-        "rank": 5,
-        "user": "ihaievyi",
-        "language": "Python3",
-        "score": "149 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:45.593Z"
   },
   {
     "problemId": "1625",
@@ -1730,74 +304,12 @@
     "category": "Introductory Problems",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 12064,
-    "attemptedBy": 15382,
-    "successRate": "78.43%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "el_tunel",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 3,
-        "user": "fakesumit",
-        "language": "C++",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 4,
-        "user": "habibX34",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "Emm8759",
-        "language": "Rust",
-        "score": "0.02 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Python3",
-        "score": "34 ch."
-      },
-      {
-        "rank": 2,
-        "user": "jmc_",
-        "language": "Python3",
-        "score": "34 ch."
-      },
-      {
-        "rank": 3,
-        "user": "3RR0R404",
-        "language": "Python3",
-        "score": "44 ch."
-      },
-      {
-        "rank": 4,
-        "user": "NickSouth",
-        "language": "C++",
-        "score": "277 ch."
-      },
-      {
-        "rank": 5,
-        "user": "jakao",
-        "language": "C++",
-        "score": "284 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:45.920Z"
   },
   {
     "problemId": "1621",
@@ -1805,74 +317,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 91057,
-    "attemptedBy": 97912,
-    "successRate": "93.00%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "UdbhavD",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "benjaminkleyn",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "khanhduy2311",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "PizzaMan2000",
-        "language": "Rust",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 3,
-        "user": "physicalWorld",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "ruo",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "qing306038",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:46.256Z"
   },
   {
     "problemId": "1084",
@@ -1880,74 +330,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 68356,
-    "attemptedBy": 75064,
-    "successRate": "91.06%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 3,
-        "user": "CordlessCoder",
-        "language": "Rust",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 4,
-        "user": "PizzaMan2000",
-        "language": "Rust",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 5,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.02 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "hyball",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Genius3435",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "GeeTransit",
-        "language": "Ruby",
-        "score": "32 ch."
-      },
-      {
-        "rank": 5,
-        "user": "leonzalion",
-        "language": "Ruby",
-        "score": "116 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:46.579Z"
   },
   {
     "problemId": "1090",
@@ -1955,74 +343,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 65950,
-    "attemptedBy": 70580,
-    "successRate": "93.44%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "benjaminkleyn",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "kkoenig",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "nawaz0x1",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Genius3435",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "abhijeet_adarsh",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "Jameel_l",
-        "language": "Ruby",
-        "score": "17 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:46.920Z"
   },
   {
     "problemId": "1091",
@@ -2030,74 +356,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 52920,
-    "attemptedBy": 60877,
-    "successRate": "86.93%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 2,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 3,
-        "user": "PizzaMan2000",
-        "language": "Rust",
-        "score": "0.06 s"
-      },
-      {
-        "rank": 4,
-        "user": "M_SQRT",
-        "language": "C++",
-        "score": "0.06 s"
-      },
-      {
-        "rank": 5,
-        "user": "niter",
-        "language": "C++",
-        "score": "0.07 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "hoangdang2010",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "156 ch."
-      },
-      {
-        "rank": 4,
-        "user": "tatakae",
-        "language": "Python3",
-        "score": "156 ch."
-      },
-      {
-        "rank": 5,
-        "user": "deanqkhanh",
-        "language": "Python3",
-        "score": "156 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:47.278Z"
   },
   {
     "problemId": "1619",
@@ -2105,74 +369,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 53709,
-    "attemptedBy": 57611,
-    "successRate": "93.23%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 2,
-        "user": "GPInduwara",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 3,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 4,
-        "user": "Yeason",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 5,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.02 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "jajouta",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "GeeTransit",
-        "language": "Ruby",
-        "score": "32 ch."
-      },
-      {
-        "rank": 4,
-        "user": "leonzalion",
-        "language": "Ruby",
-        "score": "36 ch."
-      },
-      {
-        "rank": 5,
-        "user": "bronze_coder",
-        "language": "Python3",
-        "score": "108 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:47.658Z"
   },
   {
     "problemId": "1629",
@@ -2180,74 +382,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 52309,
-    "attemptedBy": 55100,
-    "successRate": "94.93%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "ericshen19555",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "PizzaMan2000",
-        "language": "Rust",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "ntannn",
-        "language": "Rust",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "GiacomoLaFrusta",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "GeeTransit",
-        "language": "Python2",
-        "score": "92 ch."
-      },
-      {
-        "rank": 4,
-        "user": "brianush1",
-        "language": "Python2",
-        "score": "92 ch."
-      },
-      {
-        "rank": 5,
-        "user": "kaibotsu_johan",
-        "language": "Python3",
-        "score": "98 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:48.095Z"
   },
   {
     "problemId": "1640",
@@ -2255,74 +395,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 60547,
-    "attemptedBy": 67180,
-    "successRate": "90.13%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "benjaminkleyn",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "niter",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "shen-hong-xin",
-        "language": "Python3",
-        "score": "44 ch."
-      },
-      {
-        "rank": 3,
-        "user": "usacoplat",
-        "language": "Python3",
-        "score": "44 ch."
-      },
-      {
-        "rank": 4,
-        "user": "beratersari",
-        "language": "Python3",
-        "score": "44 ch."
-      },
-      {
-        "rank": 5,
-        "user": "qtung",
-        "language": "Python3",
-        "score": "113 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:48.532Z"
   },
   {
     "problemId": "1643",
@@ -2330,74 +408,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 57494,
-    "attemptedBy": 59827,
-    "successRate": "96.10%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "Yeason",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "adithyaka3",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "GeeTransit",
-        "language": "Ruby",
-        "score": "32 ch."
-      },
-      {
-        "rank": 3,
-        "user": "trcmkr",
-        "language": "Ruby",
-        "score": "54 ch."
-      },
-      {
-        "rank": 4,
-        "user": "leonzalion",
-        "language": "Ruby",
-        "score": "63 ch."
-      },
-      {
-        "rank": 5,
-        "user": "testfire",
-        "language": "Ruby",
-        "score": "63 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:49.019Z"
   },
   {
     "problemId": "1074",
@@ -2405,74 +421,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 51433,
-    "attemptedBy": 53609,
-    "successRate": "95.94%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "PizzaMan2000",
-        "language": "Rust",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "tapanih",
-        "language": "Rust",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "zhukovdm",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "s1pek",
-        "language": "Python3",
-        "score": "36 ch."
-      },
-      {
-        "rank": 3,
-        "user": "namman",
-        "language": "Python3",
-        "score": "36 ch."
-      },
-      {
-        "rank": 4,
-        "user": "algmyr",
-        "language": "Ruby",
-        "score": "67 ch."
-      },
-      {
-        "rank": 5,
-        "user": "ayush.saini10",
-        "language": "Ruby",
-        "score": "67 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:49.442Z"
   },
   {
     "problemId": "2183",
@@ -2480,74 +434,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 39516,
-    "attemptedBy": 40839,
-    "successRate": "96.76%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "ammojamo",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "PizzaMan2000",
-        "language": "Rust",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "gilnandill",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "JamsRamen",
-        "language": "Ruby",
-        "score": "32 ch."
-      },
-      {
-        "rank": 3,
-        "user": "GeeTransit",
-        "language": "Ruby",
-        "score": "32 ch."
-      },
-      {
-        "rank": 4,
-        "user": "ritul_kr_singh",
-        "language": "Python3",
-        "score": "67 ch."
-      },
-      {
-        "rank": 5,
-        "user": "Lost Arrow",
-        "language": "Python3",
-        "score": "67 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:49.874Z"
   },
   {
     "problemId": "2216",
@@ -2555,74 +447,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 40429,
-    "attemptedBy": 43002,
-    "successRate": "94.02%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "Yeason",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "eyadooz",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "howard108315",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Genius3435",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 4,
-        "user": "eyadooz",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 5,
-        "user": "Sacharlemagne",
-        "language": "Python3",
-        "score": "66 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:50.389Z"
   },
   {
     "problemId": "2217",
@@ -2630,74 +460,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 17920,
-    "attemptedBy": 22195,
-    "successRate": "80.74%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 2,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 3,
-        "user": "LightBear",
-        "language": "C++",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 4,
-        "user": "elsc",
-        "language": "C++",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 5,
-        "user": "Hegdahl",
-        "language": "C++",
-        "score": "0.03 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "RealDonaldTrump",
-        "language": "Python3",
-        "score": "259 ch."
-      },
-      {
-        "rank": 3,
-        "user": "ntarsis",
-        "language": "Python3",
-        "score": "288 ch."
-      },
-      {
-        "rank": 4,
-        "user": "ziihrs",
-        "language": "Python3",
-        "score": "296 ch."
-      },
-      {
-        "rank": 5,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "297 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:50.939Z"
   },
   {
     "problemId": "1141",
@@ -2705,74 +473,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 40433,
-    "attemptedBy": 45661,
-    "successRate": "88.55%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "M_SQRT",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "Yeason",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "niter",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "GeeTransit",
-        "language": "Ruby",
-        "score": "32 ch."
-      },
-      {
-        "rank": 3,
-        "user": "algmyr",
-        "language": "Ruby",
-        "score": "87 ch."
-      },
-      {
-        "rank": 4,
-        "user": "kaibotsu_johan",
-        "language": "Python3",
-        "score": "88 ch."
-      },
-      {
-        "rank": 5,
-        "user": "Genius3435",
-        "language": "Python3",
-        "score": "88 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:51.348Z"
   },
   {
     "problemId": "1073",
@@ -2780,74 +486,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 40347,
-    "attemptedBy": 43001,
-    "successRate": "93.83%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "adamf88",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 4,
-        "user": "glad_asg",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 5,
-        "user": "kholdstare",
-        "language": "Rust",
-        "score": "0.02 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "Genius3435",
-        "language": "Ruby",
-        "score": "17 ch."
-      },
-      {
-        "rank": 3,
-        "user": "GeeTransit",
-        "language": "Ruby",
-        "score": "32 ch."
-      },
-      {
-        "rank": 4,
-        "user": "leonzalion",
-        "language": "Ruby",
-        "score": "86 ch."
-      },
-      {
-        "rank": 5,
-        "user": "algmyr",
-        "language": "Ruby",
-        "score": "90 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:51.758Z"
   },
   {
     "problemId": "1163",
@@ -2855,74 +499,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 31370,
-    "attemptedBy": 34805,
-    "successRate": "90.13%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "miamimagna",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 3,
-        "user": "vjudge4",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 4,
-        "user": "niter",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 5,
-        "user": "mahmoud goda",
-        "language": "C++",
-        "score": "0.02 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "snowflakepi314",
-        "language": "C++",
-        "score": "193 ch."
-      },
-      {
-        "rank": 3,
-        "user": "mahmoud goda",
-        "language": "C++",
-        "score": "193 ch."
-      },
-      {
-        "rank": 4,
-        "user": "jakob@zorz.si",
-        "language": "C++",
-        "score": "194 ch."
-      },
-      {
-        "rank": 5,
-        "user": "imsuck",
-        "language": "C++",
-        "score": "195 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:52.136Z"
   },
   {
     "problemId": "3420",
@@ -2930,74 +512,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 11460,
-    "attemptedBy": 12739,
-    "successRate": "89.96%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "gilnandill",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 3,
-        "user": "nandhagk",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 4,
-        "user": "57Ajay",
-        "language": "Rust",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 5,
-        "user": "MrHusseinFarhat",
-        "language": "C++",
-        "score": "0.02 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "wtfstrongoreo",
-        "language": "Python3",
-        "score": "44 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Aryanbeatyou",
-        "language": "Ruby",
-        "score": "79 ch."
-      },
-      {
-        "rank": 4,
-        "user": "dnialh",
-        "language": "Python3",
-        "score": "113 ch."
-      },
-      {
-        "rank": 5,
-        "user": "FromTheHood",
-        "language": "Python3",
-        "score": "121 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:52.486Z"
   },
   {
     "problemId": "3421",
@@ -3005,74 +525,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 8819,
-    "attemptedBy": 9562,
-    "successRate": "92.23%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "T0wel",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "ahojukka5",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "EnDeRBeaT",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "elsc",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "T0wel",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Genius3435",
-        "language": "Ruby",
-        "score": "78 ch."
-      },
-      {
-        "rank": 4,
-        "user": "emanuelr",
-        "language": "Python3",
-        "score": "89 ch."
-      },
-      {
-        "rank": 5,
-        "user": "bash_basher",
-        "language": "Python3",
-        "score": "90 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:52.819Z"
   },
   {
     "problemId": "2162",
@@ -3080,74 +538,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 24567,
-    "attemptedBy": 26789,
-    "successRate": "91.71%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.00 s"
-      },
-      {
-        "rank": 2,
-        "user": "kholdstare",
-        "language": "Rust",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "miamimagna",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "vinyx",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "Alosza",
-        "language": "Ruby",
-        "score": "46 ch."
-      },
-      {
-        "rank": 3,
-        "user": "bronze_coder",
-        "language": "Python3",
-        "score": "65 ch."
-      },
-      {
-        "rank": 4,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "70 ch."
-      },
-      {
-        "rank": 5,
-        "user": "your mama",
-        "language": "Python3",
-        "score": "76 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:53.156Z"
   },
   {
     "problemId": "2163",
@@ -3155,74 +551,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 13331,
-    "attemptedBy": 18283,
-    "successRate": "72.91%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 2,
-        "user": "Nunu",
-        "language": "C++",
-        "score": "0.04 s"
-      },
-      {
-        "rank": 3,
-        "user": "bababoi123",
-        "language": "C++",
-        "score": "0.04 s"
-      },
-      {
-        "rank": 4,
-        "user": "NotInform",
-        "language": "C++",
-        "score": "0.04 s"
-      },
-      {
-        "rank": 5,
-        "user": "kholdstare",
-        "language": "Rust",
-        "score": "0.04 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "eyalzus",
-        "language": "C++",
-        "score": "142 ch."
-      },
-      {
-        "rank": 3,
-        "user": "taha",
-        "language": "C++",
-        "score": "149 ch."
-      },
-      {
-        "rank": 4,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "150 ch."
-      },
-      {
-        "rank": 5,
-        "user": "AnkitRn",
-        "language": "Python3",
-        "score": "150 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:53.537Z"
   },
   {
     "problemId": "2168",
@@ -3230,74 +564,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 14684,
-    "attemptedBy": 16546,
-    "successRate": "88.75%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 2,
-        "user": "niter",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 3,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 4,
-        "user": "huynhtrankhanh",
-        "language": "C++",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 5,
-        "user": "ducchung2444",
-        "language": "C++",
-        "score": "0.03 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "rhymehatch",
-        "language": "Python3",
-        "score": "257 ch."
-      },
-      {
-        "rank": 3,
-        "user": "poty",
-        "language": "Python3",
-        "score": "294 ch."
-      },
-      {
-        "rank": 4,
-        "user": "pompompom",
-        "language": "Python3",
-        "score": "310 ch."
-      },
-      {
-        "rank": 5,
-        "user": "ericshen19555",
-        "language": "Python3",
-        "score": "321 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:53.923Z"
   },
   {
     "problemId": "2169",
@@ -3305,74 +577,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 9821,
-    "attemptedBy": 11440,
-    "successRate": "85.85%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 2,
-        "user": "ericshen19555",
-        "language": "C++",
-        "score": "0.06 s"
-      },
-      {
-        "rank": 3,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.06 s"
-      },
-      {
-        "rank": 4,
-        "user": "niter",
-        "language": "C++",
-        "score": "0.07 s"
-      },
-      {
-        "rank": 5,
-        "user": "huynhtrankhanh",
-        "language": "C++",
-        "score": "0.08 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Python3",
-        "score": "34 ch."
-      },
-      {
-        "rank": 2,
-        "user": "MuntherCarrot",
-        "language": "C++",
-        "score": "344 ch."
-      },
-      {
-        "rank": 3,
-        "user": "vstiff",
-        "language": "C++",
-        "score": "385 ch."
-      },
-      {
-        "rank": 4,
-        "user": "GeeTransit",
-        "language": "C++",
-        "score": "465 ch."
-      },
-      {
-        "rank": 5,
-        "user": "khiemhm04",
-        "language": "C++",
-        "score": "465 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:54.276Z"
   },
   {
     "problemId": "1164",
@@ -3380,74 +590,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 23904,
-    "attemptedBy": 27123,
-    "successRate": "88.13%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 2,
-        "user": "ericshen19555",
-        "language": "C++",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 3,
-        "user": "jfgc",
-        "language": "C",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 4,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.05 s"
-      },
-      {
-        "rank": 5,
-        "user": "Atefeh",
-        "language": "C++",
-        "score": "0.05 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "177 ch."
-      },
-      {
-        "rank": 3,
-        "user": "zdu863",
-        "language": "Python3",
-        "score": "215 ch."
-      },
-      {
-        "rank": 4,
-        "user": "nullz",
-        "language": "Python3",
-        "score": "233 ch."
-      },
-      {
-        "rank": 5,
-        "user": "op",
-        "language": "Python3",
-        "score": "237 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:54.687Z"
   },
   {
     "problemId": "1620",
@@ -3455,74 +603,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 34864,
-    "attemptedBy": 37552,
-    "successRate": "92.84%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 2,
-        "user": "khkris",
-        "language": "C++",
-        "score": "0.07 s"
-      },
-      {
-        "rank": 3,
-        "user": "klimisnotmilk",
-        "language": "C++",
-        "score": "0.07 s"
-      },
-      {
-        "rank": 4,
-        "user": "BubbleCoder106",
-        "language": "C++",
-        "score": "0.07 s"
-      },
-      {
-        "rank": 5,
-        "user": "saketh_aluru",
-        "language": "C++",
-        "score": "0.08 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "rhymehatch",
-        "language": "Python3",
-        "score": "102 ch."
-      },
-      {
-        "rank": 3,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "108 ch."
-      },
-      {
-        "rank": 4,
-        "user": "kienthesun",
-        "language": "Python3",
-        "score": "115 ch."
-      },
-      {
-        "rank": 5,
-        "user": "ziihrs",
-        "language": "Python3",
-        "score": "116 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:55.076Z"
   },
   {
     "problemId": "1630",
@@ -3530,74 +616,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 27649,
-    "attemptedBy": 28172,
-    "successRate": "98.14%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "Ivan_Striker",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "M_SQRT",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "elsc",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "dssfsuper2",
-        "language": "Python3",
-        "score": "87 ch."
-      },
-      {
-        "rank": 3,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "88 ch."
-      },
-      {
-        "rank": 4,
-        "user": "SatinWuker",
-        "language": "Python3",
-        "score": "98 ch."
-      },
-      {
-        "rank": 5,
-        "user": "ninja_765",
-        "language": "Python3",
-        "score": "98 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:55.481Z"
   },
   {
     "problemId": "1631",
@@ -3605,74 +629,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 22489,
-    "attemptedBy": 23947,
-    "successRate": "93.91%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "niter",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "glad_asg",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "Aztro",
-        "language": "Assembly",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "algmyr",
-        "language": "Ruby",
-        "score": "43 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Dremix10",
-        "language": "Ruby",
-        "score": "43 ch."
-      },
-      {
-        "rank": 4,
-        "user": "bababoi123",
-        "language": "Ruby",
-        "score": "43 ch."
-      },
-      {
-        "rank": 5,
-        "user": "TomaSajt",
-        "language": "Ruby",
-        "score": "45 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:55.876Z"
   },
   {
     "problemId": "1641",
@@ -3680,74 +642,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 32249,
-    "attemptedBy": 35388,
-    "successRate": "91.13%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Rust",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "vstiff",
-        "language": "Rust",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "eitanelbaum",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "ofrankel",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "ducksaysquack",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "rak1507",
-        "language": "Python3",
-        "score": "51 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Silly!",
-        "language": "Python3",
-        "score": "58 ch."
-      },
-      {
-        "rank": 4,
-        "user": "rhymehatch",
-        "language": "Python3",
-        "score": "153 ch."
-      },
-      {
-        "rank": 5,
-        "user": "qwe3612668",
-        "language": "Python3",
-        "score": "154 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:56.329Z"
   },
   {
     "problemId": "1642",
@@ -3755,74 +655,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 20084,
-    "attemptedBy": 22121,
-    "successRate": "90.79%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "vm349177",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "ethandacat",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "anudari_t",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "miamimagna",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "185 ch."
-      },
-      {
-        "rank": 3,
-        "user": "AnkitRn",
-        "language": "Python3",
-        "score": "185 ch."
-      },
-      {
-        "rank": 4,
-        "user": "qwe3612668",
-        "language": "Python3",
-        "score": "188 ch."
-      },
-      {
-        "rank": 5,
-        "user": "1015634",
-        "language": "Python3",
-        "score": "201 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:56.746Z"
   },
   {
     "problemId": "1645",
@@ -3830,74 +668,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 27079,
-    "attemptedBy": 27931,
-    "successRate": "96.95%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "niter",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "sadwork",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "FoolestBoy",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "GeeTransit",
-        "language": "Ruby",
-        "score": "32 ch."
-      },
-      {
-        "rank": 3,
-        "user": "leonzalion",
-        "language": "Ruby",
-        "score": "94 ch."
-      },
-      {
-        "rank": 4,
-        "user": "JingZeWu",
-        "language": "Ruby",
-        "score": "106 ch."
-      },
-      {
-        "rank": 5,
-        "user": "ffao",
-        "language": "Python3",
-        "score": "114 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:57.166Z"
   },
   {
     "problemId": "1660",
@@ -3905,74 +681,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 35918,
-    "attemptedBy": 38030,
-    "successRate": "94.45%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "Ivan_Striker",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "programmer159",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "vjudge2",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "Ullubiy07",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "80 ch."
-      },
-      {
-        "rank": 3,
-        "user": "qwe3612668",
-        "language": "Python3",
-        "score": "98 ch."
-      },
-      {
-        "rank": 4,
-        "user": "mukundan314",
-        "language": "Python3",
-        "score": "100 ch."
-      },
-      {
-        "rank": 5,
-        "user": "henrikaalto",
-        "language": "Ruby",
-        "score": "106 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:57.528Z"
   },
   {
     "problemId": "1661",
@@ -3980,74 +694,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 32849,
-    "attemptedBy": 38375,
-    "successRate": "85.60%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 2,
-        "user": "kholdstare",
-        "language": "Rust",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 3,
-        "user": "ammojamo",
-        "language": "C++",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 4,
-        "user": "szszsz",
-        "language": "Rust",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 5,
-        "user": "tapanih",
-        "language": "Rust",
-        "score": "0.03 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "yemre8",
-        "language": "Python3",
-        "score": "96 ch."
-      },
-      {
-        "rank": 3,
-        "user": "qwe3612668",
-        "language": "Python3",
-        "score": "98 ch."
-      },
-      {
-        "rank": 4,
-        "user": "jananis",
-        "language": "Python3",
-        "score": "100 ch."
-      },
-      {
-        "rank": 5,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "101 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:57.920Z"
   },
   {
     "problemId": "1662",
@@ -4055,74 +707,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 29639,
-    "attemptedBy": 32032,
-    "successRate": "92.53%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "Surge321",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "hdtyhdfghjedty",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "elsc",
-        "language": "C++",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "Nicolaikrob",
-        "language": "Python3",
-        "score": "82 ch."
-      },
-      {
-        "rank": 3,
-        "user": "qwe3612668",
-        "language": "Python3",
-        "score": "83 ch."
-      },
-      {
-        "rank": 4,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "86 ch."
-      },
-      {
-        "rank": 5,
-        "user": "nansanburam",
-        "language": "Python3",
-        "score": "86 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:58.307Z"
   },
   {
     "problemId": "2428",
@@ -4130,74 +720,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 18107,
-    "attemptedBy": 19638,
-    "successRate": "92.20%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "Godelian",
-        "language": "Assembly",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "Surge321",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 4,
-        "user": "leolin0214",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 5,
-        "user": "gilnandill",
-        "language": "C++",
-        "score": "0.02 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "Gii2000",
-        "language": "Ruby",
-        "score": "131 ch."
-      },
-      {
-        "rank": 3,
-        "user": "Nicolaikrob",
-        "language": "Python3",
-        "score": "148 ch."
-      },
-      {
-        "rank": 4,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "157 ch."
-      },
-      {
-        "rank": 5,
-        "user": "s_mnn9896",
-        "language": "Python3",
-        "score": "177 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:58.752Z"
   },
   {
     "problemId": "1085",
@@ -4205,74 +733,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 28091,
-    "attemptedBy": 29427,
-    "successRate": "95.46%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "tt7qxgd28q",
-        "language": "C++",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 3,
-        "user": "alphasc",
-        "language": "Rust",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 4,
-        "user": "GMAlpha",
-        "language": "Rust",
-        "score": "0.03 s"
-      },
-      {
-        "rank": 5,
-        "user": "cses-run",
-        "language": "Rust",
-        "score": "0.03 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "137 ch."
-      },
-      {
-        "rank": 3,
-        "user": "RecursionDude",
-        "language": "Python3",
-        "score": "141 ch."
-      },
-      {
-        "rank": 4,
-        "user": "hugsehbd",
-        "language": "C++",
-        "score": "144 ch."
-      },
-      {
-        "rank": 5,
-        "user": "kienthesun",
-        "language": "Python3",
-        "score": "148 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:59.148Z"
   },
   {
     "problemId": "1632",
@@ -4280,74 +746,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 15311,
-    "attemptedBy": 18174,
-    "successRate": "84.25%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.02 s"
-      },
-      {
-        "rank": 2,
-        "user": "ammojamo",
-        "language": "C++",
-        "score": "0.05 s"
-      },
-      {
-        "rank": 3,
-        "user": "ericshen19555",
-        "language": "C++",
-        "score": "0.05 s"
-      },
-      {
-        "rank": 4,
-        "user": "awnion",
-        "language": "Rust",
-        "score": "0.06 s"
-      },
-      {
-        "rank": 5,
-        "user": "legkamran",
-        "language": "C++",
-        "score": "0.07 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "ericshen19555",
-        "language": "Python3",
-        "score": "44 ch."
-      },
-      {
-        "rank": 3,
-        "user": "hugsehbd",
-        "language": "C++",
-        "score": "221 ch."
-      },
-      {
-        "rank": 4,
-        "user": "GeeTransit",
-        "language": "C++",
-        "score": "259 ch."
-      },
-      {
-        "rank": 5,
-        "user": "farhan2004",
-        "language": "C++",
-        "score": "268 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:40:59.616Z"
   },
   {
     "problemId": "1644",
@@ -4355,74 +759,12 @@
     "category": "Sorting and Searching",
     "timeLimit": "1.00 s",
     "memoryLimit": "512 MB",
-    "solvedBy": 14283,
-    "attemptedBy": 16784,
-    "successRate": "85.10%",
-    "fastest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "C",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 2,
-        "user": "fisher199",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 3,
-        "user": "Darshanraj",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 4,
-        "user": "niter",
-        "language": "C++",
-        "score": "0.01 s"
-      },
-      {
-        "rank": 5,
-        "user": "roychuang",
-        "language": "C",
-        "score": "0.01 s"
-      }
-    ],
-    "shortest": [
-      {
-        "rank": 1,
-        "user": "tsunnami",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 2,
-        "user": "ethandacat",
-        "language": "Ruby",
-        "score": "16 ch."
-      },
-      {
-        "rank": 3,
-        "user": "GeeTransit",
-        "language": "Python3",
-        "score": "189 ch."
-      },
-      {
-        "rank": 4,
-        "user": "Shrimb",
-        "language": "C++",
-        "score": "217 ch."
-      },
-      {
-        "rank": 5,
-        "user": "Naser_md",
-        "language": "C++",
-        "score": "234 ch."
-      }
-    ],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "solvedBy": 0,
+    "attemptedBy": 0,
+    "successRate": "0.0%",
+    "fastest": [],
+    "shortest": [],
+    "lastUpdated": "2026-11-08T09:41:00.069Z"
   },
   {
     "problemId": "1633",
@@ -4435,7 +777,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:00.467Z"
   },
   {
     "problemId": "1634",
@@ -4448,7 +790,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:00.861Z"
   },
   {
     "problemId": "1635",
@@ -4461,7 +803,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:01.253Z"
   },
   {
     "problemId": "1636",
@@ -4474,7 +816,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:01.658Z"
   },
   {
     "problemId": "1637",
@@ -4487,7 +829,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:02.090Z"
   },
   {
     "problemId": "1638",
@@ -4500,7 +842,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:02.467Z"
   },
   {
     "problemId": "1158",
@@ -4513,7 +855,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:02.913Z"
   },
   {
     "problemId": "1746",
@@ -4526,7 +868,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:03.321Z"
   },
   {
     "problemId": "2413",
@@ -4539,7 +881,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:03.688Z"
   },
   {
     "problemId": "1639",
@@ -4552,7 +894,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:04.101Z"
   },
   {
     "problemId": "3403",
@@ -4565,7 +907,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:04.519Z"
   },
   {
     "problemId": "1744",
@@ -4578,7 +920,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:04.888Z"
   },
   {
     "problemId": "3359",
@@ -4591,7 +933,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:05.296Z"
   },
   {
     "problemId": "1745",
@@ -4604,7 +946,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:05.751Z"
   },
   {
     "problemId": "1097",
@@ -4617,7 +959,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:06.127Z"
   },
   {
     "problemId": "1093",
@@ -4630,7 +972,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:06.506Z"
   },
   {
     "problemId": "3314",
@@ -4643,7 +985,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:06.873Z"
   },
   {
     "problemId": "1145",
@@ -4656,7 +998,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:07.253Z"
   },
   {
     "problemId": "1140",
@@ -4669,7 +1011,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:07.623Z"
   },
   {
     "problemId": "1653",
@@ -4682,7 +1024,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:08.010Z"
   },
   {
     "problemId": "2181",
@@ -4695,7 +1037,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:08.393Z"
   },
   {
     "problemId": "2220",
@@ -4708,7 +1050,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:08.757Z"
   },
   {
     "problemId": "1748",
@@ -4721,7 +1063,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:09.094Z"
   },
   {
     "problemId": "1192",
@@ -4734,7 +1076,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:09.461Z"
   },
   {
     "problemId": "1193",
@@ -4747,7 +1089,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:09.816Z"
   },
   {
     "problemId": "1666",
@@ -4760,7 +1102,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:10.144Z"
   },
   {
     "problemId": "1667",
@@ -4773,7 +1115,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:10.491Z"
   },
   {
     "problemId": "1668",
@@ -4786,7 +1128,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:10.847Z"
   },
   {
     "problemId": "1669",
@@ -4799,7 +1141,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:11.202Z"
   },
   {
     "problemId": "1194",
@@ -4812,7 +1154,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:11.573Z"
   },
   {
     "problemId": "1671",
@@ -4825,7 +1167,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:11.948Z"
   },
   {
     "problemId": "1672",
@@ -4838,7 +1180,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:12.288Z"
   },
   {
     "problemId": "1673",
@@ -4851,7 +1193,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:12.626Z"
   },
   {
     "problemId": "1195",
@@ -4864,7 +1206,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:12.992Z"
   },
   {
     "problemId": "1197",
@@ -4877,7 +1219,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:13.340Z"
   },
   {
     "problemId": "1196",
@@ -4890,7 +1232,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:13.691Z"
   },
   {
     "problemId": "1678",
@@ -4903,7 +1245,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:14.040Z"
   },
   {
     "problemId": "1679",
@@ -4916,7 +1258,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:14.369Z"
   },
   {
     "problemId": "1680",
@@ -4929,7 +1271,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:14.699Z"
   },
   {
     "problemId": "1681",
@@ -4942,7 +1284,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:15.024Z"
   },
   {
     "problemId": "1202",
@@ -4955,7 +1297,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:15.350Z"
   },
   {
     "problemId": "1750",
@@ -4968,7 +1310,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:15.675Z"
   },
   {
     "problemId": "1160",
@@ -4981,7 +1323,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:16.297Z"
   },
   {
     "problemId": "1751",
@@ -4994,7 +1336,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:16.637Z"
   },
   {
     "problemId": "1675",
@@ -5007,7 +1349,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:16.977Z"
   },
   {
     "problemId": "1676",
@@ -5020,7 +1362,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:17.323Z"
   },
   {
     "problemId": "1682",
@@ -5033,7 +1375,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:17.672Z"
   },
   {
     "problemId": "1683",
@@ -5046,7 +1388,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:18.026Z"
   },
   {
     "problemId": "1684",
@@ -5059,7 +1401,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:18.370Z"
   },
   {
     "problemId": "1686",
@@ -5072,7 +1414,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:18.723Z"
   },
   {
     "problemId": "1691",
@@ -5085,7 +1427,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:19.054Z"
   },
   {
     "problemId": "1692",
@@ -5098,7 +1440,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:19.380Z"
   },
   {
     "problemId": "1693",
@@ -5111,7 +1453,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:19.710Z"
   },
   {
     "problemId": "1690",
@@ -5124,7 +1466,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:20.051Z"
   },
   {
     "problemId": "1689",
@@ -5137,7 +1479,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:20.385Z"
   },
   {
     "problemId": "1694",
@@ -5150,7 +1492,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:20.707Z"
   },
   {
     "problemId": "1695",
@@ -5163,7 +1505,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:21.053Z"
   },
   {
     "problemId": "1696",
@@ -5176,7 +1518,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:21.378Z"
   },
   {
     "problemId": "1711",
@@ -5189,7 +1531,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:21.712Z"
   },
   {
     "problemId": "1646",
@@ -5202,7 +1544,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:22.037Z"
   },
   {
     "problemId": "1647",
@@ -5215,7 +1557,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:22.367Z"
   },
   {
     "problemId": "1648",
@@ -5228,7 +1570,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:22.701Z"
   },
   {
     "problemId": "1649",
@@ -5241,7 +1583,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:23.043Z"
   },
   {
     "problemId": "1650",
@@ -5254,7 +1596,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:23.385Z"
   },
   {
     "problemId": "1651",
@@ -5267,7 +1609,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:23.716Z"
   },
   {
     "problemId": "1652",
@@ -5280,7 +1622,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:24.043Z"
   },
   {
     "problemId": "1143",
@@ -5293,7 +1635,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:24.388Z"
   },
   {
     "problemId": "1749",
@@ -5306,7 +1648,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:24.737Z"
   },
   {
     "problemId": "1144",
@@ -5319,7 +1661,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:25.086Z"
   },
   {
     "problemId": "2166",
@@ -5332,7 +1674,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:25.418Z"
   },
   {
     "problemId": "2206",
@@ -5345,7 +1687,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:25.744Z"
   },
   {
     "problemId": "3304",
@@ -5358,7 +1700,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:26.101Z"
   },
   {
     "problemId": "3163",
@@ -5371,7 +1713,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:26.447Z"
   },
   {
     "problemId": "1190",
@@ -5384,7 +1726,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:26.776Z"
   },
   {
     "problemId": "3226",
@@ -5397,7 +1739,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:27.104Z"
   },
   {
     "problemId": "1734",
@@ -5410,7 +1752,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:27.443Z"
   },
   {
     "problemId": "3356",
@@ -5423,7 +1765,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:27.798Z"
   },
   {
     "problemId": "2416",
@@ -5436,7 +1778,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:28.132Z"
   },
   {
     "problemId": "1664",
@@ -5449,7 +1791,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:28.464Z"
   },
   {
     "problemId": "1739",
@@ -5462,7 +1804,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:28.813Z"
   },
   {
     "problemId": "1735",
@@ -5475,7 +1817,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:29.141Z"
   },
   {
     "problemId": "1736",
@@ -5488,7 +1830,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:29.471Z"
   },
   {
     "problemId": "1737",
@@ -5501,7 +1843,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:29.806Z"
   },
   {
     "problemId": "2184",
@@ -5514,7 +1856,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:30.164Z"
   },
   {
     "problemId": "1674",
@@ -5527,7 +1869,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:30.497Z"
   },
   {
     "problemId": "1130",
@@ -5540,7 +1882,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:30.821Z"
   },
   {
     "problemId": "1131",
@@ -5553,7 +1895,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:31.153Z"
   },
   {
     "problemId": "1132",
@@ -5566,7 +1908,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:31.478Z"
   },
   {
     "problemId": "1133",
@@ -5579,7 +1921,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:31.820Z"
   },
   {
     "problemId": "1687",
@@ -5592,7 +1934,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:32.148Z"
   },
   {
     "problemId": "1688",
@@ -5605,7 +1947,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:32.478Z"
   },
   {
     "problemId": "1135",
@@ -5618,7 +1960,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:32.807Z"
   },
   {
     "problemId": "1136",
@@ -5631,7 +1973,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:33.159Z"
   },
   {
     "problemId": "1137",
@@ -5644,7 +1986,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:33.590Z"
   },
   {
     "problemId": "1138",
@@ -5657,7 +1999,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:33.984Z"
   },
   {
     "problemId": "2134",
@@ -5670,7 +2012,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:34.320Z"
   },
   {
     "problemId": "1139",
@@ -5683,7 +2025,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:34.645Z"
   },
   {
     "problemId": "2079",
@@ -5696,7 +2038,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:34.971Z"
   },
   {
     "problemId": "2080",
@@ -5709,7 +2051,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:35.293Z"
   },
   {
     "problemId": "2081",
@@ -5722,7 +2064,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:35.617Z"
   },
   {
     "problemId": "2164",
@@ -5735,7 +2077,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:35.945Z"
   },
   {
     "problemId": "1095",
@@ -5748,7 +2090,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:36.267Z"
   },
   {
     "problemId": "1712",
@@ -5761,7 +2103,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:36.593Z"
   },
   {
     "problemId": "1713",
@@ -5774,7 +2116,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:36.916Z"
   },
   {
     "problemId": "1081",
@@ -5787,7 +2129,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:37.243Z"
   },
   {
     "problemId": "1082",
@@ -5800,7 +2142,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:37.570Z"
   },
   {
     "problemId": "2182",
@@ -5813,7 +2155,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:37.896Z"
   },
   {
     "problemId": "2185",
@@ -5826,7 +2168,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:38.227Z"
   },
   {
     "problemId": "2417",
@@ -5839,7 +2181,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:38.565Z"
   },
   {
     "problemId": "3396",
@@ -5852,7 +2194,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:38.897Z"
   },
   {
     "problemId": "1079",
@@ -5865,7 +2207,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:39.230Z"
   },
   {
     "problemId": "1715",
@@ -5878,7 +2220,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:39.558Z"
   },
   {
     "problemId": "1716",
@@ -5891,7 +2233,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:39.899Z"
   },
   {
     "problemId": "1717",
@@ -5904,7 +2246,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:40.234Z"
   },
   {
     "problemId": "3397",
@@ -5917,7 +2259,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:40.559Z"
   },
   {
     "problemId": "3398",
@@ -5930,7 +2272,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:40.883Z"
   },
   {
     "problemId": "2064",
@@ -5943,7 +2285,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:41.213Z"
   },
   {
     "problemId": "2187",
@@ -5956,7 +2298,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:41.536Z"
   },
   {
     "problemId": "2209",
@@ -5969,7 +2311,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:41.859Z"
   },
   {
     "problemId": "2210",
@@ -5982,7 +2324,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:42.186Z"
   },
   {
     "problemId": "1722",
@@ -5995,7 +2337,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:42.518Z"
   },
   {
     "problemId": "1096",
@@ -6008,7 +2350,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:42.840Z"
   },
   {
     "problemId": "1723",
@@ -6021,7 +2363,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:43.165Z"
   },
   {
     "problemId": "1724",
@@ -6034,7 +2376,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:43.489Z"
   },
   {
     "problemId": "3154",
@@ -6047,7 +2389,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:43.814Z"
   },
   {
     "problemId": "3355",
@@ -6060,7 +2402,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:44.139Z"
   },
   {
     "problemId": "3406",
@@ -6073,7 +2415,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:44.464Z"
   },
   {
     "problemId": "1725",
@@ -6086,7 +2428,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:44.790Z"
   },
   {
     "problemId": "1726",
@@ -6099,7 +2441,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:45.115Z"
   },
   {
     "problemId": "1727",
@@ -6112,7 +2454,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:45.448Z"
   },
   {
     "problemId": "1728",
@@ -6125,7 +2467,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:45.773Z"
   },
   {
     "problemId": "1729",
@@ -6138,7 +2480,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:46.100Z"
   },
   {
     "problemId": "1730",
@@ -6151,7 +2493,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:46.424Z"
   },
   {
     "problemId": "1098",
@@ -6164,7 +2506,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:46.769Z"
   },
   {
     "problemId": "1099",
@@ -6177,7 +2519,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:47.104Z"
   },
   {
     "problemId": "2207",
@@ -6190,7 +2532,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:47.441Z"
   },
   {
     "problemId": "2208",
@@ -6203,7 +2545,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:47.804Z"
   },
   {
     "problemId": "1731",
@@ -6216,7 +2558,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:48.128Z"
   },
   {
     "problemId": "1753",
@@ -6229,7 +2571,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:48.452Z"
   },
   {
     "problemId": "1732",
@@ -6242,7 +2584,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:48.784Z"
   },
   {
     "problemId": "1733",
@@ -6255,7 +2597,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:49.110Z"
   },
   {
     "problemId": "1110",
@@ -6268,7 +2610,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:49.443Z"
   },
   {
     "problemId": "1111",
@@ -6281,7 +2623,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:49.796Z"
   },
   {
     "problemId": "3138",
@@ -6294,7 +2636,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:50.464Z"
   },
   {
     "problemId": "1112",
@@ -6307,7 +2649,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:50.808Z"
   },
   {
     "problemId": "2420",
@@ -6320,7 +2662,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:51.130Z"
   },
   {
     "problemId": "2102",
@@ -6333,7 +2675,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:51.457Z"
   },
   {
     "problemId": "2103",
@@ -6346,7 +2688,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:51.784Z"
   },
   {
     "problemId": "2104",
@@ -6359,7 +2701,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:52.110Z"
   },
   {
     "problemId": "2105",
@@ -6372,7 +2714,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:52.433Z"
   },
   {
     "problemId": "1149",
@@ -6385,7 +2727,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:52.755Z"
   },
   {
     "problemId": "2106",
@@ -6398,7 +2740,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:53.080Z"
   },
   {
     "problemId": "2107",
@@ -6411,7 +2753,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:53.404Z"
   },
   {
     "problemId": "3225",
@@ -6424,7 +2766,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:53.728Z"
   },
   {
     "problemId": "1113",
@@ -6437,7 +2779,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:54.055Z"
   },
   {
     "problemId": "2108",
@@ -6450,7 +2792,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:54.380Z"
   },
   {
     "problemId": "2109",
@@ -6463,7 +2805,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:54.707Z"
   },
   {
     "problemId": "2110",
@@ -6476,7 +2818,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:55.031Z"
   },
   {
     "problemId": "2189",
@@ -6489,7 +2831,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:55.366Z"
   },
   {
     "problemId": "2190",
@@ -6502,7 +2844,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:55.695Z"
   },
   {
     "problemId": "2191",
@@ -6515,7 +2857,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:56.116Z"
   },
   {
     "problemId": "2192",
@@ -6528,7 +2870,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:56.475Z"
   },
   {
     "problemId": "2193",
@@ -6541,7 +2883,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:56.856Z"
   },
   {
     "problemId": "2194",
@@ -6554,7 +2896,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:57.213Z"
   },
   {
     "problemId": "2195",
@@ -6567,7 +2909,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:57.547Z"
   },
   {
     "problemId": "3410",
@@ -6580,7 +2922,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:57.889Z"
   },
   {
     "problemId": "3411",
@@ -6593,7 +2935,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:58.215Z"
   },
   {
     "problemId": "1740",
@@ -6606,7 +2948,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:58.541Z"
   },
   {
     "problemId": "3427",
@@ -6619,7 +2961,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:58.872Z"
   },
   {
     "problemId": "3428",
@@ -6632,7 +2974,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:59.200Z"
   },
   {
     "problemId": "3429",
@@ -6645,7 +2987,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:59.524Z"
   },
   {
     "problemId": "3430",
@@ -6658,7 +3000,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:41:59.861Z"
   },
   {
     "problemId": "1741",
@@ -6671,7 +3013,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:00.277Z"
   },
   {
     "problemId": "1742",
@@ -6684,7 +3026,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:00.619Z"
   },
   {
     "problemId": "1628",
@@ -6697,7 +3039,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:01.037Z"
   },
   {
     "problemId": "2136",
@@ -6710,7 +3052,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:01.388Z"
   },
   {
     "problemId": "3360",
@@ -6723,7 +3065,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:01.743Z"
   },
   {
     "problemId": "2137",
@@ -6736,7 +3078,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:02.135Z"
   },
   {
     "problemId": "2138",
@@ -6749,7 +3091,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:02.482Z"
   },
   {
     "problemId": "2143",
@@ -6762,7 +3104,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:02.881Z"
   },
   {
     "problemId": "2072",
@@ -6775,7 +3117,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:03.257Z"
   },
   {
     "problemId": "2073",
@@ -6788,7 +3130,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:03.639Z"
   },
   {
     "problemId": "2074",
@@ -6801,7 +3143,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:04.017Z"
   },
   {
     "problemId": "2076",
@@ -6814,7 +3156,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:04.373Z"
   },
   {
     "problemId": "2077",
@@ -6827,7 +3169,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:04.724Z"
   },
   {
     "problemId": "2078",
@@ -6840,7 +3182,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:05.126Z"
   },
   {
     "problemId": "2084",
@@ -6853,7 +3195,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:05.458Z"
   },
   {
     "problemId": "2085",
@@ -6866,7 +3208,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:05.788Z"
   },
   {
     "problemId": "2086",
@@ -6879,7 +3221,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:06.140Z"
   },
   {
     "problemId": "2087",
@@ -6892,7 +3234,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:06.470Z"
   },
   {
     "problemId": "2088",
@@ -6905,7 +3247,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:06.806Z"
   },
   {
     "problemId": "2111",
@@ -6918,7 +3260,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:07.147Z"
   },
   {
     "problemId": "2112",
@@ -6931,7 +3273,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:07.492Z"
   },
   {
     "problemId": "2113",
@@ -6944,7 +3286,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:07.835Z"
   },
   {
     "problemId": "2101",
@@ -6957,7 +3299,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:08.170Z"
   },
   {
     "problemId": "2133",
@@ -6970,7 +3312,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:08.528Z"
   },
   {
     "problemId": "2121",
@@ -6983,7 +3325,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:08.859Z"
   },
   {
     "problemId": "2129",
@@ -6996,7 +3338,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:09.198Z"
   },
   {
     "problemId": "2130",
@@ -7009,7 +3351,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:09.535Z"
   },
   {
     "problemId": "3220",
@@ -7022,7 +3364,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:09.869Z"
   },
   {
     "problemId": "3221",
@@ -7035,7 +3377,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:10.215Z"
   },
   {
     "problemId": "3426",
@@ -7048,7 +3390,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:10.573Z"
   },
   {
     "problemId": "3405",
@@ -7061,7 +3403,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:10.914Z"
   },
   {
     "problemId": "3222",
@@ -7074,7 +3416,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:11.252Z"
   },
   {
     "problemId": "3224",
@@ -7087,7 +3429,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:11.602Z"
   },
   {
     "problemId": "3219",
@@ -7100,7 +3442,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:11.930Z"
   },
   {
     "problemId": "1076",
@@ -7113,7 +3455,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:12.282Z"
   },
   {
     "problemId": "1077",
@@ -7126,7 +3468,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:12.610Z"
   },
   {
     "problemId": "3223",
@@ -7139,7 +3481,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:12.949Z"
   },
   {
     "problemId": "3227",
@@ -7152,7 +3494,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:13.292Z"
   },
   {
     "problemId": "3112",
@@ -7165,7 +3507,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:13.637Z"
   },
   {
     "problemId": "3139",
@@ -7178,7 +3520,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:13.965Z"
   },
   {
     "problemId": "3305",
@@ -7191,7 +3533,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:14.302Z"
   },
   {
     "problemId": "3228",
@@ -7204,7 +3546,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:14.637Z"
   },
   {
     "problemId": "3273",
@@ -7217,7 +3559,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:14.966Z"
   },
   {
     "problemId": "3140",
@@ -7230,7 +3572,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:15.294Z"
   },
   {
     "problemId": "1146",
@@ -7243,7 +3585,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:15.622Z"
   },
   {
     "problemId": "1655",
@@ -7256,7 +3598,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:15.991Z"
   },
   {
     "problemId": "3191",
@@ -7269,7 +3611,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:16.333Z"
   },
   {
     "problemId": "3211",
@@ -7282,7 +3624,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:16.665Z"
   },
   {
     "problemId": "3192",
@@ -7295,7 +3637,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:17.001Z"
   },
   {
     "problemId": "3233",
@@ -7308,7 +3650,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:17.344Z"
   },
   {
     "problemId": "2419",
@@ -7321,7 +3663,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:17.690Z"
   },
   {
     "problemId": "3194",
@@ -7334,7 +3676,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:18.045Z"
   },
   {
     "problemId": "3195",
@@ -7347,7 +3689,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:18.372Z"
   },
   {
     "problemId": "1654",
@@ -7360,7 +3702,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:18.703Z"
   },
   {
     "problemId": "3141",
@@ -7373,7 +3715,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:19.044Z"
   },
   {
     "problemId": "2214",
@@ -7386,7 +3728,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:19.381Z"
   },
   {
     "problemId": "2215",
@@ -7399,7 +3741,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:19.723Z"
   },
   {
     "problemId": "3422",
@@ -7412,7 +3754,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:20.048Z"
   },
   {
     "problemId": "3423",
@@ -7425,7 +3767,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:20.374Z"
   },
   {
     "problemId": "1697",
@@ -7438,7 +3780,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:20.699Z"
   },
   {
     "problemId": "3424",
@@ -7451,7 +3793,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:21.027Z"
   },
   {
     "problemId": "2423",
@@ -7464,7 +3806,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:21.348Z"
   },
   {
     "problemId": "2418",
@@ -7477,7 +3819,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:21.678Z"
   },
   {
     "problemId": "3303",
@@ -7490,7 +3832,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:22.009Z"
   },
   {
     "problemId": "1134",
@@ -7503,7 +3845,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:22.345Z"
   },
   {
     "problemId": "1702",
@@ -7516,7 +3858,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:22.670Z"
   },
   {
     "problemId": "1757",
@@ -7529,7 +3871,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:22.999Z"
   },
   {
     "problemId": "1756",
@@ -7542,7 +3884,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:23.327Z"
   },
   {
     "problemId": "2177",
@@ -7555,7 +3897,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:23.650Z"
   },
   {
     "problemId": "2179",
@@ -7568,7 +3910,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:23.973Z"
   },
   {
     "problemId": "1707",
@@ -7581,7 +3923,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:24.299Z"
   },
   {
     "problemId": "3357",
@@ -7594,7 +3936,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:24.626Z"
   },
   {
     "problemId": "3111",
@@ -7607,7 +3949,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:25.240Z"
   },
   {
     "problemId": "3407",
@@ -7620,7 +3962,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:25.563Z"
   },
   {
     "problemId": "3408",
@@ -7633,7 +3975,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:25.887Z"
   },
   {
     "problemId": "3409",
@@ -7646,7 +3988,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:26.220Z"
   },
   {
     "problemId": "1677",
@@ -7659,7 +4001,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:26.551Z"
   },
   {
     "problemId": "3114",
@@ -7672,7 +4014,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:26.886Z"
   },
   {
     "problemId": "3149",
@@ -7685,7 +4027,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:27.218Z"
   },
   {
     "problemId": "1700",
@@ -7698,7 +4040,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:27.565Z"
   },
   {
     "problemId": "1701",
@@ -7711,7 +4053,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:27.889Z"
   },
   {
     "problemId": "1699",
@@ -7724,7 +4066,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:28.214Z"
   },
   {
     "problemId": "1703",
@@ -7737,7 +4079,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:28.543Z"
   },
   {
     "problemId": "1203",
@@ -7750,7 +4092,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:28.875Z"
   },
   {
     "problemId": "3308",
@@ -7763,7 +4105,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:29.197Z"
   },
   {
     "problemId": "3158",
@@ -7776,7 +4118,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:29.519Z"
   },
   {
     "problemId": "3358",
@@ -7789,7 +4131,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:29.843Z"
   },
   {
     "problemId": "1704",
@@ -7802,7 +4144,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:30.166Z"
   },
   {
     "problemId": "1705",
@@ -7815,7 +4157,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:30.491Z"
   },
   {
     "problemId": "1752",
@@ -7828,7 +4170,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:30.827Z"
   },
   {
     "problemId": "1685",
@@ -7841,7 +4183,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:31.198Z"
   },
   {
     "problemId": "3413",
@@ -7854,7 +4196,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:31.521Z"
   },
   {
     "problemId": "3414",
@@ -7867,7 +4209,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:31.871Z"
   },
   {
     "problemId": "3415",
@@ -7880,7 +4222,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:32.227Z"
   },
   {
     "problemId": "3416",
@@ -7893,7 +4235,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:32.551Z"
   },
   {
     "problemId": "3417",
@@ -7906,7 +4248,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:32.873Z"
   },
   {
     "problemId": "3418",
@@ -7919,7 +4261,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:33.201Z"
   },
   {
     "problemId": "3400",
@@ -7932,7 +4274,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:33.522Z"
   },
   {
     "problemId": "1080",
@@ -7945,7 +4287,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:33.842Z"
   },
   {
     "problemId": "2229",
@@ -7958,7 +4300,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:34.166Z"
   },
   {
     "problemId": "2176",
@@ -7971,7 +4313,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:34.491Z"
   },
   {
     "problemId": "2228",
@@ -7984,7 +4326,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:34.817Z"
   },
   {
     "problemId": "1078",
@@ -7997,7 +4339,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:35.153Z"
   },
   {
     "problemId": "1075",
@@ -8010,7 +4352,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:35.481Z"
   },
   {
     "problemId": "2429",
@@ -8023,7 +4365,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:35.822Z"
   },
   {
     "problemId": "2421",
@@ -8036,7 +4378,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:36.169Z"
   },
   {
     "problemId": "3232",
@@ -8049,7 +4391,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:36.499Z"
   },
   {
     "problemId": "3157",
@@ -8062,7 +4404,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:36.825Z"
   },
   {
     "problemId": "2415",
@@ -8075,7 +4417,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:37.161Z"
   },
   {
     "problemId": "1087",
@@ -8088,7 +4430,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:37.488Z"
   },
   {
     "problemId": "3150",
@@ -8101,7 +4443,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:37.816Z"
   },
   {
     "problemId": "3190",
@@ -8114,7 +4456,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:38.142Z"
   },
   {
     "problemId": "1670",
@@ -8127,7 +4469,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:38.473Z"
   },
   {
     "problemId": "3175",
@@ -8140,7 +4482,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:38.798Z"
   },
   {
     "problemId": "2422",
@@ -8153,7 +4495,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:39.137Z"
   },
   {
     "problemId": "3151",
@@ -8166,7 +4508,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:39.471Z"
   },
   {
     "problemId": "3152",
@@ -8179,7 +4521,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:39.807Z"
   },
   {
     "problemId": "3306",
@@ -8192,7 +4534,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:40.132Z"
   },
   {
     "problemId": "3307",
@@ -8205,7 +4547,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:40.483Z"
   },
   {
     "problemId": "1142",
@@ -8218,7 +4560,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:40.820Z"
   },
   {
     "problemId": "2186",
@@ -8231,7 +4573,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:41.151Z"
   },
   {
     "problemId": "3169",
@@ -8244,7 +4586,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:41.483Z"
   },
   {
     "problemId": "3193",
@@ -8257,7 +4599,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:41.808Z"
   },
   {
     "problemId": "3294",
@@ -8270,7 +4612,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:42.143Z"
   },
   {
     "problemId": "3213",
@@ -8283,7 +4625,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:42.468Z"
   },
   {
     "problemId": "3214",
@@ -8296,7 +4638,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:42.792Z"
   },
   {
     "problemId": "2425",
@@ -8309,7 +4651,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:43.120Z"
   },
   {
     "problemId": "3301",
@@ -8322,7 +4664,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:43.462Z"
   },
   {
     "problemId": "3302",
@@ -8335,7 +4677,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:43.809Z"
   },
   {
     "problemId": "3361",
@@ -8348,7 +4690,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:44.133Z"
   },
   {
     "problemId": "1747",
@@ -8361,7 +4703,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:44.456Z"
   },
   {
     "problemId": "3404",
@@ -8374,7 +4716,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:44.776Z"
   },
   {
     "problemId": "1188",
@@ -8387,7 +4729,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:45.111Z"
   },
   {
     "problemId": "1086",
@@ -8400,7 +4742,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:45.443Z"
   },
   {
     "problemId": "2427",
@@ -8413,7 +4755,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:45.767Z"
   },
   {
     "problemId": "1147",
@@ -8426,7 +4768,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:46.090Z"
   },
   {
     "problemId": "1162",
@@ -8439,7 +4781,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:46.415Z"
   },
   {
     "problemId": "1191",
@@ -8452,7 +4794,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:46.743Z"
   },
   {
     "problemId": "2414",
@@ -8465,7 +4807,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:47.107Z"
   },
   {
     "problemId": "3215",
@@ -8478,7 +4820,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:47.438Z"
   },
   {
     "problemId": "3216",
@@ -8491,7 +4833,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:47.785Z"
   },
   {
     "problemId": "3218",
@@ -8504,7 +4846,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:48.147Z"
   },
   {
     "problemId": "3108",
@@ -8517,7 +4859,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:48.491Z"
   },
   {
     "problemId": "3109",
@@ -8530,7 +4872,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:48.845Z"
   },
   {
     "problemId": "2132",
@@ -8543,7 +4885,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:49.207Z"
   },
   {
     "problemId": "1189",
@@ -8556,7 +4898,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:49.578Z"
   },
   {
     "problemId": "1698",
@@ -8569,7 +4911,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:49.911Z"
   },
   {
     "problemId": "2430",
@@ -8582,7 +4924,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:50.240Z"
   },
   {
     "problemId": "1706",
@@ -8595,7 +4937,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:50.564Z"
   },
   {
     "problemId": "1709",
@@ -8608,7 +4950,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:50.885Z"
   },
   {
     "problemId": "3312",
@@ -8621,7 +4963,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:51.206Z"
   },
   {
     "problemId": "2426",
@@ -8634,7 +4976,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:51.527Z"
   },
   {
     "problemId": "2174",
@@ -8647,7 +4989,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:51.847Z"
   },
   {
     "problemId": "2180",
@@ -8660,7 +5002,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:52.169Z"
   },
   {
     "problemId": "3159",
@@ -8673,7 +5015,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:52.490Z"
   },
   {
     "problemId": "2432",
@@ -8686,7 +5028,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:52.813Z"
   },
   {
     "problemId": "2131",
@@ -8699,7 +5041,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:53.136Z"
   },
   {
     "problemId": "2115",
@@ -8712,7 +5054,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:53.459Z"
   },
   {
     "problemId": "2075",
@@ -8725,7 +5067,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:53.780Z"
   },
   {
     "problemId": "1159",
@@ -8738,7 +5080,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:54.109Z"
   },
   {
     "problemId": "3161",
@@ -8751,7 +5093,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:54.458Z"
   },
   {
     "problemId": "3402",
@@ -8764,7 +5106,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:54.782Z"
   },
   {
     "problemId": "3425",
@@ -8777,7 +5119,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:55.111Z"
   },
   {
     "problemId": "1157",
@@ -8790,7 +5132,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:55.434Z"
   },
   {
     "problemId": "1148",
@@ -8803,7 +5145,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:55.761Z"
   },
   {
     "problemId": "1161",
@@ -8816,7 +5158,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:56.082Z"
   },
   {
     "problemId": "3401",
@@ -8829,7 +5171,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:56.403Z"
   },
   {
     "problemId": "1665",
@@ -8842,7 +5184,7 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:56.727Z"
   },
   {
     "problemId": "2402",
@@ -8855,6 +5197,6 @@
     "successRate": "0.0%",
     "fastest": [],
     "shortest": [],
-    "lastUpdated": "2026-11-01T15:03:00.055Z"
+    "lastUpdated": "2026-11-08T09:42:57.050Z"
   }
 ]
