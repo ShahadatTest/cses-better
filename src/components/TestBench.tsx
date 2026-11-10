@@ -90,6 +90,7 @@ export const TestBench: React.FC<TestBenchProps> = ({
   const [copiedExpected, setCopiedExpected] = useState(false);
   const [copiedStderr, setCopiedStderr] = useState(false);
   const [copiedActual, setCopiedActual] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
 
   // Large input safety state for Input tab
   const [showFullInput, setShowFullInput] = useState(false);
@@ -253,20 +254,34 @@ export const TestBench: React.FC<TestBenchProps> = ({
   };
 
   const handleCopy = async (text: string, setter: (val: boolean) => void) => {
+    setCopyFailed(false);
+    setter(false);
     try {
       await navigator.clipboard.writeText(text);
-      setter(true);
-      setTimeout(() => setter(false), 2000);
     } catch {
       const textarea = document.createElement('textarea');
       textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
       document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-      setter(true);
-      setTimeout(() => setter(false), 2000);
+      const focused = document.activeElement;
+      let copied = false;
+      try {
+        textarea.select();
+        copied = document.execCommand('copy');
+      } catch {
+        // The fallback can be disabled too.
+      } finally {
+        textarea.remove();
+        if (focused instanceof HTMLElement) focused.focus({ preventScroll: true });
+      }
+      if (!copied) {
+        setCopyFailed(true);
+        return;
+      }
     }
+    setter(true);
+    setTimeout(() => setter(false), 2000);
   };
 
   const handleAddCustomSubmit = (e: React.FormEvent) => {
@@ -290,6 +305,9 @@ export const TestBench: React.FC<TestBenchProps> = ({
     <div
       className={`flex flex-col h-full bg-surface-0 border border-border-subtle rounded-xl overflow-hidden shadow-2xl font-sans text-text-primary ${className}`}
     >
+      <p role="status" className={copyFailed ? 'px-3 py-2 text-xs text-verdict-wa' : 'sr-only'}>
+        {copyFailed ? 'Copy failed. Select the text and copy it manually.' : ''}
+      </p>
       {/* Top Header / View Switcher */}
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2 bg-surface-2 border-b border-border-subtle">
         <div className="flex items-center gap-2">
